@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<project name="Cepplus" default="buildAll" basedir=".">
+
+   <property name="lib.dir"                 value="${basedir}/lib"/>
+   <property name="database.driver.file"           value="C:/Development/Projekte/Codeazarai.de/workspace/Game/lib/mysql-connector-java-3.1.8-bin.jar"/>
+   <property name="database.driver.classpath"      value="${database.driver.file}"/>
+   <property name="middlegen.home"                 value="${basedir}/middlegen-2.1"/>
+   <property name="build.gen-src.dir" value="mapping"/>
+   <property name="name" value="de.mwbs.common.data.generated" />
+   
+   <path id="lib.class.path">
+      <pathelement path="${basedir}"/>
+      <pathelement path="${database.driver.classpath}"/>
+      <fileset dir="${lib.dir}">
+         <include name="*.jar"/>
+      </fileset>
+      <!-- The middlegen jars -->
+      <fileset dir="${middlegen.home}">
+         <include name="*.jar"/>
+      </fileset>
+   </path>
+
+	<target name="middlegen" description="Run Middlegen" depends="">
+		<taskdef
+		   name="middlegen"
+		   classname="middlegen.MiddlegenTask"
+		   classpathref="lib.class.path"
+		/>
+	
+		<middlegen
+		   appname="game"
+		   schema=""
+		   prefsdir="."
+		   gui="false"
+		   databaseurl="jdbc:mysql://localhost:3306/game"
+		   driver="com.mysql.jdbc.Driver"
+		   username="root"
+		   password="">
+     <hibernate
+        destination="${build.gen-src.dir}"
+        package="${name}"
+     	
+        javaTypeMapper="middlegen.plugins.hibernate.HibernateJavaTypeMapper"/>
+		</middlegen>
+	
+	</target>
+
+	<target name="codegen">
+		<taskdef name="hbm2java"
+			classname="net.sf.hibernate.tool.hbm2java.Hbm2JavaTask"
+			classpathref="lib.class.path"/>
+			
+		<hbm2java 
+		output="src/">
+		<fileset dir="${build.gen-src.dir}">
+		<include name="**/*.hbm.xml"/>
+		</fileset>
+		</hbm2java>
+	</target>
+	
+	<target name="castor">
+		<taskdef name="castor"
+		         classname="org.exolab.castor.tools.ant.taskdefs.CastorSourceGenTask"
+		         classpathref="lib.class.path"/>		
+		<castor file="mapping/configuration.xsd" todir="src"
+		        package="de.mwbs.server.configuration"
+		        warnings="false" types="j2"/>
+	</target>
+	
+	<target name="buildAll" depends="middlegen, codegen, castor"/>
+</project>
