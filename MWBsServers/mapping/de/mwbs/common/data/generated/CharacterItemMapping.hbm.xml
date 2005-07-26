@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="de.mwbs.common.data.generated.CharacterItemMapping" 
+    table="character_item_mapping"
+>
+
+    <composite-id>
+        <key-property 
+            name="position" 
+            column="position" 
+            type="java.lang.String"
+            length="1"
+        />
+        <key-property 
+            name="currentcondition" 
+            column="currentcondition" 
+            type="int"
+            length="10"
+        />
+        <key-property 
+            name="depositItem" 
+            column="deposit_item" 
+            type="int"
+            length="10"
+        />
+    </composite-id>    
+
+
+    <!-- Associations -->
+    <!-- derived association(s) for compound key -->
+    <!-- end of derived association(s) -->
+  
+    <!-- bi-directional many-to-one association to Item -->
+    <many-to-one
+        name="item"
+        class="de.mwbs.common.data.generated.Item"
+        not-null="true"
+    >
+        <column name="item_id" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Characterdata -->
+    <many-to-one
+        name="characterdata"
+        class="de.mwbs.common.data.generated.Characterdata"
+        not-null="true"
+    >
+        <column name="charactername" />
+    </many-to-one>
+
+</class>
+</hibernate-mapping>

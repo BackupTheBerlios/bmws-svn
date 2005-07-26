@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="de.mwbs.common.data.generated.CharacterWorldobjectMapping" 
+    table="character_worldobject_mapping"
+>
+
+    <composite-id name="comp_id" class="de.mwbs.common.data.generated.CharacterWorldobjectMappingPK">
+        <key-property 
+            name="characterdataCharactername" 
+            column="characterdata_charactername" 
+            type="java.lang.String"
+            length="30"
+        />
+        <key-property 
+            name="worldobjectId" 
+            column="worldobject_id" 
+            type="java.lang.Long"
+            length="20"
+        />
+    </composite-id>    
+
+
+    <!-- Associations -->
+    <!-- derived association(s) for compound key -->
+    <!-- bi-directional many-to-one association to Characterdata -->
+    <many-to-one
+        name="characterdata"
+	    class="de.mwbs.common.data.generated.Characterdata"
+	    update="false"
+	    insert="false"
+	>
+    	<column name="characterdata_charactername" />
+	</many-to-one>
+	
+    <!-- bi-directional many-to-one association to Worldobject -->
+    <many-to-one
+        name="worldobject"
+	    class="de.mwbs.common.data.generated.Worldobject"
+	    update="false"
+	    insert="false"
+	>
+    	<column name="worldobject_id" />
+	</many-to-one>
+	
+    <!-- end of derived association(s) -->
+  
+
+</class>
+</hibernate-mapping>

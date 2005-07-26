@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="de.mwbs.common.data.generated.Account" 
+    table="account"
+>
+
+    <id
+        name="username"
+        type="java.lang.String"
+        column="username"
+    >
+        <generator class="assigned" />
+    </id>
+
+    <property
+        name="password"
+        type="java.lang.String"
+        column="password"
+        not-null="true"
+        length="20"
+    />
+    <property
+        name="emailaddress"
+        type="java.lang.String"
+        column="emailaddress"
+        not-null="true"
+        length="45"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional one-to-many association to Characterdata -->
+    <set
+        name="characterdatas"
+        lazy="true"
+        inverse="true"
+		cascade="none"
+    >
+        <key>
+            <column name="account_username" />
+        </key>
+        <one-to-many 
+            class="de.mwbs.common.data.generated.Characterdata"
+        />
+    </set>
+
+</class>
+</hibernate-mapping>

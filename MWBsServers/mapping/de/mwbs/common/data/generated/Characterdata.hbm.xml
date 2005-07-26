@@ -1,0 +1,181 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="de.mwbs.common.data.generated.Characterdata" 
+    table="characterdata"
+>
+
+    <id
+        name="charactername"
+        type="java.lang.String"
+        column="charactername"
+    >
+        <generator class="assigned" />
+    </id>
+
+    <property
+        name="gender"
+        type="java.lang.String"
+        column="gender"
+        not-null="true"
+        length="1"
+    />
+    <property
+        name="health"
+        type="int"
+        column="health"
+        not-null="true"
+        length="10"
+    />
+    <property
+        name="mana"
+        type="int"
+        column="mana"
+        not-null="true"
+        length="10"
+    />
+    <property
+        name="stamina"
+        type="int"
+        column="stamina"
+        not-null="true"
+        length="10"
+    />
+    <property
+        name="age"
+        type="short"
+        column="age"
+        not-null="true"
+        length="5"
+    />
+    <property
+        name="strength"
+        type="int"
+        column="strength"
+        not-null="true"
+        length="10"
+    />
+    <property
+        name="intelligence"
+        type="int"
+        column="intelligence"
+        not-null="true"
+        length="10"
+    />
+    <property
+        name="dexterity"
+        type="int"
+        column="dexterity"
+        not-null="true"
+        length="10"
+    />
+    <property
+        name="constitution"
+        type="int"
+        column="constitution"
+        not-null="true"
+        length="10"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to Account -->
+    <many-to-one
+        name="account"
+        class="de.mwbs.common.data.generated.Account"
+        not-null="true"
+    >
+        <column name="account_username" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Race -->
+    <many-to-one
+        name="race"
+        class="de.mwbs.common.data.generated.Race"
+        not-null="true"
+    >
+        <column name="race_id" />
+    </many-to-one>
+    <!-- bi-directional one-to-many association to CharacterStatus -->
+    <set
+        name="characterStatuses"
+        lazy="true"
+        inverse="true"
+		cascade="none"
+    >
+        <key>
+            <column name="characterdata_characterName" />
+        </key>
+        <one-to-many 
+            class="de.mwbs.common.data.generated.CharacterStatus"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to CharacterSkillMapping -->
+    <set
+        name="characterSkillMappings"
+        lazy="true"
+        inverse="true"
+		cascade="none"
+    >
+        <key>
+            <column name="charactername" />
+        </key>
+        <one-to-many 
+            class="de.mwbs.common.data.generated.CharacterSkillMapping"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to CharacterVisualappearance -->
+    <set
+        name="characterVisualappearances"
+        lazy="true"
+        inverse="true"
+		cascade="none"
+    >
+        <key>
+            <column name="characterdata_charactername" />
+        </key>
+        <one-to-many 
+            class="de.mwbs.common.data.generated.CharacterVisualappearance"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to CharacterItemMapping -->
+    <set
+        name="characterItemMappings"
+        lazy="true"
+        inverse="true"
+		cascade="none"
+    >
+        <key>
+            <column name="charactername" />
+        </key>
+        <one-to-many 
+            class="de.mwbs.common.data.generated.CharacterItemMapping"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to CharacterWorldobjectMapping -->
+    <set
+        name="characterWorldobjectMappings"
+        lazy="true"
+        inverse="true"
+		cascade="none"
+    >
+        <key>
+            <column name="characterdata_charactername" />
+        </key>
+        <one-to-many 
+            class="de.mwbs.common.data.generated.CharacterWorldobjectMapping"
+        />
+    </set>
+
+</class>
+</hibernate-mapping>
