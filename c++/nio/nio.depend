@@ -1,0 +1,208 @@
+# depslib dependency file v1.0
+1119544494 d:\work\cpp\nio\main.cpp
+	<iostream>
+	<string>
+	"stringclass.h"
+	"socket.h"
+
+1119460498 d:\work\cpp\nio\socket.h
+	"Stringclass.h"
+	"excclass.h"
+	<sys/types.h>
+	<sys/socket.h>
+	<sys/socketvar.h>
+	<netdb.h>
+	<winsock2.h>
+
+1119461652 d:\work\cpp\nio\socket.cpp
+	"socket.h"
+	<iostream>
+	<stdio.h>
+	<time.h>
+	<strings.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<sys/select.h>
+	<netinet/in.h>
+	<netdb.h>
+	<unistd.h>
+	<string>
+	<winsock2.h>
+	<io.h>
+
+1119541052 d:\work\cpp\nio\stringclass.h
+	<iostream>
+
+1119544167 d:\work\cpp\nio\excclass.h
+	"stringclass.h"
+
+1119541080 d:\work\cpp\nio\stringclass.cpp
+	"stringclass.h"
+	<iostream>
+	<stdlib.h>
+	<stdio.h>
+	<string>
+	"excclass.h"
+
+1119461652 d:\work\eclipse\game\cpp\nio\socket.cpp
+	"socket.h"
+	<iostream>
+	<stdio.h>
+	<time.h>
+	<strings.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<sys/select.h>
+	<netinet/in.h>
+	<netdb.h>
+	<unistd.h>
+	<string>
+	<winsock2.h>
+	<io.h>
+
+1119460498 d:\work\eclipse\game\cpp\nio\socket.h
+	"Stringclass.h"
+	"excclass.h"
+	<sys/types.h>
+	<sys/socket.h>
+	<sys/socketvar.h>
+	<netdb.h>
+	<winsock2.h>
+
+1119541052 d:\work\eclipse\game\cpp\nio\stringclass.h
+	<iostream>
+
+1119544167 d:\work\eclipse\game\cpp\nio\excclass.h
+	"stringclass.h"
+
+1119541080 d:\work\eclipse\game\cpp\nio\stringclass.cpp
+	"stringclass.h"
+	<iostream>
+	<stdlib.h>
+	<stdio.h>
+	<string>
+	"excclass.h"
+
+1121943442 d:\work\eclipse\game\cpp\nio\main.cpp
+	<iostream>
+	<string>
+	"util/string.h"
+	"util/socket.h"
+	<stdlib.h>
+	"util/thread.h"
+	"NetworkManager.h"
+	"Security.h"
+
+1121812243 d:\work\eclipse\game\cpp\nio\util\mutex.cpp
+	"mutex.h"
+	<process.h>
+	<errno.h>
+	<iostream>
+	"thread.h"
+
+1119608260 d:\work\eclipse\game\cpp\nio\util\mutex.h
+	<process.h>
+	<errno.h>
+	<wtypes.h>
+	<pthread.h>
+	"constants.h"
+
+1121942063 d:\work\eclipse\game\cpp\nio\util\thread.h
+	<pthread.h>
+	<errno.h>
+	"Synchronizable.h"
+	"string.h"
+	"excclass.h"
+	"mutex.h"
+
+1119609985 d:\work\eclipse\game\cpp\nio\util\string.h
+	<iostream>
+
+1119610250 d:\work\eclipse\game\cpp\nio\util\excclass.h
+	"string.h"
+
+1119619569 d:\work\eclipse\game\cpp\nio\util\socket.cpp
+	"socket.h"
+	<iostream>
+	<stdio.h>
+	<time.h>
+	<strings.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<sys/select.h>
+	<netinet/in.h>
+	<netdb.h>
+	<unistd.h>
+	<string>
+	<winsock2.h>
+	<io.h>
+
+1119609556 d:\work\eclipse\game\cpp\nio\util\socket.h
+	"string.h"
+	"excclass.h"
+	<sys/types.h>
+	<sys/socket.h>
+	<sys/socketvar.h>
+	<netdb.h>
+	<winsock2.h>
+
+1119609434 d:\work\eclipse\game\cpp\nio\util\string.cpp
+	"string.h"
+	<iostream>
+	<stdlib.h>
+	<stdio.h>
+	<string>
+	"excclass.h"
+
+1119609434 d:\work\eclipse\game\cpp\nio\util\thread.cpp
+	"thread.h"
+	<sys/types.h>
+	<unistd.h>
+	<stdlib.h>
+	<process.h>
+	<errno.h>
+
+1121786197 d:\work\eclipse\game\cpp\nio\networkmanager.cpp
+	"NetworkManager.h"
+	"util/excclass.h"
+	<iostream>
+	"AbstractRequest.h"
+
+1121763374 d:\work\eclipse\game\cpp\nio\networkmanager.h
+	"util/socket.h"
+	"util/thread.h"
+
+1121788419 d:\work\eclipse\game\cpp\nio\payload.cpp
+	"Payload.h"
+	"string.h"
+
+1121787355 d:\work\eclipse\game\cpp\nio\payload.h
+	"util/string.h"
+
+1121784200 d:\work\eclipse\game\cpp\nio\security.cpp
+	"Security.h"
+	"Request.h"
+
+1121784102 d:\work\eclipse\game\cpp\nio\security.h
+
+1121703619 d:\work\eclipse\game\cpp\nio\logindata.cpp
+	"Payload.h"
+
+1121763485 d:\work\eclipse\game\cpp\nio\abstractrequest.h
+	"NetworkManager.h"
+	"Payload.h"
+
+1121784396 d:\work\eclipse\game\cpp\nio\request.h
+	"Payload.h"
+	"AbstractRequest.h"
+
+1121763538 d:\work\eclipse\game\cpp\nio\abstractrequest.cpp
+	"AbstractRequest.h"
+
+1122039569 d:\work\eclipse\game\cpp\nio\util\synchronizable.h
+	"mutex.h"
+	<iostream>
+
+1122039097 d:\work\eclipse\game\cpp\nio\util\synchronizable.cpp
+	"Synchronizable.h"
+

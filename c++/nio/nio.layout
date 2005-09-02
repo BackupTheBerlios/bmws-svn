@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!DOCTYPE Code::Blocks_layout_file>
+<Code::Blocks_layout_file>
+	<File name="AbstractRequest.cpp" open="1" top="0">
+		<Cursor position="111" topLine="0"/>
+	</File>
+	<File name="AbstractRequest.h" open="1" top="0">
+		<Cursor position="189" topLine="0"/>
+	</File>
+	<File name="NetworkManager.cpp" open="1" top="0">
+		<Cursor position="1489" topLine="22"/>
+	</File>
+	<File name="NetworkManager.h" open="1" top="0">
+		<Cursor position="110" topLine="0"/>
+	</File>
+	<File name="Payload.cpp" open="1" top="0">
+		<Cursor position="625" topLine="0"/>
+	</File>
+	<File name="Payload.h" open="1" top="0">
+		<Cursor position="486" topLine="0"/>
+	</File>
+	<File name="Request.h" open="1" top="0">
+		<Cursor position="363" topLine="0"/>
+	</File>
+	<File name="RequestDispatcher.h" open="1" top="0">
+		<Cursor position="92" topLine="0"/>
+	</File>
+	<File name="Security.cpp" open="1" top="0">
+		<Cursor position="202" topLine="0"/>
+	</File>
+	<File name="Security.h" open="1" top="0">
+		<Cursor position="67" topLine="0"/>
+	</File>
+	<File name="main.cpp" open="1" top="1">
+		<Cursor position="867" topLine="14"/>
+	</File>
+	<File name="protocoll.txt" open="0" top="0">
+		<Cursor position="764" topLine="0"/>
+	</File>
+	<File name="util\Mutex.cpp" open="1" top="0">
+		<Cursor position="1097" topLine="6"/>
+	</File>
+	<File name="util\Mutex.h" open="1" top="0">
+		<Cursor position="843" topLine="15"/>
+	</File>
+	<File name="util\Synchronizable.cpp" open="1" top="0">
+		<Cursor position="211" topLine="0"/>
+	</File>
+	<File name="util\Synchronizable.h" open="1" top="0">
+		<Cursor position="1981" topLine="55"/>
+	</File>
+	<File name="util\excclass.h" open="1" top="0">
+		<Cursor position="1430" topLine="38"/>
+	</File>
+	<File name="util\socket.cpp" open="1" top="0">
+		<Cursor position="2307" topLine="80"/>
+	</File>
+	<File name="util\socket.h" open="1" top="0">
+		<Cursor position="3205" topLine="96"/>
+	</File>
+	<File name="util\string.cpp" open="1" top="0">
+		<Cursor position="856" topLine="7"/>
+	</File>
+	<File name="util\string.h" open="1" top="0">
+		<Cursor position="3084" topLine="71"/>
+	</File>
+	<File name="util\thread.cpp" open="1" top="0">
+		<Cursor position="147" topLine="150"/>
+	</File>
+	<File name="util\thread.h" open="1" top="0">
+		<Cursor position="338" topLine="3"/>
+	</File>
+</Code::Blocks_layout_file>

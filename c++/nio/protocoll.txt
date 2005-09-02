@@ -1,0 +1,34 @@
+Definitions
+===========
+pass := hash(password)
+=> known to client and server using some safe hash algorithm
+send()
+=> sends something over the network
+encrypt(key, message)
+=> encrypts a message
+decrypt(key, message)
+=> decrypts a message
+
+
+Communication
+=============
+
+Client:
+rand1 := new random()
+auth := xor(rand1, hash(passwd))
+send(LOGONREQ(user, auth))
+
+Server:
+sessionkey := new random()
+rand1s := xor(pass, auth)
+=> if client pass equals the server pass => rand1s = rand1
+challenge := xor(sessionkey, rand1s)
+send(CHALLENGE(challenge))
+
+Client:
+sessionkeyc := xor(challenge, rand1)
+send(encrypt(sessionkeyc, LOGON())
+
+Server
+=> decrypts message with sessionkey and validates against LOGON structure
+=> closes socket on nok
