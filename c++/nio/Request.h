@@ -4,7 +4,7 @@
 #include "Payload.h"
 #include "AbstractRequest.h"
 
-#define CHALLENGE 0
+#define CHALLENGE 1
 #define LOGIN 1
 /**
  * Data classes like this one should be generated in a final solution. Lateron 
@@ -13,7 +13,6 @@
 class ChallengeRequest : public AbstractRequest {
 public:
     ChallengeRequest(char* username) {
-        payload.AddShort(CHALLENGE);
         payload.AddString(username);
     }
 };

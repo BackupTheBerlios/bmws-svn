@@ -13,7 +13,7 @@ private:
     short length;
     int cursor;
 public:
-    Payload() {payload = new char[MAX_LEN]; length = 0; cursor = 2;};
+    Payload() {payload = new char[MAX_LEN]; length = 0; cursor = 12;};
     Payload(char* buf, int len);
     void AddShort(int i);
     void AddString(char* s);

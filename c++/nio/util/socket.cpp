@@ -232,7 +232,7 @@ void Socket::WriteLong(long nr)
 {
 	long number = htonl(nr);
 	if( send(m_Socket, (char*) &number, sizeof(number),0)<sizeof(number) ) {
-		throw SocketBrokenException("Socket.WriteInt()","connection broken") ;
+		throw SocketBrokenException("Socket.WriteLong()","connection broken") ;
 	}
 }
 

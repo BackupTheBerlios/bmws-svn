@@ -206,3 +206,123 @@
 1122039097 d:\work\eclipse\game\cpp\nio\util\synchronizable.cpp
 	"Synchronizable.h"
 
+1127486544 d:\work\progs\bmws\c++\nio\util\mutex.cpp
+	"mutex.h"
+	<process.h>
+	<errno.h>
+	<iostream>
+	"thread.h"
+
+1127486544 d:\work\progs\bmws\c++\nio\util\mutex.h
+	<process.h>
+	<errno.h>
+	<wtypes.h>
+	<pthread.h>
+	"constants.h"
+
+1127486544 d:\work\progs\bmws\c++\nio\util\thread.h
+	<pthread.h>
+	<errno.h>
+	"Synchronizable.h"
+	"string.h"
+	"excclass.h"
+	"mutex.h"
+
+1127486543 d:\work\progs\bmws\c++\nio\util\synchronizable.h
+	"mutex.h"
+	<iostream>
+
+1127486544 d:\work\progs\bmws\c++\nio\util\string.h
+	<iostream>
+
+1127486544 d:\work\progs\bmws\c++\nio\util\excclass.h
+	"string.h"
+
+1127598463 d:\work\progs\bmws\c++\nio\payload.cpp
+	"Payload.h"
+	"string.h"
+
+1127598477 d:\work\progs\bmws\c++\nio\payload.h
+	"util/string.h"
+
+1127486544 d:\work\progs\bmws\c++\nio\security.cpp
+	"Security.h"
+	"Request.h"
+
+1127486544 d:\work\progs\bmws\c++\nio\security.h
+
+1127598541 d:\work\progs\bmws\c++\nio\request.h
+	"Payload.h"
+	"AbstractRequest.h"
+
+1127486545 d:\work\progs\bmws\c++\nio\abstractrequest.h
+	"NetworkManager.h"
+	"Payload.h"
+
+1127486545 d:\work\progs\bmws\c++\nio\networkmanager.h
+	"util/socket.h"
+	"util/thread.h"
+
+1127486544 d:\work\progs\bmws\c++\nio\util\socket.h
+	"string.h"
+	"excclass.h"
+	<sys/types.h>
+	<sys/socket.h>
+	<sys/socketvar.h>
+	<netdb.h>
+	<winsock2.h>
+
+1127597252 d:\work\progs\bmws\c++\nio\main.cpp
+	<iostream>
+	<string>
+	"util/string.h"
+	"util/socket.h"
+	<stdlib.h>
+	"util/thread.h"
+	"NetworkManager.h"
+	"Security.h"
+
+1127486545 d:\work\progs\bmws\c++\nio\abstractrequest.cpp
+	"AbstractRequest.h"
+
+1127486544 d:\work\progs\bmws\c++\nio\util\synchronizable.cpp
+	"Synchronizable.h"
+
+1127598134 d:\work\progs\bmws\c++\nio\util\socket.cpp
+	"socket.h"
+	<iostream>
+	<stdio.h>
+	<time.h>
+	<strings.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<sys/select.h>
+	<netinet/in.h>
+	<netdb.h>
+	<unistd.h>
+	<string>
+	<winsock2.h>
+	<io.h>
+
+1127486544 d:\work\progs\bmws\c++\nio\util\string.cpp
+	"string.h"
+	<iostream>
+	<stdlib.h>
+	<stdio.h>
+	<string>
+	"excclass.h"
+
+1127486544 d:\work\progs\bmws\c++\nio\util\thread.cpp
+	"thread.h"
+	<sys/types.h>
+	<unistd.h>
+	<stdlib.h>
+	<process.h>
+	<errno.h>
+
+1127598699 d:\work\progs\bmws\c++\nio\networkmanager.cpp
+	"NetworkManager.h"
+	"util/excclass.h"
+	<iostream>
+	"AbstractRequest.h"
+

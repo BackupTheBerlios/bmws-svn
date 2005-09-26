@@ -28,7 +28,7 @@ int main()
 {
 
     try {
-        MyThread mt;
+ /*       MyThread mt;
         mt.Start();
         Sleep(5000);
         cout << "send notification" << endl;
@@ -37,13 +37,14 @@ int main()
         cout << "send notification" << endl;
         mt.NotifyAll();
          cout << "finished" << endl;
-/*        std::cout << "opening socket" << std::endl;
-        NetworkManager::GetInstance()->Connect("localhost", 12345);
+*/
+        std::cout << "opening socket" << std::endl;
+        NetworkManager::GetInstance()->Connect("localhost", 5000);
         Security sec;
         sec.Login();
         Sleep(10000);
         NetworkManager::GetInstance()->Close();
-*/    }
+    }
     catch (Exception exc) {
         cout << "ERROR: " << exc.ToString() << endl;
     }

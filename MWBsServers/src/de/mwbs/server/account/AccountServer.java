@@ -85,7 +85,7 @@ public class AccountServer extends Thread {
                     SocketChannel clientChannel = ssChannel.accept();
                     dispatcher.addNewClient(clientChannel);
 
-                    logger.info("got connection from: " + clientChannel.socket().getInetAddress());
+                    logger.info("got connection from: " + clientChannel.socket().getRemoteSocketAddress());
                 }
             } catch (IOException ioe) {
                 logger.warn("error during serverSocket select(): " + ioe.getMessage());

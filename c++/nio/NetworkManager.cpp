@@ -45,7 +45,7 @@ void NetworkManager::Connect(char* address, int port) {
 
 void NetworkManager::SendRequest(AbstractRequest* req) {
     short length = req->GetPayload().GetLength();
-    cout << "sending request " << (int) req->GetPayload().GetByteBuffer()[2] << " with " 
+    cout << "sending request " << (long) req->GetPayload().GetByteBuffer()[11] << " with " 
          << length<< " bytes" << endl;
     soc.Write(req->GetPayload().GetByteBuffer(), length);
 }

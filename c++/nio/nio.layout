@@ -8,16 +8,16 @@
 		<Cursor position="189" topLine="0"/>
 	</File>
 	<File name="NetworkManager.cpp" open="1" top="0">
-		<Cursor position="1489" topLine="22"/>
+		<Cursor position="108" topLine="0"/>
 	</File>
 	<File name="NetworkManager.h" open="1" top="0">
 		<Cursor position="110" topLine="0"/>
 	</File>
-	<File name="Payload.cpp" open="1" top="0">
-		<Cursor position="625" topLine="0"/>
+	<File name="Payload.cpp" open="1" top="1">
+		<Cursor position="66" topLine="0"/>
 	</File>
 	<File name="Payload.h" open="1" top="0">
-		<Cursor position="486" topLine="0"/>
+		<Cursor position="276" topLine="0"/>
 	</File>
 	<File name="Request.h" open="1" top="0">
 		<Cursor position="363" topLine="0"/>
@@ -26,13 +26,13 @@
 		<Cursor position="92" topLine="0"/>
 	</File>
 	<File name="Security.cpp" open="1" top="0">
-		<Cursor position="202" topLine="0"/>
+		<Cursor position="154" topLine="0"/>
 	</File>
 	<File name="Security.h" open="1" top="0">
 		<Cursor position="67" topLine="0"/>
 	</File>
-	<File name="main.cpp" open="1" top="1">
-		<Cursor position="867" topLine="14"/>
+	<File name="main.cpp" open="1" top="0">
+		<Cursor position="1047" topLine="14"/>
 	</File>
 	<File name="protocoll.txt" open="0" top="0">
 		<Cursor position="764" topLine="0"/>
@@ -53,12 +53,12 @@
 		<Cursor position="1430" topLine="38"/>
 	</File>
 	<File name="util\socket.cpp" open="1" top="0">
-		<Cursor position="2307" topLine="80"/>
+		<Cursor position="605" topLine="0"/>
 	</File>
 	<File name="util\socket.h" open="1" top="0">
 		<Cursor position="3205" topLine="96"/>
 	</File>
-	<File name="util\string.cpp" open="1" top="0">
+	<File name="util\string.cpp" open="0" top="0">
 		<Cursor position="856" topLine="7"/>
 	</File>
 	<File name="util\string.h" open="1" top="0">
@@ -70,4 +70,6 @@
 	<File name="util\thread.h" open="1" top="0">
 		<Cursor position="338" topLine="3"/>
 	</File>
+	<Expand folder="/Sources"/>
+	<Expand folder="/Headers"/>
 </Code::Blocks_layout_file>
