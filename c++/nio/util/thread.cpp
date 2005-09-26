@@ -4,6 +4,10 @@
 
 #include "thread.h"
 
+#ifdef WIN32
+extern int errno;
+#endif
+
 namespace util {
 
 #ifdef UNIX
@@ -113,7 +117,6 @@ int Thread::Join(long wait_msec)
 int Thread::m_MaxNrOfThreads = 512;
 volatile int Thread::m_NrOfThreads = 0;
 
-extern int errno;
 //////////////////////////////////////////////////////////////////////
 Thread::Thread()
 {
