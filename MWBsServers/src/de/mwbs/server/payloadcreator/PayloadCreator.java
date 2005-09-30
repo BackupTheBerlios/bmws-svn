@@ -1,9 +1,11 @@
 package de.mwbs.server.payloadcreator;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -68,11 +70,11 @@ public class PayloadCreator {
 		try {
 			String source = openFile();
 			parseClasses();
-			generateClasses();
 		}
 		catch (RuntimeException e) {
 			System.err.println("ERROR in line " + currentLineNo + ": " + e.getMessage());
 		}
+		generateClasses();
 	}
 
 	/**
@@ -82,19 +84,55 @@ public class PayloadCreator {
 		Iterator<String> it = classes.keySet().iterator();
 		while (it.hasNext()) {
 			String key = it.next();
+			if (key.equals("String") || key.startsWith("int"))
+				continue;
 			ClassDeclaration classDecl = classes.get(key);
+			System.out.println("INFO: generating " + classDecl.name);
 			// generate class
-			String templ = getTemplate("java", "class");
-			
+			String templ = getProp("java", "class");
+			String classcontents = templ.replace("$name$", classDecl.name).replace("$fields$",
+					generateFields(classDecl));
+			generateFile(classDecl.name+"."+"java", classcontents );
 		}
+	}
+
+	/**
+	 * @param string
+	 * @param classcontents
+	 */
+	private void generateFile(String name, String classcontents) {
+		String path = getProp("java", "targetpath");
+		try {
+			FileWriter fw = new FileWriter(path+File.separator+name);
+			fw.write(classcontents);
+			fw.close();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * @param classDecl
+	 * @return
+	 */
+	private String generateFields(ClassDeclaration classDecl) {
+		String fields = "";
+		for (Iterator<FieldDeclaration> iter = classDecl.fields.iterator(); iter.hasNext();) {
+			FieldDeclaration field = iter.next();
+			fields += "\t"
+					+ getProp("java", "field").replace("$type$", field.type).replace("$name$",
+							field.name) + "\n";
+		}
+		return fields;
 	}
 
 	/**
 	 * @param string
 	 * @return
 	 */
-	private String getTemplate(String type, String name) {
-		return props.getProperty("temp."+type+"."+name);
+	private String getProp(String type, String name) {
+		return props.getProperty("temp." + type + "." + name);
 	}
 
 	/**
@@ -160,6 +198,7 @@ public class PayloadCreator {
 			if (!classes.containsKey(type))
 				throw new RuntimeException("Unknown type '" + type + "'");
 			FieldDeclaration fieldDecl = new FieldDeclaration(type, fieldName);
+			classdecl.fields.add(fieldDecl);
 		}
 		throw new RuntimeException("Unfinished class declaration ");
 	}
