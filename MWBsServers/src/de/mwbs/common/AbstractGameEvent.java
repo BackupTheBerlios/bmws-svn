@@ -1,64 +1,57 @@
 package de.mwbs.common;
 
-import java.nio.ByteBuffer;
+import de.mwbs.common.eventdata.AbstractEventData;
 
-public abstract class AbstractGameEvent implements GameEvent {
+public abstract class AbstractGameEvent {
 
-    /** event type */
-    protected int eventType;
+	// events
+	public static final int GE_LOGIN = 1;
 
-    protected Player player;
-    
-    protected boolean sendAck = false;
-    
-    protected Integer[] recipients;
-    
-    public void setSendAck(boolean sendAck) {
-        this.sendAck = sendAck;
-    }
+	/** event type */
+	protected int eventType;
+	protected Player player;
+	protected boolean sendAck = false;
+	protected Integer[] recipients;
+	protected AbstractEventData eventData;
+	protected byte[] payload;
 
-    public AbstractGameEvent() {
-        super();
-    }
+	public AbstractGameEvent(byte[] payload, AbstractEventData eventData) {
+		this.payload = payload;
+		this.eventData = eventData;
+		eventData.deserialize(payload, 2);
+	}
+	
 
-    public int getType() {
-        return eventType;
-    }
+	public void setSendAck(boolean sendAck) {
+		this.sendAck = sendAck;
+	}
 
-    public void setType(int type) {
-        this.eventType = type;
-    }
+	public Player getPlayer() {
+		return player;
+	}
 
-    public Player getPlayer() {
-        return player;
-    }
+	public void setPlayer(Player p) {
+		this.player = p;
+	}
 
-    public void setPlayer(Player p) {
-        this.player =p;
-    }
+	public Integer[] getRecipients() {
+		return recipients;
+	}
 
-    public final void read(ByteBuffer buffer) {
-        eventType = buffer.getInt();
-        readPayload(buffer);
-    }
+	public void setRecipients(Integer[] recipients) {
+		this.recipients = recipients;
+	}
 
-    public abstract void readPayload(ByteBuffer buffer);
-        
-    public final int write(ByteBuffer buffer) {
-        int pos = buffer.position();
-        buffer.putInt(eventType);
-        if (!sendAck) {
-            writePayload(buffer);
-        }
-        return buffer.position() - pos;        
-    }
-    public abstract void writePayload(ByteBuffer buffer);
+	/**
+	 * Should be called to process the event. Needs some context to process on,
+	 * which will be added lateron.
+	 */
+	public abstract void process();
 
-    public Integer[] getRecipients() {
-        return recipients;
-    }
 
-    public void setRecipients(Integer[] recipients) {
-        this.recipients = recipients;
-    }
+	public int serialize(byte[] buffer) {
+		return eventData.serialize(buffer, 0);
+	}
+	
+	
 }

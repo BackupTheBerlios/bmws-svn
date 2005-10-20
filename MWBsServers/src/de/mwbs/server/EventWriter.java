@@ -5,8 +5,8 @@ import java.nio.channels.SocketChannel;
 
 import org.apache.log4j.Logger;
 
+import de.mwbs.common.AbstractGameEvent;
 import de.mwbs.common.EventQueue;
-import de.mwbs.common.GameEvent;
 import de.mwbs.common.Globals;
 import de.mwbs.common.NIOUtils;
 import de.mwbs.common.Player;
@@ -37,7 +37,7 @@ public class EventWriter extends QueueWorker {
     public void run() {
         ByteBuffer writeBuffer = ByteBuffer.allocateDirect(Globals.MAX_EVENT_SIZE);
 
-        GameEvent event;
+        AbstractGameEvent event;
         running = true;
         while (running) {
             try {
@@ -53,19 +53,19 @@ public class EventWriter extends QueueWorker {
      * our own version of processEvent that takes the additional parameter of
      * the writeBuffer
      */
-    protected void processEvent(GameEvent event, ByteBuffer writeBuffer) {
+    protected void processEvent(AbstractGameEvent event, ByteBuffer writeBuffer) {
         NIOUtils.prepBuffer(event, writeBuffer);
 
         Integer[] recipients = event.getRecipients();
         if (recipients == null) {
-            logger.info("writeEvent: type=" + event.getType() + ", id=" + event.getPlayer().getSessionId());
+            logger.info("writeEvent: type=" + event.getClass().getName() + ", id=" + event.getPlayer().getSessionId());
             Integer playerSessionId = event.getPlayer().getSessionId();
             
             write(event.getPlayer().getChannel(), writeBuffer);
         } else {
             for (int i = 0; i < recipients.length; i++) {
                 if (recipients[i] != null) {
-                    logger.info("writeEvent(B): type=" + event.getType() + ", id=" + recipients[i]);
+                    logger.info("writeEvent(B): type=" + event.getClass().getName() + ", id=" + recipients[i]);
                     Player player = accountServer.getPlayerBySessionId(recipients[i]);
                     write(player.getChannel(), writeBuffer);
                 }
@@ -87,7 +87,7 @@ public class EventWriter extends QueueWorker {
         NIOUtils.channelWrite(channel, writeBuffer);
     }
     // Unused
-    protected void processEvent(GameEvent event) {      
+    protected void processEvent(AbstractGameEvent event) {      
     }
 
 }

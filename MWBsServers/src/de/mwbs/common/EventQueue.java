@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 public class EventQueue {
     private Logger logger;
 
-    private ConcurrentLinkedQueue<GameEvent> events;
+    private ConcurrentLinkedQueue<AbstractGameEvent> events;
 
     private int count = 0;
 
@@ -21,13 +21,13 @@ public class EventQueue {
      */
     public EventQueue(String name) {
         logger = Logger.getLogger("EventQueue: " + name);
-        events = new ConcurrentLinkedQueue<GameEvent>();
+        events = new ConcurrentLinkedQueue<AbstractGameEvent>();
     }
 
     /**
      * add an event to the queue
      */
-    public synchronized void enQueue(GameEvent event) {
+    public synchronized void enQueue(AbstractGameEvent event) {
         // log.debug("enQueue " + event.hashCode());
         events.add(event);
         notifyAll();
@@ -37,7 +37,7 @@ public class EventQueue {
      * blocks until an event is available and then removes and returns the first
      * available event
      */
-    public synchronized GameEvent deQueue() throws InterruptedException {
+    public synchronized AbstractGameEvent deQueue() throws InterruptedException {
         while (events.size() == 0) {
             count++;
             // log.debug("waiting, count: " + count);
@@ -45,7 +45,7 @@ public class EventQueue {
             count--;
         }
 
-        GameEvent e = (GameEvent) events.poll();
+        AbstractGameEvent e = (AbstractGameEvent) events.poll();
         // log.debug("deQueue " + e.hashCode());
         return e;
     }

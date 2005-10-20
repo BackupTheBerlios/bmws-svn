@@ -13,9 +13,8 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import de.mwbs.common.AccountEvent;
+import de.mwbs.common.AbstractGameEvent;
 import de.mwbs.common.EventQueue;
-import de.mwbs.common.GameEvent;
 import de.mwbs.common.LoginEvent;
 import de.mwbs.common.Player;
 import de.mwbs.server.EventWriter;
@@ -118,9 +117,6 @@ public class AccountServer extends Thread {
     }
 
     private void registerEventController() {
-        eventReader.put(new Integer(LoginEvent.C_LOGIN), new LoginEventController(this, LoginEvent.C_LOGIN));
-        eventReader.put(new Integer(LoginEvent.C_LOGOUT), new LoginEventController(this, LoginEvent.C_LOGOUT));
-        eventReader.put(new Integer(AccountEvent.C_REGISTER), new AccountEventController(this, AccountEvent.C_REGISTER));
     }
 
     public EventController getEventController(int eventType) {
@@ -151,11 +147,11 @@ public class AccountServer extends Thread {
         return new Integer(nextSessionId++);
     }
     
-    public void handleIncomingEvent(GameEvent event){
+    public void handleIncomingEvent(AbstractGameEvent event){
         incomingEventQueue.enQueue(event);
     }
     
-    public void handleOutgoingEvent(GameEvent event){
+    public void handleOutgoingEvent(AbstractGameEvent event){
         outgoingEventQueue.enQueue(event);
     }
 }

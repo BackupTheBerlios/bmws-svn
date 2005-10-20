@@ -8,19 +8,31 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Properties;
+import java.util.Set;
 import java.util.StringTokenizer;
 
+/**
+ * PayloadCreator creates data classes from a simple text description. Using
+ * templates the created classes provide:
+ * <li>members</li>
+ * <li>getters and setters for the members</li>
+ * <li>a serialize and a deserialize method</li>
+ * 
+ * @author Axel Sammet
+ */
 public class PayloadCreator {
 	BufferedReader reader;
 	int currentLineNo = 0;
 	Map<String, ClassDeclaration> classes = new HashMap<String, ClassDeclaration>();
 	Properties props = new Properties();
+	String type;
 
 	private static class FieldDeclaration {
 		String type;
@@ -37,6 +49,7 @@ public class PayloadCreator {
 		classes.put("String", null);
 		classes.put("int16", null);
 		classes.put("int32", null);
+		classes.put("int", null);
 	}
 
 	private static class ClassDeclaration {
@@ -73,8 +86,23 @@ public class PayloadCreator {
 		}
 		catch (RuntimeException e) {
 			System.err.println("ERROR in line " + currentLineNo + ": " + e.getMessage());
+			e.printStackTrace();
 		}
-		generateClasses();
+		// search for template types
+		Set<String> typeSet = new HashSet<String>();
+		for (Iterator iter = props.keySet().iterator(); iter.hasNext();) {
+			String key = (String) iter.next();
+			if (key.startsWith("temp.")) {
+				typeSet.add(key.substring(5, key.indexOf('.', 8)));
+			}
+		}
+		// generate classes
+		for (Iterator<String> iter = typeSet.iterator(); iter.hasNext();) {
+			String gentype = iter.next();
+			type = gentype;
+			System.out.println("Generating classes for type " + gentype);
+			generateClasses();
+		}
 	}
 
 	/**
@@ -89,10 +117,12 @@ public class PayloadCreator {
 			ClassDeclaration classDecl = classes.get(key);
 			System.out.println("INFO: generating " + classDecl.name);
 			// generate class
-			String templ = getProp("java", "class");
+			String templ = getProp("class");
 			String classcontents = templ.replace("$name$", classDecl.name).replace("$fields$",
-					generateFields(classDecl));
-			generateFile(classDecl.name+"."+"java", classcontents );
+					generateFields(classDecl)).replace("$getandset$", generateGetterAndSetter(classDecl)).replace("$deserialize$",
+					generateDeserialization(classDecl)).replace("$serialize$",
+					generateSerialization(classDecl));
+			generateFile(classDecl.name + "." + type, classcontents);
 		}
 	}
 
@@ -101,9 +131,9 @@ public class PayloadCreator {
 	 * @param classcontents
 	 */
 	private void generateFile(String name, String classcontents) {
-		String path = getProp("java", "targetpath");
+		String path = getProp("targetpath");
 		try {
-			FileWriter fw = new FileWriter(path+File.separator+name);
+			FileWriter fw = new FileWriter(path + File.separator + name);
 			fw.write(classcontents);
 			fw.close();
 		}
@@ -120,19 +150,85 @@ public class PayloadCreator {
 		String fields = "";
 		for (Iterator<FieldDeclaration> iter = classDecl.fields.iterator(); iter.hasNext();) {
 			FieldDeclaration field = iter.next();
-			fields += "\t"
-					+ getProp("java", "field").replace("$type$", field.type).replace("$name$",
-							field.name) + "\n";
+			fields += getProp("field").replace("$type$", field.type).replace("$name$", field.name)
+					+ "\n";
 		}
 		return fields;
+	}
+	
+	private String generateGetterAndSetter(ClassDeclaration classDecl) {
+		String fields = "\n";
+		for (Iterator<FieldDeclaration> iter = classDecl.fields.iterator(); iter.hasNext();) {
+			FieldDeclaration field = iter.next();
+			fields += getProp("get").replace("$type$", field.type).replace("$upname$",
+					startWithUpper(field.name)).replace("$name$", field.name)
+					+ "\n\n";
+			fields += getProp("set").replace("$type$", field.type).replace("$upname$",
+					startWithUpper(field.name)).replace("$name$", field.name)
+					+ "\n\n";
+
+		}
+		return fields;
+	}
+
+	private String generateSerialization(ClassDeclaration classDecl) {
+		String code = "";
+		for (Iterator<FieldDeclaration> iter = classDecl.fields.iterator(); iter.hasNext();) {
+			FieldDeclaration field = iter.next();
+			if (field.type.equals("String")) {
+				code += "\t\twriteString(" + field.name + ");\n";
+			}
+			else if (field.type.equals("int")) {
+				code += "\t\twriteInt(" + field.name + ");\n";
+			}
+			else if (classes.containsKey(field.type)) {
+				code += "\t\t" + field.name + getProp("classSep") + "serialize(buffer, cursor);\n";
+			}
+			else {
+				throw new RuntimeException("ERROR: unknown type: " + type);
+			}
+		}
+		return code + "\t";
+	}
+
+	private String generateDeserialization(ClassDeclaration classDecl) {
+		String code = "";
+		for (Iterator<FieldDeclaration> iter = classDecl.fields.iterator(); iter.hasNext();) {
+			FieldDeclaration field = iter.next();
+			if (field.type.equals("String")) {
+				code += "\t\t" + field.name + " = readString();\n";
+			}
+			else if (field.type.equals("int")) {
+				code += "\t\t" + field.name + " = readInt();\n";
+			}
+			else if (classes.containsKey(field.type)) {
+				code += "\t\t" + field.name + " = "
+						+ getProp("creator").replace("$type$", field.type);
+				code += "\t\t" + field.name + getProp("classSep")
+						+ "deserialize(payload, cursor);\n";
+			}
+			else {
+				throw new RuntimeException("ERROR: unknown type: " + type);
+			}
+		}
+		return code + "\t";
+
 	}
 
 	/**
 	 * @param string
 	 * @return
 	 */
-	private String getProp(String type, String name) {
-		return props.getProperty("temp." + type + "." + name);
+	private String getProp(String name) {
+		String key = "temp." + type + "." + name;
+		String ret = props.getProperty(key);
+		if (ret == null)
+			throw new RuntimeException("Unknown property " + key);
+		return ret;
+	}
+
+	private String startWithUpper(String in) {
+		return in.substring(0, 1).toUpperCase() + in.substring(1);
 	}
 
 	/**
@@ -187,7 +283,7 @@ public class PayloadCreator {
 	private void parseFields(ClassDeclaration classdecl) {
 		String line;
 		while ((line = readLine()) != null) {
-			StringTokenizer tokenizer = new StringTokenizer(line, " ");
+			StringTokenizer tokenizer = new StringTokenizer(line, " \t");
 			String type = tokenizer.nextToken();
 			if ("end_class".equals(type)) {
 				return;

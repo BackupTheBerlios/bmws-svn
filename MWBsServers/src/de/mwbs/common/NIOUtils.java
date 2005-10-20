@@ -16,7 +16,7 @@ public class NIOUtils {
      * first, writes the header, then the event into the given ByteBuffer in
      * preparation for the channel write
      */
-    public static void prepBuffer(GameEvent event, ByteBuffer writeBuffer) {
+    public static void prepBuffer(AbstractGameEvent event, ByteBuffer writeBuffer) {
         // write header      
         writeBuffer.clear();
         writeBuffer.putInt(event.getPlayer().getSessionId());
@@ -24,7 +24,9 @@ public class NIOUtils {
         int sizePos = writeBuffer.position();
         writeBuffer.putInt(0);// placeholder for payload size
         // write event
-        int payloadSize = event.write(writeBuffer);
+		byte[] buffer = new byte[1024];
+        int payloadSize = event.serialize(buffer);
+		writeBuffer.put(buffer, 0, payloadSize);
 
         // insert the payload size in the placeholder spot
         writeBuffer.putInt(sizePos, payloadSize);

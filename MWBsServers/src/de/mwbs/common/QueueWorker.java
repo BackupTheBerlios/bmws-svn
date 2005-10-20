@@ -65,7 +65,7 @@ public abstract class QueueWorker implements Runnable {
      * retrieve events from the queue and process.
      */
     public void run() {
-        GameEvent event;
+        AbstractGameEvent event;
         running = true;
         while (running) {
             try {
@@ -80,6 +80,6 @@ public abstract class QueueWorker implements Runnable {
     /**
      * subclasses must implement to do their processing
      */
-    protected abstract void processEvent(GameEvent event);
+    protected abstract void processEvent(AbstractGameEvent event);
 
 }

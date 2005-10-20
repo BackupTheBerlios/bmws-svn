@@ -11,8 +11,8 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import de.mwbs.common.AbstractGameEvent;
 import de.mwbs.common.Attachment;
-import de.mwbs.common.GameEvent;
 import de.mwbs.common.GameEventFactory;
 import de.mwbs.common.Player;
 import de.mwbs.server.account.AccountServer;
@@ -137,10 +137,11 @@ public class RequestDispatcher extends Thread {
 							// read as many events as are available in the
 							// buffer
 							while (attachment.eventReady()) {
+								// TODO player should be identified through session id
 								Player player = new Player();
 								player.setChannel(channel);
 								player.setSessionId(attachment.sessionId);
-								GameEvent event = GameEventFactory.getGameEvent(attachment.payload,
+								AbstractGameEvent event = GameEventFactory.getGameEvent(attachment.payload,
 										player);
 								if (event != null) {
 									accountServer.handleIncomingEvent(event);
