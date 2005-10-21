@@ -1,5 +1,7 @@
 package de.mwbs.common;
 
+import java.nio.ByteBuffer;
+
 import de.mwbs.common.eventdata.AbstractEventData;
 
 public abstract class AbstractGameEvent {
@@ -13,13 +15,17 @@ public abstract class AbstractGameEvent {
 	protected boolean sendAck = false;
 	protected Integer[] recipients;
 	protected AbstractEventData eventData;
-	protected byte[] payload;
 
-	public AbstractGameEvent(byte[] payload, AbstractEventData eventData) {
-		this.payload = payload;
+	public AbstractGameEvent(ByteBuffer payload, AbstractEventData eventData) {
 		this.eventData = eventData;
-		eventData.deserialize(payload, 2);
+		eventData.deserialize(payload);
 	}
+	
+	public AbstractGameEvent(AbstractEventData eventData) {
+		this.eventData = eventData;
+	}
+	
+	public abstract int getEventId();
 	
 
 	public void setSendAck(boolean sendAck) {
@@ -49,8 +55,9 @@ public abstract class AbstractGameEvent {
 	public abstract void process();
 
 
-	public int serialize(byte[] buffer) {
-		return eventData.serialize(buffer, 0);
+	public int serialize(ByteBuffer buffer) {
+		int size = eventData.serialize(buffer);
+		return size;
 	}
 	
 	

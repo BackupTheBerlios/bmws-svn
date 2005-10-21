@@ -176,13 +176,13 @@ public class PayloadCreator {
 		for (Iterator<FieldDeclaration> iter = classDecl.fields.iterator(); iter.hasNext();) {
 			FieldDeclaration field = iter.next();
 			if (field.type.equals("String")) {
-				code += "\t\twriteString(" + field.name + ");\n";
+				code += "\t\twriteString(payload, " + field.name + ");\n";
 			}
 			else if (field.type.equals("int")) {
-				code += "\t\twriteInt(" + field.name + ");\n";
+				code += "\t\tpayload.putInt(" + field.name + ");\n";
 			}
 			else if (classes.containsKey(field.type)) {
-				code += "\t\t" + field.name + getProp("classSep") + "serialize(buffer, cursor);\n";
+				code += "\t\t" + field.name + getProp("classSep") + "serialize(payload);\n";
 			}
 			else {
 				throw new RuntimeException("ERROR: unknown type: " + type);
@@ -196,16 +196,16 @@ public class PayloadCreator {
 		for (Iterator<FieldDeclaration> iter = classDecl.fields.iterator(); iter.hasNext();) {
 			FieldDeclaration field = iter.next();
 			if (field.type.equals("String")) {
-				code += "\t\t" + field.name + " = readString();\n";
+				code += "\t\t" + field.name + " = readString(payload);\n";
 			}
 			else if (field.type.equals("int")) {
-				code += "\t\t" + field.name + " = readInt();\n";
+				code += "\t\t" + field.name + " = payload.getInt();\n";
 			}
 			else if (classes.containsKey(field.type)) {
 				code += "\t\t" + field.name + " = "
 						+ getProp("creator").replace("$type$", field.type);
 				code += "\t\t" + field.name + getProp("classSep")
-						+ "deserialize(payload, cursor);\n";
+						+ "deserialize(payload);\n";
 			}
 			else {
 				throw new RuntimeException("ERROR: unknown type: " + type);

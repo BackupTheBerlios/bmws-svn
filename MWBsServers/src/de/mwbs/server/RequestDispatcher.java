@@ -137,12 +137,14 @@ public class RequestDispatcher extends Thread {
 							// read as many events as are available in the
 							// buffer
 							while (attachment.eventReady()) {
+								logger.debug("Dispatching event");
 								// TODO player should be identified through session id
 								Player player = new Player();
 								player.setChannel(channel);
 								player.setSessionId(attachment.sessionId);
-								AbstractGameEvent event = GameEventFactory.getGameEvent(attachment.payload,
+								AbstractGameEvent event = GameEventFactory.getGameEvent(attachment.getPayload(),
 										player);
+								logger.debug("Got Event: "+event);
 								if (event != null) {
 									accountServer.handleIncomingEvent(event);
 								}
@@ -179,8 +181,8 @@ public class RequestDispatcher extends Thread {
 	 * @param payload
 	 * @return
 	 */
-	private String bytesToString(byte[] payload) {
-		int length = payload.length > 40 ? 40 : payload.length;
+	public static String bytesToString(byte[] payload) {
+		int length = payload.length > 80 ? 80 : payload.length;
 		String ret = "";
 		for (int i = 0; i < length; i++) {
 			ret += (char) payload[i];
