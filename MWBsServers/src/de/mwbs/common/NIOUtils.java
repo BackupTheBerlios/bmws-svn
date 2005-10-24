@@ -63,12 +63,16 @@ public class NIOUtils {
 		//ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
 		//byteBuffer.putInt(sessionId);
 		// we don't know the size yet ...
-		writeBuffer.putInt(0);
-		writeBuffer.putInt(0);
+		writeBuffer.putInt(0); //sessionid
+		writeBuffer.putInt(0); //size
 		writeBuffer.putInt(event.getEventType());
 		int size = event.serialize(writeBuffer);
 		// ... now owverwrite size
-		writeBuffer.putInt(4, size - 8);
+		if (size > 0) {
+			writeBuffer.putInt(4, size - 8);	
+		} else {
+			writeBuffer.putInt(4, 0);
+		}	
 		System.err.println("size " + size);
 		writeBuffer.flip();
 	}

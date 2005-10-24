@@ -47,7 +47,10 @@ public abstract class AbstractGameEvent {
 	}
 
 	public int serialize(ByteBuffer buffer) {
-		int size = eventData.serialize(buffer);
+		int size = buffer.position();
+	    if (eventData != null) {
+			size = eventData.serialize(buffer);
+		}
 		return size;
 	}
 

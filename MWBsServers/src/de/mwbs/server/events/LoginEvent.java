@@ -24,13 +24,15 @@ public class LoginEvent extends AbstractGameEvent {
 	 * Constructor for the client.
 	 */
 	public LoginEvent() {
-		super(new LoginData());
+		super(null);
 	}
 	
+	// TODO create delegators for setter and getter of the data
+
 	public LoginEvent(AbstractEventData eventData) {
 		super(eventData);
+		// TODO Auto-generated constructor stub
 	}
-	// TODO create delegators for setter and getter of the data
 
 	public LoginData getLoginData() {
 		return (LoginData) eventData;

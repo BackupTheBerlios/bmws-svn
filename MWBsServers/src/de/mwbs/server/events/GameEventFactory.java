@@ -22,7 +22,11 @@ public class GameEventFactory {
 		if (eventKey == EventTypes.LOGIN_FAILED) {
 			event = new LoginEvent(payload);
 			event.setEventType(eventKey);
-		}		
+		}
+		if (eventKey == EventTypes.LOGIN_OK) {
+			event = new LoginEvent(payload);
+			event.setEventType(eventKey);
+		}			
         if(event != null) {
             event.setPlayer(p);
         }

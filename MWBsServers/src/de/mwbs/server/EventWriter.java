@@ -35,7 +35,7 @@ public class EventWriter extends QueueWorker {
      * thing, but first we allocate a ByteBuffer for this thread to use
      */
     public void run() {
-        ByteBuffer writeBuffer = ByteBuffer.allocateDirect(Globals.MAX_EVENT_SIZE);
+        ByteBuffer writeBuffer = ByteBuffer.allocate(Globals.MAX_EVENT_SIZE);
 
         AbstractGameEvent event;
         running = true;
@@ -58,7 +58,9 @@ public class EventWriter extends QueueWorker {
 
         Integer[] recipients = event.getRecipients();
         if (recipients == null) {
-            logger.info("writeEvent: type=" + event.getClass().getName() + ", id=" + event.getPlayer().getSessionId());
+            logger.info("writeEvent: type=" + event.getClass().getName() + ", id=" + event.getPlayer().getSessionId()
+            		+ ", eventType=" + event.getEventType()
+            		+ "payload=" + RequestDispatcher.bytesToString(writeBuffer.array()));
             Integer playerSessionId = event.getPlayer().getSessionId();
             
             write(event.getPlayer().getChannel(), writeBuffer);

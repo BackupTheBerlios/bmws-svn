@@ -2,14 +2,9 @@ package de.mwbs.server.controller;
 
 import org.apache.log4j.Logger;
 
-import sun.rmi.log.LogOutputStream;
-
 import de.mwbs.common.Player;
 import de.mwbs.common.data.generated.Account;
 import de.mwbs.common.eventdata.EventTypes;
-import de.mwbs.common.eventdata.generated.LoginFailedData;
-import de.mwbs.common.eventdata.generated.LoginOkData;
-import de.mwbs.common.eventdata.generated.LogoutOkData;
 import de.mwbs.server.account.AccountServer;
 import de.mwbs.server.events.AbstractGameEvent;
 import de.mwbs.server.events.LoginEvent;
@@ -34,7 +29,7 @@ public class LoginEventController extends EventController {
 					.getAccount(l.getLoginData().getUserName(),
 							l.getLoginData().getPassword());
 			if (account == null) {
-				LoginEvent lr = new LoginEvent(new LoginFailedData());
+				LoginEvent lr = new LoginEvent();
 				lr.setPlayer(event.getPlayer());
 				lr.setEventType(EventTypes.LOGIN_FAILED);
 				sendEvent(lr);
@@ -49,13 +44,13 @@ public class LoginEventController extends EventController {
 				p.setSessionId(sessionId);
 				p.setChannel(l.getPlayer().getChannel());
 				accountServer.addPlayer(sessionId, p);
-				LoginEvent lr = new LoginEvent(new LoginOkData());
+				LoginEvent lr = new LoginEvent();
 				lr.setPlayer(p);
 				lr.setEventType(EventTypes.LOGIN_OK);
 				sendEvent(lr);
 			}
 		} else if (event.getEventId() == EventTypes.LOGOUT) {
-			LoginEvent lr = new LoginEvent(new LogoutOkData());
+			LoginEvent lr = new LoginEvent();
 			lr.setPlayer(event.getPlayer());
 			lr.setEventType(EventTypes.LOGOUT_OK);
 			sendEvent(lr);
