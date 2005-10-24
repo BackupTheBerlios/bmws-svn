@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 import de.mwbs.common.EventQueue;
 import de.mwbs.common.Globals;
 import de.mwbs.common.NIOUtils;
-import de.mwbs.server.events.AbstractGameEvent;
+import de.mwbs.common.events.AbstractGameEvent;
 import de.mwbs.server.exceptions.InitializationException;
 
 public class ClientNetworkController extends Thread {

@@ -12,8 +12,8 @@ import org.apache.log4j.Logger;
 
 import de.mwbs.common.Attachment;
 import de.mwbs.common.EventQueue;
-import de.mwbs.server.events.AbstractGameEvent;
-import de.mwbs.server.events.GameEventFactory;
+import de.mwbs.common.events.AbstractGameEvent;
+import de.mwbs.common.events.GameEventFactory;
 
 public class NIOEventReader extends Thread {
     /** log4j logger */

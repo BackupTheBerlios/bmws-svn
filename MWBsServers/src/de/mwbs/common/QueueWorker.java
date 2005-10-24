@@ -2,7 +2,7 @@ package de.mwbs.common;
 
 import org.apache.log4j.Logger;
 
-import de.mwbs.server.events.AbstractGameEvent;
+import de.mwbs.common.events.AbstractGameEvent;
 
 /**
  * QueueWorker QueueWorker is a thread pool with an incoming BlockingQueue of

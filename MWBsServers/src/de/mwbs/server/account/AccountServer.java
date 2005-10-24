@@ -15,15 +15,14 @@ import org.apache.log4j.Logger;
 
 import de.mwbs.common.EventQueue;
 import de.mwbs.common.Player;
-import de.mwbs.common.eventdata.EventTypes;
+import de.mwbs.common.events.AbstractGameEvent;
+import de.mwbs.common.events.EventTypes;
 import de.mwbs.server.EventWriter;
 import de.mwbs.server.RequestDispatcher;
 import de.mwbs.server.controller.AccountEventController;
 import de.mwbs.server.controller.EventController;
 import de.mwbs.server.controller.EventDispatcher;
 import de.mwbs.server.controller.LoginEventController;
-import de.mwbs.server.events.AbstractGameEvent;
-import de.mwbs.server.events.LoginEvent;
 
 public class AccountServer extends Thread {
 
@@ -120,7 +119,7 @@ public class AccountServer extends Thread {
     private void registerEventController() {
         eventReader.put(new Integer(EventTypes.LOGIN), new LoginEventController(this, EventTypes.LOGIN));
         eventReader.put(new Integer(EventTypes.LOGOUT), new LoginEventController(this, EventTypes.LOGOUT));
-        //eventReader.put(new Integer(AccountEvent.C_REGISTER), new AccountEventController(this, AccountEvent.C_REGISTER));
+        eventReader.put(new Integer(EventTypes.ACCOUNT_CREATE), new AccountEventController(this, EventTypes.ACCOUNT_CREATE));
     }
 
     public EventController getEventController(int eventType) {

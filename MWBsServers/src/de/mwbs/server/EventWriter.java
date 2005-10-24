@@ -10,8 +10,8 @@ import de.mwbs.common.Globals;
 import de.mwbs.common.NIOUtils;
 import de.mwbs.common.Player;
 import de.mwbs.common.QueueWorker;
+import de.mwbs.common.events.AbstractGameEvent;
 import de.mwbs.server.account.AccountServer;
-import de.mwbs.server.events.AbstractGameEvent;
 
 /**
  * EventWriter.java

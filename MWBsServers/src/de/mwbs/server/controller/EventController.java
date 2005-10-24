@@ -2,8 +2,8 @@ package de.mwbs.server.controller;
 
 import org.apache.log4j.Logger;
 
+import de.mwbs.common.events.AbstractGameEvent;
 import de.mwbs.server.account.AccountServer;
-import de.mwbs.server.events.AbstractGameEvent;
 
 /**
  * EventController

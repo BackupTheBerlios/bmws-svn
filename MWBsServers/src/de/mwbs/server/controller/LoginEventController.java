@@ -4,10 +4,10 @@ import org.apache.log4j.Logger;
 
 import de.mwbs.common.Player;
 import de.mwbs.common.data.generated.Account;
-import de.mwbs.common.eventdata.EventTypes;
+import de.mwbs.common.events.AbstractGameEvent;
+import de.mwbs.common.events.EventTypes;
+import de.mwbs.common.events.LoginEvent;
 import de.mwbs.server.account.AccountServer;
-import de.mwbs.server.events.AbstractGameEvent;
-import de.mwbs.server.events.LoginEvent;
 import de.mwbs.server.persistence.AccountPersistenceManager;
 
 public class LoginEventController extends EventController {
@@ -23,7 +23,7 @@ public class LoginEventController extends EventController {
 
 	public void handleEvent(AbstractGameEvent event) {
 
-		if (event.getEventId() == EventTypes.LOGIN) {
+		if (event.getEventType() == EventTypes.LOGIN) {
 			LoginEvent l = (LoginEvent) event;
 			Account account = AccountPersistenceManager.getInstance()
 					.getAccount(l.getLoginData().getUserName(),
@@ -49,7 +49,7 @@ public class LoginEventController extends EventController {
 				lr.setEventType(EventTypes.LOGIN_OK);
 				sendEvent(lr);
 			}
-		} else if (event.getEventId() == EventTypes.LOGOUT) {
+		} else if (event.getEventType() == EventTypes.LOGOUT) {
 			LoginEvent lr = new LoginEvent();
 			lr.setPlayer(event.getPlayer());
 			lr.setEventType(EventTypes.LOGOUT_OK);

@@ -4,9 +4,10 @@ import javax.swing.JOptionPane;
 
 import de.mwbs.client.Client;
 import de.mwbs.client.ClientPlayer;
-import de.mwbs.common.AccountEvent;
-import de.mwbs.common.GameEvent;
 import de.mwbs.common.data.AccountData;
+import de.mwbs.common.events.AbstractGameEvent;
+import de.mwbs.common.events.AccountEvent;
+import de.mwbs.common.events.EventTypes;
 
 /**
  * Description:
@@ -29,25 +30,27 @@ public class AccountController {
     public void handleEvent(AccountEvent accountEvent) {
 
         client.getAccountDialog().cancelTimer();
-        if (accountEvent.getType() == AccountEvent.S_REGISTER_ACK_FAIL) {
+        if (accountEvent.getEventType() == EventTypes.ACCOUNT_CREATE_FAIL) {
             client.getAccountDialog().enableDialog();
-            JOptionPane.showMessageDialog(client.getAccountDialog(), "Cant Register: " + accountEvent.getAddidionalMessageKey());
-        } else if (accountEvent.getType() == AccountEvent.S_REGISTER_ACK_OK) {
+            JOptionPane.showMessageDialog(client.getAccountDialog(), "Cant Register: " + accountEvent.getAccountErrorData().getReason());
+        } else if (accountEvent.getEventType() == EventTypes.ACCOUNT_CREATE_OK) {
             client.getAccountDialog().setVisible(false);
             JOptionPane.showMessageDialog(client.getMainFrame(), "Register successfull: ");
         }
     }
 
-    public GameEvent createRegisterEvent(AccountData account, ClientPlayer player) {
+    public AbstractGameEvent createRegisterEvent(AccountData account, ClientPlayer player) {
         AccountEvent event = new AccountEvent();
         player.setSessionId(new Integer(0));
         event.setPlayer(player);
-        event.setAccountName(account.getUsername());
-        event.setPassword(account.getPassword());
-        event.setPasswordConfirmation(account.getPasswordConfirmation());
-        event.setPasswordold(account.getPasswordold());
-        event.setEmailAddress(account.getEmailaddress());
-        event.setType(AccountEvent.C_REGISTER);
+        de.mwbs.common.eventdata.generated.AccountData accountData = new de.mwbs.common.eventdata.generated.AccountData();
+        
+        accountData.setUserName(account.getUsername());
+        accountData.setNewPassword(account.getPassword());
+        //event.setPasswordConfirmation(account.getPasswordConfirmation());
+        accountData.setPassword(account.getPasswordold());
+        accountData.setEmailAddress(account.getEmailaddress());
+        event.setEventType(EventTypes.ACCOUNT_CREATE);
         return event;
     }
 }

@@ -13,9 +13,9 @@ import org.apache.log4j.Logger;
 
 import de.mwbs.common.Attachment;
 import de.mwbs.common.Player;
+import de.mwbs.common.events.AbstractGameEvent;
+import de.mwbs.common.events.GameEventFactory;
 import de.mwbs.server.account.AccountServer;
-import de.mwbs.server.events.AbstractGameEvent;
-import de.mwbs.server.events.GameEventFactory;
 
 /**
  * RequestDispatcher.java handles reading from all clients using a Selector and

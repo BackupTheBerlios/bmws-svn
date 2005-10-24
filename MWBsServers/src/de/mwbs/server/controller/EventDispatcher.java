@@ -4,8 +4,8 @@ import org.apache.log4j.Logger;
 
 import de.mwbs.common.EventQueue;
 import de.mwbs.common.QueueWorker;
+import de.mwbs.common.events.AbstractGameEvent;
 import de.mwbs.server.account.AccountServer;
-import de.mwbs.server.events.AbstractGameEvent;
 
 /**
  * EventDispatcher
@@ -25,7 +25,7 @@ public class EventDispatcher extends QueueWorker {
     }
 
     protected void processEvent(AbstractGameEvent event) {
-        EventController ec = accountServer.getEventController(event.getEventId());
+        EventController ec = accountServer.getEventController(event.getEventType());
         if (ec != null) {
             ec.handleEvent(event);
         }

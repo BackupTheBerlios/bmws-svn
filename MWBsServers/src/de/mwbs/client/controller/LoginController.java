@@ -5,10 +5,10 @@ import javax.swing.JOptionPane;
 import de.mwbs.client.Client;
 import de.mwbs.client.ClientPlayer;
 import de.mwbs.common.data.AccountData;
-import de.mwbs.common.eventdata.EventTypes;
 import de.mwbs.common.eventdata.generated.LoginData;
-import de.mwbs.server.events.AbstractGameEvent;
-import de.mwbs.server.events.LoginEvent;
+import de.mwbs.common.events.AbstractGameEvent;
+import de.mwbs.common.events.EventTypes;
+import de.mwbs.common.events.LoginEvent;
 
 /**
  * Description: 

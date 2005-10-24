@@ -13,8 +13,9 @@ import de.mwbs.client.gui.LoginDialog;
 import de.mwbs.client.gui.MainFrame;
 import de.mwbs.common.Player;
 import de.mwbs.common.data.AccountData;
-import de.mwbs.server.events.AbstractGameEvent;
-import de.mwbs.server.events.LoginEvent;
+import de.mwbs.common.events.AbstractGameEvent;
+import de.mwbs.common.events.AccountEvent;
+import de.mwbs.common.events.LoginEvent;
 
 public class Client {
 
@@ -89,18 +90,17 @@ public class Client {
     public void register(AccountData account) throws Exception {
         cnc.connect();
         player = new ClientPlayer();
-        //AbstractGameEvent event = getAccountController().createRegisterEvent(account, (ClientPlayer) player);
-        //sendEvent(event);
+        AbstractGameEvent event = getAccountController().createRegisterEvent(account, (ClientPlayer) player);
+        sendEvent(event);
     }
 
     protected void processIncomingEvents(AbstractGameEvent event) {
         event.setPlayer(player);
         if (event instanceof LoginEvent) {
             lc.handleEvent((LoginEvent) event);
+        } else if (event instanceof AccountEvent) {
+            getAccountController().handleEvent((AccountEvent) event);
         }
-//        } else if (event instanceof AccountEvent) {
-//            getAccountController().handleEvent((AccountEvent) event);
-//        }
     }
 
     public AccountDialog getAccountDialog() {

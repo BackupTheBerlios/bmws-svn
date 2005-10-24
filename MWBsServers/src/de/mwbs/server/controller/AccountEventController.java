@@ -1,10 +1,12 @@
 package de.mwbs.server.controller;
 
-import de.mwbs.common.AccountEvent;
-import de.mwbs.common.GameEvent;
 import de.mwbs.common.MessageKeys;
 import de.mwbs.common.Player;
 import de.mwbs.common.data.generated.Account;
+import de.mwbs.common.eventdata.generated.AccountErrorData;
+import de.mwbs.common.events.AbstractGameEvent;
+import de.mwbs.common.events.AccountEvent;
+import de.mwbs.common.events.EventTypes;
 import de.mwbs.server.account.AccountServer;
 import de.mwbs.server.exceptions.DuplicateKeyException;
 import de.mwbs.server.persistence.AccountPersistenceManager;
@@ -28,13 +30,13 @@ public class AccountEventController extends EventController {
      * @see de.mwbs.server.controller.EventController#handleEvent(de.mwbs.common.GameEvent)
      */
     @Override
-    public void handleEvent(GameEvent event) {
+    public void handleEvent(AbstractGameEvent event) {
         AccountEvent l = (AccountEvent) event;
-        if (event.getType() == AccountEvent.C_REGISTER) {
+        if (event.getEventType() == EventTypes.ACCOUNT_CREATE) {
             Account account = new Account();
-            account.setPassword(l.getPassword());
-            account.setEmailaddress(l.getEmailAddress());
-            account.setUsername(l.getAccountName());
+            account.setPassword(l.getAccountData().getPassword());
+            account.setEmailaddress(l.getAccountData().getEmailAddress());
+            account.setUsername(l.getAccountData().getUserName());
             try {
                 AccountPersistenceManager.getInstance().createAccount(account);
                 Player p = new Player();
@@ -45,13 +47,14 @@ public class AccountEventController extends EventController {
                 accountServer.addPlayer(sessionId, p);
                 AccountEvent ae = new AccountEvent();
                 ae.setPlayer(p);
-                ae.setType(AccountEvent.S_REGISTER_ACK_OK);
+                ae.setEventType(EventTypes.ACCOUNT_CREATE_OK);
                 sendEvent(ae);                
             } catch (DuplicateKeyException e) {
-                AccountEvent ae = new AccountEvent();
+                AccountErrorData aed = new AccountErrorData();
+                aed.setReason(MessageKeys.ACCOUNT_DUPLICATE);
+                AccountEvent ae = new AccountEvent(aed);
                 ae.setPlayer(event.getPlayer());
-                ae.setType(AccountEvent.S_REGISTER_ACK_FAIL);
-                ae.setAddidionalMessageKey(MessageKeys.ACCOUNT_DUPLICATE);
+                ae.setEventType(EventTypes.ACCOUNT_CREATE_FAIL);
                 sendEvent(ae);
             } catch (Exception e) {
                 //ignore for now
