@@ -12,8 +12,8 @@ import org.apache.log4j.Logger;
 
 import de.mwbs.common.Attachment;
 import de.mwbs.common.EventQueue;
-import de.mwbs.common.GameEvent;
-import de.mwbs.common.GameEventFactory;
+import de.mwbs.server.events.AbstractGameEvent;
+import de.mwbs.server.events.GameEventFactory;
 
 public class NIOEventReader extends Thread {
     /** log4j logger */
@@ -81,10 +81,10 @@ public class NIOEventReader extends Thread {
                                 attachment.readBuff.flip();
 
                                 while (attachment.eventReady()) {
-                                    GameEvent event = getEvent(attachment);
+                                	AbstractGameEvent event = getEvent(attachment);
                                     if (event != null) {
                                         queue.enQueue(event);
-                                        log.debug("incoming event = " + event.getType());
+                                        log.debug("incoming event = " + event.getEventType());
                                     }
                                     
                                     attachment.reset();
@@ -107,10 +107,10 @@ public class NIOEventReader extends Thread {
         }
     }
 
-    private GameEvent getEvent(Attachment attachment) {
+    private AbstractGameEvent getEvent(Attachment attachment) {
         if (Client.getPlayer() != null) {
             Client.getPlayer().setSessionId(attachment.sessionId);
         }
-        return GameEventFactory.getGameEvent(attachment.payload, Client.getPlayer());
+        return GameEventFactory.getGameEvent(attachment.getPayload(), Client.getPlayer());
     }
 }

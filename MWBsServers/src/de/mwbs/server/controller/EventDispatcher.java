@@ -2,10 +2,10 @@ package de.mwbs.server.controller;
 
 import org.apache.log4j.Logger;
 
-import de.mwbs.common.AbstractGameEvent;
 import de.mwbs.common.EventQueue;
 import de.mwbs.common.QueueWorker;
 import de.mwbs.server.account.AccountServer;
+import de.mwbs.server.events.AbstractGameEvent;
 
 /**
  * EventDispatcher
@@ -25,7 +25,10 @@ public class EventDispatcher extends QueueWorker {
     }
 
     protected void processEvent(AbstractGameEvent event) {
-		event.process();
+        EventController ec = accountServer.getEventController(event.getEventId());
+        if (ec != null) {
+            ec.handleEvent(event);
+        }
 	}
     
 }

@@ -1,9 +1,10 @@
-package de.mwbs.common;
+package de.mwbs.server.events;
 
 import java.nio.ByteBuffer;
 
 import org.apache.log4j.Logger;
 
+import de.mwbs.common.eventdata.AbstractEventData;
 import de.mwbs.common.eventdata.generated.LoginData;
 
 public class LoginEvent extends AbstractGameEvent {
@@ -26,17 +27,13 @@ public class LoginEvent extends AbstractGameEvent {
 		super(new LoginData());
 	}
 	
+	public LoginEvent(AbstractEventData eventData) {
+		super(eventData);
+	}
 	// TODO create delegators for setter and getter of the data
 
 	public LoginData getLoginData() {
 		return (LoginData) eventData;
-	}
-
-	@Override
-	public void process() {
-		// TODO Auto-generated method stub
-		logger.debug("LoginEvent for " + getLoginData().getUserName() + " with password "
-				+ getLoginData().getPassword());
 	}
 
 	@Override

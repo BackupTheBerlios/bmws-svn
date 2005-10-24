@@ -4,9 +4,11 @@ import javax.swing.JOptionPane;
 
 import de.mwbs.client.Client;
 import de.mwbs.client.ClientPlayer;
-import de.mwbs.common.GameEvent;
-import de.mwbs.common.LoginEvent;
 import de.mwbs.common.data.AccountData;
+import de.mwbs.common.eventdata.EventTypes;
+import de.mwbs.common.eventdata.generated.LoginData;
+import de.mwbs.server.events.AbstractGameEvent;
+import de.mwbs.server.events.LoginEvent;
 
 /**
  * Description: 
@@ -26,33 +28,35 @@ public class LoginController {
 
     public void handleEvent(LoginEvent loginEvent) {
         client.getLoginDialog().cancelTimer();
-        if (loginEvent.getType() == LoginEvent.S_LOGIN_ACK_FAIL) {
+        if (loginEvent.getEventType() == EventTypes.LOGIN_FAILED) {
             client.getLoginDialog().enableDialog();
             JOptionPane.showMessageDialog(client.getLoginDialog(), "Login failed!");
-        } else if (loginEvent.getType() == LoginEvent.S_LOGIN_ACK_OK) {
+        } else if (loginEvent.getEventType() == EventTypes.LOGIN_OK) {
             client.getLoginDialog().setVisible(false);
             JOptionPane.showMessageDialog(client.getLoginDialog(), "Login Successfull!");
-        } else if (loginEvent.getType() == LoginEvent.S_DISCONNECT) {
+        } else if (loginEvent.getEventType() == EventTypes.LOGOUT_OK) {
             client.getLoginDialog().setVisible(false);
             JOptionPane.showMessageDialog(client.getLoginDialog(), "Logout Successfull!");            
         }
 
     }
     
-    public GameEvent createLoginEvent(AccountData account, ClientPlayer player) {
-        LoginEvent event = new LoginEvent();
+    public AbstractGameEvent createLoginEvent(AccountData account, ClientPlayer player) {
+        LoginData ld = new LoginData();
+        ld.setUserName(account.getUsername());
+        ld.setPassword(account.getPassword());
+    	LoginEvent event = new LoginEvent(ld);
         player.setSessionId(new Integer(0));
         event.setPlayer(player);
-        event.setAccountName(account.getUsername());
-        event.setPassword(account.getPassword());
-        event.setType(LoginEvent.C_LOGIN);
+
+        event.setEventType(EventTypes.LOGIN);
         return event;
     }
 
-    public GameEvent createLogoutEvent(ClientPlayer player) {
+    public AbstractGameEvent createLogoutEvent(ClientPlayer player) {
         LoginEvent event = new LoginEvent();
         event.setPlayer(player);
-        event.setType(LoginEvent.C_LOGOUT);
+        event.setEventType(EventTypes.LOGOUT);
         return event;
     }
 

@@ -6,6 +6,7 @@ import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SocketChannel;
 
 import de.mwbs.common.eventdata.AbstractEventData;
+import de.mwbs.server.events.AbstractGameEvent;
 
 /**
  * NIOUtils.java Misc utility functions to simplify dealing w/NIO channels and
@@ -43,21 +44,32 @@ public class NIOUtils {
 	 */
 	public static void prepBuffer(AbstractGameEvent event,
 			ByteBuffer writeBuffer) {
-		// write header
+//		// write header
 		writeBuffer.clear();
-		writeBuffer.putInt(event.getPlayer().getSessionId());
-		writeBuffer.putInt(0);
-		int sizePos = writeBuffer.position();
-		writeBuffer.putInt(0);// placeholder for payload size
-		// write event
-		byte[] buffer = new byte[1024];
-		int payloadSize = 0;// event.serialize(buffer);
-		writeBuffer.put(buffer, 0, payloadSize);
-
-		// insert the payload size in the placeholder spot
-		writeBuffer.putInt(sizePos, payloadSize);
+//		writeBuffer.putInt(event.getPlayer().getSessionId());
+//		//writeBuffer.putInt(0);
+//		int sizePos = writeBuffer.position();
+//		writeBuffer.putInt(0);// placeholder for payload size
+//		// write event
+//		byte[] buffer = new byte[1024];
+////		int payloadSize = event.serialize(buffer);
+////		writeBuffer.put(buffer, 0, payloadSize);
+//
+//		// insert the payload size in the placeholder spot
+//		writeBuffer.putInt(sizePos, payloadSize);
 
 		// prepare for a channel.write
+//		writeBuffer.flip();
+		//ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+		//byteBuffer.putInt(sessionId);
+		// we don't know the size yet ...
+		writeBuffer.putInt(0);
+		writeBuffer.putInt(0);
+		writeBuffer.putInt(event.getEventType());
+		int size = event.serialize(writeBuffer);
+		// ... now owverwrite size
+		writeBuffer.putInt(4, size - 8);
+		System.err.println("size " + size);
 		writeBuffer.flip();
 	}
 

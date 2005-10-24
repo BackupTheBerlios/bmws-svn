@@ -11,11 +11,10 @@ import de.mwbs.client.gui.AccountDialog;
 import de.mwbs.client.gui.DialogFactory;
 import de.mwbs.client.gui.LoginDialog;
 import de.mwbs.client.gui.MainFrame;
-import de.mwbs.common.AccountEvent;
-import de.mwbs.common.GameEvent;
-import de.mwbs.common.LoginEvent;
 import de.mwbs.common.Player;
 import de.mwbs.common.data.AccountData;
+import de.mwbs.server.events.AbstractGameEvent;
+import de.mwbs.server.events.LoginEvent;
 
 public class Client {
 
@@ -67,7 +66,7 @@ public class Client {
         return player;
     }
 
-    public void sendEvent(GameEvent event) {
+    public void sendEvent(AbstractGameEvent event) {
         cnc.handleOutgoingEvent(event);
     }
 
@@ -78,29 +77,30 @@ public class Client {
     public void login(AccountData account) throws Exception {
         cnc.connect();
         player = new ClientPlayer();
-        GameEvent event = getLoginController().createLoginEvent(account, (ClientPlayer) player);
+        AbstractGameEvent event = getLoginController().createLoginEvent(account, (ClientPlayer) player);
         sendEvent(event);
     }
 
     public void logout() {
-        GameEvent event = getLoginController().createLogoutEvent((ClientPlayer) player);
+    	AbstractGameEvent event = getLoginController().createLogoutEvent((ClientPlayer) player);
         sendEvent(event);
     }
 
     public void register(AccountData account) throws Exception {
         cnc.connect();
         player = new ClientPlayer();
-        GameEvent event = getAccountController().createRegisterEvent(account, (ClientPlayer) player);
-        sendEvent(event);
+        //AbstractGameEvent event = getAccountController().createRegisterEvent(account, (ClientPlayer) player);
+        //sendEvent(event);
     }
 
-    protected void processIncomingEvents(GameEvent event) {
+    protected void processIncomingEvents(AbstractGameEvent event) {
         event.setPlayer(player);
         if (event instanceof LoginEvent) {
             lc.handleEvent((LoginEvent) event);
-        } else if (event instanceof AccountEvent) {
-            getAccountController().handleEvent((AccountEvent) event);
         }
+//        } else if (event instanceof AccountEvent) {
+//            getAccountController().handleEvent((AccountEvent) event);
+//        }
     }
 
     public AccountDialog getAccountDialog() {

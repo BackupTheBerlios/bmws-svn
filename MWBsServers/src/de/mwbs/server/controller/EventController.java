@@ -2,8 +2,8 @@ package de.mwbs.server.controller;
 
 import org.apache.log4j.Logger;
 
-import de.mwbs.common.GameEvent;
 import de.mwbs.server.account.AccountServer;
+import de.mwbs.server.events.AbstractGameEvent;
 
 /**
  * EventController
@@ -14,7 +14,7 @@ public abstract class EventController {
     private static Logger logger = Logger.getLogger(EventController.class);
     protected AccountServer accountServer = null;
     protected int eventType = 0; 
-    public abstract void handleEvent(GameEvent event);
+    public abstract void handleEvent(AbstractGameEvent event);
 
     /**
      * 
@@ -25,7 +25,7 @@ public abstract class EventController {
         this.accountServer = accountServer;
     }
 
-    public void sendEvent(GameEvent event) {
+    public void sendEvent(AbstractGameEvent event) {
         accountServer.handleOutgoingEvent(event);
     }
 }

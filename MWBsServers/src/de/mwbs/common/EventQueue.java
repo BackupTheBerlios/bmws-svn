@@ -4,6 +4,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.log4j.Logger;
 
+import de.mwbs.server.events.AbstractGameEvent;
+
 /**
  * EventQueue.java
  * 

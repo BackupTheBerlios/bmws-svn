@@ -7,9 +7,9 @@ import java.nio.channels.SocketChannel;
 import org.apache.log4j.Logger;
 
 import de.mwbs.common.EventQueue;
-import de.mwbs.common.GameEvent;
 import de.mwbs.common.Globals;
 import de.mwbs.common.NIOUtils;
+import de.mwbs.server.events.AbstractGameEvent;
 import de.mwbs.server.exceptions.InitializationException;
 
 public class ClientNetworkController extends Thread {
@@ -63,7 +63,7 @@ public class ClientNetworkController extends Thread {
     }
 
     public void writeOutgoingEvents() {
-        GameEvent outEvent;
+    	AbstractGameEvent outEvent;
         while (outQueue.size() > 0) {
             try {
                 outEvent = outQueue.deQueue();
@@ -74,7 +74,7 @@ public class ClientNetworkController extends Thread {
         }
     }
 
-    protected void writeEvent(GameEvent ge) {
+    protected void writeEvent(AbstractGameEvent ge) {
         ge.setPlayer(Client.getPlayer());
         ByteBuffer writeBuffer = ByteBuffer.allocate(Globals.MAX_EVENT_SIZE);
         NIOUtils.prepBuffer(ge, writeBuffer);
@@ -82,7 +82,7 @@ public class ClientNetworkController extends Thread {
     }
 
     protected void processIncomingEvents() {
-        GameEvent inEvent;
+    	AbstractGameEvent inEvent;
         while (inQueue.size() > 0) {
             try {
                 inEvent = inQueue.deQueue();
@@ -93,7 +93,7 @@ public class ClientNetworkController extends Thread {
         }
     }
     
-    public void handleOutgoingEvent(GameEvent event) {
+    public void handleOutgoingEvent(AbstractGameEvent event) {
         outQueue.enQueue(event);
     }
 }
