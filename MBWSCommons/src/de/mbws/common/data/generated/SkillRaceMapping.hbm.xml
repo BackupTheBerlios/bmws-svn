@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="de.mbws.common.data.generated.SkillRaceMapping" 
+    table="skill_race_mapping"
+>
+
+    <composite-id name="comp_id" class="de.mbws.common.data.generated.SkillRaceMappingPK">
+        <key-property 
+            name="raceId" 
+            column="race_id" 
+            type="java.lang.Integer"
+            length="10"
+        />
+        <key-property 
+            name="skillId" 
+            column="skill_id" 
+            type="java.lang.Integer"
+            length="10"
+        />
+    </composite-id>    
+
+    <property
+        name="hasonstartup"
+        type="byte"
+        column="hasonstartup"
+        not-null="true"
+        length="1"
+    />
+
+    <!-- Associations -->
+    <!-- derived association(s) for compound key -->
+    <!-- bi-directional many-to-one association to Skill -->
+    <many-to-one
+        name="skill"
+	    class="de.mbws.common.data.generated.Skill"
+	    update="false"
+	    insert="false"
+	>
+    	<column name="skill_id" />
+	</many-to-one>
+	
+    <!-- bi-directional many-to-one association to Race -->
+    <many-to-one
+        name="race"
+	    class="de.mbws.common.data.generated.Race"
+	    update="false"
+	    insert="false"
+	>
+    	<column name="race_id" />
+	</many-to-one>
+	
+    <!-- end of derived association(s) -->
+  
+
+</class>
+</hibernate-mapping>

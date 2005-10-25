@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="de.mbws.common.data.generated.NpcWorldobjectMapping" 
+    table="npc_worldobject_mapping"
+>
+
+    <composite-id name="comp_id" class="de.mbws.common.data.generated.NpcWorldobjectMappingPK">
+        <key-property 
+            name="worldobjectId" 
+            column="worldobject_id" 
+            type="java.lang.Long"
+            length="20"
+        />
+        <key-property 
+            name="npcId" 
+            column="npc_id" 
+            type="java.lang.Long"
+            length="20"
+        />
+    </composite-id>    
+
+
+    <!-- Associations -->
+    <!-- derived association(s) for compound key -->
+    <!-- bi-directional many-to-one association to Npc -->
+    <many-to-one
+        name="npc"
+	    class="de.mbws.common.data.generated.Npc"
+	    update="false"
+	    insert="false"
+	>
+    	<column name="npc_id" />
+	</many-to-one>
+	
+    <!-- bi-directional many-to-one association to Worldobject -->
+    <many-to-one
+        name="worldobject"
+	    class="de.mbws.common.data.generated.Worldobject"
+	    update="false"
+	    insert="false"
+	>
+    	<column name="worldobject_id" />
+	</many-to-one>
+	
+    <!-- end of derived association(s) -->
+  
+
+</class>
+</hibernate-mapping>

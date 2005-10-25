@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="de.mbws.common.data.generated.NpcStatus" 
+    table="npc_status"
+>
+
+    <id
+        name="npcId"
+        type="java.lang.Long"
+        column="npc_id"
+    >
+        <generator class="assigned" />
+    </id>
+
+    <property
+        name="npcstatus"
+        type="java.lang.String"
+        column="npcstatus"
+        not-null="true"
+        length="1"
+    />
+    <property
+        name="gamestatus"
+        type="java.lang.String"
+        column="gamestatus"
+        length="1"
+    />
+    <property
+        name="coordinateX"
+        type="java.lang.Integer"
+        column="coordinate_x"
+        length="10"
+    />
+    <property
+        name="coordinateZ"
+        type="java.lang.Integer"
+        column="coordinate_z"
+        length="10"
+    />
+    <property
+        name="currentmana"
+        type="java.lang.Integer"
+        column="currentmana"
+        length="10"
+    />
+    <property
+        name="currenthelth"
+        type="java.lang.Integer"
+        column="currenthelth"
+        length="10"
+    />
+    <property
+        name="currentstamina"
+        type="java.lang.Integer"
+        column="currentstamina"
+        length="10"
+    />
+    <property
+        name="currentstrength"
+        type="java.lang.Integer"
+        column="currentstrength"
+        length="10"
+    />
+    <property
+        name="currentintelligence"
+        type="java.lang.Integer"
+        column="currentintelligence"
+        length="10"
+    />
+    <property
+        name="currentdexterity"
+        type="java.lang.Integer"
+        column="currentdexterity"
+        length="10"
+    />
+    <property
+        name="currentconstitution"
+        type="java.lang.Integer"
+        column="currentconstitution"
+        length="10"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional one-to-one association to Npc -->
+    <one-to-one
+        name="npc"
+        class="de.mbws.common.data.generated.Npc"
+        outer-join="auto"
+        constrained="true"
+    />
+    <!-- bi-directional many-to-one association to Map -->
+    <many-to-one
+        name="map"
+        class="de.mbws.common.data.generated.Map"
+        not-null="true"
+    >
+        <column name="map_id" />
+    </many-to-one>
+
+</class>
+</hibernate-mapping>

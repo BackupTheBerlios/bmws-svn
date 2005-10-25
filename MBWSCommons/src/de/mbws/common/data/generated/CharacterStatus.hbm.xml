@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.1
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="de.mbws.common.data.generated.CharacterStatus" 
+    table="character_status"
+>
+
+    <composite-id>
+        <key-property 
+            name="charstatus" 
+            column="charstatus" 
+            type="java.lang.String"
+            length="1"
+        />
+        <key-property 
+            name="pvp" 
+            column="pvp" 
+            type="java.lang.String"
+            length="1"
+        />
+        <key-property 
+            name="gamestatus" 
+            column="gamestatus" 
+            type="java.lang.String"
+            length="1"
+        />
+        <key-property 
+            name="coordinateX" 
+            column="coordinate_x" 
+            type="int"
+            length="10"
+        />
+        <key-property 
+            name="coordinateY" 
+            column="coordinate_y" 
+            type="int"
+            length="10"
+        />
+        <key-property 
+            name="coordinateZ" 
+            column="coordinate_z" 
+            type="int"
+            length="10"
+        />
+        <key-property 
+            name="currentmana" 
+            column="currentmana" 
+            type="int"
+            length="10"
+        />
+        <key-property 
+            name="currenthealth" 
+            column="currenthealth" 
+            type="int"
+            length="10"
+        />
+        <key-property 
+            name="currentstamina" 
+            column="currentstamina" 
+            type="int"
+            length="10"
+        />
+        <key-property 
+            name="currentstrength" 
+            column="currentstrength" 
+            type="int"
+            length="10"
+        />
+        <key-property 
+            name="currentinteligence" 
+            column="currentinteligence" 
+            type="int"
+            length="10"
+        />
+        <key-property 
+            name="currentdexterity" 
+            column="currentdexterity" 
+            type="int"
+            length="10"
+        />
+        <key-property 
+            name="currentconstitution" 
+            column="currentconstitution" 
+            type="int"
+            length="10"
+        />
+        <key-property 
+            name="freexp" 
+            column="freexp" 
+            type="int"
+            length="10"
+        />
+    </composite-id>    
+
+
+    <!-- Associations -->
+    <!-- derived association(s) for compound key -->
+    <!-- end of derived association(s) -->
+  
+    <!-- bi-directional many-to-one association to Characterdata -->
+    <many-to-one
+        name="characterdata"
+        class="de.mbws.common.data.generated.Characterdata"
+        not-null="true"
+    >
+        <column name="characterdata_characterName" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Map -->
+    <many-to-one
+        name="map"
+        class="de.mbws.common.data.generated.Map"
+        not-null="true"
+    >
+        <column name="map_id" />
+    </many-to-one>
+
+</class>
+</hibernate-mapping>
