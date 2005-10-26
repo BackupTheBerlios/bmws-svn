@@ -40,17 +40,19 @@ public class AccountController {
     }
 
     public AbstractGameEvent createRegisterEvent(AccountData account, ClientPlayer player) {
-        AccountEvent event = new AccountEvent();
-        player.setSessionId(new Integer(0));
-        event.setPlayer(player);
+       
+       
         de.mbws.common.eventdata.generated.AccountData accountData = new de.mbws.common.eventdata.generated.AccountData();
         
         accountData.setUserName(account.getUsername());
         accountData.setNewPassword(account.getPassword());
         //event.setPasswordConfirmation(account.getPasswordConfirmation());
-        accountData.setPassword(account.getPasswordold());
+        accountData.setPassword(account.getPassword());
         accountData.setEmailAddress(account.getEmailaddress());
+        AccountEvent event = new AccountEvent(accountData);
         event.setEventType(EventTypes.ACCOUNT_CREATE);
+        player.setSessionId(new Integer(0));
+        event.setPlayer(player);
         return event;
     }
 }
