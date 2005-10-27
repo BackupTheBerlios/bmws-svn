@@ -1,9 +1,8 @@
 /** Generated class. Do not change !!! **/
 package de.mbws.common.eventdata.generated;
 
-import java.nio.ByteBuffer;
-
 import de.mbws.common.eventdata.AbstractEventData;
+import java.nio.ByteBuffer;
 
 public class TestData extends AbstractEventData { 
 	private String test;
