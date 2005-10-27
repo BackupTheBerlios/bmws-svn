@@ -2,12 +2,13 @@ package de.mbws.server.controller;
 
 import org.apache.log4j.Logger;
 
-import de.mbws.common.Player;
+import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.data.generated.Account;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.EventTypes;
 import de.mbws.common.events.LoginEvent;
 import de.mbws.server.account.AccountServer;
+import de.mbws.server.data.ServerPlayerData;
 import de.mbws.server.persistence.AccountPersistenceManager;
 
 public class LoginEventController extends EventController {
@@ -34,7 +35,7 @@ public class LoginEventController extends EventController {
 				lr.setEventType(EventTypes.LOGIN_FAILED);
 				sendEvent(lr);
 			} else {
-				Player p = new Player();
+                AbstractPlayerData p = new ServerPlayerData();
 				p.setAccount(account);
 				Integer sessionId = accountServer.nextSessionId();
 				if (logger.isDebugEnabled()) {

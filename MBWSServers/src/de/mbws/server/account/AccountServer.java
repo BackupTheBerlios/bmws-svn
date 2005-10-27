@@ -14,7 +14,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import de.mbws.common.EventQueue;
-import de.mbws.common.Player;
+import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.EventTypes;
 import de.mbws.server.EventWriter;
@@ -38,7 +38,7 @@ public class AccountServer extends Thread {
 
     private HashMap eventReader = new HashMap();
 
-    private HashMap<Integer, Player> clients = new HashMap<Integer, Player>() ;
+    private HashMap<Integer, AbstractPlayerData> clients = new HashMap<Integer, AbstractPlayerData>() ;
 
     private static EventQueue outgoingEventQueue = new EventQueue("GameEvents-out");
    
@@ -132,14 +132,14 @@ public class AccountServer extends Thread {
     /**
      * fetches the Player for a given sessionId
      */
-    public Player getPlayerBySessionId(Integer id) {
+    public AbstractPlayerData getPlayerBySessionId(Integer id) {
         return clients.get(id);
     }
 
-    public void addPlayer(Integer sessionId, Player p) {
+    public void addPlayer(Integer sessionId, AbstractPlayerData p) {
         clients.put(sessionId, p);
     }
-    public void removePlayer(Player p) {
+    public void removePlayer(AbstractPlayerData p) {
         clients.remove(p.getSessionId());
     }
     

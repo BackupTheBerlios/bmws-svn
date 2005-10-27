@@ -12,11 +12,12 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import de.mbws.common.Attachment;
-import de.mbws.common.Player;
+import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.GameEventFactory;
 import de.mbws.common.utils.StringUtils;
 import de.mbws.server.account.AccountServer;
+import de.mbws.server.data.ServerPlayerData;
 
 /**
  * RequestDispatcher.java handles reading from all clients using a Selector and
@@ -140,7 +141,7 @@ public class RequestDispatcher extends Thread {
 							while (attachment.eventReady()) {
 								logger.debug("Dispatching event");
 								// TODO player should be identified through session id
-								Player player = new Player();
+                                AbstractPlayerData player = new ServerPlayerData();
 								player.setChannel(channel);
 								player.setSessionId(attachment.sessionId);
 								AbstractGameEvent event = GameEventFactory.getGameEvent(attachment.getPayload(),

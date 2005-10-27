@@ -8,8 +8,8 @@ import org.apache.log4j.Logger;
 import de.mbws.common.EventQueue;
 import de.mbws.common.Globals;
 import de.mbws.common.NIOUtils;
-import de.mbws.common.Player;
 import de.mbws.common.QueueWorker;
+import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.utils.StringUtils;
 import de.mbws.server.account.AccountServer;
@@ -69,7 +69,7 @@ public class EventWriter extends QueueWorker {
             for (int i = 0; i < recipients.length; i++) {
                 if (recipients[i] != null) {
                     logger.info("writeEvent(B): type=" + event.getClass().getName() + ", id=" + recipients[i]);
-                    Player player = accountServer.getPlayerBySessionId(recipients[i]);
+                    AbstractPlayerData player = accountServer.getPlayerBySessionId(recipients[i]);
                     write(player.getChannel(), writeBuffer);
                 }
             }
