@@ -50,6 +50,7 @@ public class PayloadCreator {
 		classes.put("int16", null);
 		classes.put("int32", null);
 		classes.put("int", null);
+		classes.put("float", null);
 	}
 
 	private static class ClassDeclaration {
@@ -112,7 +113,7 @@ public class PayloadCreator {
 		Iterator<String> it = classes.keySet().iterator();
 		while (it.hasNext()) {
 			String key = it.next();
-			if (key.equals("String") || key.startsWith("int"))
+			if (key.equals("String") || key.startsWith("int") || key.startsWith("float"))
 				continue;
 			ClassDeclaration classDecl = classes.get(key);
 			System.out.println("INFO: generating " + classDecl.name);
@@ -181,6 +182,9 @@ public class PayloadCreator {
 			else if (field.type.equals("int")) {
 				code += "\t\tpayload.putInt(" + field.name + ");\n";
 			}
+			else if (field.type.equals("float")) {
+				code += "\t\tpayload.putFloat(" + field.name + ");\n";
+			}
 			else if (classes.containsKey(field.type)) {
 				code += "\t\t" + field.name + getProp("classSep") + "serialize(payload);\n";
 			}
@@ -200,6 +204,9 @@ public class PayloadCreator {
 			}
 			else if (field.type.equals("int")) {
 				code += "\t\t" + field.name + " = payload.getInt();\n";
+			}
+			else if (field.type.equals("float")) {
+				code += "\t\t" + field.name + " = payload.getFloat();\n";
 			}
 			else if (classes.containsKey(field.type)) {
 				code += "\t\t" + field.name + " = "
