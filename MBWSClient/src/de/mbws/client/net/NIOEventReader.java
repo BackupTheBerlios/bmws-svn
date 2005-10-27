@@ -1,4 +1,4 @@
-package de.mbws.client;
+package de.mbws.client.net;
 
 import java.io.IOException;
 import java.nio.channels.ClosedChannelException;
@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 
 import de.mbws.common.Attachment;
 import de.mbws.common.EventQueue;
+import de.mbws.common.Player;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.GameEventFactory;
 
@@ -106,11 +107,11 @@ public class NIOEventReader extends Thread {
             }
         }
     }
-
+//TODO Kerim refactor player stuff
     private AbstractGameEvent getEvent(Attachment attachment) {
-        if (Client.getPlayer() != null) {
-            Client.getPlayer().setSessionId(attachment.sessionId);
-        }
-        return GameEventFactory.getGameEvent(attachment.getPayload(), Client.getPlayer());
+//        if (Client.getPlayer() != null) {
+//            Client.getPlayer().setSessionId(attachment.sessionId);
+//        }
+        return GameEventFactory.getGameEvent(attachment.getPayload(), new Player());
     }
 }
