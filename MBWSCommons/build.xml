@@ -2,7 +2,7 @@
 <project name="Cepplus" default="buildAll" basedir=".">
 
    <property name="lib.dir"                 value="${basedir}/lib"/>
-   <property name="database.driver.file"           value="C:/Development/Projekte/Codeazarai.de/workspace/Game/lib/mysql-connector-java-3.1.8-bin.jar"/>
+   <property name="database.driver.file"           value="mysql-connector-java-3.1.8-bin.jar"/>
    <property name="database.driver.classpath"      value="${database.driver.file}"/>
    <property name="middlegen.home"                 value="${basedir}/middlegen-2.1"/>
    <property name="build.gen-src.dir" value="mapping"/>
@@ -62,7 +62,7 @@
 		<taskdef name="castor"
 		         classname="org.exolab.castor.tools.ant.taskdefs.CastorSourceGenTask"
 		         classpathref="lib.class.path"/>		
-		<castor file="mapping/configuration.xsd" todir="src"
+		<castor file="mapping/configuration.xsd" todir="../MBWSServer/src"
 		        package="de.mbws.server.configuration"
 		        warnings="false" types="j2"/>
 	</target>
