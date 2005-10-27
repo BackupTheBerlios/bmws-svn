@@ -5,6 +5,10 @@ package de.mbws.client;
 
 import java.util.logging.Level;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 import com.jme.app.AbstractGame;
 import com.jme.app.BaseGame;
 import com.jme.app.GameState;
@@ -28,7 +32,7 @@ import de.mbws.client.state.MainMenuState;
  */
 // TODO: Kerim: should we use a different game type here ?
 public class MBWSClient extends BaseGame {
-
+    private static Logger logger = Logger.getLogger(MBWSClient.class);
 	/** Only used in the static exit method. */
 	private static AbstractGame instance;
 
@@ -38,7 +42,7 @@ public class MBWSClient extends BaseGame {
 	/** Simply an easy way to get at timer.getTimePerFrame(). */
 	private float timePerFrame;
 
-	public static final String CLIENT = "BMWSClient Version: 0.1";
+	public static final String CLIENT = "MBWSClient Version: 0.1";
 
 	/**
 	 * This is called every frame in BaseGame.start()
@@ -139,6 +143,9 @@ public class MBWSClient extends BaseGame {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+        BasicConfigurator.configure();
+        PropertyConfigurator.configure("log4j.properties");
+        logger.info("Init log4j ... done");
 		MBWSClient app = new MBWSClient();
 		app.setDialogBehaviour(
 				MBWSClient.FIRSTRUN_OR_NOCONFIGFILE_SHOW_PROPS_DIALOG,
