@@ -11,10 +11,10 @@
 	<classpathentry kind="lib" path="lib/jme-sound.jar"/>
 	<classpathentry kind="lib" path="lib/jme-terrain.jar"/>
 	<classpathentry kind="lib" path="lib/jme-bui.jar"/>
-	<classpathentry kind="lib" path="C:/Programmierung/projekte/MBWSClient/lib/jinput.jar"/>
-	<classpathentry kind="lib" path="C:/Programmierung/projekte/MBWSClient/lib/jogg-0.0.5.jar"/>
-	<classpathentry kind="lib" path="C:/Programmierung/projekte/MBWSClient/lib/jorbis-0.0.12.jar"/>
-	<classpathentry kind="lib" path="C:/Programmierung/projekte/MBWSClient/lib/lwjgl.jar"/>
-	<classpathentry kind="lib" path="C:/Programmierung/projekte/MBWSClient/lib/lwjgl_fmod3.jar"/>
+	<classpathentry kind="lib" path="lib/jinput.jar"/>
+	<classpathentry kind="lib" path="lib/jogg-0.0.5.jar"/>
+	<classpathentry kind="lib" path="lib/jorbis-0.0.12.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl_fmod3.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
