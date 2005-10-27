@@ -4,14 +4,14 @@ import java.nio.ByteBuffer;
 
 import org.apache.log4j.Logger;
 
-import de.mbws.common.Player;
+import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.eventdata.generated.AccountErrorData;
 import de.mbws.common.utils.StringUtils;
 
 public class GameEventFactory {
     private static Logger logger = Logger.getLogger("GameEventFactory");
 
-    public static AbstractGameEvent getGameEvent(ByteBuffer payload, Player p) {
+    public static AbstractGameEvent getGameEvent(ByteBuffer payload, AbstractPlayerData p) {
         int eventKey = payload.getInt();
         logger.debug("got event " + eventKey + " with payload " + StringUtils.bytesToString(payload.array()));
         AbstractGameEvent event = null;

@@ -1,12 +1,16 @@
-package de.mbws.common;
+package de.mbws.common.data;
 
 import java.nio.channels.SocketChannel;
 
 import de.mbws.common.data.generated.Account;
 
-public class Player {
-
-    private Account account = null;
+/**
+ * Description: 
+ * @author Azarai
+ *
+ */
+public abstract class AbstractPlayerData {
+    private Account account;
     private SocketChannel channel;
     private Integer sessionId;
     
@@ -32,5 +36,5 @@ public class Player {
 
     public void setChannel(SocketChannel channel) {
         this.channel = channel;
-    }
+    }    
 }

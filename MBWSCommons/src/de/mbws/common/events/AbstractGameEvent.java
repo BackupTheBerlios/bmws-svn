@@ -2,14 +2,14 @@ package de.mbws.common.events;
 
 import java.nio.ByteBuffer;
 
-import de.mbws.common.Player;
+import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.eventdata.AbstractEventData;
 
 public abstract class AbstractGameEvent {
 
 	/** event type */
 	protected int eventType;
-	protected Player player;
+	protected AbstractPlayerData player;
 	protected boolean sendAck = false;
 	protected Integer[] recipients;
 	protected AbstractEventData eventData;
@@ -30,11 +30,11 @@ public abstract class AbstractGameEvent {
 		this.sendAck = sendAck;
 	}
 
-	public Player getPlayer() {
+	public AbstractPlayerData getPlayer() {
 		return player;
 	}
 
-	public void setPlayer(Player p) {
+	public void setPlayer(AbstractPlayerData p) {
 		this.player = p;
 	}
 
