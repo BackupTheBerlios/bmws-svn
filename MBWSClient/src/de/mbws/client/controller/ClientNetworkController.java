@@ -6,11 +6,11 @@ import java.nio.channels.SocketChannel;
 
 import org.apache.log4j.Logger;
 
+import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.net.NIOEventReader;
 import de.mbws.common.EventQueue;
 import de.mbws.common.Globals;
 import de.mbws.common.NIOUtils;
-import de.mbws.common.Player;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.AccountEvent;
 import de.mbws.common.events.LoginEvent;
@@ -90,7 +90,7 @@ public class ClientNetworkController extends Thread {
 	}
 //TODO: Kerim what is done with the "player" ?
 	protected void writeEvent(AbstractGameEvent ge) {
-		ge.setPlayer(new Player());
+		ge.setPlayer(new ClientPlayerData());
 		ByteBuffer writeBuffer = ByteBuffer.allocate(Globals.MAX_EVENT_SIZE);
 		NIOUtils.prepBuffer(ge, writeBuffer);
 		NIOUtils.channelWrite(channel, writeBuffer);

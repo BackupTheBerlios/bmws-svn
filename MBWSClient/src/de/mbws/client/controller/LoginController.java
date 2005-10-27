@@ -1,6 +1,6 @@
 package de.mbws.client.controller;
 
-import de.mbws.common.Player;
+import de.mbws.client.data.ClientPlayerData;
 import de.mbws.common.eventdata.generated.AccountData;
 import de.mbws.common.eventdata.generated.LoginData;
 import de.mbws.common.events.AbstractGameEvent;
@@ -43,7 +43,7 @@ public class LoginController {
 
 	}
 
-	public AbstractGameEvent createLoginEvent(AccountData account, Player player) {
+	public AbstractGameEvent createLoginEvent(AccountData account, ClientPlayerData player) {
 		LoginData ld = new LoginData();
 		ld.setUserName(account.getUserName());
 		ld.setPassword(account.getPassword());
@@ -55,7 +55,7 @@ public class LoginController {
 		return event;
 	}
 
-	public AbstractGameEvent createLogoutEvent(Player player) {
+	public AbstractGameEvent createLogoutEvent(ClientPlayerData player) {
 		LoginEvent event = new LoginEvent();
 		event.setPlayer(player);
 		event.setEventType(EventTypes.LOGOUT);

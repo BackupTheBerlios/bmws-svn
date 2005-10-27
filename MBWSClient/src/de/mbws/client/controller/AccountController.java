@@ -1,6 +1,6 @@
 package de.mbws.client.controller;
 
-import de.mbws.common.Player;
+import de.mbws.client.data.ClientPlayerData;
 import de.mbws.common.data.AccountData;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.AccountEvent;
@@ -36,7 +36,7 @@ public class AccountController {
         }
     }
 
-    public AbstractGameEvent createRegisterEvent(AccountData account, Player player) {
+    public AbstractGameEvent createRegisterEvent(AccountData account, ClientPlayerData player) {
         de.mbws.common.eventdata.generated.AccountData accountData = new de.mbws.common.eventdata.generated.AccountData();
         
         accountData.setUserName(account.getUsername());

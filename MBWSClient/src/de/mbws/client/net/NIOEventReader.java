@@ -10,9 +10,9 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import de.mbws.client.data.ClientPlayerData;
 import de.mbws.common.Attachment;
 import de.mbws.common.EventQueue;
-import de.mbws.common.Player;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.GameEventFactory;
 
@@ -112,6 +112,6 @@ public class NIOEventReader extends Thread {
 //        if (Client.getPlayer() != null) {
 //            Client.getPlayer().setSessionId(attachment.sessionId);
 //        }
-        return GameEventFactory.getGameEvent(attachment.getPayload(), new Player());
+        return GameEventFactory.getGameEvent(attachment.getPayload(), new ClientPlayerData());
     }
 }
