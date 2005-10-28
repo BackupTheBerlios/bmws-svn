@@ -9,4 +9,13 @@ import de.mbws.common.data.AbstractPlayerData;
  */
 public class ClientPlayerData extends AbstractPlayerData {
 
+	private static ClientPlayerData instance;
+	
+	private ClientPlayerData() {}
+	public static ClientPlayerData getInstance() {
+		if (instance == null) {
+			instance = new ClientPlayerData();
+		}
+		return instance;
+	}
 }

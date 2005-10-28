@@ -112,6 +112,6 @@ public class NIOEventReader extends Thread {
 //        if (Client.getPlayer() != null) {
 //            Client.getPlayer().setSessionId(attachment.sessionId);
 //        }
-        return GameEventFactory.getGameEvent(attachment.getPayload(), new ClientPlayerData());
+        return GameEventFactory.getGameEvent(attachment.getPayload(), ClientPlayerData.getInstance());
     }
 }

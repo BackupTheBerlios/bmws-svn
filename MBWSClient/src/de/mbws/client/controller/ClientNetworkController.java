@@ -90,7 +90,7 @@ public class ClientNetworkController extends Thread {
 	}
 //TODO: Kerim what is done with the "player" ?
 	protected void writeEvent(AbstractGameEvent ge) {
-		ge.setPlayer(new ClientPlayerData());
+		ge.setPlayer(ClientPlayerData.getInstance());
 		ByteBuffer writeBuffer = ByteBuffer.allocate(Globals.MAX_EVENT_SIZE);
 		NIOUtils.prepBuffer(ge, writeBuffer);
 		NIOUtils.channelWrite(channel, writeBuffer);

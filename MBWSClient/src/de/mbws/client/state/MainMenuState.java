@@ -164,7 +164,7 @@ public class MainMenuState extends StandardGameState {
 		input.getMouse().setRenderState(ts);
 		input.getMouse().setRenderState(alpha);
 		input.getMouse().setLocalScale(new Vector3f(1, 1, 1));
-
+		
 		cursor = new Node("Cursor");
 		cursor.attachChild(input.getMouse());
 
