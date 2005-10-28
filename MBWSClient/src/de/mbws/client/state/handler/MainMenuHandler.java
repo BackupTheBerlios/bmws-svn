@@ -38,7 +38,7 @@ import de.mbws.common.events.AbstractGameEvent;
 public class MainMenuHandler extends InputHandler implements ComponentListener {
 	GameState myState;
 
-	Mouse mouse;
+	//Mouse mouse;
 
 	public MainMenuHandler(GameState myState) {
 		setKeyBindings();
@@ -57,9 +57,9 @@ public class MainMenuHandler extends InputHandler implements ComponentListener {
 		Mouse mouse = new AbsoluteMouse("Mouse Input", display.getWidth(),
 				display.getHeight());
 		setMouse(mouse);
-		MenuMouseAction pick = new MenuMouseAction();
-		pick.setMouse(mouse);
-		addAction(pick);
+//		MenuMouseAction pick = new MenuMouseAction();
+//		pick.setMouse(mouse);
+//		addAction(pick);
 
 	}
 
@@ -77,6 +77,8 @@ public class MainMenuHandler extends InputHandler implements ComponentListener {
 		// TODO: try to log in, retrieve all info and then start the next State
 		LoggingSystem.getLogger().log(Level.INFO,
 				"trying to log in with login: " + login + " pass: " + pass);
+		
+		
 		
 	}
 
@@ -101,8 +103,8 @@ public class MainMenuHandler extends InputHandler implements ComponentListener {
 		@Override
 		public void performAction(InputActionEvent evt) {
 			if (MouseInput.get().isButtonDown(0)) {
-				// System.out.println(mouse.getHotSpotPosition().x);
-				// System.out.println(mouse.getHotSpotPosition().y);
+				 System.out.println(mouse.getHotSpotPosition().x);
+				 System.out.println(mouse.getHotSpotPosition().y);
 				// startMainGameState();
 			}
 

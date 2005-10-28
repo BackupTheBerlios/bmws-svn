@@ -56,6 +56,7 @@ public class MainMenuState extends StandardGameState {
 	BTextField loginTF;
 
 	BTextField passwordTF;
+	BRootNode _root;
 	
 
 	public MainMenuState(String name) {
@@ -63,12 +64,14 @@ public class MainMenuState extends StandardGameState {
 		
 		display = DisplaySystem.getDisplaySystem();
 		initInput();
-		//initCursor();
-		 MouseInput.get().setCursorVisible(true);
-
 		initGUI();
 		initText();
 		setupButtons();
+		//initCursor();
+		 MouseInput.get().setCursorVisible(true);
+
+		
+		
 
 		rootNode.setLightCombineMode(LightState.OFF);
 		rootNode.setRenderQueueMode(Renderer.QUEUE_ORTHO);
@@ -77,7 +80,7 @@ public class MainMenuState extends StandardGameState {
 	}
 
 	private void setupButtons() {
-		BRootNode _root = new PolledRootNode(MBWSClient.timer, input);
+		_root = new PolledRootNode(MBWSClient.timer, input);
 		rootNode.attachChild(_root);
 		BLookAndFeel lnf = BLookAndFeel.getDefaultLookAndFeel();
 		BWindow window = new BDecoratedWindow(lnf, null);
@@ -146,7 +149,7 @@ public class MainMenuState extends StandardGameState {
 	private void initCursor() {
 		Texture texture = TextureManager.loadTexture(MainMenuState.class
 				.getClassLoader()
-				.getResource("jmetest/data/cursor/cursor1.png"),
+				.getResource("rsrc/textures/cursor1.png"),
 				Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR);
 
 		TextureState ts = display.getRenderer().createTextureState();
@@ -162,7 +165,7 @@ public class MainMenuState extends StandardGameState {
 		alpha.setEnabled(true);
 
 		input.getMouse().setRenderState(ts);
-		input.getMouse().setRenderState(alpha);
+		//input.getMouse().setRenderState(alpha);
 		input.getMouse().setLocalScale(new Vector3f(1, 1, 1));
 		
 		cursor = new Node("Cursor");
