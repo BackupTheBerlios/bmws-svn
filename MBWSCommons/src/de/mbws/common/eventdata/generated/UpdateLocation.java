@@ -5,46 +5,57 @@ import de.mbws.common.eventdata.AbstractEventData;
 import java.nio.ByteBuffer;
 
 public class UpdateLocation extends AbstractEventData { 
-	private float startLocationX;
-	private float startLocationY;
-	private float startLocationZ;
+	private int playerID;
+	private float locationX;
+	private float locationY;
+	private float locationZ;
 
 
-	public float getStartLocationX() {
-		return startLocationX;
+	public int getPlayerID() {
+		return playerID;
 	}
 
-	public void setStartLocationX(float startLocationX) {
-		this.startLocationX = startLocationX;
+	public void setPlayerID(int playerID) {
+		this.playerID = playerID;
 	} 
 
-	public float getStartLocationY() {
-		return startLocationY;
+	public float getLocationX() {
+		return locationX;
 	}
 
-	public void setStartLocationY(float startLocationY) {
-		this.startLocationY = startLocationY;
+	public void setLocationX(float locationX) {
+		this.locationX = locationX;
 	} 
 
-	public float getStartLocationZ() {
-		return startLocationZ;
+	public float getLocationY() {
+		return locationY;
 	}
 
-	public void setStartLocationZ(float startLocationZ) {
-		this.startLocationZ = startLocationZ;
+	public void setLocationY(float locationY) {
+		this.locationY = locationY;
+	} 
+
+	public float getLocationZ() {
+		return locationZ;
+	}
+
+	public void setLocationZ(float locationZ) {
+		this.locationZ = locationZ;
 	} 
 
 
 	public void deserialize(ByteBuffer payload) {
-		startLocationX = payload.getFloat();
-		startLocationY = payload.getFloat();
-		startLocationZ = payload.getFloat();
+		playerID = payload.getInt();
+		locationX = payload.getFloat();
+		locationY = payload.getFloat();
+		locationZ = payload.getFloat();
 	}
 
 	public int serialize(ByteBuffer payload) {
-		payload.putFloat(startLocationX);
-		payload.putFloat(startLocationY);
-		payload.putFloat(startLocationZ);
+		payload.putInt(playerID);
+		payload.putFloat(locationX);
+		payload.putFloat(locationY);
+		payload.putFloat(locationZ);
 		return payload.position();
 	}
 }

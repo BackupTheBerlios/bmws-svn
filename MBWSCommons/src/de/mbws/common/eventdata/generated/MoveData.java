@@ -5,68 +5,68 @@ import de.mbws.common.eventdata.AbstractEventData;
 import java.nio.ByteBuffer;
 
 public class MoveData extends AbstractEventData { 
-	private int startMovement;
-	private float startLocationX;
-	private float startLocationY;
-	private float startLocationZ;
-	private int movementType;
+	private int playerID;
+	private byte movementType;
+	private float locationX;
+	private float locationY;
+	private float locationZ;
 
 
-	public int getStartMovement() {
-		return startMovement;
+	public int getPlayerID() {
+		return playerID;
 	}
 
-	public void setStartMovement(int startMovement) {
-		this.startMovement = startMovement;
+	public void setPlayerID(int playerID) {
+		this.playerID = playerID;
 	} 
 
-	public float getStartLocationX() {
-		return startLocationX;
-	}
-
-	public void setStartLocationX(float startLocationX) {
-		this.startLocationX = startLocationX;
-	} 
-
-	public float getStartLocationY() {
-		return startLocationY;
-	}
-
-	public void setStartLocationY(float startLocationY) {
-		this.startLocationY = startLocationY;
-	} 
-
-	public float getStartLocationZ() {
-		return startLocationZ;
-	}
-
-	public void setStartLocationZ(float startLocationZ) {
-		this.startLocationZ = startLocationZ;
-	} 
-
-	public int getMovementType() {
+	public byte getMovementType() {
 		return movementType;
 	}
 
-	public void setMovementType(int movementType) {
+	public void setMovementType(byte movementType) {
 		this.movementType = movementType;
+	} 
+
+	public float getLocationX() {
+		return locationX;
+	}
+
+	public void setLocationX(float locationX) {
+		this.locationX = locationX;
+	} 
+
+	public float getLocationY() {
+		return locationY;
+	}
+
+	public void setLocationY(float locationY) {
+		this.locationY = locationY;
+	} 
+
+	public float getLocationZ() {
+		return locationZ;
+	}
+
+	public void setLocationZ(float locationZ) {
+		this.locationZ = locationZ;
 	} 
 
 
 	public void deserialize(ByteBuffer payload) {
-		startMovement = payload.getInt();
-		startLocationX = payload.getFloat();
-		startLocationY = payload.getFloat();
-		startLocationZ = payload.getFloat();
-		movementType = payload.getInt();
+		playerID = payload.getInt();
+		movementType = payload.get();
+		locationX = payload.getFloat();
+		locationY = payload.getFloat();
+		locationZ = payload.getFloat();
 	}
 
 	public int serialize(ByteBuffer payload) {
-		payload.putInt(startMovement);
-		payload.putFloat(startLocationX);
-		payload.putFloat(startLocationY);
-		payload.putFloat(startLocationZ);
-		payload.putInt(movementType);
+		payload.putInt(playerID);
+		payload.put(movementType);
+		payload.putFloat(locationX);
+		payload.putFloat(locationY);
+		payload.putFloat(locationZ);
 		return payload.position();
 	}
 }
