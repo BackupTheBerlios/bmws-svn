@@ -20,6 +20,7 @@ import de.mbws.common.events.EventTypes;
 import de.mbws.server.EventWriter;
 import de.mbws.server.RequestDispatcher;
 import de.mbws.server.controller.AccountEventController;
+import de.mbws.server.controller.CharacterEventController;
 import de.mbws.server.controller.EventController;
 import de.mbws.server.controller.EventDispatcher;
 import de.mbws.server.controller.LoginEventController;
@@ -120,6 +121,8 @@ public class AccountServer extends Thread {
         eventReader.put(new Integer(EventTypes.LOGIN), new LoginEventController(this, EventTypes.LOGIN));
         eventReader.put(new Integer(EventTypes.LOGOUT), new LoginEventController(this, EventTypes.LOGOUT));
         eventReader.put(new Integer(EventTypes.ACCOUNT_CREATE), new AccountEventController(this, EventTypes.ACCOUNT_CREATE));
+        
+        eventReader.put(new Integer(EventTypes.CHARACTER_RECEIVE_REQUEST), new CharacterEventController(this, EventTypes.CHARACTER_RECEIVE_REQUEST));
     }
 
     public EventController getEventController(int eventType) {
