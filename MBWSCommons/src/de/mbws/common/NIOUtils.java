@@ -44,7 +44,7 @@ public class NIOUtils {
 	public static void prepBuffer(AbstractGameEvent event,
 			ByteBuffer writeBuffer) {
 		writeBuffer.clear();
-		writeBuffer.putInt(0); //sessionid; not sure if we ever need it
+		writeBuffer.putInt(event.getPlayer().getSessionId()); //sessionid; not sure if we ever need it
 		writeBuffer.putInt(0); //size
 		writeBuffer.putInt(event.getEventType());
 		int size = event.serialize(writeBuffer);
