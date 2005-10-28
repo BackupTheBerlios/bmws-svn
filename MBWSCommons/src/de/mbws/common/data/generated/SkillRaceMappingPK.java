@@ -9,13 +9,13 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class SkillRaceMappingPK implements Serializable {
 
     /** identifier field */
-    private Integer raceId;
+    private Object raceId;
 
     /** identifier field */
-    private Integer skillId;
+    private Object skillId;
 
     /** full constructor */
-    public SkillRaceMappingPK(Integer raceId, Integer skillId) {
+    public SkillRaceMappingPK(Object raceId, Object skillId) {
         this.raceId = raceId;
         this.skillId = skillId;
     }
@@ -24,19 +24,19 @@ public class SkillRaceMappingPK implements Serializable {
     public SkillRaceMappingPK() {
     }
 
-    public Integer getRaceId() {
+    public Object getRaceId() {
         return this.raceId;
     }
 
-    public void setRaceId(Integer raceId) {
+    public void setRaceId(Object raceId) {
         this.raceId = raceId;
     }
 
-    public Integer getSkillId() {
+    public Object getSkillId() {
         return this.skillId;
     }
 
-    public void setSkillId(Integer skillId) {
+    public void setSkillId(Object skillId) {
         this.skillId = skillId;
     }
 

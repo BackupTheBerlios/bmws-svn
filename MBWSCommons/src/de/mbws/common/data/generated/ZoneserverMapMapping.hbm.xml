@@ -5,7 +5,7 @@
     
 <hibernate-mapping>
 <!-- 
-    Created by the Middlegen Hibernate plugin 2.1
+    Created by the Middlegen Hibernate plugin 2.2
 
     http://boss.bekk.no/boss/middlegen/
     http://www.hibernate.org/
@@ -15,38 +15,54 @@
     name="de.mbws.common.data.generated.ZoneserverMapMapping" 
     table="zoneserver_map_mapping"
 >
-    <meta attribute="implement-equals" inherit="false">true</meta>
 
-    <composite-id>
+    <composite-id name="comp_id" class="de.mbws.common.data.generated.ZoneserverMapMappingPK">
         <key-property 
-            name="active" 
-            column="active" 
-            type="byte"
-            length="1"
+            name="mapId" 
+            column="map_id" 
+            type="java.lang.Object"
+            length="10"
+        />
+        <key-property 
+            name="zoneserverId" 
+            column="zoneserver_id" 
+            type="java.lang.Object"
+            length="10"
         />
     </composite-id>    
 
+    <property
+        name="active"
+        type="byte"
+        column="active"
+        not-null="true"
+        length="1"
+    />
 
     <!-- Associations -->
     <!-- derived association(s) for compound key -->
-    <!-- end of derived association(s) -->
-  
     <!-- bi-directional many-to-one association to Zoneserver -->
     <many-to-one
         name="zoneserver"
-        class="de.mbws.common.data.generated.Zoneserver"
-        not-null="true"
-    >
-        <column name="zoneserver_id" />
-    </many-to-one>
+	    class="de.mbws.common.data.generated.Zoneserver"
+	    update="false"
+	    insert="false"
+	>
+    	<column name="zoneserver_id" />
+	</many-to-one>
+	
     <!-- bi-directional many-to-one association to Map -->
     <many-to-one
         name="map"
-        class="de.mbws.common.data.generated.Map"
-        not-null="true"
-    >
-        <column name="map_id" />
-    </many-to-one>
+	    class="de.mbws.common.data.generated.Map"
+	    update="false"
+	    insert="false"
+	>
+    	<column name="map_id" />
+	</many-to-one>
+	
+    <!-- end of derived association(s) -->
+  
 
 </class>
 </hibernate-mapping>

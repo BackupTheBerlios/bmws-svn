@@ -10,7 +10,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class Zoneserver implements Serializable {
 
     /** identifier field */
-    private Integer id;
+    private Object id;
 
     /** persistent field */
     private String name;
@@ -19,13 +19,13 @@ public class Zoneserver implements Serializable {
     private String ip;
 
     /** persistent field */
-    private int port;
+    private Object port;
 
     /** persistent field */
     private Set zoneserverMapMappings;
 
     /** full constructor */
-    public Zoneserver(Integer id, String name, String ip, int port, Set zoneserverMapMappings) {
+    public Zoneserver(Object id, String name, String ip, Object port, Set zoneserverMapMappings) {
         this.id = id;
         this.name = name;
         this.ip = ip;
@@ -37,11 +37,15 @@ public class Zoneserver implements Serializable {
     public Zoneserver() {
     }
 
-    public Integer getId() {
+    /** 
+     * 		       auto_increment
+     * 		    
+     */
+    public Object getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Object id) {
         this.id = id;
     }
 
@@ -61,11 +65,11 @@ public class Zoneserver implements Serializable {
         this.ip = ip;
     }
 
-    public int getPort() {
+    public Object getPort() {
         return this.port;
     }
 
-    public void setPort(int port) {
+    public void setPort(Object port) {
         this.port = port;
     }
 

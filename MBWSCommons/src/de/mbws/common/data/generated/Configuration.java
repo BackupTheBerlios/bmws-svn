@@ -9,13 +9,13 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class Configuration implements Serializable {
 
     /** identifier field */
-    private Integer id;
+    private Object id;
 
     /** persistent field */
     private String value;
 
     /** full constructor */
-    public Configuration(Integer id, String value) {
+    public Configuration(Object id, String value) {
         this.id = id;
         this.value = value;
     }
@@ -24,11 +24,15 @@ public class Configuration implements Serializable {
     public Configuration() {
     }
 
-    public Integer getId() {
+    /** 
+     * 		       auto_increment
+     * 		    
+     */
+    public Object getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Object id) {
         this.id = id;
     }
 

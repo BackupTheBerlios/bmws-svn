@@ -16,7 +16,7 @@ public class Item implements Serializable {
     private String name;
 
     /** persistent field */
-    private int condition;
+    private Object condition;
 
     /** persistent field */
     private long weight;
@@ -34,7 +34,7 @@ public class Item implements Serializable {
     private Set characterItemMappings;
 
     /** full constructor */
-    public Item(Long id, String name, int condition, long weight, long size, String description, de.mbws.common.data.generated.ItemType itemType, Set characterItemMappings) {
+    public Item(Long id, String name, Object condition, long weight, long size, String description, de.mbws.common.data.generated.ItemType itemType, Set characterItemMappings) {
         this.id = id;
         this.name = name;
         this.condition = condition;
@@ -65,11 +65,11 @@ public class Item implements Serializable {
         this.name = name;
     }
 
-    public int getCondition() {
+    public Object getCondition() {
         return this.condition;
     }
 
-    public void setCondition(int condition) {
+    public void setCondition(Object condition) {
         this.condition = condition;
     }
 

@@ -5,7 +5,7 @@
     
 <hibernate-mapping>
 <!-- 
-    Created by the Middlegen Hibernate plugin 2.1
+    Created by the Middlegen Hibernate plugin 2.2
 
     http://boss.bekk.no/boss/middlegen/
     http://www.hibernate.org/
@@ -16,31 +16,38 @@
     table="character_item_mapping"
 >
 
-    <composite-id>
-        <key-property 
-            name="position" 
-            column="position" 
-            type="java.lang.String"
-            length="1"
-        />
-        <key-property 
-            name="currentcondition" 
-            column="currentcondition" 
-            type="int"
-            length="10"
-        />
-        <key-property 
-            name="depositItem" 
-            column="deposit_item" 
-            type="int"
-            length="10"
-        />
-    </composite-id>    
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="id"
+    >
+    
+        <generator class="assigned" />
+    </id>
 
+    <property
+        name="position"
+        type="java.lang.String"
+        column="position"
+        not-null="true"
+        length="1"
+    />
+    <property
+        name="currentcondition"
+        type="java.lang.Object"
+        column="currentcondition"
+        not-null="true"
+        length="10"
+    />
+    <property
+        name="depositItem"
+        type="java.lang.Object"
+        column="deposit_item"
+        not-null="true"
+        length="10"
+    />
 
     <!-- Associations -->
-    <!-- derived association(s) for compound key -->
-    <!-- end of derived association(s) -->
   
     <!-- bi-directional many-to-one association to Item -->
     <many-to-one
@@ -56,7 +63,7 @@
         class="de.mbws.common.data.generated.Characterdata"
         not-null="true"
     >
-        <column name="charactername" />
+        <column name="characterdata_id" />
     </many-to-one>
 
 </class>

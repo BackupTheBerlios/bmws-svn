@@ -18,31 +18,31 @@ public class NpcStatus implements Serializable {
     private String gamestatus;
 
     /** nullable persistent field */
-    private Integer coordinateX;
+    private Object coordinateX;
 
     /** nullable persistent field */
-    private Integer coordinateZ;
+    private Object coordinateZ;
 
     /** nullable persistent field */
-    private Integer currentmana;
+    private Object currentmana;
 
     /** nullable persistent field */
-    private Integer currenthelth;
+    private Object currenthelth;
 
     /** nullable persistent field */
-    private Integer currentstamina;
+    private Object currentstamina;
 
     /** nullable persistent field */
-    private Integer currentstrength;
+    private Object currentstrength;
 
     /** nullable persistent field */
-    private Integer currentintelligence;
+    private Object currentintelligence;
 
     /** nullable persistent field */
-    private Integer currentdexterity;
+    private Object currentdexterity;
 
     /** nullable persistent field */
-    private Integer currentconstitution;
+    private Object currentconstitution;
 
     /** nullable persistent field */
     private de.mbws.common.data.generated.Npc npc;
@@ -51,7 +51,7 @@ public class NpcStatus implements Serializable {
     private de.mbws.common.data.generated.Map map;
 
     /** full constructor */
-    public NpcStatus(Long npcId, String npcstatus, String gamestatus, Integer coordinateX, Integer coordinateZ, Integer currentmana, Integer currenthelth, Integer currentstamina, Integer currentstrength, Integer currentintelligence, Integer currentdexterity, Integer currentconstitution, de.mbws.common.data.generated.Npc npc, de.mbws.common.data.generated.Map map) {
+    public NpcStatus(Long npcId, String npcstatus, String gamestatus, Object coordinateX, Object coordinateZ, Object currentmana, Object currenthelth, Object currentstamina, Object currentstrength, Object currentintelligence, Object currentdexterity, Object currentconstitution, de.mbws.common.data.generated.Npc npc, de.mbws.common.data.generated.Map map) {
         this.npcId = npcId;
         this.npcstatus = npcstatus;
         this.gamestatus = gamestatus;
@@ -103,75 +103,75 @@ public class NpcStatus implements Serializable {
         this.gamestatus = gamestatus;
     }
 
-    public Integer getCoordinateX() {
+    public Object getCoordinateX() {
         return this.coordinateX;
     }
 
-    public void setCoordinateX(Integer coordinateX) {
+    public void setCoordinateX(Object coordinateX) {
         this.coordinateX = coordinateX;
     }
 
-    public Integer getCoordinateZ() {
+    public Object getCoordinateZ() {
         return this.coordinateZ;
     }
 
-    public void setCoordinateZ(Integer coordinateZ) {
+    public void setCoordinateZ(Object coordinateZ) {
         this.coordinateZ = coordinateZ;
     }
 
-    public Integer getCurrentmana() {
+    public Object getCurrentmana() {
         return this.currentmana;
     }
 
-    public void setCurrentmana(Integer currentmana) {
+    public void setCurrentmana(Object currentmana) {
         this.currentmana = currentmana;
     }
 
-    public Integer getCurrenthelth() {
+    public Object getCurrenthelth() {
         return this.currenthelth;
     }
 
-    public void setCurrenthelth(Integer currenthelth) {
+    public void setCurrenthelth(Object currenthelth) {
         this.currenthelth = currenthelth;
     }
 
-    public Integer getCurrentstamina() {
+    public Object getCurrentstamina() {
         return this.currentstamina;
     }
 
-    public void setCurrentstamina(Integer currentstamina) {
+    public void setCurrentstamina(Object currentstamina) {
         this.currentstamina = currentstamina;
     }
 
-    public Integer getCurrentstrength() {
+    public Object getCurrentstrength() {
         return this.currentstrength;
     }
 
-    public void setCurrentstrength(Integer currentstrength) {
+    public void setCurrentstrength(Object currentstrength) {
         this.currentstrength = currentstrength;
     }
 
-    public Integer getCurrentintelligence() {
+    public Object getCurrentintelligence() {
         return this.currentintelligence;
     }
 
-    public void setCurrentintelligence(Integer currentintelligence) {
+    public void setCurrentintelligence(Object currentintelligence) {
         this.currentintelligence = currentintelligence;
     }
 
-    public Integer getCurrentdexterity() {
+    public Object getCurrentdexterity() {
         return this.currentdexterity;
     }
 
-    public void setCurrentdexterity(Integer currentdexterity) {
+    public void setCurrentdexterity(Object currentdexterity) {
         this.currentdexterity = currentdexterity;
     }
 
-    public Integer getCurrentconstitution() {
+    public Object getCurrentconstitution() {
         return this.currentconstitution;
     }
 
-    public void setCurrentconstitution(Integer currentconstitution) {
+    public void setCurrentconstitution(Object currentconstitution) {
         this.currentconstitution = currentconstitution;
     }
 

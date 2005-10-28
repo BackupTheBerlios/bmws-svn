@@ -5,7 +5,7 @@
     
 <hibernate-mapping>
 <!-- 
-    Created by the Middlegen Hibernate plugin 2.1
+    Created by the Middlegen Hibernate plugin 2.2
 
     http://boss.bekk.no/boss/middlegen/
     http://www.hibernate.org/
@@ -21,6 +21,7 @@
         type="java.lang.Long"
         column="npc_id"
     >
+    
         <generator class="assigned" />
     </id>
 
@@ -39,55 +40,55 @@
     />
     <property
         name="coordinateX"
-        type="java.lang.Integer"
+        type="java.lang.Object"
         column="coordinate_x"
         length="10"
     />
     <property
         name="coordinateZ"
-        type="java.lang.Integer"
+        type="java.lang.Object"
         column="coordinate_z"
         length="10"
     />
     <property
         name="currentmana"
-        type="java.lang.Integer"
+        type="java.lang.Object"
         column="currentmana"
         length="10"
     />
     <property
         name="currenthelth"
-        type="java.lang.Integer"
+        type="java.lang.Object"
         column="currenthelth"
         length="10"
     />
     <property
         name="currentstamina"
-        type="java.lang.Integer"
+        type="java.lang.Object"
         column="currentstamina"
         length="10"
     />
     <property
         name="currentstrength"
-        type="java.lang.Integer"
+        type="java.lang.Object"
         column="currentstrength"
         length="10"
     />
     <property
         name="currentintelligence"
-        type="java.lang.Integer"
+        type="java.lang.Object"
         column="currentintelligence"
         length="10"
     />
     <property
         name="currentdexterity"
-        type="java.lang.Integer"
+        type="java.lang.Object"
         column="currentdexterity"
         length="10"
     />
     <property
         name="currentconstitution"
-        type="java.lang.Integer"
+        type="java.lang.Object"
         column="currentconstitution"
         length="10"
     />

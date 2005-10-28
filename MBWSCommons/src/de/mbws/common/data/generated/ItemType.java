@@ -10,13 +10,13 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class ItemType implements Serializable {
 
     /** identifier field */
-    private Integer id;
+    private Object id;
 
     /** persistent field */
     private String name;
 
     /** persistent field */
-    private int containersize;
+    private Object containersize;
 
     /** persistent field */
     private byte wearable;
@@ -25,7 +25,7 @@ public class ItemType implements Serializable {
     private Set items;
 
     /** full constructor */
-    public ItemType(Integer id, String name, int containersize, byte wearable, Set items) {
+    public ItemType(Object id, String name, Object containersize, byte wearable, Set items) {
         this.id = id;
         this.name = name;
         this.containersize = containersize;
@@ -37,11 +37,15 @@ public class ItemType implements Serializable {
     public ItemType() {
     }
 
-    public Integer getId() {
+    /** 
+     * 		       auto_increment
+     * 		    
+     */
+    public Object getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Object id) {
         this.id = id;
     }
 
@@ -53,11 +57,11 @@ public class ItemType implements Serializable {
         this.name = name;
     }
 
-    public int getContainersize() {
+    public Object getContainersize() {
         return this.containersize;
     }
 
-    public void setContainersize(int containersize) {
+    public void setContainersize(Object containersize) {
         this.containersize = containersize;
     }
 

@@ -12,10 +12,10 @@ public class NpcSkillMappingPK implements Serializable {
     private Long npcId;
 
     /** identifier field */
-    private Integer skillId;
+    private Object skillId;
 
     /** full constructor */
-    public NpcSkillMappingPK(Long npcId, Integer skillId) {
+    public NpcSkillMappingPK(Long npcId, Object skillId) {
         this.npcId = npcId;
         this.skillId = skillId;
     }
@@ -32,11 +32,11 @@ public class NpcSkillMappingPK implements Serializable {
         this.npcId = npcId;
     }
 
-    public Integer getSkillId() {
+    public Object getSkillId() {
         return this.skillId;
     }
 
-    public void setSkillId(Integer skillId) {
+    public void setSkillId(Object skillId) {
         this.skillId = skillId;
     }
 

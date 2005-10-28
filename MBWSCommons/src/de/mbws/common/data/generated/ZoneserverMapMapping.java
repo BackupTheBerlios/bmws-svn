@@ -9,16 +9,20 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class ZoneserverMapMapping implements Serializable {
 
     /** identifier field */
+    private de.mbws.common.data.generated.ZoneserverMapMappingPK comp_id;
+
+    /** persistent field */
     private byte active;
 
-    /** persistent field */
+    /** nullable persistent field */
     private de.mbws.common.data.generated.Zoneserver zoneserver;
 
-    /** persistent field */
+    /** nullable persistent field */
     private de.mbws.common.data.generated.Map map;
 
     /** full constructor */
-    public ZoneserverMapMapping(byte active, de.mbws.common.data.generated.Zoneserver zoneserver, de.mbws.common.data.generated.Map map) {
+    public ZoneserverMapMapping(de.mbws.common.data.generated.ZoneserverMapMappingPK comp_id, byte active, de.mbws.common.data.generated.Zoneserver zoneserver, de.mbws.common.data.generated.Map map) {
+        this.comp_id = comp_id;
         this.active = active;
         this.zoneserver = zoneserver;
         this.map = map;
@@ -26,6 +30,20 @@ public class ZoneserverMapMapping implements Serializable {
 
     /** default constructor */
     public ZoneserverMapMapping() {
+    }
+
+    /** minimal constructor */
+    public ZoneserverMapMapping(de.mbws.common.data.generated.ZoneserverMapMappingPK comp_id, byte active) {
+        this.comp_id = comp_id;
+        this.active = active;
+    }
+
+    public de.mbws.common.data.generated.ZoneserverMapMappingPK getComp_id() {
+        return this.comp_id;
+    }
+
+    public void setComp_id(de.mbws.common.data.generated.ZoneserverMapMappingPK comp_id) {
+        this.comp_id = comp_id;
     }
 
     public byte getActive() {
@@ -54,7 +72,7 @@ public class ZoneserverMapMapping implements Serializable {
 
     public String toString() {
         return new ToStringBuilder(this)
-            .append("active", getActive())
+            .append("comp_id", getComp_id())
             .toString();
     }
 
@@ -62,13 +80,13 @@ public class ZoneserverMapMapping implements Serializable {
         if ( !(other instanceof ZoneserverMapMapping) ) return false;
         ZoneserverMapMapping castOther = (ZoneserverMapMapping) other;
         return new EqualsBuilder()
-            .append(this.getActive(), castOther.getActive())
+            .append(this.getComp_id(), castOther.getComp_id())
             .isEquals();
     }
 
     public int hashCode() {
         return new HashCodeBuilder()
-            .append(getActive())
+            .append(getComp_id())
             .toHashCode();
     }
 

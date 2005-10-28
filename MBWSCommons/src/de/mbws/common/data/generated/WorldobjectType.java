@@ -10,7 +10,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class WorldobjectType implements Serializable {
 
     /** identifier field */
-    private Integer id;
+    private Object id;
 
     /** persistent field */
     private String name;
@@ -19,16 +19,16 @@ public class WorldobjectType implements Serializable {
     private byte moveable;
 
     /** nullable persistent field */
-    private Integer maxspeed;
+    private Object maxspeed;
 
     /** nullable persistent field */
-    private Integer stamina;
+    private Object stamina;
 
     /** persistent field */
     private Set worldobjects;
 
     /** full constructor */
-    public WorldobjectType(Integer id, String name, byte moveable, Integer maxspeed, Integer stamina, Set worldobjects) {
+    public WorldobjectType(Object id, String name, byte moveable, Object maxspeed, Object stamina, Set worldobjects) {
         this.id = id;
         this.name = name;
         this.moveable = moveable;
@@ -42,18 +42,22 @@ public class WorldobjectType implements Serializable {
     }
 
     /** minimal constructor */
-    public WorldobjectType(Integer id, String name, byte moveable, Set worldobjects) {
+    public WorldobjectType(Object id, String name, byte moveable, Set worldobjects) {
         this.id = id;
         this.name = name;
         this.moveable = moveable;
         this.worldobjects = worldobjects;
     }
 
-    public Integer getId() {
+    /** 
+     * 		       auto_increment
+     * 		    
+     */
+    public Object getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Object id) {
         this.id = id;
     }
 
@@ -73,19 +77,19 @@ public class WorldobjectType implements Serializable {
         this.moveable = moveable;
     }
 
-    public Integer getMaxspeed() {
+    public Object getMaxspeed() {
         return this.maxspeed;
     }
 
-    public void setMaxspeed(Integer maxspeed) {
+    public void setMaxspeed(Object maxspeed) {
         this.maxspeed = maxspeed;
     }
 
-    public Integer getStamina() {
+    public Object getStamina() {
         return this.stamina;
     }
 
-    public void setStamina(Integer stamina) {
+    public void setStamina(Object stamina) {
         this.stamina = stamina;
     }
 

@@ -5,7 +5,7 @@
     
 <hibernate-mapping>
 <!-- 
-    Created by the Middlegen Hibernate plugin 2.1
+    Created by the Middlegen Hibernate plugin 2.2
 
     http://boss.bekk.no/boss/middlegen/
     http://www.hibernate.org/
@@ -18,9 +18,13 @@
 
     <id
         name="id"
-        type="java.lang.Integer"
+        type="java.lang.Object"
         column="id"
     >
+		    <meta attribute="field-description" inherit="false">
+		       auto_increment
+		    </meta>
+    
         <generator class="assigned" />
     </id>
 
@@ -33,21 +37,21 @@
     />
     <property
         name="basehealth"
-        type="int"
+        type="java.lang.Object"
         column="basehealth"
         not-null="true"
         length="10"
     />
     <property
         name="basemana"
-        type="int"
+        type="java.lang.Object"
         column="basemana"
         not-null="true"
         length="10"
     />
     <property
         name="basestamina"
-        type="int"
+        type="java.lang.Object"
         column="basestamina"
         not-null="true"
         length="10"
@@ -98,43 +102,52 @@
     <!-- Associations -->
   
     <!-- bi-directional one-to-many association to SkillRaceMapping -->
+
     <set
         name="skillRaceMappings"
         lazy="true"
         inverse="true"
 		cascade="none"
+
     >
         <key>
             <column name="race_id" />
         </key>
+        
         <one-to-many 
             class="de.mbws.common.data.generated.SkillRaceMapping"
         />
     </set>
     <!-- bi-directional one-to-many association to Characterdata -->
+
     <set
         name="characterdatas"
         lazy="true"
         inverse="true"
 		cascade="none"
+
     >
         <key>
             <column name="race_id" />
         </key>
+        
         <one-to-many 
             class="de.mbws.common.data.generated.Characterdata"
         />
     </set>
     <!-- bi-directional one-to-many association to Npc -->
+
     <set
         name="npcs"
         lazy="true"
         inverse="true"
 		cascade="none"
+
     >
         <key>
             <column name="race_id" />
         </key>
+        
         <one-to-many 
             class="de.mbws.common.data.generated.Npc"
         />

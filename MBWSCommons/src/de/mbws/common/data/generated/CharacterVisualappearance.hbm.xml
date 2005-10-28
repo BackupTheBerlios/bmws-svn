@@ -5,7 +5,7 @@
     
 <hibernate-mapping>
 <!-- 
-    Created by the Middlegen Hibernate plugin 2.1
+    Created by the Middlegen Hibernate plugin 2.2
 
     http://boss.bekk.no/boss/middlegen/
     http://www.hibernate.org/
@@ -16,155 +16,151 @@
     table="character_visualappearance"
 >
 
-    <composite-id name="comp_id" class="de.mbws.common.data.generated.CharacterVisualappearancePK">
-        <key-property 
-            name="height" 
-            column="height" 
-            type="java.lang.Integer"
-            length="10"
-        />
-        <key-property 
-            name="characterdataCharactername" 
-            column="characterdata_charactername" 
-            type="java.lang.String"
-            length="30"
-        />
-    </composite-id>    
+    <id
+        name="id"
+        type="java.lang.Object"
+        column="id"
+    >
+    
+        <generator class="assigned" />
+    </id>
 
     <property
+        name="height"
+        type="java.lang.Object"
+        column="height"
+        not-null="true"
+        length="10"
+    />
+    <property
         name="skinColor"
-        type="int"
+        type="java.lang.Object"
         column="skin_color"
         not-null="true"
         length="10"
     />
     <property
         name="faceType"
-        type="int"
+        type="java.lang.Object"
         column="face_type"
         not-null="true"
         length="10"
     />
     <property
         name="hairColor"
-        type="int"
+        type="java.lang.Object"
         column="hair_color"
         not-null="true"
         length="10"
     />
     <property
         name="hairStyle"
-        type="int"
+        type="java.lang.Object"
         column="hair_style"
         not-null="true"
         length="10"
     />
     <property
         name="hairFacial"
-        type="int"
+        type="java.lang.Object"
         column="hair_facial"
         not-null="true"
         length="10"
     />
     <property
         name="itemHead"
-        type="int"
+        type="java.lang.Object"
         column="item_head"
         not-null="true"
         length="10"
     />
     <property
         name="itemShoulders"
-        type="int"
+        type="java.lang.Object"
         column="item_shoulders"
         not-null="true"
         length="10"
     />
     <property
         name="itemShirt"
-        type="int"
+        type="java.lang.Object"
         column="item_shirt"
         not-null="true"
         length="10"
     />
     <property
         name="itemChest"
-        type="int"
+        type="java.lang.Object"
         column="item_chest"
         not-null="true"
         length="10"
     />
     <property
         name="itemBelt"
-        type="int"
+        type="java.lang.Object"
         column="item_belt"
         not-null="true"
         length="10"
     />
     <property
         name="itemLegs"
-        type="int"
+        type="java.lang.Object"
         column="item_legs"
         not-null="true"
         length="10"
     />
     <property
         name="itemBoots"
-        type="int"
+        type="java.lang.Object"
         column="item_boots"
         not-null="true"
         length="10"
     />
     <property
         name="itemBracers"
-        type="int"
+        type="java.lang.Object"
         column="item_bracers"
         not-null="true"
         length="10"
     />
     <property
         name="itemGloves"
-        type="int"
+        type="java.lang.Object"
         column="item_gloves"
         not-null="true"
         length="10"
     />
     <property
         name="itemCape"
-        type="int"
+        type="java.lang.Object"
         column="item_cape"
         not-null="true"
         length="10"
     />
     <property
         name="itemHandLeft"
-        type="int"
+        type="java.lang.Object"
         column="item_hand_left"
         not-null="true"
         length="10"
     />
     <property
         name="itemHandRight"
-        type="int"
+        type="java.lang.Object"
         column="item_hand_right"
         not-null="true"
         length="10"
     />
 
     <!-- Associations -->
-    <!-- derived association(s) for compound key -->
-    <!-- bi-directional many-to-one association to Characterdata -->
-    <many-to-one
-        name="characterdata"
-	    class="de.mbws.common.data.generated.Characterdata"
-	    update="false"
-	    insert="false"
-	>
-    	<column name="characterdata_charactername" />
-	</many-to-one>
-	
-    <!-- end of derived association(s) -->
   
+    <!-- bi-directional one-to-one association to Characterdata -->
+    <one-to-one
+        name="characterdata"
+        class="de.mbws.common.data.generated.Characterdata"
+        outer-join="auto"
+        constrained="true"
+    />
 
 </class>
 </hibernate-mapping>

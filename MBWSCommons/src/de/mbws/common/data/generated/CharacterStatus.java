@@ -9,55 +9,59 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class CharacterStatus implements Serializable {
 
     /** identifier field */
-    private String charstatus;
-
-    /** identifier field */
-    private String pvp;
-
-    /** identifier field */
-    private String gamestatus;
-
-    /** identifier field */
-    private int coordinateX;
-
-    /** identifier field */
-    private int coordinateY;
-
-    /** identifier field */
-    private int coordinateZ;
-
-    /** identifier field */
-    private int currentmana;
-
-    /** identifier field */
-    private int currenthealth;
-
-    /** identifier field */
-    private int currentstamina;
-
-    /** identifier field */
-    private int currentstrength;
-
-    /** identifier field */
-    private int currentinteligence;
-
-    /** identifier field */
-    private int currentdexterity;
-
-    /** identifier field */
-    private int currentconstitution;
-
-    /** identifier field */
-    private int freexp;
+    private Object id;
 
     /** persistent field */
+    private String charstatus;
+
+    /** persistent field */
+    private String pvp;
+
+    /** persistent field */
+    private String gamestatus;
+
+    /** persistent field */
+    private Object coordinateX;
+
+    /** persistent field */
+    private Object coordinateY;
+
+    /** persistent field */
+    private Object coordinateZ;
+
+    /** persistent field */
+    private Object currentmana;
+
+    /** persistent field */
+    private Object currenthealth;
+
+    /** persistent field */
+    private Object currentstamina;
+
+    /** persistent field */
+    private Object currentstrength;
+
+    /** persistent field */
+    private Object currentinteligence;
+
+    /** persistent field */
+    private Object currentdexterity;
+
+    /** persistent field */
+    private Object currentconstitution;
+
+    /** persistent field */
+    private Object freexp;
+
+    /** nullable persistent field */
     private de.mbws.common.data.generated.Characterdata characterdata;
 
     /** persistent field */
     private de.mbws.common.data.generated.Map map;
 
     /** full constructor */
-    public CharacterStatus(String charstatus, String pvp, String gamestatus, int coordinateX, int coordinateY, int coordinateZ, int currentmana, int currenthealth, int currentstamina, int currentstrength, int currentinteligence, int currentdexterity, int currentconstitution, int freexp, de.mbws.common.data.generated.Characterdata characterdata, de.mbws.common.data.generated.Map map) {
+    public CharacterStatus(Object id, String charstatus, String pvp, String gamestatus, Object coordinateX, Object coordinateY, Object coordinateZ, Object currentmana, Object currenthealth, Object currentstamina, Object currentstrength, Object currentinteligence, Object currentdexterity, Object currentconstitution, Object freexp, de.mbws.common.data.generated.Characterdata characterdata, de.mbws.common.data.generated.Map map) {
+        this.id = id;
         this.charstatus = charstatus;
         this.pvp = pvp;
         this.gamestatus = gamestatus;
@@ -78,6 +82,34 @@ public class CharacterStatus implements Serializable {
 
     /** default constructor */
     public CharacterStatus() {
+    }
+
+    /** minimal constructor */
+    public CharacterStatus(Object id, String charstatus, String pvp, String gamestatus, Object coordinateX, Object coordinateY, Object coordinateZ, Object currentmana, Object currenthealth, Object currentstamina, Object currentstrength, Object currentinteligence, Object currentdexterity, Object currentconstitution, Object freexp, de.mbws.common.data.generated.Map map) {
+        this.id = id;
+        this.charstatus = charstatus;
+        this.pvp = pvp;
+        this.gamestatus = gamestatus;
+        this.coordinateX = coordinateX;
+        this.coordinateY = coordinateY;
+        this.coordinateZ = coordinateZ;
+        this.currentmana = currentmana;
+        this.currenthealth = currenthealth;
+        this.currentstamina = currentstamina;
+        this.currentstrength = currentstrength;
+        this.currentinteligence = currentinteligence;
+        this.currentdexterity = currentdexterity;
+        this.currentconstitution = currentconstitution;
+        this.freexp = freexp;
+        this.map = map;
+    }
+
+    public Object getId() {
+        return this.id;
+    }
+
+    public void setId(Object id) {
+        this.id = id;
     }
 
     public String getCharstatus() {
@@ -104,91 +136,91 @@ public class CharacterStatus implements Serializable {
         this.gamestatus = gamestatus;
     }
 
-    public int getCoordinateX() {
+    public Object getCoordinateX() {
         return this.coordinateX;
     }
 
-    public void setCoordinateX(int coordinateX) {
+    public void setCoordinateX(Object coordinateX) {
         this.coordinateX = coordinateX;
     }
 
-    public int getCoordinateY() {
+    public Object getCoordinateY() {
         return this.coordinateY;
     }
 
-    public void setCoordinateY(int coordinateY) {
+    public void setCoordinateY(Object coordinateY) {
         this.coordinateY = coordinateY;
     }
 
-    public int getCoordinateZ() {
+    public Object getCoordinateZ() {
         return this.coordinateZ;
     }
 
-    public void setCoordinateZ(int coordinateZ) {
+    public void setCoordinateZ(Object coordinateZ) {
         this.coordinateZ = coordinateZ;
     }
 
-    public int getCurrentmana() {
+    public Object getCurrentmana() {
         return this.currentmana;
     }
 
-    public void setCurrentmana(int currentmana) {
+    public void setCurrentmana(Object currentmana) {
         this.currentmana = currentmana;
     }
 
-    public int getCurrenthealth() {
+    public Object getCurrenthealth() {
         return this.currenthealth;
     }
 
-    public void setCurrenthealth(int currenthealth) {
+    public void setCurrenthealth(Object currenthealth) {
         this.currenthealth = currenthealth;
     }
 
-    public int getCurrentstamina() {
+    public Object getCurrentstamina() {
         return this.currentstamina;
     }
 
-    public void setCurrentstamina(int currentstamina) {
+    public void setCurrentstamina(Object currentstamina) {
         this.currentstamina = currentstamina;
     }
 
-    public int getCurrentstrength() {
+    public Object getCurrentstrength() {
         return this.currentstrength;
     }
 
-    public void setCurrentstrength(int currentstrength) {
+    public void setCurrentstrength(Object currentstrength) {
         this.currentstrength = currentstrength;
     }
 
-    public int getCurrentinteligence() {
+    public Object getCurrentinteligence() {
         return this.currentinteligence;
     }
 
-    public void setCurrentinteligence(int currentinteligence) {
+    public void setCurrentinteligence(Object currentinteligence) {
         this.currentinteligence = currentinteligence;
     }
 
-    public int getCurrentdexterity() {
+    public Object getCurrentdexterity() {
         return this.currentdexterity;
     }
 
-    public void setCurrentdexterity(int currentdexterity) {
+    public void setCurrentdexterity(Object currentdexterity) {
         this.currentdexterity = currentdexterity;
     }
 
-    public int getCurrentconstitution() {
+    public Object getCurrentconstitution() {
         return this.currentconstitution;
     }
 
-    public void setCurrentconstitution(int currentconstitution) {
+    public void setCurrentconstitution(Object currentconstitution) {
         this.currentconstitution = currentconstitution;
     }
 
-    public int getFreexp() {
+    public Object getFreexp() {
         return this.freexp;
     }
 
-    public void setFreexp(int freexp) {
+    public void setFreexp(Object freexp) {
         this.freexp = freexp;
     }
 
@@ -210,20 +242,7 @@ public class CharacterStatus implements Serializable {
 
     public String toString() {
         return new ToStringBuilder(this)
-            .append("charstatus", getCharstatus())
-            .append("pvp", getPvp())
-            .append("gamestatus", getGamestatus())
-            .append("coordinateX", getCoordinateX())
-            .append("coordinateY", getCoordinateY())
-            .append("coordinateZ", getCoordinateZ())
-            .append("currentmana", getCurrentmana())
-            .append("currenthealth", getCurrenthealth())
-            .append("currentstamina", getCurrentstamina())
-            .append("currentstrength", getCurrentstrength())
-            .append("currentinteligence", getCurrentinteligence())
-            .append("currentdexterity", getCurrentdexterity())
-            .append("currentconstitution", getCurrentconstitution())
-            .append("freexp", getFreexp())
+            .append("id", getId())
             .toString();
     }
 
@@ -231,39 +250,13 @@ public class CharacterStatus implements Serializable {
         if ( !(other instanceof CharacterStatus) ) return false;
         CharacterStatus castOther = (CharacterStatus) other;
         return new EqualsBuilder()
-            .append(this.getCharstatus(), castOther.getCharstatus())
-            .append(this.getPvp(), castOther.getPvp())
-            .append(this.getGamestatus(), castOther.getGamestatus())
-            .append(this.getCoordinateX(), castOther.getCoordinateX())
-            .append(this.getCoordinateY(), castOther.getCoordinateY())
-            .append(this.getCoordinateZ(), castOther.getCoordinateZ())
-            .append(this.getCurrentmana(), castOther.getCurrentmana())
-            .append(this.getCurrenthealth(), castOther.getCurrenthealth())
-            .append(this.getCurrentstamina(), castOther.getCurrentstamina())
-            .append(this.getCurrentstrength(), castOther.getCurrentstrength())
-            .append(this.getCurrentinteligence(), castOther.getCurrentinteligence())
-            .append(this.getCurrentdexterity(), castOther.getCurrentdexterity())
-            .append(this.getCurrentconstitution(), castOther.getCurrentconstitution())
-            .append(this.getFreexp(), castOther.getFreexp())
+            .append(this.getId(), castOther.getId())
             .isEquals();
     }
 
     public int hashCode() {
         return new HashCodeBuilder()
-            .append(getCharstatus())
-            .append(getPvp())
-            .append(getGamestatus())
-            .append(getCoordinateX())
-            .append(getCoordinateY())
-            .append(getCoordinateZ())
-            .append(getCurrentmana())
-            .append(getCurrenthealth())
-            .append(getCurrentstamina())
-            .append(getCurrentstrength())
-            .append(getCurrentinteligence())
-            .append(getCurrentdexterity())
-            .append(getCurrentconstitution())
-            .append(getFreexp())
+            .append(getId())
             .toHashCode();
     }
 

@@ -10,7 +10,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class Map implements Serializable {
 
     /** identifier field */
-    private Integer id;
+    private Object id;
 
     /** persistent field */
     private String name;
@@ -31,7 +31,7 @@ public class Map implements Serializable {
     private Set worldobjects;
 
     /** full constructor */
-    public Map(Integer id, String name, String filename, Set characterStatuses, Set zoneserverMapMappings, Set npcStatuses, Set worldobjects) {
+    public Map(Object id, String name, String filename, Set characterStatuses, Set zoneserverMapMappings, Set npcStatuses, Set worldobjects) {
         this.id = id;
         this.name = name;
         this.filename = filename;
@@ -45,11 +45,15 @@ public class Map implements Serializable {
     public Map() {
     }
 
-    public Integer getId() {
+    /** 
+     * 		       auto_increment
+     * 		    
+     */
+    public Object getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Object id) {
         this.id = id;
     }
 

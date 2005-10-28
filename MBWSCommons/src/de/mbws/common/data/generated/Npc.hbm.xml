@@ -5,7 +5,7 @@
     
 <hibernate-mapping>
 <!-- 
-    Created by the Middlegen Hibernate plugin 2.1
+    Created by the Middlegen Hibernate plugin 2.2
 
     http://boss.bekk.no/boss/middlegen/
     http://www.hibernate.org/
@@ -21,6 +21,10 @@
         type="java.lang.Long"
         column="id"
     >
+		    <meta attribute="field-description" inherit="false">
+		       auto_increment
+		    </meta>
+    
         <generator class="assigned" />
     </id>
 
@@ -33,56 +37,56 @@
     />
     <property
         name="health"
-        type="int"
+        type="java.lang.Object"
         column="health"
         not-null="true"
         length="10"
     />
     <property
         name="mana"
-        type="int"
+        type="java.lang.Object"
         column="mana"
         not-null="true"
         length="10"
     />
     <property
         name="stamina"
-        type="int"
+        type="java.lang.Object"
         column="stamina"
         not-null="true"
         length="10"
     />
     <property
         name="age"
-        type="int"
+        type="java.lang.Object"
         column="age"
         not-null="true"
         length="10"
     />
     <property
         name="strength"
-        type="int"
+        type="java.lang.Object"
         column="strength"
         not-null="true"
         length="10"
     />
     <property
         name="intelligence"
-        type="int"
+        type="java.lang.Object"
         column="intelligence"
         not-null="true"
         length="10"
     />
     <property
         name="dexterity"
-        type="int"
+        type="java.lang.Object"
         column="dexterity"
         not-null="true"
         length="10"
     />
     <property
         name="constitution"
-        type="int"
+        type="java.lang.Object"
         column="constitution"
         not-null="true"
         length="10"
@@ -112,29 +116,35 @@
         outer-join="auto"
     />
     <!-- bi-directional one-to-many association to NpcWorldobjectMapping -->
+
     <set
         name="npcWorldobjectMappings"
         lazy="true"
         inverse="true"
 		cascade="none"
+
     >
         <key>
             <column name="npc_id" />
         </key>
+        
         <one-to-many 
             class="de.mbws.common.data.generated.NpcWorldobjectMapping"
         />
     </set>
     <!-- bi-directional one-to-many association to NpcSkillMapping -->
+
     <set
         name="npcSkillMappings"
         lazy="true"
         inverse="true"
 		cascade="none"
+
     >
         <key>
             <column name="npc_id" />
         </key>
+        
         <one-to-many 
             class="de.mbws.common.data.generated.NpcSkillMapping"
         />

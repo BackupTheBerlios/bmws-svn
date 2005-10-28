@@ -16,28 +16,28 @@ public class Npc implements Serializable {
     private String name;
 
     /** persistent field */
-    private int health;
+    private Object health;
 
     /** persistent field */
-    private int mana;
+    private Object mana;
 
     /** persistent field */
-    private int stamina;
+    private Object stamina;
 
     /** persistent field */
-    private int age;
+    private Object age;
 
     /** persistent field */
-    private int strength;
+    private Object strength;
 
     /** persistent field */
-    private int intelligence;
+    private Object intelligence;
 
     /** persistent field */
-    private int dexterity;
+    private Object dexterity;
 
     /** persistent field */
-    private int constitution;
+    private Object constitution;
 
     /** persistent field */
     private byte isspecial;
@@ -55,7 +55,7 @@ public class Npc implements Serializable {
     private Set npcSkillMappings;
 
     /** full constructor */
-    public Npc(Long id, String name, int health, int mana, int stamina, int age, int strength, int intelligence, int dexterity, int constitution, byte isspecial, de.mbws.common.data.generated.NpcStatus npcStatus, de.mbws.common.data.generated.Race race, Set npcWorldobjectMappings, Set npcSkillMappings) {
+    public Npc(Long id, String name, Object health, Object mana, Object stamina, Object age, Object strength, Object intelligence, Object dexterity, Object constitution, byte isspecial, de.mbws.common.data.generated.NpcStatus npcStatus, de.mbws.common.data.generated.Race race, Set npcWorldobjectMappings, Set npcSkillMappings) {
         this.id = id;
         this.name = name;
         this.health = health;
@@ -78,7 +78,7 @@ public class Npc implements Serializable {
     }
 
     /** minimal constructor */
-    public Npc(Long id, String name, int health, int mana, int stamina, int age, int strength, int intelligence, int dexterity, int constitution, byte isspecial, de.mbws.common.data.generated.Race race, Set npcWorldobjectMappings, Set npcSkillMappings) {
+    public Npc(Long id, String name, Object health, Object mana, Object stamina, Object age, Object strength, Object intelligence, Object dexterity, Object constitution, byte isspecial, de.mbws.common.data.generated.Race race, Set npcWorldobjectMappings, Set npcSkillMappings) {
         this.id = id;
         this.name = name;
         this.health = health;
@@ -95,6 +95,10 @@ public class Npc implements Serializable {
         this.npcSkillMappings = npcSkillMappings;
     }
 
+    /** 
+     * 		       auto_increment
+     * 		    
+     */
     public Long getId() {
         return this.id;
     }
@@ -111,67 +115,67 @@ public class Npc implements Serializable {
         this.name = name;
     }
 
-    public int getHealth() {
+    public Object getHealth() {
         return this.health;
     }
 
-    public void setHealth(int health) {
+    public void setHealth(Object health) {
         this.health = health;
     }
 
-    public int getMana() {
+    public Object getMana() {
         return this.mana;
     }
 
-    public void setMana(int mana) {
+    public void setMana(Object mana) {
         this.mana = mana;
     }
 
-    public int getStamina() {
+    public Object getStamina() {
         return this.stamina;
     }
 
-    public void setStamina(int stamina) {
+    public void setStamina(Object stamina) {
         this.stamina = stamina;
     }
 
-    public int getAge() {
+    public Object getAge() {
         return this.age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Object age) {
         this.age = age;
     }
 
-    public int getStrength() {
+    public Object getStrength() {
         return this.strength;
     }
 
-    public void setStrength(int strength) {
+    public void setStrength(Object strength) {
         this.strength = strength;
     }
 
-    public int getIntelligence() {
+    public Object getIntelligence() {
         return this.intelligence;
     }
 
-    public void setIntelligence(int intelligence) {
+    public void setIntelligence(Object intelligence) {
         this.intelligence = intelligence;
     }
 
-    public int getDexterity() {
+    public Object getDexterity() {
         return this.dexterity;
     }
 
-    public void setDexterity(int dexterity) {
+    public void setDexterity(Object dexterity) {
         this.dexterity = dexterity;
     }
 
-    public int getConstitution() {
+    public Object getConstitution() {
         return this.constitution;
     }
 
-    public void setConstitution(int constitution) {
+    public void setConstitution(Object constitution) {
         this.constitution = constitution;
     }
 

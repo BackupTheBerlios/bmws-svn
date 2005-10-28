@@ -10,10 +10,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class Skill implements Serializable {
 
     /** identifier field */
-    private Integer id;
-
-    /** persistent field */
-    private int skillGroupId;
+    private Object id;
 
     /** persistent field */
     private String name;
@@ -22,34 +19,37 @@ public class Skill implements Serializable {
     private byte availableatstartup;
 
     /** nullable persistent field */
-    private Integer oppositeskill;
+    private Object oppositeskill;
 
     /** persistent field */
-    private int costhealth;
+    private Object costhealth;
 
     /** persistent field */
-    private int coststamina;
+    private Object coststamina;
 
     /** persistent field */
-    private int costmana;
+    private Object costmana;
 
     /** persistent field */
-    private int xpcostsbuying;
+    private Object xpcostsbuying;
 
     /** persistent field */
-    private int goldcostsbuying;
+    private Object goldcostsbuying;
 
     /** persistent field */
-    private int xpcostEnhancement;
-
-    /** nullable persistent field */
-    private Integer basevalueFormula;
+    private Object xpcostEnhancement;
 
     /** persistent field */
-    private int useDuration;
+    private Object basevalueFormula;
 
     /** persistent field */
-    private int useTime;
+    private Object useDuration;
+
+    /** persistent field */
+    private Object useTime;
+
+    /** persistent field */
+    private de.mbws.common.data.generated.SkillGroup skillGroup;
 
     /** persistent field */
     private Set characterSkillMappings;
@@ -61,9 +61,8 @@ public class Skill implements Serializable {
     private Set npcSkillMappings;
 
     /** full constructor */
-    public Skill(Integer id, int skillGroupId, String name, byte availableatstartup, Integer oppositeskill, int costhealth, int coststamina, int costmana, int xpcostsbuying, int goldcostsbuying, int xpcostEnhancement, Integer basevalueFormula, int useDuration, int useTime, Set characterSkillMappings, Set skillRaceMappings, Set npcSkillMappings) {
+    public Skill(Object id, String name, byte availableatstartup, Object oppositeskill, Object costhealth, Object coststamina, Object costmana, Object xpcostsbuying, Object goldcostsbuying, Object xpcostEnhancement, Object basevalueFormula, Object useDuration, Object useTime, de.mbws.common.data.generated.SkillGroup skillGroup, Set characterSkillMappings, Set skillRaceMappings, Set npcSkillMappings) {
         this.id = id;
-        this.skillGroupId = skillGroupId;
         this.name = name;
         this.availableatstartup = availableatstartup;
         this.oppositeskill = oppositeskill;
@@ -76,6 +75,7 @@ public class Skill implements Serializable {
         this.basevalueFormula = basevalueFormula;
         this.useDuration = useDuration;
         this.useTime = useTime;
+        this.skillGroup = skillGroup;
         this.characterSkillMappings = characterSkillMappings;
         this.skillRaceMappings = skillRaceMappings;
         this.npcSkillMappings = npcSkillMappings;
@@ -86,9 +86,8 @@ public class Skill implements Serializable {
     }
 
     /** minimal constructor */
-    public Skill(Integer id, int skillGroupId, String name, byte availableatstartup, int costhealth, int coststamina, int costmana, int xpcostsbuying, int goldcostsbuying, int xpcostEnhancement, int useDuration, int useTime, Set characterSkillMappings, Set skillRaceMappings, Set npcSkillMappings) {
+    public Skill(Object id, String name, byte availableatstartup, Object costhealth, Object coststamina, Object costmana, Object xpcostsbuying, Object goldcostsbuying, Object xpcostEnhancement, Object basevalueFormula, Object useDuration, Object useTime, de.mbws.common.data.generated.SkillGroup skillGroup, Set characterSkillMappings, Set skillRaceMappings, Set npcSkillMappings) {
         this.id = id;
-        this.skillGroupId = skillGroupId;
         this.name = name;
         this.availableatstartup = availableatstartup;
         this.costhealth = costhealth;
@@ -97,27 +96,25 @@ public class Skill implements Serializable {
         this.xpcostsbuying = xpcostsbuying;
         this.goldcostsbuying = goldcostsbuying;
         this.xpcostEnhancement = xpcostEnhancement;
+        this.basevalueFormula = basevalueFormula;
         this.useDuration = useDuration;
         this.useTime = useTime;
+        this.skillGroup = skillGroup;
         this.characterSkillMappings = characterSkillMappings;
         this.skillRaceMappings = skillRaceMappings;
         this.npcSkillMappings = npcSkillMappings;
     }
 
-    public Integer getId() {
+    /** 
+     * 		       auto_increment
+     * 		    
+     */
+    public Object getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Object id) {
         this.id = id;
-    }
-
-    public int getSkillGroupId() {
-        return this.skillGroupId;
-    }
-
-    public void setSkillGroupId(int skillGroupId) {
-        this.skillGroupId = skillGroupId;
     }
 
     public String getName() {
@@ -136,84 +133,92 @@ public class Skill implements Serializable {
         this.availableatstartup = availableatstartup;
     }
 
-    public Integer getOppositeskill() {
+    public Object getOppositeskill() {
         return this.oppositeskill;
     }
 
-    public void setOppositeskill(Integer oppositeskill) {
+    public void setOppositeskill(Object oppositeskill) {
         this.oppositeskill = oppositeskill;
     }
 
-    public int getCosthealth() {
+    public Object getCosthealth() {
         return this.costhealth;
     }
 
-    public void setCosthealth(int costhealth) {
+    public void setCosthealth(Object costhealth) {
         this.costhealth = costhealth;
     }
 
-    public int getCoststamina() {
+    public Object getCoststamina() {
         return this.coststamina;
     }
 
-    public void setCoststamina(int coststamina) {
+    public void setCoststamina(Object coststamina) {
         this.coststamina = coststamina;
     }
 
-    public int getCostmana() {
+    public Object getCostmana() {
         return this.costmana;
     }
 
-    public void setCostmana(int costmana) {
+    public void setCostmana(Object costmana) {
         this.costmana = costmana;
     }
 
-    public int getXpcostsbuying() {
+    public Object getXpcostsbuying() {
         return this.xpcostsbuying;
     }
 
-    public void setXpcostsbuying(int xpcostsbuying) {
+    public void setXpcostsbuying(Object xpcostsbuying) {
         this.xpcostsbuying = xpcostsbuying;
     }
 
-    public int getGoldcostsbuying() {
+    public Object getGoldcostsbuying() {
         return this.goldcostsbuying;
     }
 
-    public void setGoldcostsbuying(int goldcostsbuying) {
+    public void setGoldcostsbuying(Object goldcostsbuying) {
         this.goldcostsbuying = goldcostsbuying;
     }
 
-    public int getXpcostEnhancement() {
+    public Object getXpcostEnhancement() {
         return this.xpcostEnhancement;
     }
 
-    public void setXpcostEnhancement(int xpcostEnhancement) {
+    public void setXpcostEnhancement(Object xpcostEnhancement) {
         this.xpcostEnhancement = xpcostEnhancement;
     }
 
-    public Integer getBasevalueFormula() {
+    public Object getBasevalueFormula() {
         return this.basevalueFormula;
     }
 
-    public void setBasevalueFormula(Integer basevalueFormula) {
+    public void setBasevalueFormula(Object basevalueFormula) {
         this.basevalueFormula = basevalueFormula;
     }
 
-    public int getUseDuration() {
+    public Object getUseDuration() {
         return this.useDuration;
     }
 
-    public void setUseDuration(int useDuration) {
+    public void setUseDuration(Object useDuration) {
         this.useDuration = useDuration;
     }
 
-    public int getUseTime() {
+    public Object getUseTime() {
         return this.useTime;
     }
 
-    public void setUseTime(int useTime) {
+    public void setUseTime(Object useTime) {
         this.useTime = useTime;
+    }
+
+    public de.mbws.common.data.generated.SkillGroup getSkillGroup() {
+        return this.skillGroup;
+    }
+
+    public void setSkillGroup(de.mbws.common.data.generated.SkillGroup skillGroup) {
+        this.skillGroup = skillGroup;
     }
 
     public Set getCharacterSkillMappings() {

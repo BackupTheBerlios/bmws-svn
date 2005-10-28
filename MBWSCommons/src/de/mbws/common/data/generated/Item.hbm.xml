@@ -5,7 +5,7 @@
     
 <hibernate-mapping>
 <!-- 
-    Created by the Middlegen Hibernate plugin 2.1
+    Created by the Middlegen Hibernate plugin 2.2
 
     http://boss.bekk.no/boss/middlegen/
     http://www.hibernate.org/
@@ -21,6 +21,7 @@
         type="java.lang.Long"
         column="id"
     >
+    
         <generator class="assigned" />
     </id>
 
@@ -33,7 +34,7 @@
     />
     <property
         name="condition"
-        type="int"
+        type="java.lang.Object"
         column="condition"
         not-null="true"
         length="10"
@@ -63,15 +64,18 @@
     <!-- Associations -->
   
     <!-- bi-directional one-to-many association to CharacterItemMapping -->
+
     <set
         name="characterItemMappings"
         lazy="true"
         inverse="true"
 		cascade="none"
+
     >
         <key>
             <column name="item_id" />
         </key>
+        
         <one-to-many 
             class="de.mbws.common.data.generated.CharacterItemMapping"
         />

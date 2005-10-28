@@ -9,41 +9,41 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class CharacterSkillMappingPK implements Serializable {
 
     /** identifier field */
-    private Integer skillId;
+    private Object characterdataId;
 
     /** identifier field */
-    private String charactername;
+    private Object skillId;
 
     /** full constructor */
-    public CharacterSkillMappingPK(Integer skillId, String charactername) {
+    public CharacterSkillMappingPK(Object characterdataId, Object skillId) {
+        this.characterdataId = characterdataId;
         this.skillId = skillId;
-        this.charactername = charactername;
     }
 
     /** default constructor */
     public CharacterSkillMappingPK() {
     }
 
-    public Integer getSkillId() {
+    public Object getCharacterdataId() {
+        return this.characterdataId;
+    }
+
+    public void setCharacterdataId(Object characterdataId) {
+        this.characterdataId = characterdataId;
+    }
+
+    public Object getSkillId() {
         return this.skillId;
     }
 
-    public void setSkillId(Integer skillId) {
+    public void setSkillId(Object skillId) {
         this.skillId = skillId;
-    }
-
-    public String getCharactername() {
-        return this.charactername;
-    }
-
-    public void setCharactername(String charactername) {
-        this.charactername = charactername;
     }
 
     public String toString() {
         return new ToStringBuilder(this)
+            .append("characterdataId", getCharacterdataId())
             .append("skillId", getSkillId())
-            .append("charactername", getCharactername())
             .toString();
     }
 
@@ -51,15 +51,15 @@ public class CharacterSkillMappingPK implements Serializable {
         if ( !(other instanceof CharacterSkillMappingPK) ) return false;
         CharacterSkillMappingPK castOther = (CharacterSkillMappingPK) other;
         return new EqualsBuilder()
+            .append(this.getCharacterdataId(), castOther.getCharacterdataId())
             .append(this.getSkillId(), castOther.getSkillId())
-            .append(this.getCharactername(), castOther.getCharactername())
             .isEquals();
     }
 
     public int hashCode() {
         return new HashCodeBuilder()
+            .append(getCharacterdataId())
             .append(getSkillId())
-            .append(getCharactername())
             .toHashCode();
     }
 

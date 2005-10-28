@@ -5,7 +5,7 @@
     
 <hibernate-mapping>
 <!-- 
-    Created by the Middlegen Hibernate plugin 2.1
+    Created by the Middlegen Hibernate plugin 2.2
 
     http://boss.bekk.no/boss/middlegen/
     http://www.hibernate.org/
@@ -21,6 +21,10 @@
         type="java.lang.Long"
         column="id"
     >
+		    <meta attribute="field-description" inherit="false">
+		       auto_increment
+		    </meta>
+    
         <generator class="assigned" />
     </id>
 
@@ -40,21 +44,21 @@
     />
     <property
         name="coordinateX"
-        type="int"
+        type="java.lang.Object"
         column="coordinate_x"
         not-null="true"
         length="10"
     />
     <property
         name="coordinateY"
-        type="int"
+        type="java.lang.Object"
         column="coordinate_y"
         not-null="true"
         length="10"
     />
     <property
         name="coordinateZ"
-        type="int"
+        type="java.lang.Object"
         column="coordinate_z"
         not-null="true"
         length="10"
@@ -79,29 +83,35 @@
         <column name="map_id" />
     </many-to-one>
     <!-- bi-directional one-to-many association to NpcWorldobjectMapping -->
+
     <set
         name="npcWorldobjectMappings"
         lazy="true"
         inverse="true"
 		cascade="none"
+
     >
         <key>
             <column name="worldobject_id" />
         </key>
+        
         <one-to-many 
             class="de.mbws.common.data.generated.NpcWorldobjectMapping"
         />
     </set>
     <!-- bi-directional one-to-many association to CharacterWorldobjectMapping -->
+
     <set
         name="characterWorldobjectMappings"
         lazy="true"
         inverse="true"
 		cascade="none"
+
     >
         <key>
             <column name="worldobject_id" />
         </key>
+        
         <one-to-many 
             class="de.mbws.common.data.generated.CharacterWorldobjectMapping"
         />

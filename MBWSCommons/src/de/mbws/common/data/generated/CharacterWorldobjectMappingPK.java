@@ -9,27 +9,19 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class CharacterWorldobjectMappingPK implements Serializable {
 
     /** identifier field */
-    private String characterdataCharactername;
-
-    /** identifier field */
     private Long worldobjectId;
 
+    /** identifier field */
+    private Object characterdataId;
+
     /** full constructor */
-    public CharacterWorldobjectMappingPK(String characterdataCharactername, Long worldobjectId) {
-        this.characterdataCharactername = characterdataCharactername;
+    public CharacterWorldobjectMappingPK(Long worldobjectId, Object characterdataId) {
         this.worldobjectId = worldobjectId;
+        this.characterdataId = characterdataId;
     }
 
     /** default constructor */
     public CharacterWorldobjectMappingPK() {
-    }
-
-    public String getCharacterdataCharactername() {
-        return this.characterdataCharactername;
-    }
-
-    public void setCharacterdataCharactername(String characterdataCharactername) {
-        this.characterdataCharactername = characterdataCharactername;
     }
 
     public Long getWorldobjectId() {
@@ -40,10 +32,18 @@ public class CharacterWorldobjectMappingPK implements Serializable {
         this.worldobjectId = worldobjectId;
     }
 
+    public Object getCharacterdataId() {
+        return this.characterdataId;
+    }
+
+    public void setCharacterdataId(Object characterdataId) {
+        this.characterdataId = characterdataId;
+    }
+
     public String toString() {
         return new ToStringBuilder(this)
-            .append("characterdataCharactername", getCharacterdataCharactername())
             .append("worldobjectId", getWorldobjectId())
+            .append("characterdataId", getCharacterdataId())
             .toString();
     }
 
@@ -51,15 +51,15 @@ public class CharacterWorldobjectMappingPK implements Serializable {
         if ( !(other instanceof CharacterWorldobjectMappingPK) ) return false;
         CharacterWorldobjectMappingPK castOther = (CharacterWorldobjectMappingPK) other;
         return new EqualsBuilder()
-            .append(this.getCharacterdataCharactername(), castOther.getCharacterdataCharactername())
             .append(this.getWorldobjectId(), castOther.getWorldobjectId())
+            .append(this.getCharacterdataId(), castOther.getCharacterdataId())
             .isEquals();
     }
 
     public int hashCode() {
         return new HashCodeBuilder()
-            .append(getCharacterdataCharactername())
             .append(getWorldobjectId())
+            .append(getCharacterdataId())
             .toHashCode();
     }
 

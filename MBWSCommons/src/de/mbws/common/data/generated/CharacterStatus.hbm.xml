@@ -5,7 +5,7 @@
     
 <hibernate-mapping>
 <!-- 
-    Created by the Middlegen Hibernate plugin 2.1
+    Created by the Middlegen Hibernate plugin 2.2
 
     http://boss.bekk.no/boss/middlegen/
     http://www.hibernate.org/
@@ -16,106 +16,123 @@
     table="character_status"
 >
 
-    <composite-id>
-        <key-property 
-            name="charstatus" 
-            column="charstatus" 
-            type="java.lang.String"
-            length="1"
-        />
-        <key-property 
-            name="pvp" 
-            column="pvp" 
-            type="java.lang.String"
-            length="1"
-        />
-        <key-property 
-            name="gamestatus" 
-            column="gamestatus" 
-            type="java.lang.String"
-            length="1"
-        />
-        <key-property 
-            name="coordinateX" 
-            column="coordinate_x" 
-            type="int"
-            length="10"
-        />
-        <key-property 
-            name="coordinateY" 
-            column="coordinate_y" 
-            type="int"
-            length="10"
-        />
-        <key-property 
-            name="coordinateZ" 
-            column="coordinate_z" 
-            type="int"
-            length="10"
-        />
-        <key-property 
-            name="currentmana" 
-            column="currentmana" 
-            type="int"
-            length="10"
-        />
-        <key-property 
-            name="currenthealth" 
-            column="currenthealth" 
-            type="int"
-            length="10"
-        />
-        <key-property 
-            name="currentstamina" 
-            column="currentstamina" 
-            type="int"
-            length="10"
-        />
-        <key-property 
-            name="currentstrength" 
-            column="currentstrength" 
-            type="int"
-            length="10"
-        />
-        <key-property 
-            name="currentinteligence" 
-            column="currentinteligence" 
-            type="int"
-            length="10"
-        />
-        <key-property 
-            name="currentdexterity" 
-            column="currentdexterity" 
-            type="int"
-            length="10"
-        />
-        <key-property 
-            name="currentconstitution" 
-            column="currentconstitution" 
-            type="int"
-            length="10"
-        />
-        <key-property 
-            name="freexp" 
-            column="freexp" 
-            type="int"
-            length="10"
-        />
-    </composite-id>    
+    <id
+        name="id"
+        type="java.lang.Object"
+        column="id"
+    >
+    
+        <generator class="assigned" />
+    </id>
 
+    <property
+        name="charstatus"
+        type="java.lang.String"
+        column="charstatus"
+        not-null="true"
+        length="1"
+    />
+    <property
+        name="pvp"
+        type="java.lang.String"
+        column="pvp"
+        not-null="true"
+        length="1"
+    />
+    <property
+        name="gamestatus"
+        type="java.lang.String"
+        column="gamestatus"
+        not-null="true"
+        length="1"
+    />
+    <property
+        name="coordinateX"
+        type="java.lang.Object"
+        column="coordinate_x"
+        not-null="true"
+        length="10"
+    />
+    <property
+        name="coordinateY"
+        type="java.lang.Object"
+        column="coordinate_y"
+        not-null="true"
+        length="10"
+    />
+    <property
+        name="coordinateZ"
+        type="java.lang.Object"
+        column="coordinate_z"
+        not-null="true"
+        length="10"
+    />
+    <property
+        name="currentmana"
+        type="java.lang.Object"
+        column="currentmana"
+        not-null="true"
+        length="10"
+    />
+    <property
+        name="currenthealth"
+        type="java.lang.Object"
+        column="currenthealth"
+        not-null="true"
+        length="10"
+    />
+    <property
+        name="currentstamina"
+        type="java.lang.Object"
+        column="currentstamina"
+        not-null="true"
+        length="10"
+    />
+    <property
+        name="currentstrength"
+        type="java.lang.Object"
+        column="currentstrength"
+        not-null="true"
+        length="10"
+    />
+    <property
+        name="currentinteligence"
+        type="java.lang.Object"
+        column="currentinteligence"
+        not-null="true"
+        length="10"
+    />
+    <property
+        name="currentdexterity"
+        type="java.lang.Object"
+        column="currentdexterity"
+        not-null="true"
+        length="10"
+    />
+    <property
+        name="currentconstitution"
+        type="java.lang.Object"
+        column="currentconstitution"
+        not-null="true"
+        length="10"
+    />
+    <property
+        name="freexp"
+        type="java.lang.Object"
+        column="freexp"
+        not-null="true"
+        length="10"
+    />
 
     <!-- Associations -->
-    <!-- derived association(s) for compound key -->
-    <!-- end of derived association(s) -->
   
-    <!-- bi-directional many-to-one association to Characterdata -->
-    <many-to-one
+    <!-- bi-directional one-to-one association to Characterdata -->
+    <one-to-one
         name="characterdata"
         class="de.mbws.common.data.generated.Characterdata"
-        not-null="true"
-    >
-        <column name="characterdata_characterName" />
-    </many-to-one>
+        outer-join="auto"
+        constrained="true"
+    />
     <!-- bi-directional many-to-one association to Map -->
     <many-to-one
         name="map"

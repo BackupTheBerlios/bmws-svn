@@ -12,7 +12,7 @@ public class NpcSkillMapping implements Serializable {
     private de.mbws.common.data.generated.NpcSkillMappingPK comp_id;
 
     /** persistent field */
-    private int value;
+    private Object value;
 
     /** nullable persistent field */
     private de.mbws.common.data.generated.Skill skill;
@@ -21,7 +21,7 @@ public class NpcSkillMapping implements Serializable {
     private de.mbws.common.data.generated.Npc npc;
 
     /** full constructor */
-    public NpcSkillMapping(de.mbws.common.data.generated.NpcSkillMappingPK comp_id, int value, de.mbws.common.data.generated.Skill skill, de.mbws.common.data.generated.Npc npc) {
+    public NpcSkillMapping(de.mbws.common.data.generated.NpcSkillMappingPK comp_id, Object value, de.mbws.common.data.generated.Skill skill, de.mbws.common.data.generated.Npc npc) {
         this.comp_id = comp_id;
         this.value = value;
         this.skill = skill;
@@ -33,7 +33,7 @@ public class NpcSkillMapping implements Serializable {
     }
 
     /** minimal constructor */
-    public NpcSkillMapping(de.mbws.common.data.generated.NpcSkillMappingPK comp_id, int value) {
+    public NpcSkillMapping(de.mbws.common.data.generated.NpcSkillMappingPK comp_id, Object value) {
         this.comp_id = comp_id;
         this.value = value;
     }
@@ -46,11 +46,11 @@ public class NpcSkillMapping implements Serializable {
         this.comp_id = comp_id;
     }
 
-    public int getValue() {
+    public Object getValue() {
         return this.value;
     }
 
-    public void setValue(int value) {
+    public void setValue(Object value) {
         this.value = value;
     }
 

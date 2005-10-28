@@ -19,13 +19,13 @@ public class Worldobject implements Serializable {
     private String description;
 
     /** persistent field */
-    private int coordinateX;
+    private Object coordinateX;
 
     /** persistent field */
-    private int coordinateY;
+    private Object coordinateY;
 
     /** persistent field */
-    private int coordinateZ;
+    private Object coordinateZ;
 
     /** persistent field */
     private de.mbws.common.data.generated.WorldobjectType worldobjectType;
@@ -40,7 +40,7 @@ public class Worldobject implements Serializable {
     private Set characterWorldobjectMappings;
 
     /** full constructor */
-    public Worldobject(Long id, String name, String description, int coordinateX, int coordinateY, int coordinateZ, de.mbws.common.data.generated.WorldobjectType worldobjectType, de.mbws.common.data.generated.Map map, Set npcWorldobjectMappings, Set characterWorldobjectMappings) {
+    public Worldobject(Long id, String name, String description, Object coordinateX, Object coordinateY, Object coordinateZ, de.mbws.common.data.generated.WorldobjectType worldobjectType, de.mbws.common.data.generated.Map map, Set npcWorldobjectMappings, Set characterWorldobjectMappings) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -57,6 +57,10 @@ public class Worldobject implements Serializable {
     public Worldobject() {
     }
 
+    /** 
+     * 		       auto_increment
+     * 		    
+     */
     public Long getId() {
         return this.id;
     }
@@ -81,27 +85,27 @@ public class Worldobject implements Serializable {
         this.description = description;
     }
 
-    public int getCoordinateX() {
+    public Object getCoordinateX() {
         return this.coordinateX;
     }
 
-    public void setCoordinateX(int coordinateX) {
+    public void setCoordinateX(Object coordinateX) {
         this.coordinateX = coordinateX;
     }
 
-    public int getCoordinateY() {
+    public Object getCoordinateY() {
         return this.coordinateY;
     }
 
-    public void setCoordinateY(int coordinateY) {
+    public void setCoordinateY(Object coordinateY) {
         this.coordinateY = coordinateY;
     }
 
-    public int getCoordinateZ() {
+    public Object getCoordinateZ() {
         return this.coordinateZ;
     }
 
-    public void setCoordinateZ(int coordinateZ) {
+    public void setCoordinateZ(Object coordinateZ) {
         this.coordinateZ = coordinateZ;
     }
 

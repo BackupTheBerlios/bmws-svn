@@ -12,10 +12,10 @@ public class CharacterSkillMapping implements Serializable {
     private de.mbws.common.data.generated.CharacterSkillMappingPK comp_id;
 
     /** persistent field */
-    private int bonusvalue;
+    private Object bonusvalue;
 
     /** persistent field */
-    private int basevalue;
+    private Object basevalue;
 
     /** nullable persistent field */
     private de.mbws.common.data.generated.Skill skill;
@@ -24,7 +24,7 @@ public class CharacterSkillMapping implements Serializable {
     private de.mbws.common.data.generated.Characterdata characterdata;
 
     /** full constructor */
-    public CharacterSkillMapping(de.mbws.common.data.generated.CharacterSkillMappingPK comp_id, int bonusvalue, int basevalue, de.mbws.common.data.generated.Skill skill, de.mbws.common.data.generated.Characterdata characterdata) {
+    public CharacterSkillMapping(de.mbws.common.data.generated.CharacterSkillMappingPK comp_id, Object bonusvalue, Object basevalue, de.mbws.common.data.generated.Skill skill, de.mbws.common.data.generated.Characterdata characterdata) {
         this.comp_id = comp_id;
         this.bonusvalue = bonusvalue;
         this.basevalue = basevalue;
@@ -37,7 +37,7 @@ public class CharacterSkillMapping implements Serializable {
     }
 
     /** minimal constructor */
-    public CharacterSkillMapping(de.mbws.common.data.generated.CharacterSkillMappingPK comp_id, int bonusvalue, int basevalue) {
+    public CharacterSkillMapping(de.mbws.common.data.generated.CharacterSkillMappingPK comp_id, Object bonusvalue, Object basevalue) {
         this.comp_id = comp_id;
         this.bonusvalue = bonusvalue;
         this.basevalue = basevalue;
@@ -51,19 +51,19 @@ public class CharacterSkillMapping implements Serializable {
         this.comp_id = comp_id;
     }
 
-    public int getBonusvalue() {
+    public Object getBonusvalue() {
         return this.bonusvalue;
     }
 
-    public void setBonusvalue(int bonusvalue) {
+    public void setBonusvalue(Object bonusvalue) {
         this.bonusvalue = bonusvalue;
     }
 
-    public int getBasevalue() {
+    public Object getBasevalue() {
         return this.basevalue;
     }
 
-    public void setBasevalue(int basevalue) {
+    public void setBasevalue(Object basevalue) {
         this.basevalue = basevalue;
     }
 

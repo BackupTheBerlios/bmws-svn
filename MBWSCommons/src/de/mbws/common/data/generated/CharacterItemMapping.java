@@ -9,13 +9,16 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class CharacterItemMapping implements Serializable {
 
     /** identifier field */
+    private Long id;
+
+    /** persistent field */
     private String position;
 
-    /** identifier field */
-    private int currentcondition;
+    /** persistent field */
+    private Object currentcondition;
 
-    /** identifier field */
-    private int depositItem;
+    /** persistent field */
+    private Object depositItem;
 
     /** persistent field */
     private de.mbws.common.data.generated.Item item;
@@ -24,7 +27,8 @@ public class CharacterItemMapping implements Serializable {
     private de.mbws.common.data.generated.Characterdata characterdata;
 
     /** full constructor */
-    public CharacterItemMapping(String position, int currentcondition, int depositItem, de.mbws.common.data.generated.Item item, de.mbws.common.data.generated.Characterdata characterdata) {
+    public CharacterItemMapping(Long id, String position, Object currentcondition, Object depositItem, de.mbws.common.data.generated.Item item, de.mbws.common.data.generated.Characterdata characterdata) {
+        this.id = id;
         this.position = position;
         this.currentcondition = currentcondition;
         this.depositItem = depositItem;
@@ -36,6 +40,14 @@ public class CharacterItemMapping implements Serializable {
     public CharacterItemMapping() {
     }
 
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getPosition() {
         return this.position;
     }
@@ -44,19 +56,19 @@ public class CharacterItemMapping implements Serializable {
         this.position = position;
     }
 
-    public int getCurrentcondition() {
+    public Object getCurrentcondition() {
         return this.currentcondition;
     }
 
-    public void setCurrentcondition(int currentcondition) {
+    public void setCurrentcondition(Object currentcondition) {
         this.currentcondition = currentcondition;
     }
 
-    public int getDepositItem() {
+    public Object getDepositItem() {
         return this.depositItem;
     }
 
-    public void setDepositItem(int depositItem) {
+    public void setDepositItem(Object depositItem) {
         this.depositItem = depositItem;
     }
 
@@ -78,9 +90,7 @@ public class CharacterItemMapping implements Serializable {
 
     public String toString() {
         return new ToStringBuilder(this)
-            .append("position", getPosition())
-            .append("currentcondition", getCurrentcondition())
-            .append("depositItem", getDepositItem())
+            .append("id", getId())
             .toString();
     }
 
@@ -88,17 +98,13 @@ public class CharacterItemMapping implements Serializable {
         if ( !(other instanceof CharacterItemMapping) ) return false;
         CharacterItemMapping castOther = (CharacterItemMapping) other;
         return new EqualsBuilder()
-            .append(this.getPosition(), castOther.getPosition())
-            .append(this.getCurrentcondition(), castOther.getCurrentcondition())
-            .append(this.getDepositItem(), castOther.getDepositItem())
+            .append(this.getId(), castOther.getId())
             .isEquals();
     }
 
     public int hashCode() {
         return new HashCodeBuilder()
-            .append(getPosition())
-            .append(getCurrentcondition())
-            .append(getDepositItem())
+            .append(getId())
             .toHashCode();
     }
 

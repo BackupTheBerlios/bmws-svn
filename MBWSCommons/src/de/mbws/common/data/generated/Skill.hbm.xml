@@ -5,7 +5,7 @@
     
 <hibernate-mapping>
 <!-- 
-    Created by the Middlegen Hibernate plugin 2.1
+    Created by the Middlegen Hibernate plugin 2.2
 
     http://boss.bekk.no/boss/middlegen/
     http://www.hibernate.org/
@@ -18,19 +18,16 @@
 
     <id
         name="id"
-        type="java.lang.Integer"
+        type="java.lang.Object"
         column="id"
     >
+		    <meta attribute="field-description" inherit="false">
+		       auto_increment
+		    </meta>
+    
         <generator class="assigned" />
     </id>
 
-    <property
-        name="skillGroupId"
-        type="int"
-        column="skill_group_id"
-        not-null="true"
-        length="10"
-    />
     <property
         name="name"
         type="java.lang.String"
@@ -47,68 +44,69 @@
     />
     <property
         name="oppositeskill"
-        type="java.lang.Integer"
+        type="java.lang.Object"
         column="oppositeskill"
         length="10"
     />
     <property
         name="costhealth"
-        type="int"
+        type="java.lang.Object"
         column="costhealth"
         not-null="true"
         length="10"
     />
     <property
         name="coststamina"
-        type="int"
+        type="java.lang.Object"
         column="coststamina"
         not-null="true"
         length="10"
     />
     <property
         name="costmana"
-        type="int"
+        type="java.lang.Object"
         column="costmana"
         not-null="true"
         length="10"
     />
     <property
         name="xpcostsbuying"
-        type="int"
+        type="java.lang.Object"
         column="xpcostsbuying"
         not-null="true"
         length="10"
     />
     <property
         name="goldcostsbuying"
-        type="int"
+        type="java.lang.Object"
         column="goldcostsbuying"
         not-null="true"
         length="10"
     />
     <property
         name="xpcostEnhancement"
-        type="int"
+        type="java.lang.Object"
         column="xpcost_enhancement"
         not-null="true"
         length="10"
     />
     <property
         name="basevalueFormula"
-        type="java.lang.Integer"
+        type="java.lang.Object"
         column="basevalue_formula"
+        not-null="true"
         length="10"
     />
     <property
         name="useDuration"
-        type="int"
+        type="java.lang.Object"
         column="use_duration"
         not-null="true"
         length="10"
     />
     <property
         name="useTime"
-        type="int"
+        type="java.lang.Object"
         column="use_time"
         not-null="true"
         length="10"
@@ -117,47 +115,64 @@
     <!-- Associations -->
   
     <!-- bi-directional one-to-many association to CharacterSkillMapping -->
+
     <set
         name="characterSkillMappings"
         lazy="true"
         inverse="true"
 		cascade="none"
+
     >
         <key>
             <column name="skill_id" />
         </key>
+        
         <one-to-many 
             class="de.mbws.common.data.generated.CharacterSkillMapping"
         />
     </set>
     <!-- bi-directional one-to-many association to SkillRaceMapping -->
+
     <set
         name="skillRaceMappings"
         lazy="true"
         inverse="true"
 		cascade="none"
+
     >
         <key>
             <column name="skill_id" />
         </key>
+        
         <one-to-many 
             class="de.mbws.common.data.generated.SkillRaceMapping"
         />
     </set>
     <!-- bi-directional one-to-many association to NpcSkillMapping -->
+
     <set
         name="npcSkillMappings"
         lazy="true"
         inverse="true"
 		cascade="none"
+
     >
         <key>
             <column name="skill_id" />
         </key>
+        
         <one-to-many 
             class="de.mbws.common.data.generated.NpcSkillMapping"
         />
     </set>
+    <!-- bi-directional many-to-one association to SkillGroup -->
+    <many-to-one
+        name="skillGroup"
+        class="de.mbws.common.data.generated.SkillGroup"
+        not-null="true"
+    >
+        <column name="skill_group_id" />
+    </many-to-one>
 
 </class>
 </hibernate-mapping>

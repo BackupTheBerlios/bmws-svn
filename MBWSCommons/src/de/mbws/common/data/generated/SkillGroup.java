@@ -1,6 +1,7 @@
 package de.mbws.common.data.generated;
 
 import java.io.Serializable;
+import java.util.Set;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -9,26 +10,34 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class SkillGroup implements Serializable {
 
     /** identifier field */
-    private Integer id;
+    private Object id;
 
     /** persistent field */
     private String name;
 
+    /** persistent field */
+    private Set skills;
+
     /** full constructor */
-    public SkillGroup(Integer id, String name) {
+    public SkillGroup(Object id, String name, Set skills) {
         this.id = id;
         this.name = name;
+        this.skills = skills;
     }
 
     /** default constructor */
     public SkillGroup() {
     }
 
-    public Integer getId() {
+    /** 
+     * 		       auto_increment
+     * 		    
+     */
+    public Object getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Object id) {
         this.id = id;
     }
 
@@ -38,6 +47,14 @@ public class SkillGroup implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set getSkills() {
+        return this.skills;
+    }
+
+    public void setSkills(Set skills) {
+        this.skills = skills;
     }
 
     public String toString() {

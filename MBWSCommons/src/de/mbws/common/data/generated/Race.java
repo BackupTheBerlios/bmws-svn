@@ -10,19 +10,19 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class Race implements Serializable {
 
     /** identifier field */
-    private Integer id;
+    private Object id;
 
     /** persistent field */
     private String name;
 
     /** persistent field */
-    private int basehealth;
+    private Object basehealth;
 
     /** persistent field */
-    private int basemana;
+    private Object basemana;
 
     /** persistent field */
-    private int basestamina;
+    private Object basestamina;
 
     /** persistent field */
     private int modifierStrength;
@@ -52,7 +52,7 @@ public class Race implements Serializable {
     private Set npcs;
 
     /** full constructor */
-    public Race(Integer id, String name, int basehealth, int basemana, int basestamina, int modifierStrength, int modifierIntelligence, int modifierDexterity, int modifierConstitution, byte isplayable, String description, Set skillRaceMappings, Set characterdatas, Set npcs) {
+    public Race(Object id, String name, Object basehealth, Object basemana, Object basestamina, int modifierStrength, int modifierIntelligence, int modifierDexterity, int modifierConstitution, byte isplayable, String description, Set skillRaceMappings, Set characterdatas, Set npcs) {
         this.id = id;
         this.name = name;
         this.basehealth = basehealth;
@@ -73,11 +73,15 @@ public class Race implements Serializable {
     public Race() {
     }
 
-    public Integer getId() {
+    /** 
+     * 		       auto_increment
+     * 		    
+     */
+    public Object getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Object id) {
         this.id = id;
     }
 
@@ -89,27 +93,27 @@ public class Race implements Serializable {
         this.name = name;
     }
 
-    public int getBasehealth() {
+    public Object getBasehealth() {
         return this.basehealth;
     }
 
-    public void setBasehealth(int basehealth) {
+    public void setBasehealth(Object basehealth) {
         this.basehealth = basehealth;
     }
 
-    public int getBasemana() {
+    public Object getBasemana() {
         return this.basemana;
     }
 
-    public void setBasemana(int basemana) {
+    public void setBasemana(Object basemana) {
         this.basemana = basemana;
     }
 
-    public int getBasestamina() {
+    public Object getBasestamina() {
         return this.basestamina;
     }
 
-    public void setBasestamina(int basestamina) {
+    public void setBasestamina(Object basestamina) {
         this.basestamina = basestamina;
     }
 
