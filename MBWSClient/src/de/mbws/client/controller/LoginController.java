@@ -37,19 +37,21 @@ public class LoginController {
 		if (loginEvent.getEventType() == EventTypes.LOGIN_FAILED) {
 			System.out.println("Login failed!");
 		} else if (loginEvent.getEventType() == EventTypes.LOGIN_OK) {
-			System.out.println("Login ok");
-            
-            CharacterEvent event = new CharacterEvent();
-            event.setPlayer(loginEvent.getPlayer());
-            event.setEventType(EventTypes.CHARACTER_RECEIVE_REQUEST);
-            ClientNetworkController.getInstance().handleOutgoingEvent(event);
+			System.out.println("Login ok, trying to receive character data");
+			ClientNetworkController.getInstance()
+					.handleOutgoingEvent(
+							CharacterController.getInstance()
+									.createCharacterReceiveEvent(
+											loginEvent.getPlayer()));
+
 		} else if (loginEvent.getEventType() == EventTypes.LOGOUT_OK) {
 			System.out.println("Logout Successfull!");
 		}
 
 	}
 
-	public AbstractGameEvent createLoginEvent(AccountData account, ClientPlayerData player) {
+	public AbstractGameEvent createLoginEvent(AccountData account,
+			ClientPlayerData player) {
 		LoginData ld = new LoginData();
 		ld.setUserName(account.getUserName());
 		ld.setPassword(account.getPassword());
