@@ -3,19 +3,15 @@
 
    <property name="lib.dir"                 value="${basedir}/lib"/>
    <property name="database.driver.file"           value="mysql-connector-java-3.1.8-bin.jar"/>
+
    <property name="database.driver.classpath"      value="${database.driver.file}"/>
-   <property name="middlegen.home"                 value="${basedir}/middlegen-2.1"/>
-   <property name="build.gen-src.dir" value="mapping"/>
+   <property name="build.gen-src.dir" value="src"/>
    <property name="name" value="de.mbws.common.data.generated" />
    
    <path id="lib.class.path">
       <pathelement path="${basedir}"/>
       <pathelement path="${database.driver.classpath}"/>
       <fileset dir="${lib.dir}">
-         <include name="*.jar"/>
-      </fileset>
-      <!-- The middlegen jars -->
-      <fileset dir="${middlegen.home}">
          <include name="*.jar"/>
       </fileset>
    </path>
@@ -67,5 +63,5 @@
 		        warnings="false" types="j2"/>
 	</target>
 	
-	<target name="buildAll" depends="codegen, castor"/>
+	<target name="buildAll" depends="middlegen, codegen, castor"/>
 </project>
