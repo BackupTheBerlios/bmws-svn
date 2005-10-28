@@ -13,6 +13,7 @@ import de.mbws.common.Globals;
 import de.mbws.common.NIOUtils;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.AccountEvent;
+import de.mbws.common.events.CharacterEvent;
 import de.mbws.common.events.LoginEvent;
 import de.mbws.common.exceptions.InitializationException;
 
@@ -108,7 +109,10 @@ public class ClientNetworkController extends Thread {
 				} else if (event instanceof AccountEvent) {
 					AccountController.getInstance().handleEvent(
 							(AccountEvent) event);
-				}
+				}  else if (event instanceof CharacterEvent) {
+                    CharacterEvent e = (CharacterEvent) event;
+                    System.out.println("Got event " + e.getEventType() + " " + e.getPlayerInfo().getVisualappearance());
+                }
 			} catch (InterruptedException ie) {
 				logger.info("InterruptedException in readin in-queue", ie);
 			}
