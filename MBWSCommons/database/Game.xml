@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="yes" ?>
 <DBMODEL Version="4.0">
 <SETTINGS>
-<GLOBALSETTINGS ModelName="Game" IDModel="0" IDVersion="0" VersionStr="1.0.0.0" Comments="" UseVersionHistroy="1" AutoIncVersion="1" DatabaseType="MySQL" ZoomFac="100.00" XPos="0" YPos="624" DefaultDataType="5" DefaultTablePrefix="0" DefSaveDBConn="" DefSyncDBConn="game" DefQueryDBConn="" Printer="" HPageCount="4.0" PageAspectRatio="1.440892512336408" PageOrientation="1" PageFormat="A4 (210x297 mm, 8.26x11.7 inches)" SelectedPages="" UsePositionGrid="0" PositionGridX="20" PositionGridY="20" TableNameInRefs="1" DefaultTableType="1" ActivateRefDefForNewRelations="1" FKPrefix="" FKPostfix="" CreateFKRefDefIndex="1" DBQuoteCharacter="`" CreateSQLforLinkedObjects="0" DefModelFont="Tahoma" CanvasWidth="4096" CanvasHeight="2842" />
+<GLOBALSETTINGS ModelName="Game" IDModel="0" IDVersion="0" VersionStr="1.0.0.0" Comments="" UseVersionHistroy="1" AutoIncVersion="1" DatabaseType="MySQL" ZoomFac="100.00" XPos="346" YPos="840" DefaultDataType="5" DefaultTablePrefix="0" DefSaveDBConn="" DefSyncDBConn="game" DefQueryDBConn="" Printer="" HPageCount="4.0" PageAspectRatio="1.440892512336408" PageOrientation="1" PageFormat="A4 (210x297 mm, 8.26x11.7 inches)" SelectedPages="" UsePositionGrid="0" PositionGridX="20" PositionGridY="20" TableNameInRefs="1" DefaultTableType="1" ActivateRefDefForNewRelations="1" FKPrefix="" FKPostfix="" CreateFKRefDefIndex="0" DBQuoteCharacter="`" CreateSQLforLinkedObjects="0" DefModelFont="Tahoma" CanvasWidth="4096" CanvasHeight="2842" />
 <DATATYPEGROUPS>
 <DATATYPEGROUP Name="Numeric Types" Icon="1" />
 <DATATYPEGROUP Name="Date and Time Types" Icon="2" />
@@ -289,9 +289,15 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="1006" Tablename="characterdata" PrevTableName="Table_02" XPos="360" YPos="275" TableType="1" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="3" >
+<TABLE ID="1006" Tablename="characterdata" PrevTableName="Table_02" XPos="360" YPos="274" TableType="1" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="3" >
 <COLUMNS>
-<COLUMN ID="1013" ColName="charactername" PrevColName="" Pos="0" idDatatype="20" DatatypeParams="(30)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
+<COLUMN ID="1523" ColName="id" PrevColName="" Pos="12" idDatatype="6" DatatypeParams="" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="1" IsForeignKey="0" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="1" />
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="1013" ColName="charactername" PrevColName="" Pos="0" idDatatype="20" DatatypeParams="(30)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
 <OPTIONSELECTED>
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
@@ -362,11 +368,11 @@
 </COLUMN>
 </COLUMNS>
 <RELATIONS_START>
-<RELATION_START ID="1054" />
-<RELATION_START ID="1079" />
-<RELATION_START ID="1141" />
 <RELATION_START ID="1400" />
-<RELATION_START ID="1490" />
+<RELATION_START ID="1545" />
+<RELATION_START ID="1582" />
+<RELATION_START ID="1588" />
+<RELATION_START ID="1607" />
 </RELATIONS_START>
 <RELATIONS_END>
 <RELATION_END ID="1023" />
@@ -375,7 +381,7 @@
 <INDICES>
 <INDEX ID="1014" IndexName="PRIMARY" IndexKind="0" FKRefDef_Obj_id="-1">
 <INDEXCOLUMNS>
-<INDEXCOLUMN idColumn="1013" LengthParam="0" />
+<INDEXCOLUMN idColumn="1523" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
 <INDEX ID="1025" IndexName="Character_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1023">
@@ -475,9 +481,9 @@
 </COLUMN>
 </COLUMNS>
 <RELATIONS_START>
-<RELATION_START ID="1051" />
 <RELATION_START ID="1305" />
 <RELATION_START ID="1472" />
+<RELATION_START ID="1549" />
 </RELATIONS_START>
 <RELATIONS_END>
 <RELATION_END ID="1519" />
@@ -495,16 +501,17 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="1047" Tablename="character_skill_mapping" PrevTableName="Table_04" XPos="23" YPos="392" TableType="1" TablePrefix="0" nmTable="1" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="6" >
+<TABLE ID="1047" Tablename="character_skill_mapping" PrevTableName="Table_04" XPos="22" YPos="391" TableType="1" TablePrefix="0" nmTable="1" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="6" >
 <COLUMNS>
-<COLUMN ID="1052" ColName="skill_id" PrevColName="" Pos="1" idDatatype="5" DatatypeParams="" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<COLUMN ID="1546" ColName="characterdata_id" PrevColName="" Pos="1" idDatatype="6" DatatypeParams="" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
 <OPTIONSELECTED>
 <OPTIONSELECT Value="1" />
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
 </COLUMN>
-<COLUMN ID="1208" ColName="charactername" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(30)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<COLUMN ID="1550" ColName="skill_id" PrevColName="" Pos="1" idDatatype="5" DatatypeParams="" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
 <OPTIONSELECTED>
+<OPTIONSELECT Value="1" />
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
 </COLUMN>
@@ -522,24 +529,24 @@
 </COLUMN>
 </COLUMNS>
 <RELATIONS_END>
-<RELATION_END ID="1051" />
-<RELATION_END ID="1054" />
+<RELATION_END ID="1545" />
+<RELATION_END ID="1549" />
 </RELATIONS_END>
 <INDICES>
-<INDEX ID="1099" IndexName="PRIMARY" IndexKind="0" FKRefDef_Obj_id="-1">
+<INDEX ID="1548" IndexName="PRIMARY" IndexKind="0" FKRefDef_Obj_id="-1">
 <INDEXCOLUMNS>
-<INDEXCOLUMN idColumn="1052" LengthParam="0" />
-<INDEXCOLUMN idColumn="1208" LengthParam="0" />
+<INDEXCOLUMN idColumn="1546" LengthParam="0" />
+<INDEXCOLUMN idColumn="1550" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1053" IndexName="Character_Skill_Mapping_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1051">
+<INDEX ID="1565" IndexName="character_skill_mapping_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1545">
 <INDEXCOLUMNS>
-<INDEXCOLUMN idColumn="1052" LengthParam="0" />
+<INDEXCOLUMN idColumn="1546" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1056" IndexName="Character_Skill_Mapping_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1054">
+<INDEX ID="1566" IndexName="character_skill_mapping_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1549">
 <INDEXCOLUMNS>
-<INDEXCOLUMN idColumn="1208" LengthParam="0" />
+<INDEXCOLUMN idColumn="1550" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
 </INDICES>
@@ -621,10 +628,11 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="1065" Tablename="character_status" PrevTableName="Table_06" XPos="843" YPos="201" TableType="1" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="11" >
+<TABLE ID="1065" Tablename="character_status" PrevTableName="Table_06" XPos="842" YPos="197" TableType="1" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="11" >
 <COLUMNS>
-<COLUMN ID="1080" ColName="characterdata_characterName" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(30)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<COLUMN ID="1624" ColName="id" PrevColName="" Pos="1" idDatatype="6" DatatypeParams="" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
 <OPTIONSELECTED>
+<OPTIONSELECT Value="1" />
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
 </COLUMN>
@@ -717,18 +725,23 @@
 </COLUMN>
 </COLUMNS>
 <RELATIONS_END>
-<RELATION_END ID="1079" />
 <RELATION_END ID="1182" />
+<RELATION_END ID="1588" />
 </RELATIONS_END>
 <INDICES>
-<INDEX ID="1081" IndexName="Character_Status_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1079">
+<INDEX ID="1625" IndexName="PRIMARY" IndexKind="0" FKRefDef_Obj_id="-1">
 <INDEXCOLUMNS>
-<INDEXCOLUMN idColumn="1080" LengthParam="0" />
+<INDEXCOLUMN idColumn="1624" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1184" IndexName="Character_Status_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1182">
+<INDEX ID="1184" IndexName="Character_Status_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1182">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="1183" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
+<INDEX ID="1590" IndexName="character_status_FKIndex2" IndexKind="2" FKRefDef_Obj_id="1588">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="1624" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
 </INDICES>
@@ -829,8 +842,15 @@
 </TABLE>
 <TABLE ID="1131" Tablename="character_item_mapping" PrevTableName="Table_09" XPos="371" YPos="14" TableType="1" TablePrefix="0" nmTable="1" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="16" >
 <COLUMNS>
-<COLUMN ID="1211" ColName="charactername" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(30)" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<COLUMN ID="1627" ColName="id" PrevColName="" Pos="5" idDatatype="6" DatatypeParams="" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
 <OPTIONSELECTED>
+<OPTIONSELECT Value="0" />
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="1583" ColName="characterdata_id" PrevColName="" Pos="1" idDatatype="6" DatatypeParams="" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="1" />
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
 </COLUMN>
@@ -860,17 +880,22 @@
 </COLUMNS>
 <RELATIONS_END>
 <RELATION_END ID="1137" />
-<RELATION_END ID="1141" />
+<RELATION_END ID="1582" />
 </RELATIONS_END>
 <INDICES>
-<INDEX ID="1139" IndexName="Character_Item_Mapping_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1137">
+<INDEX ID="1628" IndexName="PRIMARY" IndexKind="0" FKRefDef_Obj_id="-1">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="1627" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
+<INDEX ID="1586" IndexName="character_item_mapping_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1137">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="1138" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
-<INDEX ID="1143" IndexName="Character_Item_Mapping_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1141">
+<INDEX ID="1587" IndexName="character_item_mapping_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1582">
 <INDEXCOLUMNS>
-<INDEXCOLUMN idColumn="1211" LengthParam="0" />
+<INDEXCOLUMN idColumn="1583" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
 </INDICES>
@@ -968,13 +993,13 @@
 </TABLE>
 <TABLE ID="1193" Tablename="zoneserver_map_mapping" PrevTableName="Table_13" XPos="1594" YPos="201" TableType="1" TablePrefix="0" nmTable="1" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="23" >
 <COLUMNS>
-<COLUMN ID="1202" ColName="map_id" PrevColName="" Pos="1" idDatatype="5" DatatypeParams="" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<COLUMN ID="1202" ColName="map_id" PrevColName="" Pos="1" idDatatype="5" DatatypeParams="" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
 <OPTIONSELECTED>
 <OPTIONSELECT Value="1" />
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
 </COLUMN>
-<COLUMN ID="1199" ColName="zoneserver_id" PrevColName="" Pos="1" idDatatype="5" DatatypeParams="" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<COLUMN ID="1199" ColName="zoneserver_id" PrevColName="" Pos="1" idDatatype="5" DatatypeParams="" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
 <OPTIONSELECTED>
 <OPTIONSELECT Value="1" />
 <OPTIONSELECT Value="0" />
@@ -990,6 +1015,12 @@
 <RELATION_END ID="1201" />
 </RELATIONS_END>
 <INDICES>
+<INDEX ID="1631" IndexName="PRIMARY" IndexKind="0" FKRefDef_Obj_id="-1">
+<INDEXCOLUMNS>
+<INDEXCOLUMN idColumn="1202" LengthParam="0" />
+<INDEXCOLUMN idColumn="1199" LengthParam="0" />
+</INDEXCOLUMNS>
+</INDEX>
 <INDEX ID="1200" IndexName="ZoneServer_Map_Mapping_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1198">
 <INDEXCOLUMNS>
 <INDEXCOLUMN idColumn="1199" LengthParam="0" />
@@ -1395,14 +1426,15 @@
 </TABLE>
 <TABLE ID="1393" Tablename="character_worldobject_mapping" PrevTableName="Table_20" XPos="1554" YPos="557" TableType="1" TablePrefix="0" nmTable="1" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="40" >
 <COLUMNS>
-<COLUMN ID="1401" ColName="characterdata_charactername" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(30)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
-<OPTIONSELECTED>
-<OPTIONSELECT Value="0" />
-</OPTIONSELECTED>
-</COLUMN>
 <COLUMN ID="1398" ColName="worldobject_id" PrevColName="" Pos="1" idDatatype="6" DatatypeParams="" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
 <OPTIONSELECTED>
 <OPTIONSELECT Value="0" />
+<OPTIONSELECT Value="0" />
+</OPTIONSELECTED>
+</COLUMN>
+<COLUMN ID="1525" ColName="characterdata_id" PrevColName="" Pos="1" idDatatype="6" DatatypeParams="" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<OPTIONSELECTED>
+<OPTIONSELECT Value="1" />
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
 </COLUMN>
@@ -1414,8 +1446,8 @@
 <INDICES>
 <INDEX ID="1396" IndexName="PRIMARY" IndexKind="0" FKRefDef_Obj_id="-1">
 <INDEXCOLUMNS>
-<INDEXCOLUMN idColumn="1401" LengthParam="0" />
 <INDEXCOLUMN idColumn="1398" LengthParam="0" />
+<INDEXCOLUMN idColumn="1525" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
 <INDEX ID="1399" IndexName="character_worldobject_mapping_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1397">
@@ -1425,7 +1457,7 @@
 </INDEX>
 <INDEX ID="1402" IndexName="character_worldobject_mapping_FKIndex2" IndexKind="1" FKRefDef_Obj_id="1400">
 <INDEXCOLUMNS>
-<INDEXCOLUMN idColumn="1401" LengthParam="0" />
+<INDEXCOLUMN idColumn="1525" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
 </INDICES>
@@ -1472,16 +1504,17 @@
 </INDEX>
 </INDICES>
 </TABLE>
-<TABLE ID="1481" Tablename="character_visualappearance" PrevTableName="Table_22" XPos="707" YPos="640" TableType="1" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="47" >
+<TABLE ID="1481" Tablename="character_visualappearance" PrevTableName="Table_22" XPos="706" YPos="640" TableType="1" TablePrefix="0" nmTable="0" Temporary="0" UseStandardInserts="0" StandardInserts="\n" TableOptions="DelayKeyTblUpdates=0\nPackKeys=0\nRowChecksum=0\nRowFormat=0\nUseRaid=0\nRaidType=0\n" Comments="" Collapsed="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="47" >
 <COLUMNS>
-<COLUMN ID="1483" ColName="height" PrevColName="" Pos="0" idDatatype="5" DatatypeParams="" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
+<COLUMN ID="1612" ColName="id" PrevColName="" Pos="1" idDatatype="6" DatatypeParams="" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
 <OPTIONSELECTED>
 <OPTIONSELECT Value="1" />
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
 </COLUMN>
-<COLUMN ID="1491" ColName="characterdata_charactername" PrevColName="" Pos="1" idDatatype="20" DatatypeParams="(30)" Width="-1" Prec="-1" PrimaryKey="1" NotNull="1" AutoInc="0" IsForeignKey="1" DefaultValue="" Comments="">
+<COLUMN ID="1483" ColName="height" PrevColName="" Pos="0" idDatatype="5" DatatypeParams="" Width="-1" Prec="-1" PrimaryKey="0" NotNull="1" AutoInc="0" IsForeignKey="0" DefaultValue="" Comments="">
 <OPTIONSELECTED>
+<OPTIONSELECT Value="1" />
 <OPTIONSELECT Value="0" />
 </OPTIONSELECTED>
 </COLUMN>
@@ -1589,18 +1622,12 @@
 </COLUMN>
 </COLUMNS>
 <RELATIONS_END>
-<RELATION_END ID="1490" />
+<RELATION_END ID="1607" />
 </RELATIONS_END>
 <INDICES>
-<INDEX ID="1484" IndexName="PRIMARY" IndexKind="0" FKRefDef_Obj_id="-1">
+<INDEX ID="1613" IndexName="PRIMARY" IndexKind="0" FKRefDef_Obj_id="-1">
 <INDEXCOLUMNS>
-<INDEXCOLUMN idColumn="1483" LengthParam="0" />
-<INDEXCOLUMN idColumn="1491" LengthParam="0" />
-</INDEXCOLUMNS>
-</INDEX>
-<INDEX ID="1492" IndexName="character_visualappearance_FKIndex1" IndexKind="1" FKRefDef_Obj_id="1490">
-<INDEXCOLUMNS>
-<INDEXCOLUMN idColumn="1491" LengthParam="0" />
+<INDEXCOLUMN idColumn="1612" LengthParam="0" />
 </INDEXCOLUMNS>
 </INDEX>
 </INDICES>
@@ -1633,13 +1660,9 @@
 </TABLES>
 <RELATIONS>
 <RELATION ID="1023" RelationName="Rel_01" Kind="2" SrcTable="1000" DestTable="1006" FKFields="username=account_username\n" FKFieldsComments="\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1025" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="4" />
-<RELATION ID="1051" RelationName="Rel_02" Kind="2" SrcTable="1039" DestTable="1047" FKFields="id=skill_id\n" FKFieldsComments="\n" relDirection="1" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1053" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="7" />
-<RELATION ID="1054" RelationName="Rel_03" Kind="2" SrcTable="1006" DestTable="1047" FKFields="characterName=charactername\n" FKFieldsComments="\n" relDirection="4" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1056" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="8" />
 <RELATION ID="1062" RelationName="Rel_04" Kind="2" SrcTable="1057" DestTable="1006" FKFields="id=race_id\n" FKFieldsComments="\n" relDirection="1" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1064" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="10" />
-<RELATION ID="1079" RelationName="Rel_05" Kind="5" SrcTable="1006" DestTable="1065" FKFields="characterName=characterdata_characterName\n" FKFieldsComments="\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1081" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="12" />
 <RELATION ID="1128" RelationName="Rel_06" Kind="2" SrcTable="1123" DestTable="1118" FKFields="id=item_type_id\n" FKFieldsComments="\n" relDirection="4" MidOffset="-1" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1130" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="15" />
-<RELATION ID="1137" RelationName="Rel_07" Kind="2" SrcTable="1118" DestTable="1131" FKFields="id=item_id\n" FKFieldsComments="\n" relDirection="4" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1139" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="17" />
-<RELATION ID="1141" RelationName="Rel_08" Kind="2" SrcTable="1006" DestTable="1131" FKFields="characterName=charactername\n" FKFieldsComments="\n" relDirection="1" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1143" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="18" />
+<RELATION ID="1137" RelationName="Rel_07" Kind="2" SrcTable="1118" DestTable="1131" FKFields="id=item_id\n" FKFieldsComments="\n" relDirection="4" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1586" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="17" />
 <RELATION ID="1182" RelationName="Rel_09" Kind="2" SrcTable="1175" DestTable="1065" FKFields="id=map_id\n" FKFieldsComments="\n" relDirection="4" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1184" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="21" />
 <RELATION ID="1198" RelationName="Rel_10" Kind="2" SrcTable="1186" DestTable="1193" FKFields="id=zoneserver_id\n" FKFieldsComments="\n" relDirection="3" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1200" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="24" />
 <RELATION ID="1201" RelationName="Rel_11" Kind="2" SrcTable="1175" DestTable="1193" FKFields="id=map_id\n" FKFieldsComments="\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1203" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="25" />
@@ -1652,12 +1675,16 @@
 <RELATION ID="1386" RelationName="Rel_18" Kind="2" SrcTable="1283" DestTable="1381" FKFields="id=npc_id\n" FKFieldsComments="\n" relDirection="2" MidOffset="-97" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1388" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="38" />
 <RELATION ID="1389" RelationName="Rel_19" Kind="2" SrcTable="1252" DestTable="1381" FKFields="id=worldobject_id\n" FKFieldsComments="\n" relDirection="4" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1391" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="39" />
 <RELATION ID="1397" RelationName="Rel_20" Kind="2" SrcTable="1252" DestTable="1393" FKFields="id=worldobject_id\n" FKFieldsComments="\n" relDirection="1" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1399" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="41" />
-<RELATION ID="1400" RelationName="Rel_21" Kind="2" SrcTable="1006" DestTable="1393" FKFields="charactername=characterdata_charactername\n" FKFieldsComments="\n" relDirection="2" MidOffset="-389" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1402" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="42" />
+<RELATION ID="1400" RelationName="Rel_21" Kind="2" SrcTable="1006" DestTable="1393" FKFields="id=characterdata_id\n" FKFieldsComments="\n" relDirection="2" MidOffset="-389" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1402" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="42" />
 <RELATION ID="1410" RelationName="Rel_22" Kind="2" SrcTable="1175" DestTable="1252" FKFields="id=map_id\n" FKFieldsComments="\n" relDirection="3" MidOffset="-133" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1412" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="43" />
 <RELATION ID="1472" RelationName="Rel_23" Kind="2" SrcTable="1039" DestTable="1468" FKFields="id=skill_id\n" FKFieldsComments="\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1474" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="45" />
 <RELATION ID="1475" RelationName="Rel_24" Kind="2" SrcTable="1057" DestTable="1468" FKFields="id=race_id\n" FKFieldsComments="\n" relDirection="1" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1477" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="46" />
-<RELATION ID="1490" RelationName="Rel_25" Kind="0" SrcTable="1006" DestTable="1481" FKFields="charactername=characterdata_charactername\n" FKFieldsComments="\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1492" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="48" />
 <RELATION ID="1519" RelationName="Rel_26" Kind="2" SrcTable="1514" DestTable="1039" FKFields="id=skill_group_id\n" FKFieldsComments="\n" relDirection="4" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1521" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="50" />
+<RELATION ID="1545" RelationName="Rel_27" Kind="1" SrcTable="1006" DestTable="1047" FKFields="id=characterdata_id\n" FKFieldsComments="\n" relDirection="4" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1565" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="49" />
+<RELATION ID="1549" RelationName="Rel_28" Kind="1" SrcTable="1039" DestTable="1047" FKFields="id=skill_id\n" FKFieldsComments="\n" relDirection="1" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1566" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="50" />
+<RELATION ID="1582" RelationName="Rel_34" Kind="2" SrcTable="1006" DestTable="1131" FKFields="id=characterdata_id\n" FKFieldsComments="\n" relDirection="1" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1587" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="50" />
+<RELATION ID="1588" RelationName="Rel_35" Kind="0" SrcTable="1006" DestTable="1065" FKFields="id=id\n" FKFieldsComments="\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="1590" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="50" />
+<RELATION ID="1607" RelationName="Rel_38" Kind="0" SrcTable="1006" DestTable="1481" FKFields="id=id\n" FKFieldsComments="\n" relDirection="2" MidOffset="0" OptionalStart="0" OptionalEnd="0" CaptionOffsetX="0" CaptionOffsetY="0" StartIntervalOffsetX="0" StartIntervalOffsetY="0" EndIntervalOffsetX="0" EndIntervalOffsetY="0" CreateRefDef="1" Invisible="0" RefDef="Matching=0\nOnDelete=3\nOnUpdate=3\n" Comments="" FKRefDefIndex_Obj_id="-1" Splitted="0" IsLinkedObject="0" IDLinkedModel="-1" Obj_id_Linked="-1" OrderPos="50" />
 </RELATIONS>
 <NOTES>
 </NOTES>
@@ -1680,6 +1707,7 @@
 </PLUGINDATA>
 <QUERYDATA>
 <QUERYRECORDS>
+<QUERYRECORD SQLCmdType="4" StoredPosition="28.10 22:11:49" SQLText="SELECT * \nFROM characterdata\nORDER BY id" />
 </QUERYRECORDS>
 </QUERYDATA>
 <LINKEDMODELS>
