@@ -5,7 +5,6 @@ import java.nio.ByteBuffer;
 import org.apache.log4j.Logger;
 
 import de.mbws.common.eventdata.AbstractEventData;
-import de.mbws.common.eventdata.generated.LoginData;
 import de.mbws.common.eventdata.generated.PlayerInfo;
 
 /**
@@ -24,7 +23,7 @@ public class CharacterEvent extends AbstractGameEvent {
      * @param payload
      */
     CharacterEvent(ByteBuffer payload) {
-        super(payload, new LoginData());
+        super(payload, new PlayerInfo());
     }
     
     /**
