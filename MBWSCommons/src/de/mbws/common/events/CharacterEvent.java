@@ -1,0 +1,50 @@
+package de.mbws.common.events;
+
+import java.nio.ByteBuffer;
+
+import org.apache.log4j.Logger;
+
+import de.mbws.common.eventdata.AbstractEventData;
+import de.mbws.common.eventdata.generated.LoginData;
+import de.mbws.common.eventdata.generated.PlayerInfo;
+
+/**
+ * Description: 
+ * @author Azarai
+ *
+ */
+public class CharacterEvent extends AbstractGameEvent {
+
+    
+    public static final int GE_CHARACTER = 3;
+    private static Logger logger = Logger.getLogger("CharacterEvent");
+
+    /**
+     * Constructor for the server. Should probably be package visible 
+     * @param payload
+     */
+    CharacterEvent(ByteBuffer payload) {
+        super(payload, new LoginData());
+    }
+    
+    /**
+     * Constructor for the client.
+     */
+    public CharacterEvent() {
+        super(null);
+    }
+    
+    public CharacterEvent(AbstractEventData eventData) {
+        super(eventData);
+    }
+
+    public PlayerInfo getPlayerInfo() {
+        return (PlayerInfo) eventData;
+    }
+
+    @Override
+    public int getEventId() {
+        return GE_CHARACTER;
+    }
+
+}

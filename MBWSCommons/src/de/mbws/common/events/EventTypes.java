@@ -19,4 +19,7 @@ public class EventTypes {
     public static final int ACCOUNT_CREATE = 11;
     public static final int ACCOUNT_CREATE_FAIL = 12;
     public static final int ACCOUNT_CREATE_OK = 13;
+    
+    public static final int CHARACTER_RECEIVE_REQUEST = 21;
+    public static final int CHARACTER_RECEIVE = 22;
 }

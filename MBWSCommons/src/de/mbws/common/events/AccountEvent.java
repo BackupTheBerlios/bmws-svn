@@ -14,7 +14,7 @@ import de.mbws.common.eventdata.generated.AccountErrorData;
  *
  */
 public class AccountEvent extends AbstractGameEvent {
-    public static final int GE_ACCOUNT = 1;
+    public static final int GE_ACCOUNT = 2;
     private static Logger logger = Logger.getLogger("AccountEvent");
 
     /**

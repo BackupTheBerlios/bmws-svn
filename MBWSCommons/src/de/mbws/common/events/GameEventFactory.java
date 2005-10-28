@@ -39,6 +39,12 @@ public class GameEventFactory {
         } else if (eventKey == EventTypes.ACCOUNT_CREATE_OK) {
             event = new AccountEvent(payload);
             event.setEventType(eventKey);
+        } else if (eventKey == EventTypes.CHARACTER_RECEIVE) {
+            event = new CharacterEvent(payload);
+            event.setEventType(eventKey);
+        } else if (eventKey == EventTypes.CHARACTER_RECEIVE_REQUEST) {
+            event = new CharacterEvent(payload);
+            event.setEventType(eventKey);
         }
         if (event != null) {
             event.setPlayer(p);
