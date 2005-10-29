@@ -1,6 +1,5 @@
 package de.mbws.client.controller;
 
-import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.CharacterEvent;
 import de.mbws.common.events.EventTypes;
@@ -37,9 +36,8 @@ public class CharacterController {
 
 	}
 
-	public AbstractGameEvent createCharacterReceiveEvent(AbstractPlayerData player) {
+	public AbstractGameEvent createCharacterReceiveEvent() {
 		CharacterEvent event = new CharacterEvent();
-		event.setPlayer(player);
 		event.setEventType(EventTypes.CHARACTER_RECEIVE_REQUEST);
 		return event;
 	}

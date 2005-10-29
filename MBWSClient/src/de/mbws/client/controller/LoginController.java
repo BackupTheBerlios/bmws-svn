@@ -4,7 +4,6 @@ import de.mbws.client.data.ClientPlayerData;
 import de.mbws.common.eventdata.generated.AccountData;
 import de.mbws.common.eventdata.generated.LoginData;
 import de.mbws.common.events.AbstractGameEvent;
-import de.mbws.common.events.CharacterEvent;
 import de.mbws.common.events.EventTypes;
 import de.mbws.common.events.LoginEvent;
 
@@ -37,12 +36,16 @@ public class LoginController {
 		if (loginEvent.getEventType() == EventTypes.LOGIN_FAILED) {
 			System.out.println("Login failed!");
 		} else if (loginEvent.getEventType() == EventTypes.LOGIN_OK) {
+			// Updating the local client data:
+			ClientPlayerData.getInstance().setSessionId(
+					loginEvent.getPlayer().getSessionId());
+			ClientPlayerData.getInstance().setAccount(
+					loginEvent.getPlayer().getAccount());
+			System.out.println("Session id ="+loginEvent.getPlayer().getSessionId());
 			System.out.println("Login ok, trying to receive character data");
-			ClientNetworkController.getInstance()
-					.handleOutgoingEvent(
-							CharacterController.getInstance()
-									.createCharacterReceiveEvent(
-											loginEvent.getPlayer()));
+			ClientNetworkController.getInstance().handleOutgoingEvent(
+					CharacterController.getInstance()
+							.createCharacterReceiveEvent());
 
 		} else if (loginEvent.getEventType() == EventTypes.LOGOUT_OK) {
 			System.out.println("Logout Successfull!");

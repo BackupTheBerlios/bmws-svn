@@ -69,7 +69,7 @@ public class NIOEventReader extends Thread {
 
                     SocketChannel channel = (SocketChannel) key.channel();
                     Attachment attachment = (Attachment) key.attachment();
-
+                    
                     try {
                         long nbytes = channel.read(attachment.readBuff);
                         if (nbytes == -1) {
@@ -82,6 +82,11 @@ public class NIOEventReader extends Thread {
                                 attachment.readBuff.flip();
 
                                 while (attachment.eventReady()) {
+                                	if (attachment.sessionId != 0) {
+                                    	if (ClientPlayerData.getInstance().getSessionId()==null || ClientPlayerData.getInstance().getSessionId().intValue()!=attachment.sessionId) {
+                                    		ClientPlayerData.getInstance().setSessionId(attachment.sessionId);
+                                    	}
+                                    }
                                 	AbstractGameEvent event = getEvent(attachment);
                                     if (event != null) {
                                         queue.enQueue(event);
@@ -91,6 +96,7 @@ public class NIOEventReader extends Thread {
                                     attachment.reset();
                                 }
                                 attachment.readBuff.compact();
+                                
                             }
                         } catch (IllegalArgumentException e) {
                             log.error("illegalargument while parsing incoming event", e);
