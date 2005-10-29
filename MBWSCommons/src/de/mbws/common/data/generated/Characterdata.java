@@ -2,15 +2,14 @@ package de.mbws.common.data.generated;
 
 import java.io.Serializable;
 import java.util.Set;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+
 
 /** @author Hibernate CodeGenerator */
 public class Characterdata implements Serializable {
 
     /** identifier field */
-    private Object id;
+    private Long id;
 
     /** persistent field */
     private String charactername;
@@ -19,28 +18,28 @@ public class Characterdata implements Serializable {
     private String gender;
 
     /** persistent field */
-    private Object health;
+    private int health;
 
     /** persistent field */
-    private Object mana;
+    private int mana;
 
     /** persistent field */
-    private Object stamina;
+    private int stamina;
 
     /** persistent field */
-    private Object age;
+    private short age;
 
     /** persistent field */
-    private Object strength;
+    private int strength;
 
     /** persistent field */
-    private Object intelligence;
+    private int intelligence;
 
     /** persistent field */
-    private Object dexterity;
+    private int dexterity;
 
     /** persistent field */
-    private Object constitution;
+    private int constitution;
 
     /** nullable persistent field */
     private de.mbws.common.data.generated.CharacterStatus characterStatus;
@@ -64,7 +63,7 @@ public class Characterdata implements Serializable {
     private Set characterWorldobjectMappings;
 
     /** full constructor */
-    public Characterdata(Object id, String charactername, String gender, Object health, Object mana, Object stamina, Object age, Object strength, Object intelligence, Object dexterity, Object constitution, de.mbws.common.data.generated.CharacterStatus characterStatus, de.mbws.common.data.generated.CharacterVisualappearance characterVisualappearance, de.mbws.common.data.generated.Account account, de.mbws.common.data.generated.Race race, Set characterSkillMappings, Set characterItemMappings, Set characterWorldobjectMappings) {
+    public Characterdata(Long id, String charactername, String gender, int health, int mana, int stamina, short age, int strength, int intelligence, int dexterity, int constitution, de.mbws.common.data.generated.CharacterStatus characterStatus, de.mbws.common.data.generated.CharacterVisualappearance characterVisualappearance, de.mbws.common.data.generated.Account account, de.mbws.common.data.generated.Race race, Set characterSkillMappings, Set characterItemMappings, Set characterWorldobjectMappings) {
         this.id = id;
         this.charactername = charactername;
         this.gender = gender;
@@ -90,7 +89,7 @@ public class Characterdata implements Serializable {
     }
 
     /** minimal constructor */
-    public Characterdata(Object id, String charactername, String gender, Object health, Object mana, Object stamina, Object age, Object strength, Object intelligence, Object dexterity, Object constitution, de.mbws.common.data.generated.Account account, de.mbws.common.data.generated.Race race, Set characterSkillMappings, Set characterItemMappings, Set characterWorldobjectMappings) {
+    public Characterdata(Long id, String charactername, String gender, int health, int mana, int stamina, short age, int strength, int intelligence, int dexterity, int constitution, de.mbws.common.data.generated.Account account, de.mbws.common.data.generated.Race race, Set characterSkillMappings, Set characterItemMappings, Set characterWorldobjectMappings) {
         this.id = id;
         this.charactername = charactername;
         this.gender = gender;
@@ -109,15 +108,11 @@ public class Characterdata implements Serializable {
         this.characterWorldobjectMappings = characterWorldobjectMappings;
     }
 
-    /** 
-     * 		       auto_increment
-     * 		    
-     */
-    public Object getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(Object id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -137,67 +132,67 @@ public class Characterdata implements Serializable {
         this.gender = gender;
     }
 
-    public Object getHealth() {
+    public int getHealth() {
         return this.health;
     }
 
-    public void setHealth(Object health) {
+    public void setHealth(int health) {
         this.health = health;
     }
 
-    public Object getMana() {
+    public int getMana() {
         return this.mana;
     }
 
-    public void setMana(Object mana) {
+    public void setMana(int mana) {
         this.mana = mana;
     }
 
-    public Object getStamina() {
+    public int getStamina() {
         return this.stamina;
     }
 
-    public void setStamina(Object stamina) {
+    public void setStamina(int stamina) {
         this.stamina = stamina;
     }
 
-    public Object getAge() {
+    public short getAge() {
         return this.age;
     }
 
-    public void setAge(Object age) {
+    public void setAge(short age) {
         this.age = age;
     }
 
-    public Object getStrength() {
+    public int getStrength() {
         return this.strength;
     }
 
-    public void setStrength(Object strength) {
+    public void setStrength(int strength) {
         this.strength = strength;
     }
 
-    public Object getIntelligence() {
+    public int getIntelligence() {
         return this.intelligence;
     }
 
-    public void setIntelligence(Object intelligence) {
+    public void setIntelligence(int intelligence) {
         this.intelligence = intelligence;
     }
 
-    public Object getDexterity() {
+    public int getDexterity() {
         return this.dexterity;
     }
 
-    public void setDexterity(Object dexterity) {
+    public void setDexterity(int dexterity) {
         this.dexterity = dexterity;
     }
 
-    public Object getConstitution() {
+    public int getConstitution() {
         return this.constitution;
     }
 
-    public void setConstitution(Object constitution) {
+    public void setConstitution(int constitution) {
         this.constitution = constitution;
     }
 
@@ -261,20 +256,6 @@ public class Characterdata implements Serializable {
         return new ToStringBuilder(this)
             .append("id", getId())
             .toString();
-    }
-
-    public boolean equals(Object other) {
-        if ( !(other instanceof Characterdata) ) return false;
-        Characterdata castOther = (Characterdata) other;
-        return new EqualsBuilder()
-            .append(this.getId(), castOther.getId())
-            .isEquals();
-    }
-
-    public int hashCode() {
-        return new HashCodeBuilder()
-            .append(getId())
-            .toHashCode();
     }
 
 }

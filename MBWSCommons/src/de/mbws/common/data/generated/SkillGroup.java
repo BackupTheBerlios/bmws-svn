@@ -2,15 +2,14 @@ package de.mbws.common.data.generated;
 
 import java.io.Serializable;
 import java.util.Set;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+
 
 /** @author Hibernate CodeGenerator */
 public class SkillGroup implements Serializable {
 
     /** identifier field */
-    private Object id;
+    private Integer id;
 
     /** persistent field */
     private String name;
@@ -19,7 +18,7 @@ public class SkillGroup implements Serializable {
     private Set skills;
 
     /** full constructor */
-    public SkillGroup(Object id, String name, Set skills) {
+    public SkillGroup(Integer id, String name, Set skills) {
         this.id = id;
         this.name = name;
         this.skills = skills;
@@ -29,15 +28,11 @@ public class SkillGroup implements Serializable {
     public SkillGroup() {
     }
 
-    /** 
-     * 		       auto_increment
-     * 		    
-     */
-    public Object getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    public void setId(Object id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -61,20 +56,6 @@ public class SkillGroup implements Serializable {
         return new ToStringBuilder(this)
             .append("id", getId())
             .toString();
-    }
-
-    public boolean equals(Object other) {
-        if ( !(other instanceof SkillGroup) ) return false;
-        SkillGroup castOther = (SkillGroup) other;
-        return new EqualsBuilder()
-            .append(this.getId(), castOther.getId())
-            .isEquals();
-    }
-
-    public int hashCode() {
-        return new HashCodeBuilder()
-            .append(getId())
-            .toHashCode();
     }
 
 }

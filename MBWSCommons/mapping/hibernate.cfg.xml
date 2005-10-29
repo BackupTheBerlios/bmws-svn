@@ -1,8 +1,9 @@
-<!DOCTYPE hibernate-configuration PUBLIC 
-	"-//Hibernate/Hibernate Configuration DTD//EN"
-	"http://hibernate.sourceforge.net/hibernate-configuration-2.0.dtd">
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
 	<session-factory>
+		<property name="show_sql">true</property>
 		<!-- local connection properties -->
 		<property name="hibernate.connection.url">
 			jdbc:mysql://localhost:3306/game
@@ -15,11 +16,14 @@
 		<!-- property name="hibernate.connection.pool_size"></property -->
 		<!-- dialect for MySQL -->
 		<property name="dialect">
-			net.sf.hibernate.dialect.MySQLDialect
+			org.hibernate.dialect.MySQLInnoDBDialect
 		</property>
+		<property name="dialect">
+			org.hibernate.dialect.MySQLDialect
+		</property>		
 		<property name="hibernate.show_sql">false</property>
 		<property name="hibernate.transaction.factory_class">
-			net.sf.hibernate.transaction.JDBCTransactionFactory
+			org.hibernate.transaction.JDBCTransactionFactory
 		</property>
 		<mapping resource="de/mbws/common/data/generated/Account.hbm.xml" />
 		<mapping resource="de/mbws/common/data/generated/Characterdata.hbm.xml" />

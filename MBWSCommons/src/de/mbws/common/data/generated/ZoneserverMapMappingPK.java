@@ -5,17 +5,18 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+
 /** @author Hibernate CodeGenerator */
 public class ZoneserverMapMappingPK implements Serializable {
 
     /** identifier field */
-    private Object mapId;
+    private Integer mapId;
 
     /** identifier field */
-    private Object zoneserverId;
+    private Integer zoneserverId;
 
     /** full constructor */
-    public ZoneserverMapMappingPK(Object mapId, Object zoneserverId) {
+    public ZoneserverMapMappingPK(Integer mapId, Integer zoneserverId) {
         this.mapId = mapId;
         this.zoneserverId = zoneserverId;
     }
@@ -24,19 +25,19 @@ public class ZoneserverMapMappingPK implements Serializable {
     public ZoneserverMapMappingPK() {
     }
 
-    public Object getMapId() {
+    public Integer getMapId() {
         return this.mapId;
     }
 
-    public void setMapId(Object mapId) {
+    public void setMapId(Integer mapId) {
         this.mapId = mapId;
     }
 
-    public Object getZoneserverId() {
+    public Integer getZoneserverId() {
         return this.zoneserverId;
     }
 
-    public void setZoneserverId(Object zoneserverId) {
+    public void setZoneserverId(Integer zoneserverId) {
         this.zoneserverId = zoneserverId;
     }
 
@@ -48,6 +49,7 @@ public class ZoneserverMapMappingPK implements Serializable {
     }
 
     public boolean equals(Object other) {
+        if ( (this == other ) ) return true;
         if ( !(other instanceof ZoneserverMapMappingPK) ) return false;
         ZoneserverMapMappingPK castOther = (ZoneserverMapMappingPK) other;
         return new EqualsBuilder()

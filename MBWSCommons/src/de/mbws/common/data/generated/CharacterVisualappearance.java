@@ -1,75 +1,74 @@
 package de.mbws.common.data.generated;
 
 import java.io.Serializable;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+
 
 /** @author Hibernate CodeGenerator */
 public class CharacterVisualappearance implements Serializable {
 
     /** identifier field */
-    private Object id;
+    private Long id;
 
     /** persistent field */
-    private Object height;
+    private int height;
 
     /** persistent field */
-    private Object skinColor;
+    private int skinColor;
 
     /** persistent field */
-    private Object faceType;
+    private int faceType;
 
     /** persistent field */
-    private Object hairColor;
+    private int hairColor;
 
     /** persistent field */
-    private Object hairStyle;
+    private int hairStyle;
 
     /** persistent field */
-    private Object hairFacial;
+    private int hairFacial;
 
     /** persistent field */
-    private Object itemHead;
+    private int itemHead;
 
     /** persistent field */
-    private Object itemShoulders;
+    private int itemShoulders;
 
     /** persistent field */
-    private Object itemShirt;
+    private int itemShirt;
 
     /** persistent field */
-    private Object itemChest;
+    private int itemChest;
 
     /** persistent field */
-    private Object itemBelt;
+    private int itemBelt;
 
     /** persistent field */
-    private Object itemLegs;
+    private int itemLegs;
 
     /** persistent field */
-    private Object itemBoots;
+    private int itemBoots;
 
     /** persistent field */
-    private Object itemBracers;
+    private int itemBracers;
 
     /** persistent field */
-    private Object itemGloves;
+    private int itemGloves;
 
     /** persistent field */
-    private Object itemCape;
+    private int itemCape;
 
     /** persistent field */
-    private Object itemHandLeft;
+    private int itemHandLeft;
 
     /** persistent field */
-    private Object itemHandRight;
+    private int itemHandRight;
 
     /** nullable persistent field */
     private de.mbws.common.data.generated.Characterdata characterdata;
 
     /** full constructor */
-    public CharacterVisualappearance(Object id, Object height, Object skinColor, Object faceType, Object hairColor, Object hairStyle, Object hairFacial, Object itemHead, Object itemShoulders, Object itemShirt, Object itemChest, Object itemBelt, Object itemLegs, Object itemBoots, Object itemBracers, Object itemGloves, Object itemCape, Object itemHandLeft, Object itemHandRight, de.mbws.common.data.generated.Characterdata characterdata) {
+    public CharacterVisualappearance(Long id, int height, int skinColor, int faceType, int hairColor, int hairStyle, int hairFacial, int itemHead, int itemShoulders, int itemShirt, int itemChest, int itemBelt, int itemLegs, int itemBoots, int itemBracers, int itemGloves, int itemCape, int itemHandLeft, int itemHandRight, de.mbws.common.data.generated.Characterdata characterdata) {
         this.id = id;
         this.height = height;
         this.skinColor = skinColor;
@@ -97,7 +96,7 @@ public class CharacterVisualappearance implements Serializable {
     }
 
     /** minimal constructor */
-    public CharacterVisualappearance(Object id, Object height, Object skinColor, Object faceType, Object hairColor, Object hairStyle, Object hairFacial, Object itemHead, Object itemShoulders, Object itemShirt, Object itemChest, Object itemBelt, Object itemLegs, Object itemBoots, Object itemBracers, Object itemGloves, Object itemCape, Object itemHandLeft, Object itemHandRight) {
+    public CharacterVisualappearance(Long id, int height, int skinColor, int faceType, int hairColor, int hairStyle, int hairFacial, int itemHead, int itemShoulders, int itemShirt, int itemChest, int itemBelt, int itemLegs, int itemBoots, int itemBracers, int itemGloves, int itemCape, int itemHandLeft, int itemHandRight) {
         this.id = id;
         this.height = height;
         this.skinColor = skinColor;
@@ -119,155 +118,155 @@ public class CharacterVisualappearance implements Serializable {
         this.itemHandRight = itemHandRight;
     }
 
-    public Object getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(Object id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Object getHeight() {
+    public int getHeight() {
         return this.height;
     }
 
-    public void setHeight(Object height) {
+    public void setHeight(int height) {
         this.height = height;
     }
 
-    public Object getSkinColor() {
+    public int getSkinColor() {
         return this.skinColor;
     }
 
-    public void setSkinColor(Object skinColor) {
+    public void setSkinColor(int skinColor) {
         this.skinColor = skinColor;
     }
 
-    public Object getFaceType() {
+    public int getFaceType() {
         return this.faceType;
     }
 
-    public void setFaceType(Object faceType) {
+    public void setFaceType(int faceType) {
         this.faceType = faceType;
     }
 
-    public Object getHairColor() {
+    public int getHairColor() {
         return this.hairColor;
     }
 
-    public void setHairColor(Object hairColor) {
+    public void setHairColor(int hairColor) {
         this.hairColor = hairColor;
     }
 
-    public Object getHairStyle() {
+    public int getHairStyle() {
         return this.hairStyle;
     }
 
-    public void setHairStyle(Object hairStyle) {
+    public void setHairStyle(int hairStyle) {
         this.hairStyle = hairStyle;
     }
 
-    public Object getHairFacial() {
+    public int getHairFacial() {
         return this.hairFacial;
     }
 
-    public void setHairFacial(Object hairFacial) {
+    public void setHairFacial(int hairFacial) {
         this.hairFacial = hairFacial;
     }
 
-    public Object getItemHead() {
+    public int getItemHead() {
         return this.itemHead;
     }
 
-    public void setItemHead(Object itemHead) {
+    public void setItemHead(int itemHead) {
         this.itemHead = itemHead;
     }
 
-    public Object getItemShoulders() {
+    public int getItemShoulders() {
         return this.itemShoulders;
     }
 
-    public void setItemShoulders(Object itemShoulders) {
+    public void setItemShoulders(int itemShoulders) {
         this.itemShoulders = itemShoulders;
     }
 
-    public Object getItemShirt() {
+    public int getItemShirt() {
         return this.itemShirt;
     }
 
-    public void setItemShirt(Object itemShirt) {
+    public void setItemShirt(int itemShirt) {
         this.itemShirt = itemShirt;
     }
 
-    public Object getItemChest() {
+    public int getItemChest() {
         return this.itemChest;
     }
 
-    public void setItemChest(Object itemChest) {
+    public void setItemChest(int itemChest) {
         this.itemChest = itemChest;
     }
 
-    public Object getItemBelt() {
+    public int getItemBelt() {
         return this.itemBelt;
     }
 
-    public void setItemBelt(Object itemBelt) {
+    public void setItemBelt(int itemBelt) {
         this.itemBelt = itemBelt;
     }
 
-    public Object getItemLegs() {
+    public int getItemLegs() {
         return this.itemLegs;
     }
 
-    public void setItemLegs(Object itemLegs) {
+    public void setItemLegs(int itemLegs) {
         this.itemLegs = itemLegs;
     }
 
-    public Object getItemBoots() {
+    public int getItemBoots() {
         return this.itemBoots;
     }
 
-    public void setItemBoots(Object itemBoots) {
+    public void setItemBoots(int itemBoots) {
         this.itemBoots = itemBoots;
     }
 
-    public Object getItemBracers() {
+    public int getItemBracers() {
         return this.itemBracers;
     }
 
-    public void setItemBracers(Object itemBracers) {
+    public void setItemBracers(int itemBracers) {
         this.itemBracers = itemBracers;
     }
 
-    public Object getItemGloves() {
+    public int getItemGloves() {
         return this.itemGloves;
     }
 
-    public void setItemGloves(Object itemGloves) {
+    public void setItemGloves(int itemGloves) {
         this.itemGloves = itemGloves;
     }
 
-    public Object getItemCape() {
+    public int getItemCape() {
         return this.itemCape;
     }
 
-    public void setItemCape(Object itemCape) {
+    public void setItemCape(int itemCape) {
         this.itemCape = itemCape;
     }
 
-    public Object getItemHandLeft() {
+    public int getItemHandLeft() {
         return this.itemHandLeft;
     }
 
-    public void setItemHandLeft(Object itemHandLeft) {
+    public void setItemHandLeft(int itemHandLeft) {
         this.itemHandLeft = itemHandLeft;
     }
 
-    public Object getItemHandRight() {
+    public int getItemHandRight() {
         return this.itemHandRight;
     }
 
-    public void setItemHandRight(Object itemHandRight) {
+    public void setItemHandRight(int itemHandRight) {
         this.itemHandRight = itemHandRight;
     }
 
@@ -283,20 +282,6 @@ public class CharacterVisualappearance implements Serializable {
         return new ToStringBuilder(this)
             .append("id", getId())
             .toString();
-    }
-
-    public boolean equals(Object other) {
-        if ( !(other instanceof CharacterVisualappearance) ) return false;
-        CharacterVisualappearance castOther = (CharacterVisualappearance) other;
-        return new EqualsBuilder()
-            .append(this.getId(), castOther.getId())
-            .isEquals();
-    }
-
-    public int hashCode() {
-        return new HashCodeBuilder()
-            .append(getId())
-            .toHashCode();
     }
 
 }

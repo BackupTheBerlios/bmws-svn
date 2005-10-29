@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+
 /** @author Hibernate CodeGenerator */
 public class NpcWorldobjectMapping implements Serializable {
 
@@ -64,6 +65,7 @@ public class NpcWorldobjectMapping implements Serializable {
     }
 
     public boolean equals(Object other) {
+        if ( (this == other ) ) return true;
         if ( !(other instanceof NpcWorldobjectMapping) ) return false;
         NpcWorldobjectMapping castOther = (NpcWorldobjectMapping) other;
         return new EqualsBuilder()

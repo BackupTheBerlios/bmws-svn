@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+
 /** @author Hibernate CodeGenerator */
 public class CharacterWorldobjectMapping implements Serializable {
 
@@ -64,6 +65,7 @@ public class CharacterWorldobjectMapping implements Serializable {
     }
 
     public boolean equals(Object other) {
+        if ( (this == other ) ) return true;
         if ( !(other instanceof CharacterWorldobjectMapping) ) return false;
         CharacterWorldobjectMapping castOther = (CharacterWorldobjectMapping) other;
         return new EqualsBuilder()

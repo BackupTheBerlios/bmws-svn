@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+
 /** @author Hibernate CodeGenerator */
 public class CharacterWorldobjectMappingPK implements Serializable {
 
@@ -12,10 +13,10 @@ public class CharacterWorldobjectMappingPK implements Serializable {
     private Long worldobjectId;
 
     /** identifier field */
-    private Object characterdataId;
+    private Long characterdataId;
 
     /** full constructor */
-    public CharacterWorldobjectMappingPK(Long worldobjectId, Object characterdataId) {
+    public CharacterWorldobjectMappingPK(Long worldobjectId, Long characterdataId) {
         this.worldobjectId = worldobjectId;
         this.characterdataId = characterdataId;
     }
@@ -32,11 +33,11 @@ public class CharacterWorldobjectMappingPK implements Serializable {
         this.worldobjectId = worldobjectId;
     }
 
-    public Object getCharacterdataId() {
+    public Long getCharacterdataId() {
         return this.characterdataId;
     }
 
-    public void setCharacterdataId(Object characterdataId) {
+    public void setCharacterdataId(Long characterdataId) {
         this.characterdataId = characterdataId;
     }
 
@@ -48,6 +49,7 @@ public class CharacterWorldobjectMappingPK implements Serializable {
     }
 
     public boolean equals(Object other) {
+        if ( (this == other ) ) return true;
         if ( !(other instanceof CharacterWorldobjectMappingPK) ) return false;
         CharacterWorldobjectMappingPK castOther = (CharacterWorldobjectMappingPK) other;
         return new EqualsBuilder()

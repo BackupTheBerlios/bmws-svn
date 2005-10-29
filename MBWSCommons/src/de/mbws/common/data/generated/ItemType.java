@@ -2,21 +2,20 @@ package de.mbws.common.data.generated;
 
 import java.io.Serializable;
 import java.util.Set;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+
 
 /** @author Hibernate CodeGenerator */
 public class ItemType implements Serializable {
 
     /** identifier field */
-    private Object id;
+    private Integer id;
 
     /** persistent field */
     private String name;
 
     /** persistent field */
-    private Object containersize;
+    private int containersize;
 
     /** persistent field */
     private byte wearable;
@@ -25,7 +24,7 @@ public class ItemType implements Serializable {
     private Set items;
 
     /** full constructor */
-    public ItemType(Object id, String name, Object containersize, byte wearable, Set items) {
+    public ItemType(Integer id, String name, int containersize, byte wearable, Set items) {
         this.id = id;
         this.name = name;
         this.containersize = containersize;
@@ -37,15 +36,11 @@ public class ItemType implements Serializable {
     public ItemType() {
     }
 
-    /** 
-     * 		       auto_increment
-     * 		    
-     */
-    public Object getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    public void setId(Object id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -57,11 +52,11 @@ public class ItemType implements Serializable {
         this.name = name;
     }
 
-    public Object getContainersize() {
+    public int getContainersize() {
         return this.containersize;
     }
 
-    public void setContainersize(Object containersize) {
+    public void setContainersize(int containersize) {
         this.containersize = containersize;
     }
 
@@ -85,20 +80,6 @@ public class ItemType implements Serializable {
         return new ToStringBuilder(this)
             .append("id", getId())
             .toString();
-    }
-
-    public boolean equals(Object other) {
-        if ( !(other instanceof ItemType) ) return false;
-        ItemType castOther = (ItemType) other;
-        return new EqualsBuilder()
-            .append(this.getId(), castOther.getId())
-            .isEquals();
-    }
-
-    public int hashCode() {
-        return new HashCodeBuilder()
-            .append(getId())
-            .toHashCode();
     }
 
 }

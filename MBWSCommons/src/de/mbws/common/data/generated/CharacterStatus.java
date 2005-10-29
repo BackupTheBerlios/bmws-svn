@@ -1,15 +1,14 @@
 package de.mbws.common.data.generated;
 
 import java.io.Serializable;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+
 
 /** @author Hibernate CodeGenerator */
 public class CharacterStatus implements Serializable {
 
     /** identifier field */
-    private Object id;
+    private Long id;
 
     /** persistent field */
     private String charstatus;
@@ -21,37 +20,37 @@ public class CharacterStatus implements Serializable {
     private String gamestatus;
 
     /** persistent field */
-    private Object coordinateX;
+    private int coordinateX;
 
     /** persistent field */
-    private Object coordinateY;
+    private int coordinateY;
 
     /** persistent field */
-    private Object coordinateZ;
+    private int coordinateZ;
 
     /** persistent field */
-    private Object currentmana;
+    private int currentmana;
 
     /** persistent field */
-    private Object currenthealth;
+    private int currenthealth;
 
     /** persistent field */
-    private Object currentstamina;
+    private int currentstamina;
 
     /** persistent field */
-    private Object currentstrength;
+    private int currentstrength;
 
     /** persistent field */
-    private Object currentinteligence;
+    private int currentinteligence;
 
     /** persistent field */
-    private Object currentdexterity;
+    private int currentdexterity;
 
     /** persistent field */
-    private Object currentconstitution;
+    private int currentconstitution;
 
     /** persistent field */
-    private Object freexp;
+    private int freexp;
 
     /** nullable persistent field */
     private de.mbws.common.data.generated.Characterdata characterdata;
@@ -60,7 +59,7 @@ public class CharacterStatus implements Serializable {
     private de.mbws.common.data.generated.Map map;
 
     /** full constructor */
-    public CharacterStatus(Object id, String charstatus, String pvp, String gamestatus, Object coordinateX, Object coordinateY, Object coordinateZ, Object currentmana, Object currenthealth, Object currentstamina, Object currentstrength, Object currentinteligence, Object currentdexterity, Object currentconstitution, Object freexp, de.mbws.common.data.generated.Characterdata characterdata, de.mbws.common.data.generated.Map map) {
+    public CharacterStatus(Long id, String charstatus, String pvp, String gamestatus, int coordinateX, int coordinateY, int coordinateZ, int currentmana, int currenthealth, int currentstamina, int currentstrength, int currentinteligence, int currentdexterity, int currentconstitution, int freexp, de.mbws.common.data.generated.Characterdata characterdata, de.mbws.common.data.generated.Map map) {
         this.id = id;
         this.charstatus = charstatus;
         this.pvp = pvp;
@@ -85,7 +84,7 @@ public class CharacterStatus implements Serializable {
     }
 
     /** minimal constructor */
-    public CharacterStatus(Object id, String charstatus, String pvp, String gamestatus, Object coordinateX, Object coordinateY, Object coordinateZ, Object currentmana, Object currenthealth, Object currentstamina, Object currentstrength, Object currentinteligence, Object currentdexterity, Object currentconstitution, Object freexp, de.mbws.common.data.generated.Map map) {
+    public CharacterStatus(Long id, String charstatus, String pvp, String gamestatus, int coordinateX, int coordinateY, int coordinateZ, int currentmana, int currenthealth, int currentstamina, int currentstrength, int currentinteligence, int currentdexterity, int currentconstitution, int freexp, de.mbws.common.data.generated.Map map) {
         this.id = id;
         this.charstatus = charstatus;
         this.pvp = pvp;
@@ -104,11 +103,11 @@ public class CharacterStatus implements Serializable {
         this.map = map;
     }
 
-    public Object getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(Object id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -136,91 +135,91 @@ public class CharacterStatus implements Serializable {
         this.gamestatus = gamestatus;
     }
 
-    public Object getCoordinateX() {
+    public int getCoordinateX() {
         return this.coordinateX;
     }
 
-    public void setCoordinateX(Object coordinateX) {
+    public void setCoordinateX(int coordinateX) {
         this.coordinateX = coordinateX;
     }
 
-    public Object getCoordinateY() {
+    public int getCoordinateY() {
         return this.coordinateY;
     }
 
-    public void setCoordinateY(Object coordinateY) {
+    public void setCoordinateY(int coordinateY) {
         this.coordinateY = coordinateY;
     }
 
-    public Object getCoordinateZ() {
+    public int getCoordinateZ() {
         return this.coordinateZ;
     }
 
-    public void setCoordinateZ(Object coordinateZ) {
+    public void setCoordinateZ(int coordinateZ) {
         this.coordinateZ = coordinateZ;
     }
 
-    public Object getCurrentmana() {
+    public int getCurrentmana() {
         return this.currentmana;
     }
 
-    public void setCurrentmana(Object currentmana) {
+    public void setCurrentmana(int currentmana) {
         this.currentmana = currentmana;
     }
 
-    public Object getCurrenthealth() {
+    public int getCurrenthealth() {
         return this.currenthealth;
     }
 
-    public void setCurrenthealth(Object currenthealth) {
+    public void setCurrenthealth(int currenthealth) {
         this.currenthealth = currenthealth;
     }
 
-    public Object getCurrentstamina() {
+    public int getCurrentstamina() {
         return this.currentstamina;
     }
 
-    public void setCurrentstamina(Object currentstamina) {
+    public void setCurrentstamina(int currentstamina) {
         this.currentstamina = currentstamina;
     }
 
-    public Object getCurrentstrength() {
+    public int getCurrentstrength() {
         return this.currentstrength;
     }
 
-    public void setCurrentstrength(Object currentstrength) {
+    public void setCurrentstrength(int currentstrength) {
         this.currentstrength = currentstrength;
     }
 
-    public Object getCurrentinteligence() {
+    public int getCurrentinteligence() {
         return this.currentinteligence;
     }
 
-    public void setCurrentinteligence(Object currentinteligence) {
+    public void setCurrentinteligence(int currentinteligence) {
         this.currentinteligence = currentinteligence;
     }
 
-    public Object getCurrentdexterity() {
+    public int getCurrentdexterity() {
         return this.currentdexterity;
     }
 
-    public void setCurrentdexterity(Object currentdexterity) {
+    public void setCurrentdexterity(int currentdexterity) {
         this.currentdexterity = currentdexterity;
     }
 
-    public Object getCurrentconstitution() {
+    public int getCurrentconstitution() {
         return this.currentconstitution;
     }
 
-    public void setCurrentconstitution(Object currentconstitution) {
+    public void setCurrentconstitution(int currentconstitution) {
         this.currentconstitution = currentconstitution;
     }
 
-    public Object getFreexp() {
+    public int getFreexp() {
         return this.freexp;
     }
 
-    public void setFreexp(Object freexp) {
+    public void setFreexp(int freexp) {
         this.freexp = freexp;
     }
 
@@ -244,20 +243,6 @@ public class CharacterStatus implements Serializable {
         return new ToStringBuilder(this)
             .append("id", getId())
             .toString();
-    }
-
-    public boolean equals(Object other) {
-        if ( !(other instanceof CharacterStatus) ) return false;
-        CharacterStatus castOther = (CharacterStatus) other;
-        return new EqualsBuilder()
-            .append(this.getId(), castOther.getId())
-            .isEquals();
-    }
-
-    public int hashCode() {
-        return new HashCodeBuilder()
-            .append(getId())
-            .toHashCode();
     }
 
 }

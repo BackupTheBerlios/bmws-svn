@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+
 /** @author Hibernate CodeGenerator */
 public class NpcSkillMapping implements Serializable {
 
@@ -12,7 +13,7 @@ public class NpcSkillMapping implements Serializable {
     private de.mbws.common.data.generated.NpcSkillMappingPK comp_id;
 
     /** persistent field */
-    private Object value;
+    private int value;
 
     /** nullable persistent field */
     private de.mbws.common.data.generated.Skill skill;
@@ -21,7 +22,7 @@ public class NpcSkillMapping implements Serializable {
     private de.mbws.common.data.generated.Npc npc;
 
     /** full constructor */
-    public NpcSkillMapping(de.mbws.common.data.generated.NpcSkillMappingPK comp_id, Object value, de.mbws.common.data.generated.Skill skill, de.mbws.common.data.generated.Npc npc) {
+    public NpcSkillMapping(de.mbws.common.data.generated.NpcSkillMappingPK comp_id, int value, de.mbws.common.data.generated.Skill skill, de.mbws.common.data.generated.Npc npc) {
         this.comp_id = comp_id;
         this.value = value;
         this.skill = skill;
@@ -33,7 +34,7 @@ public class NpcSkillMapping implements Serializable {
     }
 
     /** minimal constructor */
-    public NpcSkillMapping(de.mbws.common.data.generated.NpcSkillMappingPK comp_id, Object value) {
+    public NpcSkillMapping(de.mbws.common.data.generated.NpcSkillMappingPK comp_id, int value) {
         this.comp_id = comp_id;
         this.value = value;
     }
@@ -46,11 +47,11 @@ public class NpcSkillMapping implements Serializable {
         this.comp_id = comp_id;
     }
 
-    public Object getValue() {
+    public int getValue() {
         return this.value;
     }
 
-    public void setValue(Object value) {
+    public void setValue(int value) {
         this.value = value;
     }
 
@@ -77,6 +78,7 @@ public class NpcSkillMapping implements Serializable {
     }
 
     public boolean equals(Object other) {
+        if ( (this == other ) ) return true;
         if ( !(other instanceof NpcSkillMapping) ) return false;
         NpcSkillMapping castOther = (NpcSkillMapping) other;
         return new EqualsBuilder()

@@ -2,9 +2,8 @@ package de.mbws.common.data.generated;
 
 import java.io.Serializable;
 import java.util.Set;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+
 
 /** @author Hibernate CodeGenerator */
 public class Npc implements Serializable {
@@ -16,28 +15,28 @@ public class Npc implements Serializable {
     private String name;
 
     /** persistent field */
-    private Object health;
+    private int health;
 
     /** persistent field */
-    private Object mana;
+    private int mana;
 
     /** persistent field */
-    private Object stamina;
+    private int stamina;
 
     /** persistent field */
-    private Object age;
+    private int age;
 
     /** persistent field */
-    private Object strength;
+    private int strength;
 
     /** persistent field */
-    private Object intelligence;
+    private int intelligence;
 
     /** persistent field */
-    private Object dexterity;
+    private int dexterity;
 
     /** persistent field */
-    private Object constitution;
+    private int constitution;
 
     /** persistent field */
     private byte isspecial;
@@ -55,7 +54,7 @@ public class Npc implements Serializable {
     private Set npcSkillMappings;
 
     /** full constructor */
-    public Npc(Long id, String name, Object health, Object mana, Object stamina, Object age, Object strength, Object intelligence, Object dexterity, Object constitution, byte isspecial, de.mbws.common.data.generated.NpcStatus npcStatus, de.mbws.common.data.generated.Race race, Set npcWorldobjectMappings, Set npcSkillMappings) {
+    public Npc(Long id, String name, int health, int mana, int stamina, int age, int strength, int intelligence, int dexterity, int constitution, byte isspecial, de.mbws.common.data.generated.NpcStatus npcStatus, de.mbws.common.data.generated.Race race, Set npcWorldobjectMappings, Set npcSkillMappings) {
         this.id = id;
         this.name = name;
         this.health = health;
@@ -78,7 +77,7 @@ public class Npc implements Serializable {
     }
 
     /** minimal constructor */
-    public Npc(Long id, String name, Object health, Object mana, Object stamina, Object age, Object strength, Object intelligence, Object dexterity, Object constitution, byte isspecial, de.mbws.common.data.generated.Race race, Set npcWorldobjectMappings, Set npcSkillMappings) {
+    public Npc(Long id, String name, int health, int mana, int stamina, int age, int strength, int intelligence, int dexterity, int constitution, byte isspecial, de.mbws.common.data.generated.Race race, Set npcWorldobjectMappings, Set npcSkillMappings) {
         this.id = id;
         this.name = name;
         this.health = health;
@@ -95,10 +94,6 @@ public class Npc implements Serializable {
         this.npcSkillMappings = npcSkillMappings;
     }
 
-    /** 
-     * 		       auto_increment
-     * 		    
-     */
     public Long getId() {
         return this.id;
     }
@@ -115,67 +110,67 @@ public class Npc implements Serializable {
         this.name = name;
     }
 
-    public Object getHealth() {
+    public int getHealth() {
         return this.health;
     }
 
-    public void setHealth(Object health) {
+    public void setHealth(int health) {
         this.health = health;
     }
 
-    public Object getMana() {
+    public int getMana() {
         return this.mana;
     }
 
-    public void setMana(Object mana) {
+    public void setMana(int mana) {
         this.mana = mana;
     }
 
-    public Object getStamina() {
+    public int getStamina() {
         return this.stamina;
     }
 
-    public void setStamina(Object stamina) {
+    public void setStamina(int stamina) {
         this.stamina = stamina;
     }
 
-    public Object getAge() {
+    public int getAge() {
         return this.age;
     }
 
-    public void setAge(Object age) {
+    public void setAge(int age) {
         this.age = age;
     }
 
-    public Object getStrength() {
+    public int getStrength() {
         return this.strength;
     }
 
-    public void setStrength(Object strength) {
+    public void setStrength(int strength) {
         this.strength = strength;
     }
 
-    public Object getIntelligence() {
+    public int getIntelligence() {
         return this.intelligence;
     }
 
-    public void setIntelligence(Object intelligence) {
+    public void setIntelligence(int intelligence) {
         this.intelligence = intelligence;
     }
 
-    public Object getDexterity() {
+    public int getDexterity() {
         return this.dexterity;
     }
 
-    public void setDexterity(Object dexterity) {
+    public void setDexterity(int dexterity) {
         this.dexterity = dexterity;
     }
 
-    public Object getConstitution() {
+    public int getConstitution() {
         return this.constitution;
     }
 
-    public void setConstitution(Object constitution) {
+    public void setConstitution(int constitution) {
         this.constitution = constitution;
     }
 
@@ -223,20 +218,6 @@ public class Npc implements Serializable {
         return new ToStringBuilder(this)
             .append("id", getId())
             .toString();
-    }
-
-    public boolean equals(Object other) {
-        if ( !(other instanceof Npc) ) return false;
-        Npc castOther = (Npc) other;
-        return new EqualsBuilder()
-            .append(this.getId(), castOther.getId())
-            .isEquals();
-    }
-
-    public int hashCode() {
-        return new HashCodeBuilder()
-            .append(getId())
-            .toHashCode();
     }
 
 }

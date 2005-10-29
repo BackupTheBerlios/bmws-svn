@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
-    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
-    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
     
 <hibernate-mapping>
 <!-- 
@@ -14,6 +14,7 @@
 <class 
     name="de.mbws.common.data.generated.CharacterItemMapping" 
     table="character_item_mapping"
+    lazy="false"
 >
 
     <id
@@ -34,14 +35,14 @@
     />
     <property
         name="currentcondition"
-        type="java.lang.Object"
+        type="int"
         column="currentcondition"
         not-null="true"
         length="10"
     />
     <property
         name="depositItem"
-        type="java.lang.Object"
+        type="int"
         column="deposit_item"
         not-null="true"
         length="10"

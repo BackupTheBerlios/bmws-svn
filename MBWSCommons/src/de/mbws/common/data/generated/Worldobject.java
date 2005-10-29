@@ -2,9 +2,8 @@ package de.mbws.common.data.generated;
 
 import java.io.Serializable;
 import java.util.Set;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+
 
 /** @author Hibernate CodeGenerator */
 public class Worldobject implements Serializable {
@@ -19,13 +18,13 @@ public class Worldobject implements Serializable {
     private String description;
 
     /** persistent field */
-    private Object coordinateX;
+    private int coordinateX;
 
     /** persistent field */
-    private Object coordinateY;
+    private int coordinateY;
 
     /** persistent field */
-    private Object coordinateZ;
+    private int coordinateZ;
 
     /** persistent field */
     private de.mbws.common.data.generated.WorldobjectType worldobjectType;
@@ -40,7 +39,7 @@ public class Worldobject implements Serializable {
     private Set characterWorldobjectMappings;
 
     /** full constructor */
-    public Worldobject(Long id, String name, String description, Object coordinateX, Object coordinateY, Object coordinateZ, de.mbws.common.data.generated.WorldobjectType worldobjectType, de.mbws.common.data.generated.Map map, Set npcWorldobjectMappings, Set characterWorldobjectMappings) {
+    public Worldobject(Long id, String name, String description, int coordinateX, int coordinateY, int coordinateZ, de.mbws.common.data.generated.WorldobjectType worldobjectType, de.mbws.common.data.generated.Map map, Set npcWorldobjectMappings, Set characterWorldobjectMappings) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -57,10 +56,6 @@ public class Worldobject implements Serializable {
     public Worldobject() {
     }
 
-    /** 
-     * 		       auto_increment
-     * 		    
-     */
     public Long getId() {
         return this.id;
     }
@@ -85,27 +80,27 @@ public class Worldobject implements Serializable {
         this.description = description;
     }
 
-    public Object getCoordinateX() {
+    public int getCoordinateX() {
         return this.coordinateX;
     }
 
-    public void setCoordinateX(Object coordinateX) {
+    public void setCoordinateX(int coordinateX) {
         this.coordinateX = coordinateX;
     }
 
-    public Object getCoordinateY() {
+    public int getCoordinateY() {
         return this.coordinateY;
     }
 
-    public void setCoordinateY(Object coordinateY) {
+    public void setCoordinateY(int coordinateY) {
         this.coordinateY = coordinateY;
     }
 
-    public Object getCoordinateZ() {
+    public int getCoordinateZ() {
         return this.coordinateZ;
     }
 
-    public void setCoordinateZ(Object coordinateZ) {
+    public void setCoordinateZ(int coordinateZ) {
         this.coordinateZ = coordinateZ;
     }
 
@@ -145,20 +140,6 @@ public class Worldobject implements Serializable {
         return new ToStringBuilder(this)
             .append("id", getId())
             .toString();
-    }
-
-    public boolean equals(Object other) {
-        if ( !(other instanceof Worldobject) ) return false;
-        Worldobject castOther = (Worldobject) other;
-        return new EqualsBuilder()
-            .append(this.getId(), castOther.getId())
-            .isEquals();
-    }
-
-    public int hashCode() {
-        return new HashCodeBuilder()
-            .append(getId())
-            .toHashCode();
     }
 
 }

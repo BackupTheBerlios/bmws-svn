@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
-    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
-    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
     
 <hibernate-mapping>
 <!-- 
@@ -14,11 +14,12 @@
 <class 
     name="de.mbws.common.data.generated.CharacterVisualappearance" 
     table="character_visualappearance"
+    lazy="false"
 >
 
     <id
         name="id"
-        type="java.lang.Object"
+        type="java.lang.Long"
         column="id"
     >
     
@@ -27,126 +28,126 @@
 
     <property
         name="height"
-        type="java.lang.Object"
+        type="int"
         column="height"
         not-null="true"
         length="10"
     />
     <property
         name="skinColor"
-        type="java.lang.Object"
+        type="int"
         column="skin_color"
         not-null="true"
         length="10"
     />
     <property
         name="faceType"
-        type="java.lang.Object"
+        type="int"
         column="face_type"
         not-null="true"
         length="10"
     />
     <property
         name="hairColor"
-        type="java.lang.Object"
+        type="int"
         column="hair_color"
         not-null="true"
         length="10"
     />
     <property
         name="hairStyle"
-        type="java.lang.Object"
+        type="int"
         column="hair_style"
         not-null="true"
         length="10"
     />
     <property
         name="hairFacial"
-        type="java.lang.Object"
+        type="int"
         column="hair_facial"
         not-null="true"
         length="10"
     />
     <property
         name="itemHead"
-        type="java.lang.Object"
+        type="int"
         column="item_head"
         not-null="true"
         length="10"
     />
     <property
         name="itemShoulders"
-        type="java.lang.Object"
+        type="int"
         column="item_shoulders"
         not-null="true"
         length="10"
     />
     <property
         name="itemShirt"
-        type="java.lang.Object"
+        type="int"
         column="item_shirt"
         not-null="true"
         length="10"
     />
     <property
         name="itemChest"
-        type="java.lang.Object"
+        type="int"
         column="item_chest"
         not-null="true"
         length="10"
     />
     <property
         name="itemBelt"
-        type="java.lang.Object"
+        type="int"
         column="item_belt"
         not-null="true"
         length="10"
     />
     <property
         name="itemLegs"
-        type="java.lang.Object"
+        type="int"
         column="item_legs"
         not-null="true"
         length="10"
     />
     <property
         name="itemBoots"
-        type="java.lang.Object"
+        type="int"
         column="item_boots"
         not-null="true"
         length="10"
     />
     <property
         name="itemBracers"
-        type="java.lang.Object"
+        type="int"
         column="item_bracers"
         not-null="true"
         length="10"
     />
     <property
         name="itemGloves"
-        type="java.lang.Object"
+        type="int"
         column="item_gloves"
         not-null="true"
         length="10"
     />
     <property
         name="itemCape"
-        type="java.lang.Object"
+        type="int"
         column="item_cape"
         not-null="true"
         length="10"
     />
     <property
         name="itemHandLeft"
-        type="java.lang.Object"
+        type="int"
         column="item_hand_left"
         not-null="true"
         length="10"
     />
     <property
         name="itemHandRight"
-        type="java.lang.Object"
+        type="int"
         column="item_hand_right"
         not-null="true"
         length="10"

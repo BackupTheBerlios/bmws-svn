@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+
 /** @author Hibernate CodeGenerator */
 public class CharacterSkillMapping implements Serializable {
 
@@ -12,10 +13,10 @@ public class CharacterSkillMapping implements Serializable {
     private de.mbws.common.data.generated.CharacterSkillMappingPK comp_id;
 
     /** persistent field */
-    private Object bonusvalue;
+    private int bonusvalue;
 
     /** persistent field */
-    private Object basevalue;
+    private int basevalue;
 
     /** nullable persistent field */
     private de.mbws.common.data.generated.Skill skill;
@@ -24,7 +25,7 @@ public class CharacterSkillMapping implements Serializable {
     private de.mbws.common.data.generated.Characterdata characterdata;
 
     /** full constructor */
-    public CharacterSkillMapping(de.mbws.common.data.generated.CharacterSkillMappingPK comp_id, Object bonusvalue, Object basevalue, de.mbws.common.data.generated.Skill skill, de.mbws.common.data.generated.Characterdata characterdata) {
+    public CharacterSkillMapping(de.mbws.common.data.generated.CharacterSkillMappingPK comp_id, int bonusvalue, int basevalue, de.mbws.common.data.generated.Skill skill, de.mbws.common.data.generated.Characterdata characterdata) {
         this.comp_id = comp_id;
         this.bonusvalue = bonusvalue;
         this.basevalue = basevalue;
@@ -37,7 +38,7 @@ public class CharacterSkillMapping implements Serializable {
     }
 
     /** minimal constructor */
-    public CharacterSkillMapping(de.mbws.common.data.generated.CharacterSkillMappingPK comp_id, Object bonusvalue, Object basevalue) {
+    public CharacterSkillMapping(de.mbws.common.data.generated.CharacterSkillMappingPK comp_id, int bonusvalue, int basevalue) {
         this.comp_id = comp_id;
         this.bonusvalue = bonusvalue;
         this.basevalue = basevalue;
@@ -51,19 +52,19 @@ public class CharacterSkillMapping implements Serializable {
         this.comp_id = comp_id;
     }
 
-    public Object getBonusvalue() {
+    public int getBonusvalue() {
         return this.bonusvalue;
     }
 
-    public void setBonusvalue(Object bonusvalue) {
+    public void setBonusvalue(int bonusvalue) {
         this.bonusvalue = bonusvalue;
     }
 
-    public Object getBasevalue() {
+    public int getBasevalue() {
         return this.basevalue;
     }
 
-    public void setBasevalue(Object basevalue) {
+    public void setBasevalue(int basevalue) {
         this.basevalue = basevalue;
     }
 
@@ -90,6 +91,7 @@ public class CharacterSkillMapping implements Serializable {
     }
 
     public boolean equals(Object other) {
+        if ( (this == other ) ) return true;
         if ( !(other instanceof CharacterSkillMapping) ) return false;
         CharacterSkillMapping castOther = (CharacterSkillMapping) other;
         return new EqualsBuilder()

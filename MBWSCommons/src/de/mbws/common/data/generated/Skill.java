@@ -2,15 +2,14 @@ package de.mbws.common.data.generated;
 
 import java.io.Serializable;
 import java.util.Set;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+
 
 /** @author Hibernate CodeGenerator */
 public class Skill implements Serializable {
 
     /** identifier field */
-    private Object id;
+    private Integer id;
 
     /** persistent field */
     private String name;
@@ -19,34 +18,34 @@ public class Skill implements Serializable {
     private byte availableatstartup;
 
     /** nullable persistent field */
-    private Object oppositeskill;
+    private Integer oppositeskill;
 
     /** persistent field */
-    private Object costhealth;
+    private int costhealth;
 
     /** persistent field */
-    private Object coststamina;
+    private int coststamina;
 
     /** persistent field */
-    private Object costmana;
+    private int costmana;
 
     /** persistent field */
-    private Object xpcostsbuying;
+    private int xpcostsbuying;
 
     /** persistent field */
-    private Object goldcostsbuying;
+    private int goldcostsbuying;
 
     /** persistent field */
-    private Object xpcostEnhancement;
+    private int xpcostEnhancement;
 
     /** persistent field */
-    private Object basevalueFormula;
+    private int basevalueFormula;
 
     /** persistent field */
-    private Object useDuration;
+    private int useDuration;
 
     /** persistent field */
-    private Object useTime;
+    private int useTime;
 
     /** persistent field */
     private de.mbws.common.data.generated.SkillGroup skillGroup;
@@ -61,7 +60,7 @@ public class Skill implements Serializable {
     private Set npcSkillMappings;
 
     /** full constructor */
-    public Skill(Object id, String name, byte availableatstartup, Object oppositeskill, Object costhealth, Object coststamina, Object costmana, Object xpcostsbuying, Object goldcostsbuying, Object xpcostEnhancement, Object basevalueFormula, Object useDuration, Object useTime, de.mbws.common.data.generated.SkillGroup skillGroup, Set characterSkillMappings, Set skillRaceMappings, Set npcSkillMappings) {
+    public Skill(Integer id, String name, byte availableatstartup, Integer oppositeskill, int costhealth, int coststamina, int costmana, int xpcostsbuying, int goldcostsbuying, int xpcostEnhancement, int basevalueFormula, int useDuration, int useTime, de.mbws.common.data.generated.SkillGroup skillGroup, Set characterSkillMappings, Set skillRaceMappings, Set npcSkillMappings) {
         this.id = id;
         this.name = name;
         this.availableatstartup = availableatstartup;
@@ -86,7 +85,7 @@ public class Skill implements Serializable {
     }
 
     /** minimal constructor */
-    public Skill(Object id, String name, byte availableatstartup, Object costhealth, Object coststamina, Object costmana, Object xpcostsbuying, Object goldcostsbuying, Object xpcostEnhancement, Object basevalueFormula, Object useDuration, Object useTime, de.mbws.common.data.generated.SkillGroup skillGroup, Set characterSkillMappings, Set skillRaceMappings, Set npcSkillMappings) {
+    public Skill(Integer id, String name, byte availableatstartup, int costhealth, int coststamina, int costmana, int xpcostsbuying, int goldcostsbuying, int xpcostEnhancement, int basevalueFormula, int useDuration, int useTime, de.mbws.common.data.generated.SkillGroup skillGroup, Set characterSkillMappings, Set skillRaceMappings, Set npcSkillMappings) {
         this.id = id;
         this.name = name;
         this.availableatstartup = availableatstartup;
@@ -105,15 +104,11 @@ public class Skill implements Serializable {
         this.npcSkillMappings = npcSkillMappings;
     }
 
-    /** 
-     * 		       auto_increment
-     * 		    
-     */
-    public Object getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    public void setId(Object id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -133,83 +128,83 @@ public class Skill implements Serializable {
         this.availableatstartup = availableatstartup;
     }
 
-    public Object getOppositeskill() {
+    public Integer getOppositeskill() {
         return this.oppositeskill;
     }
 
-    public void setOppositeskill(Object oppositeskill) {
+    public void setOppositeskill(Integer oppositeskill) {
         this.oppositeskill = oppositeskill;
     }
 
-    public Object getCosthealth() {
+    public int getCosthealth() {
         return this.costhealth;
     }
 
-    public void setCosthealth(Object costhealth) {
+    public void setCosthealth(int costhealth) {
         this.costhealth = costhealth;
     }
 
-    public Object getCoststamina() {
+    public int getCoststamina() {
         return this.coststamina;
     }
 
-    public void setCoststamina(Object coststamina) {
+    public void setCoststamina(int coststamina) {
         this.coststamina = coststamina;
     }
 
-    public Object getCostmana() {
+    public int getCostmana() {
         return this.costmana;
     }
 
-    public void setCostmana(Object costmana) {
+    public void setCostmana(int costmana) {
         this.costmana = costmana;
     }
 
-    public Object getXpcostsbuying() {
+    public int getXpcostsbuying() {
         return this.xpcostsbuying;
     }
 
-    public void setXpcostsbuying(Object xpcostsbuying) {
+    public void setXpcostsbuying(int xpcostsbuying) {
         this.xpcostsbuying = xpcostsbuying;
     }
 
-    public Object getGoldcostsbuying() {
+    public int getGoldcostsbuying() {
         return this.goldcostsbuying;
     }
 
-    public void setGoldcostsbuying(Object goldcostsbuying) {
+    public void setGoldcostsbuying(int goldcostsbuying) {
         this.goldcostsbuying = goldcostsbuying;
     }
 
-    public Object getXpcostEnhancement() {
+    public int getXpcostEnhancement() {
         return this.xpcostEnhancement;
     }
 
-    public void setXpcostEnhancement(Object xpcostEnhancement) {
+    public void setXpcostEnhancement(int xpcostEnhancement) {
         this.xpcostEnhancement = xpcostEnhancement;
     }
 
-    public Object getBasevalueFormula() {
+    public int getBasevalueFormula() {
         return this.basevalueFormula;
     }
 
-    public void setBasevalueFormula(Object basevalueFormula) {
+    public void setBasevalueFormula(int basevalueFormula) {
         this.basevalueFormula = basevalueFormula;
     }
 
-    public Object getUseDuration() {
+    public int getUseDuration() {
         return this.useDuration;
     }
 
-    public void setUseDuration(Object useDuration) {
+    public void setUseDuration(int useDuration) {
         this.useDuration = useDuration;
     }
 
-    public Object getUseTime() {
+    public int getUseTime() {
         return this.useTime;
     }
 
-    public void setUseTime(Object useTime) {
+    public void setUseTime(int useTime) {
         this.useTime = useTime;
     }
 
@@ -249,20 +244,6 @@ public class Skill implements Serializable {
         return new ToStringBuilder(this)
             .append("id", getId())
             .toString();
-    }
-
-    public boolean equals(Object other) {
-        if ( !(other instanceof Skill) ) return false;
-        Skill castOther = (Skill) other;
-        return new EqualsBuilder()
-            .append(this.getId(), castOther.getId())
-            .isEquals();
-    }
-
-    public int hashCode() {
-        return new HashCodeBuilder()
-            .append(getId())
-            .toHashCode();
     }
 
 }

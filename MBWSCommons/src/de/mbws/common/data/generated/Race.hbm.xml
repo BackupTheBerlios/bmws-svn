@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
-    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
-    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
     
 <hibernate-mapping>
 <!-- 
@@ -14,16 +14,14 @@
 <class 
     name="de.mbws.common.data.generated.Race" 
     table="race"
+    lazy="false"
 >
 
     <id
         name="id"
-        type="java.lang.Object"
+        type="java.lang.Integer"
         column="id"
     >
-		    <meta attribute="field-description" inherit="false">
-		       auto_increment
-		    </meta>
     
         <generator class="assigned" />
     </id>
@@ -37,21 +35,21 @@
     />
     <property
         name="basehealth"
-        type="java.lang.Object"
+        type="int"
         column="basehealth"
         not-null="true"
         length="10"
     />
     <property
         name="basemana"
-        type="java.lang.Object"
+        type="int"
         column="basemana"
         not-null="true"
         length="10"
     />
     <property
         name="basestamina"
-        type="java.lang.Object"
+        type="int"
         column="basestamina"
         not-null="true"
         length="10"
@@ -107,7 +105,7 @@
         name="skillRaceMappings"
         lazy="true"
         inverse="true"
-		cascade="none"
+		cascade="all"
 
     >
         <key>
@@ -124,7 +122,7 @@
         name="characterdatas"
         lazy="true"
         inverse="true"
-		cascade="none"
+		cascade="all"
 
     >
         <key>
@@ -141,7 +139,7 @@
         name="npcs"
         lazy="true"
         inverse="true"
-		cascade="none"
+		cascade="all"
 
     >
         <key>

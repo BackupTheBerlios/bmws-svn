@@ -5,17 +5,18 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+
 /** @author Hibernate CodeGenerator */
 public class SkillRaceMappingPK implements Serializable {
 
     /** identifier field */
-    private Object raceId;
+    private Integer raceId;
 
     /** identifier field */
-    private Object skillId;
+    private Integer skillId;
 
     /** full constructor */
-    public SkillRaceMappingPK(Object raceId, Object skillId) {
+    public SkillRaceMappingPK(Integer raceId, Integer skillId) {
         this.raceId = raceId;
         this.skillId = skillId;
     }
@@ -24,19 +25,19 @@ public class SkillRaceMappingPK implements Serializable {
     public SkillRaceMappingPK() {
     }
 
-    public Object getRaceId() {
+    public Integer getRaceId() {
         return this.raceId;
     }
 
-    public void setRaceId(Object raceId) {
+    public void setRaceId(Integer raceId) {
         this.raceId = raceId;
     }
 
-    public Object getSkillId() {
+    public Integer getSkillId() {
         return this.skillId;
     }
 
-    public void setSkillId(Object skillId) {
+    public void setSkillId(Integer skillId) {
         this.skillId = skillId;
     }
 
@@ -48,6 +49,7 @@ public class SkillRaceMappingPK implements Serializable {
     }
 
     public boolean equals(Object other) {
+        if ( (this == other ) ) return true;
         if ( !(other instanceof SkillRaceMappingPK) ) return false;
         SkillRaceMappingPK castOther = (SkillRaceMappingPK) other;
         return new EqualsBuilder()

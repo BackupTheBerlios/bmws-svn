@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
-    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
-    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
     
 <hibernate-mapping>
 <!-- 
@@ -14,6 +14,7 @@
 <class 
     name="de.mbws.common.data.generated.Item" 
     table="item"
+    lazy="false"
 >
 
     <id
@@ -34,7 +35,7 @@
     />
     <property
         name="condition"
-        type="java.lang.Object"
+        type="int"
         column="condition"
         not-null="true"
         length="10"
@@ -69,7 +70,7 @@
         name="characterItemMappings"
         lazy="true"
         inverse="true"
-		cascade="none"
+		cascade="all"
 
     >
         <key>

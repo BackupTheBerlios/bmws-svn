@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
-    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
-    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
     
 <hibernate-mapping>
 <!-- 
@@ -14,11 +14,12 @@
 <class 
     name="de.mbws.common.data.generated.CharacterStatus" 
     table="character_status"
+    lazy="false"
 >
 
     <id
         name="id"
-        type="java.lang.Object"
+        type="java.lang.Long"
         column="id"
     >
     
@@ -48,77 +49,77 @@
     />
     <property
         name="coordinateX"
-        type="java.lang.Object"
+        type="int"
         column="coordinate_x"
         not-null="true"
         length="10"
     />
     <property
         name="coordinateY"
-        type="java.lang.Object"
+        type="int"
         column="coordinate_y"
         not-null="true"
         length="10"
     />
     <property
         name="coordinateZ"
-        type="java.lang.Object"
+        type="int"
         column="coordinate_z"
         not-null="true"
         length="10"
     />
     <property
         name="currentmana"
-        type="java.lang.Object"
+        type="int"
         column="currentmana"
         not-null="true"
         length="10"
     />
     <property
         name="currenthealth"
-        type="java.lang.Object"
+        type="int"
         column="currenthealth"
         not-null="true"
         length="10"
     />
     <property
         name="currentstamina"
-        type="java.lang.Object"
+        type="int"
         column="currentstamina"
         not-null="true"
         length="10"
     />
     <property
         name="currentstrength"
-        type="java.lang.Object"
+        type="int"
         column="currentstrength"
         not-null="true"
         length="10"
     />
     <property
         name="currentinteligence"
-        type="java.lang.Object"
+        type="int"
         column="currentinteligence"
         not-null="true"
         length="10"
     />
     <property
         name="currentdexterity"
-        type="java.lang.Object"
+        type="int"
         column="currentdexterity"
         not-null="true"
         length="10"
     />
     <property
         name="currentconstitution"
-        type="java.lang.Object"
+        type="int"
         column="currentconstitution"
         not-null="true"
         length="10"
     />
     <property
         name="freexp"
-        type="java.lang.Object"
+        type="int"
         column="freexp"
         not-null="true"
         length="10"

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
-    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
-    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
     
 <hibernate-mapping>
 <!-- 
@@ -14,6 +14,7 @@
 <class 
     name="de.mbws.common.data.generated.Npc" 
     table="npc"
+    lazy="false"
 >
 
     <id
@@ -21,9 +22,6 @@
         type="java.lang.Long"
         column="id"
     >
-		    <meta attribute="field-description" inherit="false">
-		       auto_increment
-		    </meta>
     
         <generator class="assigned" />
     </id>
@@ -37,56 +35,56 @@
     />
     <property
         name="health"
-        type="java.lang.Object"
+        type="int"
         column="health"
         not-null="true"
         length="10"
     />
     <property
         name="mana"
-        type="java.lang.Object"
+        type="int"
         column="mana"
         not-null="true"
         length="10"
     />
     <property
         name="stamina"
-        type="java.lang.Object"
+        type="int"
         column="stamina"
         not-null="true"
         length="10"
     />
     <property
         name="age"
-        type="java.lang.Object"
+        type="int"
         column="age"
         not-null="true"
         length="10"
     />
     <property
         name="strength"
-        type="java.lang.Object"
+        type="int"
         column="strength"
         not-null="true"
         length="10"
     />
     <property
         name="intelligence"
-        type="java.lang.Object"
+        type="int"
         column="intelligence"
         not-null="true"
         length="10"
     />
     <property
         name="dexterity"
-        type="java.lang.Object"
+        type="int"
         column="dexterity"
         not-null="true"
         length="10"
     />
     <property
         name="constitution"
-        type="java.lang.Object"
+        type="int"
         column="constitution"
         not-null="true"
         length="10"
@@ -121,7 +119,7 @@
         name="npcWorldobjectMappings"
         lazy="true"
         inverse="true"
-		cascade="none"
+		cascade="all"
 
     >
         <key>
@@ -138,7 +136,7 @@
         name="npcSkillMappings"
         lazy="true"
         inverse="true"
-		cascade="none"
+		cascade="all"
 
     >
         <key>

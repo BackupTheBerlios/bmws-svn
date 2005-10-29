@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
-    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
-    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
     
 <hibernate-mapping>
 <!-- 
@@ -14,16 +14,14 @@
 <class 
     name="de.mbws.common.data.generated.Skill" 
     table="skill"
+    lazy="false"
 >
 
     <id
         name="id"
-        type="java.lang.Object"
+        type="java.lang.Integer"
         column="id"
     >
-		    <meta attribute="field-description" inherit="false">
-		       auto_increment
-		    </meta>
     
         <generator class="assigned" />
     </id>
@@ -44,69 +42,69 @@
     />
     <property
         name="oppositeskill"
-        type="java.lang.Object"
+        type="java.lang.Integer"
         column="oppositeskill"
         length="10"
     />
     <property
         name="costhealth"
-        type="java.lang.Object"
+        type="int"
         column="costhealth"
         not-null="true"
         length="10"
     />
     <property
         name="coststamina"
-        type="java.lang.Object"
+        type="int"
         column="coststamina"
         not-null="true"
         length="10"
     />
     <property
         name="costmana"
-        type="java.lang.Object"
+        type="int"
         column="costmana"
         not-null="true"
         length="10"
     />
     <property
         name="xpcostsbuying"
-        type="java.lang.Object"
+        type="int"
         column="xpcostsbuying"
         not-null="true"
         length="10"
     />
     <property
         name="goldcostsbuying"
-        type="java.lang.Object"
+        type="int"
         column="goldcostsbuying"
         not-null="true"
         length="10"
     />
     <property
         name="xpcostEnhancement"
-        type="java.lang.Object"
+        type="int"
         column="xpcost_enhancement"
         not-null="true"
         length="10"
     />
     <property
         name="basevalueFormula"
-        type="java.lang.Object"
+        type="int"
         column="basevalue_formula"
         not-null="true"
         length="10"
     />
     <property
         name="useDuration"
-        type="java.lang.Object"
+        type="int"
         column="use_duration"
         not-null="true"
         length="10"
     />
     <property
         name="useTime"
-        type="java.lang.Object"
+        type="int"
         column="use_time"
         not-null="true"
         length="10"
@@ -120,7 +118,7 @@
         name="characterSkillMappings"
         lazy="true"
         inverse="true"
-		cascade="none"
+		cascade="all"
 
     >
         <key>
@@ -137,7 +135,7 @@
         name="skillRaceMappings"
         lazy="true"
         inverse="true"
-		cascade="none"
+		cascade="all"
 
     >
         <key>
@@ -154,7 +152,7 @@
         name="npcSkillMappings"
         lazy="true"
         inverse="true"
-		cascade="none"
+		cascade="all"
 
     >
         <key>

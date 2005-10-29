@@ -5,17 +5,18 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+
 /** @author Hibernate CodeGenerator */
 public class CharacterSkillMappingPK implements Serializable {
 
     /** identifier field */
-    private Object characterdataId;
+    private Long characterdataId;
 
     /** identifier field */
-    private Object skillId;
+    private Integer skillId;
 
     /** full constructor */
-    public CharacterSkillMappingPK(Object characterdataId, Object skillId) {
+    public CharacterSkillMappingPK(Long characterdataId, Integer skillId) {
         this.characterdataId = characterdataId;
         this.skillId = skillId;
     }
@@ -24,19 +25,19 @@ public class CharacterSkillMappingPK implements Serializable {
     public CharacterSkillMappingPK() {
     }
 
-    public Object getCharacterdataId() {
+    public Long getCharacterdataId() {
         return this.characterdataId;
     }
 
-    public void setCharacterdataId(Object characterdataId) {
+    public void setCharacterdataId(Long characterdataId) {
         this.characterdataId = characterdataId;
     }
 
-    public Object getSkillId() {
+    public Integer getSkillId() {
         return this.skillId;
     }
 
-    public void setSkillId(Object skillId) {
+    public void setSkillId(Integer skillId) {
         this.skillId = skillId;
     }
 
@@ -48,6 +49,7 @@ public class CharacterSkillMappingPK implements Serializable {
     }
 
     public boolean equals(Object other) {
+        if ( (this == other ) ) return true;
         if ( !(other instanceof CharacterSkillMappingPK) ) return false;
         CharacterSkillMappingPK castOther = (CharacterSkillMappingPK) other;
         return new EqualsBuilder()

@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+
 /** @author Hibernate CodeGenerator */
 public class SkillRaceMapping implements Serializable {
 
@@ -77,6 +78,7 @@ public class SkillRaceMapping implements Serializable {
     }
 
     public boolean equals(Object other) {
+        if ( (this == other ) ) return true;
         if ( !(other instanceof SkillRaceMapping) ) return false;
         SkillRaceMapping castOther = (SkillRaceMapping) other;
         return new EqualsBuilder()

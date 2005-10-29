@@ -2,15 +2,14 @@ package de.mbws.common.data.generated;
 
 import java.io.Serializable;
 import java.util.Set;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+
 
 /** @author Hibernate CodeGenerator */
 public class WorldobjectType implements Serializable {
 
     /** identifier field */
-    private Object id;
+    private Integer id;
 
     /** persistent field */
     private String name;
@@ -19,16 +18,16 @@ public class WorldobjectType implements Serializable {
     private byte moveable;
 
     /** nullable persistent field */
-    private Object maxspeed;
+    private Integer maxspeed;
 
     /** nullable persistent field */
-    private Object stamina;
+    private Integer stamina;
 
     /** persistent field */
     private Set worldobjects;
 
     /** full constructor */
-    public WorldobjectType(Object id, String name, byte moveable, Object maxspeed, Object stamina, Set worldobjects) {
+    public WorldobjectType(Integer id, String name, byte moveable, Integer maxspeed, Integer stamina, Set worldobjects) {
         this.id = id;
         this.name = name;
         this.moveable = moveable;
@@ -42,22 +41,18 @@ public class WorldobjectType implements Serializable {
     }
 
     /** minimal constructor */
-    public WorldobjectType(Object id, String name, byte moveable, Set worldobjects) {
+    public WorldobjectType(Integer id, String name, byte moveable, Set worldobjects) {
         this.id = id;
         this.name = name;
         this.moveable = moveable;
         this.worldobjects = worldobjects;
     }
 
-    /** 
-     * 		       auto_increment
-     * 		    
-     */
-    public Object getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    public void setId(Object id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -77,19 +72,19 @@ public class WorldobjectType implements Serializable {
         this.moveable = moveable;
     }
 
-    public Object getMaxspeed() {
+    public Integer getMaxspeed() {
         return this.maxspeed;
     }
 
-    public void setMaxspeed(Object maxspeed) {
+    public void setMaxspeed(Integer maxspeed) {
         this.maxspeed = maxspeed;
     }
 
-    public Object getStamina() {
+    public Integer getStamina() {
         return this.stamina;
     }
 
-    public void setStamina(Object stamina) {
+    public void setStamina(Integer stamina) {
         this.stamina = stamina;
     }
 
@@ -105,20 +100,6 @@ public class WorldobjectType implements Serializable {
         return new ToStringBuilder(this)
             .append("id", getId())
             .toString();
-    }
-
-    public boolean equals(Object other) {
-        if ( !(other instanceof WorldobjectType) ) return false;
-        WorldobjectType castOther = (WorldobjectType) other;
-        return new EqualsBuilder()
-            .append(this.getId(), castOther.getId())
-            .isEquals();
-    }
-
-    public int hashCode() {
-        return new HashCodeBuilder()
-            .append(getId())
-            .toHashCode();
     }
 
 }

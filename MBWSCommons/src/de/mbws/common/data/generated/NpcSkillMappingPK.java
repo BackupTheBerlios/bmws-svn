@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
+
 /** @author Hibernate CodeGenerator */
 public class NpcSkillMappingPK implements Serializable {
 
@@ -12,10 +13,10 @@ public class NpcSkillMappingPK implements Serializable {
     private Long npcId;
 
     /** identifier field */
-    private Object skillId;
+    private Integer skillId;
 
     /** full constructor */
-    public NpcSkillMappingPK(Long npcId, Object skillId) {
+    public NpcSkillMappingPK(Long npcId, Integer skillId) {
         this.npcId = npcId;
         this.skillId = skillId;
     }
@@ -32,11 +33,11 @@ public class NpcSkillMappingPK implements Serializable {
         this.npcId = npcId;
     }
 
-    public Object getSkillId() {
+    public Integer getSkillId() {
         return this.skillId;
     }
 
-    public void setSkillId(Object skillId) {
+    public void setSkillId(Integer skillId) {
         this.skillId = skillId;
     }
 
@@ -48,6 +49,7 @@ public class NpcSkillMappingPK implements Serializable {
     }
 
     public boolean equals(Object other) {
+        if ( (this == other ) ) return true;
         if ( !(other instanceof NpcSkillMappingPK) ) return false;
         NpcSkillMappingPK castOther = (NpcSkillMappingPK) other;
         return new EqualsBuilder()

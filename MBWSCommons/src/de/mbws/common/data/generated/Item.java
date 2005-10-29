@@ -2,9 +2,8 @@ package de.mbws.common.data.generated;
 
 import java.io.Serializable;
 import java.util.Set;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+
 
 /** @author Hibernate CodeGenerator */
 public class Item implements Serializable {
@@ -16,7 +15,7 @@ public class Item implements Serializable {
     private String name;
 
     /** persistent field */
-    private Object condition;
+    private int condition;
 
     /** persistent field */
     private long weight;
@@ -34,7 +33,7 @@ public class Item implements Serializable {
     private Set characterItemMappings;
 
     /** full constructor */
-    public Item(Long id, String name, Object condition, long weight, long size, String description, de.mbws.common.data.generated.ItemType itemType, Set characterItemMappings) {
+    public Item(Long id, String name, int condition, long weight, long size, String description, de.mbws.common.data.generated.ItemType itemType, Set characterItemMappings) {
         this.id = id;
         this.name = name;
         this.condition = condition;
@@ -65,11 +64,11 @@ public class Item implements Serializable {
         this.name = name;
     }
 
-    public Object getCondition() {
+    public int getCondition() {
         return this.condition;
     }
 
-    public void setCondition(Object condition) {
+    public void setCondition(int condition) {
         this.condition = condition;
     }
 
@@ -117,20 +116,6 @@ public class Item implements Serializable {
         return new ToStringBuilder(this)
             .append("id", getId())
             .toString();
-    }
-
-    public boolean equals(Object other) {
-        if ( !(other instanceof Item) ) return false;
-        Item castOther = (Item) other;
-        return new EqualsBuilder()
-            .append(this.getId(), castOther.getId())
-            .isEquals();
-    }
-
-    public int hashCode() {
-        return new HashCodeBuilder()
-            .append(getId())
-            .toHashCode();
     }
 
 }

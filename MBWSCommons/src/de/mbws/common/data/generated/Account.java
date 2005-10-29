@@ -2,9 +2,8 @@ package de.mbws.common.data.generated;
 
 import java.io.Serializable;
 import java.util.Set;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+
 
 /** @author Hibernate CodeGenerator */
 public class Account implements Serializable {
@@ -69,20 +68,6 @@ public class Account implements Serializable {
         return new ToStringBuilder(this)
             .append("username", getUsername())
             .toString();
-    }
-
-    public boolean equals(Object other) {
-        if ( !(other instanceof Account) ) return false;
-        Account castOther = (Account) other;
-        return new EqualsBuilder()
-            .append(this.getUsername(), castOther.getUsername())
-            .isEquals();
-    }
-
-    public int hashCode() {
-        return new HashCodeBuilder()
-            .append(getUsername())
-            .toHashCode();
     }
 
 }

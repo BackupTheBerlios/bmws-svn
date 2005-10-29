@@ -2,27 +2,26 @@ package de.mbws.common.data.generated;
 
 import java.io.Serializable;
 import java.util.Set;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+
 
 /** @author Hibernate CodeGenerator */
 public class Race implements Serializable {
 
     /** identifier field */
-    private Object id;
+    private Integer id;
 
     /** persistent field */
     private String name;
 
     /** persistent field */
-    private Object basehealth;
+    private int basehealth;
 
     /** persistent field */
-    private Object basemana;
+    private int basemana;
 
     /** persistent field */
-    private Object basestamina;
+    private int basestamina;
 
     /** persistent field */
     private int modifierStrength;
@@ -52,7 +51,7 @@ public class Race implements Serializable {
     private Set npcs;
 
     /** full constructor */
-    public Race(Object id, String name, Object basehealth, Object basemana, Object basestamina, int modifierStrength, int modifierIntelligence, int modifierDexterity, int modifierConstitution, byte isplayable, String description, Set skillRaceMappings, Set characterdatas, Set npcs) {
+    public Race(Integer id, String name, int basehealth, int basemana, int basestamina, int modifierStrength, int modifierIntelligence, int modifierDexterity, int modifierConstitution, byte isplayable, String description, Set skillRaceMappings, Set characterdatas, Set npcs) {
         this.id = id;
         this.name = name;
         this.basehealth = basehealth;
@@ -73,15 +72,11 @@ public class Race implements Serializable {
     public Race() {
     }
 
-    /** 
-     * 		       auto_increment
-     * 		    
-     */
-    public Object getId() {
+    public Integer getId() {
         return this.id;
     }
 
-    public void setId(Object id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -93,27 +88,27 @@ public class Race implements Serializable {
         this.name = name;
     }
 
-    public Object getBasehealth() {
+    public int getBasehealth() {
         return this.basehealth;
     }
 
-    public void setBasehealth(Object basehealth) {
+    public void setBasehealth(int basehealth) {
         this.basehealth = basehealth;
     }
 
-    public Object getBasemana() {
+    public int getBasemana() {
         return this.basemana;
     }
 
-    public void setBasemana(Object basemana) {
+    public void setBasemana(int basemana) {
         this.basemana = basemana;
     }
 
-    public Object getBasestamina() {
+    public int getBasestamina() {
         return this.basestamina;
     }
 
-    public void setBasestamina(Object basestamina) {
+    public void setBasestamina(int basestamina) {
         this.basestamina = basestamina;
     }
 
@@ -193,20 +188,6 @@ public class Race implements Serializable {
         return new ToStringBuilder(this)
             .append("id", getId())
             .toString();
-    }
-
-    public boolean equals(Object other) {
-        if ( !(other instanceof Race) ) return false;
-        Race castOther = (Race) other;
-        return new EqualsBuilder()
-            .append(this.getId(), castOther.getId())
-            .isEquals();
-    }
-
-    public int hashCode() {
-        return new HashCodeBuilder()
-            .append(getId())
-            .toHashCode();
     }
 
 }

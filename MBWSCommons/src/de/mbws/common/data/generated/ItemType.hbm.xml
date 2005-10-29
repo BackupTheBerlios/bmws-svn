@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
-    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
-    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
     
 <hibernate-mapping>
 <!-- 
@@ -14,16 +14,14 @@
 <class 
     name="de.mbws.common.data.generated.ItemType" 
     table="item_type"
+    lazy="false"
 >
 
     <id
         name="id"
-        type="java.lang.Object"
+        type="java.lang.Integer"
         column="id"
     >
-		    <meta attribute="field-description" inherit="false">
-		       auto_increment
-		    </meta>
     
         <generator class="assigned" />
     </id>
@@ -37,7 +35,7 @@
     />
     <property
         name="containersize"
-        type="java.lang.Object"
+        type="int"
         column="containersize"
         not-null="true"
         length="10"
@@ -58,7 +56,7 @@
         name="items"
         lazy="true"
         inverse="true"
-		cascade="none"
+		cascade="all"
 
     >
         <key>

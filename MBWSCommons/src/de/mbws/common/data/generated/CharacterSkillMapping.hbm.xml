@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
-    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
-    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
     
 <hibernate-mapping>
 <!-- 
@@ -14,33 +14,34 @@
 <class 
     name="de.mbws.common.data.generated.CharacterSkillMapping" 
     table="character_skill_mapping"
+    lazy="false"
 >
 
     <composite-id name="comp_id" class="de.mbws.common.data.generated.CharacterSkillMappingPK">
         <key-property 
             name="characterdataId" 
             column="characterdata_id" 
-            type="java.lang.Object"
+            type="java.lang.Long"
             length="20"
         />
         <key-property 
             name="skillId" 
             column="skill_id" 
-            type="java.lang.Object"
+            type="java.lang.Integer"
             length="10"
         />
     </composite-id>    
 
     <property
         name="bonusvalue"
-        type="java.lang.Object"
+        type="int"
         column="bonusvalue"
         not-null="true"
         length="10"
     />
     <property
         name="basevalue"
-        type="java.lang.Object"
+        type="int"
         column="basevalue"
         not-null="true"
         length="10"
