@@ -1,11 +1,14 @@
 package de.mbws.server.controller;
 
+import de.mbws.common.data.generated.CharacterStatus;
+import de.mbws.common.data.generated.Characterdata;
 import de.mbws.common.eventdata.generated.PlayerInfo;
 import de.mbws.common.eventdata.generated.UpdateLocation;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.CharacterEvent;
 import de.mbws.common.events.EventTypes;
 import de.mbws.server.account.AccountServer;
+import de.mbws.server.persistence.CharacterPersistenceManager;
 
 /**
  * Description: 
@@ -31,12 +34,16 @@ public class CharacterEventController extends EventController {
         if (event.getEventType() == EventTypes.CHARACTER_RECEIVE_REQUEST) {
             CharacterEvent ce = (CharacterEvent) event;
             
+            Characterdata cdata = CharacterPersistenceManager.getInstance().getCharacter(ce.getPlayer().getAccount().getUsername());
+
+            CharacterStatus cs = cdata.getCharacterStatus();
+            
             PlayerInfo pi = new PlayerInfo();
-            pi.setVisualappearance(0);
+            pi.setVisualappearance(cdata.getCharacterVisualappearance().getHeight());
             UpdateLocation ul = new UpdateLocation();
-            ul.setLocationX(1);
-            ul.setLocationY(1);
-            ul.setLocationZ(1);
+            ul.setLocationX(cs.getCoordinateX());
+            ul.setLocationY(cs.getCoordinateY());
+            ul.setLocationZ(cs.getCoordinateZ());
             ul.setPlayerID(ce.getPlayer().getSessionId());
             pi.setLocation(ul);
             CharacterEvent result = new CharacterEvent(pi);

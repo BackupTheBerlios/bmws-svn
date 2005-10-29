@@ -2,10 +2,9 @@ package de.mbws.server.persistence;
 
 import java.io.File;
 
-import net.sf.hibernate.SessionFactory;
-import net.sf.hibernate.cfg.Configuration;
-
 import org.apache.log4j.Logger;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 import de.mbws.common.exceptions.InitializationException;
 
@@ -27,7 +26,8 @@ public class BasePersistenceManager {
         try {
             cfg = new Configuration().configure(new File("../MBWSCommons/mapping/hibernate.cfg.xml"));
             sessions = cfg.buildSessionFactory();
-        } catch (Exception e) {
+        } catch (Throwable e) {
+            e.printStackTrace();
             logger.error("Error during Persistence initializing", e);
             throw new InitializationException("Error during Persistence initializing. See logfile for further information");
         }

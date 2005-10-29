@@ -5,20 +5,24 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/MBWSCommons"/>
 	<classpathentry kind="lib" path="/MBWSCommons/lib/castor-0.9.7-srcgen-ant-task.jar"/>
 	<classpathentry kind="lib" path="/MBWSCommons/lib/castor-0.9.7-xml.jar"/>
-	<classpathentry kind="lib" path="/MBWSCommons/lib/cglib-full-2.0.2.jar"/>
 	<classpathentry kind="lib" path="/MBWSCommons/lib/commons-collections-2.1.1.jar"/>
 	<classpathentry kind="lib" path="/MBWSCommons/lib/commons-lang-1.0.1.jar"/>
 	<classpathentry kind="lib" path="/MBWSCommons/lib/commons-logging-1.0.4.jar"/>
-	<classpathentry kind="lib" path="/MBWSCommons/lib/dom4j-1.4.jar"/>
-	<classpathentry kind="lib" path="/MBWSCommons/lib/ehcache-0.9.jar"/>
-	<classpathentry kind="lib" path="/MBWSCommons/lib/hibernate2.jar"/>
-	<classpathentry kind="lib" path="/MBWSCommons/lib/hibernate-tools.jar"/>
 	<classpathentry kind="lib" path="/MBWSCommons/lib/jdom.jar"/>
 	<classpathentry kind="lib" path="/MBWSCommons/lib/jta.jar"/>
 	<classpathentry kind="lib" path="/MBWSCommons/lib/log4j-1.2.9.jar"/>
 	<classpathentry kind="lib" path="/MBWSCommons/lib/mysql-connector-java-3.1.8-bin.jar"/>
 	<classpathentry kind="lib" path="/MBWSCommons/lib/odmg-3.0.jar"/>
 	<classpathentry kind="lib" path="/MBWSCommons/lib/velocity-1.4-dev.jar"/>
-	<classpathentry kind="lib" path="/MBWSCommons/lib/xerces-2.4.0.jar"/>
+	<classpathentry kind="lib" path="/MBWSCommons/lib/cglib-2.1.jar"/>
+	<classpathentry kind="lib" path="/MBWSCommons/lib/dom4j-1.6.jar"/>
+	<classpathentry kind="lib" path="/MBWSCommons/lib/ehcache-1.1.jar"/>
+	<classpathentry kind="lib" path="/MBWSCommons/lib/hibernate3.jar"/>
+	<classpathentry kind="lib" path="/MBWSCommons/lib/xerces-2.6.2.jar"/>
+	<classpathentry kind="lib" path="/MBWSCommons/lib/antlr-2.7.5H3.jar"/>
+	<classpathentry kind="lib" path="/MBWSCommons/lib/asm.jar"/>
+	<classpathentry kind="lib" path="/MBWSCommons/lib/asm-attrs.jar"/>
+	<classpathentry kind="lib" path="/MBWSCommons/lib/jdbc2_0-stdext.jar"/>
+	<classpathentry kind="lib" path="/MBWSCommons/lib/xml-apis.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

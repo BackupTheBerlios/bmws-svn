@@ -150,7 +150,7 @@ public class AccountServer extends Thread {
      * Return the next available sessionId
      */
     public synchronized Integer nextSessionId() {
-        return new Integer(nextSessionId++);
+        return new Integer(++nextSessionId);
     }
     
     public void handleIncomingEvent(AbstractGameEvent event){

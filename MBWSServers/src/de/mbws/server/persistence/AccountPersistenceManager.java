@@ -2,13 +2,11 @@ package de.mbws.server.persistence;
 
 import java.util.List;
 
-import net.sf.hibernate.Hibernate;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
-import net.sf.hibernate.exception.ConstraintViolationException;
-import net.sf.hibernate.type.Type;
-
 import org.apache.log4j.Logger;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.exception.ConstraintViolationException;
 
 import de.mbws.common.data.generated.Account;
 import de.mbws.server.exceptions.DuplicateKeyException;
@@ -60,12 +58,10 @@ public class AccountPersistenceManager extends BasePersistenceManager {
         Session session = null;
         Account account = null;
         try {
-            session = getSessionFactory().openSession(); 
-            List list = session.find("from Account as acc where " + 
-                    "acc.username = ? and acc.password = ?",
-                    new Object[] { userName, password },
-                    new Type[] { Hibernate.STRING, Hibernate.STRING }
-                );
+            session = getSessionFactory().openSession();
+            Query q = session.createQuery("from Account as acc where " + 
+            "acc.username = ? and acc.password = ?").setString(0,userName).setString(1,password);
+            List list = q.list();
             
             if(list.size() != 1) return null;
             account = (Account) list.get(0);
