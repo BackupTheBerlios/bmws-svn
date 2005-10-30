@@ -2,9 +2,8 @@ package de.mbws.server.controller;
 
 import de.mbws.common.data.generated.CharacterStatus;
 import de.mbws.common.data.generated.Characterdata;
-import de.mbws.common.eventdata.generated.FloatVector3D;
+import de.mbws.common.eventdata.generated.IntVector3D;
 import de.mbws.common.eventdata.generated.PlayerInfo;
-import de.mbws.common.eventdata.generated.UpdateLocation;
 import de.mbws.common.eventdata.generated.WorldObject;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.CharacterEvent;
@@ -43,13 +42,13 @@ public class CharacterEventController extends EventController {
             PlayerInfo pi = new PlayerInfo();
             pi.setVisualappearance(cdata.getCharacterVisualappearance().getHeight());
             WorldObject wo = new WorldObject();
-            FloatVector3D location = new FloatVector3D();
+            IntVector3D location = new IntVector3D();
             location.setLocationX(cs.getCoordinateX());
             location.setLocationY(cs.getCoordinateY());
             location.setLocationZ(cs.getCoordinateZ());
             wo.setLocation(location);
             
-            FloatVector3D heading = new FloatVector3D();
+            IntVector3D heading = new IntVector3D();
             heading.setLocationX(0);
             heading.setLocationY(0);
             heading.setLocationZ(0);
