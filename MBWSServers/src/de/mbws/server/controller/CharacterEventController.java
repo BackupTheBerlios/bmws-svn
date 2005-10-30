@@ -2,8 +2,10 @@ package de.mbws.server.controller;
 
 import de.mbws.common.data.generated.CharacterStatus;
 import de.mbws.common.data.generated.Characterdata;
+import de.mbws.common.eventdata.generated.FloatVector3D;
 import de.mbws.common.eventdata.generated.PlayerInfo;
 import de.mbws.common.eventdata.generated.UpdateLocation;
+import de.mbws.common.eventdata.generated.WorldObject;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.CharacterEvent;
 import de.mbws.common.events.EventTypes;
@@ -40,12 +42,21 @@ public class CharacterEventController extends EventController {
             
             PlayerInfo pi = new PlayerInfo();
             pi.setVisualappearance(cdata.getCharacterVisualappearance().getHeight());
-            UpdateLocation ul = new UpdateLocation();
-            ul.setLocationX(cs.getCoordinateX());
-            ul.setLocationY(cs.getCoordinateY());
-            ul.setLocationZ(cs.getCoordinateZ());
-            ul.setPlayerID(ce.getPlayer().getSessionId());
-            pi.setLocation(ul);
+            WorldObject wo = new WorldObject();
+            FloatVector3D location = new FloatVector3D();
+            location.setLocationX(cs.getCoordinateX());
+            location.setLocationY(cs.getCoordinateY());
+            location.setLocationZ(cs.getCoordinateZ());
+            wo.setLocation(location);
+            
+            FloatVector3D heading = new FloatVector3D();
+            heading.setLocationX(0);
+            heading.setLocationY(0);
+            heading.setLocationZ(0);
+            wo.setHeading(heading);
+            
+            wo.setObjectID(ce.getPlayer().getSessionId());
+            pi.setObject(wo);
             CharacterEvent result = new CharacterEvent(pi);
             result.setEventType(EventTypes.CHARACTER_RECEIVE);
             result.setPlayer(ce.getPlayer());
