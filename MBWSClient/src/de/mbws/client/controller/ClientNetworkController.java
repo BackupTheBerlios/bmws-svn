@@ -111,7 +111,7 @@ public class ClientNetworkController extends Thread {
 							(AccountEvent) event);
 				}  else if (event instanceof CharacterEvent) {
                     CharacterEvent e = (CharacterEvent) event;
-                    System.out.println("Got event " + e.getEventType() + " " + e.getPlayerInfo().getVisualappearance());
+                    CharacterController.getInstance().handleEvent(e);
                 }
 			} catch (InterruptedException ie) {
 				logger.info("InterruptedException in readin in-queue", ie);

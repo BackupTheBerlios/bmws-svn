@@ -93,9 +93,9 @@ public class MainMenuState extends StandardGameState {
 				.makeHoriz(GroupLayout.LEFT));
 		BLabel loginLabel = new BLabel("Login");
 		BLabel passwordLabel = new BLabel("Pass");
-		loginTF = new BTextField();//Settings.getInstance().getLogin());
+		loginTF = new BTextField("sack");//Settings.getInstance().getLogin());
 		loginTF.setPreferredSize(new Dimension(100, 30));
-		passwordTF = new BTextField();//Settings.getInstance().getPassword());
+		passwordTF = new BTextField("sack");//Settings.getInstance().getPassword());
 		passwordTF.setPreferredSize(new Dimension(100, 30));
 		BButton login = new BButton("Login");
 		BButton options = new BButton("Options");
