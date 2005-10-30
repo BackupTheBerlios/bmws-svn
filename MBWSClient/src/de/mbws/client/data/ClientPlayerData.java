@@ -1,15 +1,18 @@
 package de.mbws.client.data;
 
 import de.mbws.common.data.AbstractPlayerData;
+import de.mbws.common.data.generated.Characterdata;
 
 /**
  * Description: 
- * @author Azarai
+ * @author Kerim
  *
  */
 public class ClientPlayerData extends AbstractPlayerData {
 
 	private static ClientPlayerData instance;
+	
+	private Characterdata characterData;
 	
 	private ClientPlayerData() {}
 	public static ClientPlayerData getInstance() {
@@ -17,5 +20,11 @@ public class ClientPlayerData extends AbstractPlayerData {
 			instance = new ClientPlayerData();
 		}
 		return instance;
+	}
+	public Characterdata getCharacterData() {
+		return characterData;
+	}
+	public void setCharacterData(Characterdata characterData) {
+		this.characterData = characterData;
 	}
 }

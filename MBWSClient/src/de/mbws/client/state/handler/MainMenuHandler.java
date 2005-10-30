@@ -6,6 +6,7 @@ package de.mbws.client.state.handler;
 import java.util.logging.Level;
 
 import com.jme.app.GameState;
+import com.jme.app.GameStateManager;
 import com.jme.input.AbsoluteMouse;
 import com.jme.input.InputHandler;
 import com.jme.input.KeyBindingManager;
@@ -21,6 +22,7 @@ import de.mbws.client.MBWSClient;
 import de.mbws.client.controller.ClientNetworkController;
 import de.mbws.client.controller.LoginController;
 import de.mbws.client.data.ClientPlayerData;
+import de.mbws.client.state.TestGameState;
 import de.mbws.common.eventdata.generated.AccountData;
 import de.mbws.common.events.AbstractGameEvent;
 
@@ -71,16 +73,16 @@ public class MainMenuHandler extends InputHandler implements ComponentListener {
 		}
 		ClientNetworkController.getInstance().handleOutgoingEvent(event);
 		// TODO: try to log in, retrieve all info and then start the next State
-		//startMainGameState();
+		startMainGameState();
 
 	}
 
 	private void startMainGameState() {
-//		 GameState testgame = new TestGameState("game");
-//		 testgame.setActive(true);
-//		 GameStateManager.getInstance().attachChild(testgame);
-//		 GameStateManager.getInstance().deactivateChildNamed("menu");
-//		 GameStateManager.getInstance().detachChild("intro");
+		 GameState testgame = new TestGameState("game");
+		 testgame.setActive(true);
+		 GameStateManager.getInstance().attachChild(testgame);
+		 GameStateManager.getInstance().deactivateChildNamed("menu");
+		 GameStateManager.getInstance().detachChild("intro");
 	}
 
 	private static class ExitAction extends InputAction {

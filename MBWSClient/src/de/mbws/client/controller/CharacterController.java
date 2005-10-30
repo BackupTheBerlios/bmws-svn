@@ -3,6 +3,7 @@ package de.mbws.client.controller;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.CharacterEvent;
 import de.mbws.common.events.EventTypes;
+import de.mbws.common.events.MoveEvent;
 
 /**
  * Description:
@@ -39,6 +40,12 @@ public class CharacterController {
 	public AbstractGameEvent createCharacterReceiveEvent() {
 		CharacterEvent event = new CharacterEvent();
 		event.setEventType(EventTypes.CHARACTER_RECEIVE_REQUEST);
+		return event;
+	}
+	
+	public AbstractGameEvent createStartWalkingEvent() {
+		MoveEvent event = new MoveEvent();
+		event.setEventType(EventTypes.START_WALK);
 		return event;
 	}
 
