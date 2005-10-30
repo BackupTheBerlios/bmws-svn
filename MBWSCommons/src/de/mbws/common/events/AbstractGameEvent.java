@@ -61,6 +61,10 @@ public abstract class AbstractGameEvent {
 	public void setEventType(int eventType) {
 		this.eventType = eventType;
 	}
+
+	public AbstractEventData getEventData() {
+		return eventData;
+	}
 	
 	
 }

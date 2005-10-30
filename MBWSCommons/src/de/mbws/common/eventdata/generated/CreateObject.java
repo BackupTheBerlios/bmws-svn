@@ -4,9 +4,9 @@ package de.mbws.common.eventdata.generated;
 import de.mbws.common.eventdata.AbstractEventData;
 import java.nio.ByteBuffer;
 
-public class MoveData extends AbstractEventData { 
+public class CreateObject extends AbstractEventData { 
 	private int objectID;
-	private byte movementType;
+	private int modelID;
 	private FloatVector3D location;
 	private FloatVector3D heading;
 
@@ -19,12 +19,12 @@ public class MoveData extends AbstractEventData {
 		this.objectID = objectID;
 	} 
 
-	public byte getMovementType() {
-		return movementType;
+	public int getModelID() {
+		return modelID;
 	}
 
-	public void setMovementType(byte movementType) {
-		this.movementType = movementType;
+	public void setModelID(int modelID) {
+		this.modelID = modelID;
 	} 
 
 	public FloatVector3D getLocation() {
@@ -46,7 +46,7 @@ public class MoveData extends AbstractEventData {
 
 	public void deserialize(ByteBuffer payload) {
 		objectID = payload.getInt();
-		movementType = payload.get();
+		modelID = payload.getInt();
 		location = new FloatVector3D();
 		location.deserialize(payload);
 		heading = new FloatVector3D();
@@ -55,7 +55,7 @@ public class MoveData extends AbstractEventData {
 
 	public int serialize(ByteBuffer payload) {
 		payload.putInt(objectID);
-		payload.put(movementType);
+		payload.putInt(modelID);
 		location.serialize(payload);
 		heading.serialize(payload);
 		return payload.position();

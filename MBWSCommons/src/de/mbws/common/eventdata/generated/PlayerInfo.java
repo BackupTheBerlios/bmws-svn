@@ -5,16 +5,16 @@ import de.mbws.common.eventdata.AbstractEventData;
 import java.nio.ByteBuffer;
 
 public class PlayerInfo extends AbstractEventData { 
-	private UpdateLocation location;
+	private WorldObject object;
 	private int visualappearance;
 
 
-	public UpdateLocation getLocation() {
-		return location;
+	public WorldObject getObject() {
+		return object;
 	}
 
-	public void setLocation(UpdateLocation location) {
-		this.location = location;
+	public void setObject(WorldObject object) {
+		this.object = object;
 	} 
 
 	public int getVisualappearance() {
@@ -27,13 +27,13 @@ public class PlayerInfo extends AbstractEventData {
 
 
 	public void deserialize(ByteBuffer payload) {
-		location = new UpdateLocation();
-		location.deserialize(payload);
+		object = new WorldObject();
+		object.deserialize(payload);
 		visualappearance = payload.getInt();
 	}
 
 	public int serialize(ByteBuffer payload) {
-		location.serialize(payload);
+		object.serialize(payload);
 		payload.putInt(visualappearance);
 		return payload.position();
 	}
