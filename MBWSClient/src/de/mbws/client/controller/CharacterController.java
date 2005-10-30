@@ -2,6 +2,8 @@ package de.mbws.client.controller;
 
 import org.apache.log4j.Logger;
 
+import de.mbws.client.data.ClientPlayerData;
+import de.mbws.common.data.generated.CharacterStatus;
 import de.mbws.common.data.generated.Characterdata;
 import de.mbws.common.eventdata.generated.PlayerInfo;
 import de.mbws.common.events.AbstractGameEvent;
@@ -42,6 +44,11 @@ public class CharacterController {
 			PlayerInfo eventData = (PlayerInfo)event.getEventData();
 			logger.info("Playerinfo contains:");
 			logger.info(eventData.getObject().getLocation().getLocationX());
+			CharacterStatus status = new CharacterStatus();
+			status.setCoordinateX(eventData.getObject().getLocation().getLocationX());
+			status.setCoordinateY(eventData.getObject().getLocation().getLocationX());
+			status.setCoordinateZ(eventData.getObject().getLocation().getLocationX());
+			ClientPlayerData.getInstance().setCharacterData(characterData);
 			
 		}
 
