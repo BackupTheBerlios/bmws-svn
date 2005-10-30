@@ -20,6 +20,7 @@ import com.jme.scene.shape.Box;
 import com.jme.scene.state.LightState;
 import com.jme.system.DisplaySystem;
 
+import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.state.handler.TestGameHandler;
 
 public class TestGameState extends StandardGameState {
@@ -37,17 +38,15 @@ public class TestGameState extends StandardGameState {
 	// level
 	private ChaseCamera chaser;
 
-	
-
 	public TestGameState(String name) {
 		super(name);
 		display = DisplaySystem.getDisplaySystem();
-		
-//		 Light the world
+
+		// Light the world
 		buildLighting();
 		// Build the player
 		buildPlayer();
-		
+
 		// build the chase cam
 		buildChaseCamera();
 		// build the player input
@@ -57,14 +56,11 @@ public class TestGameState extends StandardGameState {
 		rootNode.updateGeometricState(0.0f, true);
 		rootNode.updateRenderState();
 	}
-	
+
 	private void buildInput() {
-		input = new TestGameHandler(player,null);
+		input = new TestGameHandler(player, null);
 	}
-	
-	
-	
-	
+
 	/**
 	 * we are going to build the player object here. For now, we will use a box
 	 * as a place holder. This is a good demonstration that you don't always
@@ -80,13 +76,22 @@ public class TestGameState extends StandardGameState {
 
 		player = new Node("Player Node");
 		player.setLocalTranslation(new Vector3f(100, 0, 100));
+		
 		rootNode.attachChild(player);
 		player.attachChild(b);
 		player.updateWorldBound();
 	}
 
-	
-
+	public void updatePlayer() {
+		Vector3f location = new Vector3f(ClientPlayerData.getInstance()
+				.getCharacterData().getCharacterStatus().getCoordinateX(),
+				ClientPlayerData.getInstance().getCharacterData()
+						.getCharacterStatus().getCoordinateY(),
+				ClientPlayerData.getInstance().getCharacterData()
+						.getCharacterStatus().getCoordinateZ());
+		player.setLocalTranslation(location);
+		
+	}
 	/**
 	 * creates a light for the terrain.
 	 */
@@ -104,9 +109,6 @@ public class TestGameState extends StandardGameState {
 		lightState.attach(light);
 		rootNode.setRenderState(lightState);
 	}
-
-	
-
 
 	/**
 	 * set the basic parameters of the chase camera. This includes the offset.
@@ -128,55 +130,53 @@ public class TestGameState extends StandardGameState {
 		chaser.setActionSpeed(100f);
 	}
 
-	
-	 /**
-	 * This is where derived classes are supposed to put their game logic.
-	 * Gets called between the input.update and
-	 * rootNode.updateGeometricState calls.
-	 *
+	/**
+	 * This is where derived classes are supposed to put their game logic. Gets
+	 * called between the input.update and rootNode.updateGeometricState calls.
+	 * 
 	 * <p>
 	 * Much like the structure of <code>SimpleGame</code>.
 	 * </p>
-	 *
-	 * @param tpf The time since the last frame.
+	 * 
+	 * @param tpf
+	 *            The time since the last frame.
 	 */
 	protected void stateUpdate(float tpf) {
-//		 update the keyboard input (move the player around)
+		// update the keyboard input (move the player around)
 		input.update(tpf);
 		// update the chase camera to handle the player moving around.
 		chaser.update(tpf);
 
-	
 		float camMinHeightPlayer = player.getWorldTranslation().y + 2f;
 		cam.getLocation().y = camMinHeightPlayer;
 		cam.update();
 
-	
 		rootNode.updateGeometricState(tpf, true);
 	}
 
-    /**
+	/**
 	 * This is where derived classes are supposed to put their render logic.
 	 * Gets called before the rootNode gets rendered.
-	 *
+	 * 
 	 * <p>
 	 * Much like the structure of <code>SimpleGame</code>.
 	 * </p>
-	 *
-	 * @param tpf The time since the last frame.
+	 * 
+	 * @param tpf
+	 *            The time since the last frame.
 	 */
 	protected void stateRender(float tpf) {
 		display.getRenderer().clearBuffers();
 		super.stateRender(tpf);
 	}
-	
+
 	/**
 	 * @see com.jme.app.StandardGameState#onActivate()
 	 */
 	public void onActivate() {
 		display.setTitle("Test Game State System - Game State");
-		//TODO: SUCK MY DICK WHAT A HECK OF A BUG !!!! Take that out 
-		//later when all works with a correct mouse
+		// TODO: SUCK MY DICK WHAT A HECK OF A BUG !!!! Take that out
+		// later when all works with a correct mouse
 		MouseInput.get().setCursorVisible(false);
 		super.onActivate();
 	}

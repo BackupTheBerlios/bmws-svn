@@ -2,7 +2,11 @@ package de.mbws.client.controller;
 
 import org.apache.log4j.Logger;
 
+import com.jme.app.GameState;
+import com.jme.app.GameStateManager;
+
 import de.mbws.client.data.ClientPlayerData;
+import de.mbws.client.state.TestGameState;
 import de.mbws.common.data.generated.CharacterStatus;
 import de.mbws.common.data.generated.Characterdata;
 import de.mbws.common.eventdata.generated.PlayerInfo;
@@ -48,11 +52,14 @@ public class CharacterController {
 			status.setCoordinateX(eventData.getObject().getLocation().getLocationX());
 			status.setCoordinateY(eventData.getObject().getLocation().getLocationX());
 			status.setCoordinateZ(eventData.getObject().getLocation().getLocationX());
+			characterData.setCharacterStatus(status);
 			ClientPlayerData.getInstance().setCharacterData(characterData);
-			
+			((TestGameState)GameStateManager.getInstance().getChild("game")).updatePlayer();
 		}
 
 	}
+	
+	
 
 	public AbstractGameEvent createCharacterReceiveEvent() {
 		CharacterEvent event = new CharacterEvent();
