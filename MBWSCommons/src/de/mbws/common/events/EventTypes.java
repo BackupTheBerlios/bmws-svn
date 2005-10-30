@@ -22,4 +22,13 @@ public class EventTypes {
     
     public static final int CHARACTER_RECEIVE_REQUEST = 21;
     public static final int CHARACTER_RECEIVE = 22;
+    
+    //Numbers 100 to 150 are reserved for movement related events
+    public static final int START_WALK = 100;
+    public static final int STOP_WALK = 101;
+    public static final int START_RUN = 102;
+    public static final int STOP_RUN = 103;
+    
+    public static final int UPDATE_LOCATION = 150;
+    
 }
