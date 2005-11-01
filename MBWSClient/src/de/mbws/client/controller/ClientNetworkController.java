@@ -15,6 +15,7 @@ import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.AccountEvent;
 import de.mbws.common.events.CharacterEvent;
 import de.mbws.common.events.LoginEvent;
+import de.mbws.common.events.MoveEvent;
 import de.mbws.common.exceptions.InitializationException;
 
 public class ClientNetworkController extends Thread {
@@ -112,6 +113,9 @@ public class ClientNetworkController extends Thread {
 				}  else if (event instanceof CharacterEvent) {
                     CharacterEvent e = (CharacterEvent) event;
                     CharacterController.getInstance().handleEvent(e);
+				}  else if (event instanceof MoveEvent) {
+					MoveEvent e = (MoveEvent) event;
+                    MovableObjectsController.getInstance().handleEvent(e);
                 }
 			} catch (InterruptedException ie) {
 				logger.info("InterruptedException in readin in-queue", ie);

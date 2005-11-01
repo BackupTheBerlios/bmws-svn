@@ -27,6 +27,8 @@ public class TestGameState extends StandardGameState {
 
 	private Node player;
 
+	Node player2;
+
 	// private ChaseCamera chaser;
 	protected InputHandler input;
 
@@ -52,6 +54,7 @@ public class TestGameState extends StandardGameState {
 		// build the player input
 		buildInput();
 
+		addPlayer();
 		// update the scene graph for rendering
 		rootNode.updateGeometricState(0.0f, true);
 		rootNode.updateRenderState();
@@ -76,7 +79,7 @@ public class TestGameState extends StandardGameState {
 
 		player = new Node("Player Node");
 		player.setLocalTranslation(new Vector3f(100, 0, 100));
-		
+
 		rootNode.attachChild(player);
 		player.attachChild(b);
 		player.updateWorldBound();
@@ -90,8 +93,30 @@ public class TestGameState extends StandardGameState {
 				ClientPlayerData.getInstance().getCharacterData()
 						.getCharacterStatus().getCoordinateZ());
 		player.setLocalTranslation(location);
-		
+
 	}
+
+	// TODO REMOVE BELOW
+	// TODO: Kerim Used for tests at the moment
+	public void addPlayer() {
+		// box stand in
+		Box b = new Box("box", new Vector3f(), 0.35f, 0.5f, 0.25f);
+		b.setDefaultColor(new ColorRGBA(ColorRGBA.white));
+		b.setModelBound(new BoundingBox());
+		b.updateModelBound();
+
+		player2 = new Node("Player2 Node");
+		player2.setLocalTranslation(new Vector3f(100, 0, 100));
+
+		rootNode.attachChild(player2);
+		player2.attachChild(b);
+		player2.updateWorldBound();
+	}
+
+	public void movePlayer(Vector3f newLocation) {
+		player2.setLocalTranslation(newLocation);
+	} // TODO: REMOVE ABOVE
+
 	/**
 	 * creates a light for the terrain.
 	 */

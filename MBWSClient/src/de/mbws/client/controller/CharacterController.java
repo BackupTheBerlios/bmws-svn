@@ -24,6 +24,7 @@ import de.mbws.common.events.MoveEvent;
 public class CharacterController {
 
 	private Logger logger = Logger.getLogger(CharacterController.class);
+
 	private static CharacterController instance;
 
 	/**
@@ -45,32 +46,40 @@ public class CharacterController {
 		if (event.getEventType() == EventTypes.CHARACTER_RECEIVE) {
 			logger.info("Receiving Character!");
 			Characterdata characterData = new Characterdata();
-			PlayerInfo eventData = (PlayerInfo)event.getEventData();
+			PlayerInfo eventData = (PlayerInfo) event.getEventData();
 			logger.info("Playerinfo contains:");
 			logger.info(eventData.getObject().getLocation().getLocationX());
 			CharacterStatus status = new CharacterStatus();
-			status.setCoordinateX(eventData.getObject().getLocation().getLocationX());
-			status.setCoordinateY(eventData.getObject().getLocation().getLocationX());
-			status.setCoordinateZ(eventData.getObject().getLocation().getLocationX());
+			status.setCoordinateX(eventData.getObject().getLocation()
+					.getLocationX());
+			status.setCoordinateY(eventData.getObject().getLocation()
+					.getLocationX());
+			status.setCoordinateZ(eventData.getObject().getLocation()
+					.getLocationX());
 			characterData.setCharacterStatus(status);
 			ClientPlayerData.getInstance().setCharacterData(characterData);
-			((TestGameState)GameStateManager.getInstance().getChild("game")).updatePlayer();
+			((TestGameState) GameStateManager.getInstance().getChild("game"))
+					.updatePlayer();
 		}
 
 	}
-	
-	
 
 	public AbstractGameEvent createCharacterReceiveEvent() {
 		CharacterEvent event = new CharacterEvent();
 		event.setEventType(EventTypes.CHARACTER_RECEIVE_REQUEST);
 		return event;
 	}
-	
+
 	public AbstractGameEvent createStartWalkingEvent() {
 		MoveEvent event = new MoveEvent();
 		event.setEventType(EventTypes.START_WALK);
+		logger.info("Creating start walking event:");
 		return event;
+	}
+
+	public void startWalking() {
+		ClientNetworkController.getInstance().handleOutgoingEvent(
+				createStartWalkingEvent());
 	}
 
 }

@@ -6,11 +6,15 @@ package de.mbws.client.state.handler;
 import com.jme.input.InputHandler;
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
+import com.jme.input.action.InputAction;
+import com.jme.input.action.InputActionEvent;
 import com.jme.input.action.KeyNodeBackwardAction;
 import com.jme.input.action.KeyNodeForwardAction;
 import com.jme.input.action.KeyNodeRotateLeftAction;
 import com.jme.input.action.KeyNodeRotateRightAction;
 import com.jme.scene.Spatial;
+
+import de.mbws.client.controller.CharacterController;
 
 /**
  * Input Handler for the Flag Rush game. This controls a supplied spatial
@@ -29,9 +33,23 @@ public class TestGameHandler extends InputHandler {
 
         setKeyBindings(api);
         setActions(node);
+        setStatusRelatedKeys();
 
     }
+    
+    //TODO: Kerim: eventually we should extend the existing actions instead of
+    //making a double binding to a key
+    private void setStatusRelatedKeys() {
+    	KeyBindingManager.getKeyBindingManager().set("walk",
+				KeyInput.KEY_W);
+		addAction(new ForwardWalkAction(), "walk", false);
+    }
 
+    private static class ForwardWalkAction extends InputAction {
+		public void performAction(InputActionEvent evt) {
+			CharacterController.getInstance().createStartWalkingEvent();
+		}
+	}
     /**
      * creates the keyboard object, allowing us to obtain the values of a keyboard as keys are
      * pressed. It then sets the actions to be triggered based on if certain keys are pressed (WSAD).
