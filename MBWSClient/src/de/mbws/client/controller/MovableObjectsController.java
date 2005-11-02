@@ -38,21 +38,21 @@ public class MovableObjectsController {
 
 	// TODO Kerim: correct error handling and next stages here !
 	public void handleEvent(MoveEvent moveEvent) {
-		if (moveEvent.getEventType() == EventTypes.START_WALK) {
+		if (moveEvent.getEventType() == EventTypes.MOVEMENT_START_WALK) {
 			logger.info("Received event start walking");
-		} else if (moveEvent.getEventType() == EventTypes.STOP_WALK) {
+		} else if (moveEvent.getEventType() == EventTypes.MOVEMENT_STOP_WALK) {
 			logger.info("Received event stop walking");
-		} else if (moveEvent.getEventType() == EventTypes.START_RUN) {
+		} else if (moveEvent.getEventType() == EventTypes.MOVEMENT_START_RUN) {
 			logger.info("Received event start running");
-		} else if (moveEvent.getEventType() == EventTypes.STOP_RUN) {
+		} else if (moveEvent.getEventType() == EventTypes.MOVEMENT_STOP_RUN) {
 			logger.info("Received event stop running");
-		} else if (moveEvent.getEventType() == EventTypes.START_TURN_LEFT) {
+		} else if (moveEvent.getEventType() == EventTypes.MOVEMENT_START_TURN_LEFT) {
 			logger.info("Received event start turning left");
-		} else if (moveEvent.getEventType() == EventTypes.STOP_TURN_LEFT) {
+		} else if (moveEvent.getEventType() == EventTypes.MOVEMENT_STOP_TURN_LEFT) {
 			logger.info("Received event stop turning left");
-		} else if (moveEvent.getEventType() == EventTypes.START_TURN_RIGHT) {
+		} else if (moveEvent.getEventType() == EventTypes.MOVEMENT_START_TURN_RIGHT) {
 			logger.info("Received event start turning right");
-		} else if (moveEvent.getEventType() == EventTypes.STOP_TURN_RIGHT) {
+		} else if (moveEvent.getEventType() == EventTypes.MOVEMENT_STOP_TURN_RIGHT) {
 			logger.info("Received event stop turning right");
 		} else {
 			logger.error("Event not known to client !!");

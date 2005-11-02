@@ -1,8 +1,7 @@
-package de.mbws.client.controller;
+ package de.mbws.client.controller;
 
 import org.apache.log4j.Logger;
 
-import com.jme.app.GameState;
 import com.jme.app.GameStateManager;
 
 import de.mbws.client.data.ClientPlayerData;
@@ -72,7 +71,7 @@ public class CharacterController {
 
 	public AbstractGameEvent createStartWalkingEvent() {
 		MoveEvent event = new MoveEvent();
-		event.setEventType(EventTypes.START_WALK);
+		event.setEventType(EventTypes.MOVEMENT_START_WALK);
 		logger.info("Creating start walking event:");
 		return event;
 	}

@@ -47,7 +47,7 @@ public class TestGameHandler extends InputHandler {
 
     private static class ForwardWalkAction extends InputAction {
 		public void performAction(InputActionEvent evt) {
-			CharacterController.getInstance().createStartWalkingEvent();
+			CharacterController.getInstance().startWalking();
 		}
 	}
     /**
