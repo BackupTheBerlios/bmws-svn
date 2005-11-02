@@ -9,6 +9,7 @@ import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.CharacterEvent;
 import de.mbws.common.events.EventTypes;
 import de.mbws.server.account.AccountServer;
+import de.mbws.server.data.ServerPlayerData;
 import de.mbws.server.persistence.CharacterPersistenceManager;
 
 /**
@@ -38,7 +39,7 @@ public class CharacterEventController extends EventController {
             Characterdata cdata = CharacterPersistenceManager.getInstance().getCharacter(ce.getPlayer().getAccount().getUsername());
 
             CharacterStatus cs = cdata.getCharacterStatus();
-            
+            ((ServerPlayerData) ce.getPlayer()).setActiveCharacter(cdata.getId());
             PlayerInfo pi = new PlayerInfo();
             pi.setVisualappearance(cdata.getCharacterVisualappearance().getHeight());
             WorldObject wo = new WorldObject();

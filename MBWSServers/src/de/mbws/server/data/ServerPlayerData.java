@@ -9,4 +9,14 @@ import de.mbws.common.data.AbstractPlayerData;
  */
 public class ServerPlayerData extends AbstractPlayerData {
 
+    
+    private Long activeCharacter;
+
+    public Long getActiveCharacter() {
+        return activeCharacter;
+    }
+
+    public void setActiveCharacter(Long activeCharacter) {
+        this.activeCharacter = activeCharacter;
+    }
 }

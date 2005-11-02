@@ -9,6 +9,7 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -24,6 +25,7 @@ import de.mbws.server.controller.CharacterEventController;
 import de.mbws.server.controller.EventController;
 import de.mbws.server.controller.EventDispatcher;
 import de.mbws.server.controller.LoginEventController;
+import de.mbws.server.controller.MovementEventController;
 
 public class AccountServer extends Thread {
 
@@ -123,6 +125,7 @@ public class AccountServer extends Thread {
         eventReader.put(new Integer(EventTypes.ACCOUNT_CREATE), new AccountEventController(this, EventTypes.ACCOUNT_CREATE));
         
         eventReader.put(new Integer(EventTypes.CHARACTER_RECEIVE_REQUEST), new CharacterEventController(this, EventTypes.CHARACTER_RECEIVE_REQUEST));
+        eventReader.put(new Integer(EventTypes.MOVEMENT_START_WALK), new MovementEventController(this, EventTypes.MOVEMENT_START_WALK));
     }
 
     public EventController getEventController(int eventType) {
@@ -139,6 +142,10 @@ public class AccountServer extends Thread {
         return clients.get(id);
     }
 
+    public Map getAllPlayers() {
+        return clients;
+    }
+    
     public void addPlayer(Integer sessionId, AbstractPlayerData p) {
         clients.put(sessionId, p);
     }
