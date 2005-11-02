@@ -24,14 +24,14 @@ public class EventTypes {
     public static final int CHARACTER_RECEIVE = 22;
     
     //Numbers 100 to 150 are reserved for movement related events
-    public static final int START_WALK = 100;
-    public static final int STOP_WALK = 101;
-    public static final int START_RUN = 102;
-    public static final int STOP_RUN = 103;
-    public static final int START_TURN_RIGHT = 104;
-    public static final int STOP_TURN_RIGHT = 105;
-    public static final int START_TURN_LEFT = 106;
-    public static final int STOP_TURN_LEFT = 107;
-    public static final int UPDATE_LOCATION = 150;
+    public static final int MOVEMENT_START_WALK = 100;
+    public static final int MOVEMENT_STOP_WALK = 101;
+    public static final int MOVEMENT_START_RUN = 102;
+    public static final int MOVEMENT_STOP_RUN = 103;
+    public static final int MOVEMENT_START_TURN_RIGHT = 104;
+    public static final int MOVEMENT_STOP_TURN_RIGHT = 105;
+    public static final int MOVEMENT_START_TURN_LEFT = 106;
+    public static final int MOVEMENT_STOP_TURN_LEFT = 107;
+    public static final int MOVEMENT_UPDATE_LOCATION = 150;
     
 }

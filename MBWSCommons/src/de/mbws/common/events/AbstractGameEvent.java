@@ -7,64 +7,60 @@ import de.mbws.common.eventdata.AbstractEventData;
 
 public abstract class AbstractGameEvent {
 
-	/** event type */
-	protected int eventType;
-	protected AbstractPlayerData player;
-	protected boolean sendAck = false;
-	protected Integer[] recipients;
-	protected AbstractEventData eventData;
+    /** event type */
+    protected int eventType;
 
-	public AbstractGameEvent(ByteBuffer payload, AbstractEventData eventData) {
-		this.eventData = eventData;
-		eventData.deserialize(payload);
-	}
-	
-	public AbstractGameEvent(AbstractEventData eventData) {
-		this.eventData = eventData;
-	}
-	
-	public abstract int getEventId();
-	
+    protected AbstractPlayerData player;
 
-	public void setSendAck(boolean sendAck) {
-		this.sendAck = sendAck;
-	}
+    protected Integer[] recipients;
 
-	public AbstractPlayerData getPlayer() {
-		return player;
-	}
+    protected AbstractEventData eventData;
 
-	public void setPlayer(AbstractPlayerData p) {
-		this.player = p;
-	}
+    public AbstractGameEvent(ByteBuffer payload, AbstractEventData eventData) {
+        this.eventData = eventData;
+        eventData.deserialize(payload);
+    }
 
-	public Integer[] getRecipients() {
-		return recipients;
-	}
+    public AbstractGameEvent(AbstractEventData eventData) {
+        this.eventData = eventData;
+    }
 
-	public void setRecipients(Integer[] recipients) {
-		this.recipients = recipients;
-	}
+    public abstract int getEventId();
 
-	public int serialize(ByteBuffer buffer) {
-		int size = buffer.position();
-	    if (eventData != null) {
-			size = eventData.serialize(buffer);
-		}
-		return size;
-	}
+    public AbstractPlayerData getPlayer() {
+        return player;
+    }
 
-	public int getEventType() {
-		return eventType;
-	}
+    public void setPlayer(AbstractPlayerData p) {
+        this.player = p;
+    }
 
-	public void setEventType(int eventType) {
-		this.eventType = eventType;
-	}
+    public Integer[] getRecipients() {
+        return recipients;
+    }
 
-	public AbstractEventData getEventData() {
-		return eventData;
-	}
-	
-	
+    public void setRecipients(Integer[] recipients) {
+        this.recipients = recipients;
+    }
+
+    public int serialize(ByteBuffer buffer) {
+        int size = buffer.position();
+        if (eventData != null) {
+            size = eventData.serialize(buffer);
+        }
+        return size;
+    }
+
+    public int getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(int eventType) {
+        this.eventType = eventType;
+    }
+
+    public AbstractEventData getEventData() {
+        return eventData;
+    }
+
 }
