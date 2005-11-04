@@ -16,7 +16,6 @@ import com.jme.scene.Spatial;
 
 import de.mbws.client.controller.CharacterController;
 import de.mbws.client.controller.ClientNetworkController;
-import de.mbws.client.controller.MovableObjectsController;
 import de.mbws.client.data.ClientPlayerData;
 
 /**

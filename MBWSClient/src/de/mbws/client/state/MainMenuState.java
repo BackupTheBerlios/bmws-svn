@@ -34,7 +34,6 @@ import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
-import com.jmex.bui.text.BText;
 import com.jmex.bui.util.Dimension;
 
 import de.mbws.client.MBWSClient;

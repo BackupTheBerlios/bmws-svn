@@ -6,7 +6,6 @@ import com.jme.app.GameStateManager;
 
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.state.MainMenuState;
-import de.mbws.client.state.TestGameState;
 import de.mbws.common.data.generated.CharacterStatus;
 import de.mbws.common.data.generated.Characterdata;
 import de.mbws.common.eventdata.generated.IntVector3D;
@@ -115,6 +114,11 @@ public class CharacterController {
 		location.setLocationY(0);
 		location.setLocationZ(0);
 		md.setLocation(location);
+		IntVector3D heading = new IntVector3D();
+		heading.setLocationX(0);
+		heading.setLocationY(0);
+		heading.setLocationZ(0);
+		md.setHeading(heading);
 		me.setEventType(eventType);
 		return me;
 	}

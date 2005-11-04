@@ -2,9 +2,6 @@ package de.mbws.client.controller;
 
 import org.apache.log4j.Logger;
 
-import de.mbws.common.eventdata.generated.IntVector3D;
-import de.mbws.common.eventdata.generated.MoveData;
-import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.EventTypes;
 import de.mbws.common.events.MoveEvent;
 
