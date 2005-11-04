@@ -34,4 +34,11 @@ public class EventTypes {
     public static final int MOVEMENT_STOP_TURN_LEFT = 107;
     public static final int MOVEMENT_UPDATE_LOCATION = 150;
     
+    //Numbers 200 to 250 are reserved to object related events
+    public static final int OBJECT_CREATE = 200;
+    public static final int OBJECT_DESTROY = 201;
+    public static final int OBJECT_TAKEN = 202;
+    public static final int OBJECT_DROPPED = 203;
+    
+    
 }
