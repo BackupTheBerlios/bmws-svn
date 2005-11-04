@@ -39,7 +39,7 @@ public class AccountServer extends Thread {
 
     private Selector selector;
 
-    private HashMap eventReader = new HashMap();
+    private HashMap<Integer, EventController> eventReader = new HashMap<Integer, EventController>();
 
     private HashMap<Integer, AbstractPlayerData> clients = new HashMap<Integer, AbstractPlayerData>() ;
 
@@ -130,7 +130,7 @@ public class AccountServer extends Thread {
 
     public EventController getEventController(int eventType) {
         if (eventReader.containsKey(new Integer(eventType))) {
-            return (EventController) eventReader.get(new Integer(eventType));
+            return eventReader.get(new Integer(eventType));
         }
         return null;
     }

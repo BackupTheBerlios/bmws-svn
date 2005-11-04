@@ -62,8 +62,6 @@ public class EventWriter extends QueueWorker {
             logger.info("writeEvent: type=" + event.getClass().getName() + ", id=" + event.getPlayer().getSessionId()
             		+ ", eventType=" + event.getEventType()
             		+ "payload=" + StringUtils.bytesToString(writeBuffer.array()));
-            Integer playerSessionId = event.getPlayer().getSessionId();
-            
             write(event.getPlayer().getChannel(), writeBuffer);
         } else {
             for (int i = 0; i < recipients.length; i++) {

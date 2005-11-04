@@ -1,7 +1,5 @@
 package de.mbws.server.controller;
 
-import org.apache.log4j.Logger;
-
 import de.mbws.common.EventQueue;
 import de.mbws.common.QueueWorker;
 import de.mbws.common.events.AbstractGameEvent;
@@ -12,7 +10,7 @@ import de.mbws.server.account.AccountServer;
  * @version 1.0
  */
 public class EventDispatcher extends QueueWorker {
-    private static Logger logger = Logger.getLogger(EventDispatcher.class);
+
     protected AccountServer accountServer = null;
        
     /**
