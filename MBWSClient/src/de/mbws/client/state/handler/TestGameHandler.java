@@ -15,6 +15,9 @@ import com.jme.input.action.KeyNodeRotateRightAction;
 import com.jme.scene.Spatial;
 
 import de.mbws.client.controller.CharacterController;
+import de.mbws.client.controller.ClientNetworkController;
+import de.mbws.client.controller.MovableObjectsController;
+import de.mbws.client.data.ClientPlayerData;
 
 /**
  * Input Handler for the Flag Rush game. This controls a supplied spatial
@@ -24,7 +27,13 @@ import de.mbws.client.controller.CharacterController;
  */
 public class TestGameHandler extends InputHandler {
 
-    /**
+    private static final String STAND = "stand";
+	private static final String TURN_LEFT = "turnLeft";
+	private static final String TURN_RIGHT = "turnRight";
+	private static final String BACKWARD = "backward";
+	private static final String FORWARD = "forward";
+
+	/**
      * Supply the node to control and the api that will handle input creation.
      * @param node the node we wish to move
      * @param api the library that will handle creation of the input.
@@ -58,10 +67,10 @@ public class TestGameHandler extends InputHandler {
     private void setKeyBindings(String api) {
         KeyBindingManager keyboard = KeyBindingManager.getKeyBindingManager();
 
-        keyboard.set("forward", KeyInput.KEY_W);
-        keyboard.set("backward", KeyInput.KEY_S);
-        keyboard.set("turnRight", KeyInput.KEY_D);
-        keyboard.set("turnLeft", KeyInput.KEY_A);
+        keyboard.set(FORWARD, KeyInput.KEY_W);
+        keyboard.set(BACKWARD, KeyInput.KEY_S);
+        keyboard.set(TURN_RIGHT, KeyInput.KEY_D);
+        keyboard.set(TURN_LEFT, KeyInput.KEY_A);
     }
 
     /**
@@ -71,17 +80,42 @@ public class TestGameHandler extends InputHandler {
      */
     private void setActions(Spatial node) {
         KeyNodeForwardAction forward = new KeyNodeForwardAction(node, 30f);
-        addAction(forward, "forward", true);
+        addAction(forward, FORWARD, true);
         
         KeyNodeBackwardAction backward = new KeyNodeBackwardAction(node, 15f);
-        addAction(backward, "backward", true);
+        addAction(backward, BACKWARD, true);
         
         KeyNodeRotateRightAction rotateRight = new KeyNodeRotateRightAction(node, 5f);
         rotateRight.setLockAxis(node.getLocalRotation().getRotationColumn(1));
-        addAction(rotateRight, "turnRight", true);
+        addAction(rotateRight, TURN_RIGHT, true);
         
         KeyNodeRotateLeftAction rotateLeft = new KeyNodeRotateLeftAction(node, 5f);
         rotateLeft.setLockAxis(node.getLocalRotation().getRotationColumn(1));
-        addAction(rotateLeft, "turnLeft", true);
+        addAction(rotateLeft, TURN_LEFT, true);
     }
+    
+    public void update( float time ) {
+//      //TODO: We only take care of walking at the moment
+    	if (!KeyBindingManager.getKeyBindingManager().isValidCommand(FORWARD) && ClientPlayerData.getInstance().walkingStatus.equals(FORWARD)) {
+    		ClientPlayerData.getInstance().walkingStatus=STAND;
+    		ClientNetworkController.getInstance().handleOutgoingEvent(
+					CharacterController.getInstance()
+							.createStopWalkingEvent());
+    	}
+    	
+    	if (KeyBindingManager.getKeyBindingManager().isValidCommand(FORWARD) && !ClientPlayerData.getInstance().walkingStatus.equals(FORWARD)) {
+    		ClientPlayerData.getInstance().walkingStatus=FORWARD;
+    		ClientNetworkController.getInstance().handleOutgoingEvent(
+    				CharacterController.getInstance()
+							.createStartWalkingEvent());
+    	}
+//    	if (!KeyBindingManager.getKeyBindingManager().isValidCommand(BACKWARD) && ClientPlayerData.getInstance().walkingStatus.equals(BACKWARD)) {
+//    		ClientPlayerData.getInstance().walkingStatus=STAND;
+//    		ClientNetworkController.getInstance().handleOutgoingEvent(
+//					MovableObjectsController.getInstance()
+//							.createStopWalkingEvent());
+//    	}
+    	super.update(time);
+    }
+
 }

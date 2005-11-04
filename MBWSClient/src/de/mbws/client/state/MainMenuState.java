@@ -25,6 +25,7 @@ import com.jmex.bui.BContainer;
 import com.jmex.bui.BDecoratedWindow;
 import com.jmex.bui.BLabel;
 import com.jmex.bui.BLookAndFeel;
+import com.jmex.bui.BPopupWindow;
 import com.jmex.bui.BRootNode;
 import com.jmex.bui.BTextField;
 import com.jmex.bui.BWindow;
@@ -33,6 +34,7 @@ import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
+import com.jmex.bui.text.BText;
 import com.jmex.bui.util.Dimension;
 
 import de.mbws.client.MBWSClient;
@@ -57,6 +59,9 @@ public class MainMenuState extends StandardGameState {
 
 	BTextField passwordTF;
 	BRootNode _root;
+	BWindow window ;
+	BLookAndFeel lnf;
+	BPopupWindow infoWindow;
 	
 
 	public MainMenuState(String name) {
@@ -82,8 +87,8 @@ public class MainMenuState extends StandardGameState {
 	private void setupButtons() {
 		_root = new PolledRootNode(MBWSClient.timer, input);
 		rootNode.attachChild(_root);
-		BLookAndFeel lnf = BLookAndFeel.getDefaultLookAndFeel();
-		BWindow window = new BDecoratedWindow(lnf, null);
+		lnf = BLookAndFeel.getDefaultLookAndFeel();
+		window = new BDecoratedWindow(lnf, null);
 
 		BContainer cont = new BContainer(GroupLayout
 				.makeVert(GroupLayout.CENTER));
@@ -223,5 +228,26 @@ public class MainMenuState extends StandardGameState {
 	protected void stateUpdate(float tpf) {
 		input.update(tpf);
 		rootNode.updateGeometricState(tpf, true);
+	}
+	
+	public void displayInfo(String info) {
+		infoWindow = new BPopupWindow(window,new BorderLayout());
+		infoWindow.add(new BLabel(info),BorderLayout.CENTER);
+		BButton button = new BButton("OK");
+		button.addListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				infoWindow.dismiss();
+				}
+			
+		});
+		infoWindow.add(button, BorderLayout.SOUTH);
+		infoWindow.setLocation(display.getWidth() / 2 - window.getWidth() / 2,
+				display.getHeight() / 2 - window.getHeight() / 2);
+		_root.addWindow(infoWindow);
+		
+	}
+
+	public MainMenuHandler getInput() {
+		return input;
 	}
 }

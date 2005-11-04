@@ -36,7 +36,7 @@ import de.mbws.common.events.AbstractGameEvent;
 // TODO: replace this (and parts in MainMenuState) with a BUI-Interface ?
 public class MainMenuHandler extends InputHandler implements ComponentListener {
 	GameState myState;
-
+	boolean startNextState = false;
 	// Mouse mouse;
 
 	public MainMenuHandler(GameState myState) {
@@ -61,6 +61,7 @@ public class MainMenuHandler extends InputHandler implements ComponentListener {
 	public void login(String login, String pass) {
 		LoggingSystem.getLogger().log(Level.INFO,
 				"trying to log in with login: " + login + " pass: " + pass);
+		//((MainMenuState)myState).displayInfo("Trying to log in");
 		AccountData accountData = new AccountData();
 		accountData.setUserName(login);
 		accountData.setPassword(pass);
@@ -69,15 +70,12 @@ public class MainMenuHandler extends InputHandler implements ComponentListener {
 		try {
 			ClientNetworkController.getInstance().connect();
 		} catch (Exception e) {
-			System.out.println("ups");
+			e.printStackTrace();
 		}
 		ClientNetworkController.getInstance().handleOutgoingEvent(event);
-		// TODO: try to log in, retrieve all info and then start the next State
-		startMainGameState();
-
 	}
 
-	private void startMainGameState() {
+	public void startMainGameState() {
 		 GameState testgame = new TestGameState("game");
 		 testgame.setActive(true);
 		 GameStateManager.getInstance().attachChild(testgame);
@@ -89,5 +87,19 @@ public class MainMenuHandler extends InputHandler implements ComponentListener {
 		public void performAction(InputActionEvent evt) {
 			MBWSClient.exit();
 		}
+	}
+
+	/**
+	 * overrides update from super, checks if we can start the game
+	 */ 
+	public void update( float time ) {
+		if (startNextState==true) {
+			startMainGameState();
+		}
+		super.update(time);
+	}
+	
+	public void setStartNextState(boolean b) {
+		startNextState = b;
 	}
 }

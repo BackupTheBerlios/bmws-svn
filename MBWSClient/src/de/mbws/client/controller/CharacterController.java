@@ -5,9 +5,12 @@ import org.apache.log4j.Logger;
 import com.jme.app.GameStateManager;
 
 import de.mbws.client.data.ClientPlayerData;
+import de.mbws.client.state.MainMenuState;
 import de.mbws.client.state.TestGameState;
 import de.mbws.common.data.generated.CharacterStatus;
 import de.mbws.common.data.generated.Characterdata;
+import de.mbws.common.eventdata.generated.IntVector3D;
+import de.mbws.common.eventdata.generated.MoveData;
 import de.mbws.common.eventdata.generated.PlayerInfo;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.CharacterEvent;
@@ -57,8 +60,9 @@ public class CharacterController {
 					.getLocationX());
 			characterData.setCharacterStatus(status);
 			ClientPlayerData.getInstance().setCharacterData(characterData);
-			((TestGameState) GameStateManager.getInstance().getChild("game"))
-					.updatePlayer();
+			logger.info("setting flag to start next state");
+			((MainMenuState) GameStateManager.getInstance().getChild("menu"))
+			.getInput().setStartNextState(true);
 		}
 
 	}
@@ -69,16 +73,50 @@ public class CharacterController {
 		return event;
 	}
 
-	public AbstractGameEvent createStartWalkingEvent() {
-		MoveEvent event = new MoveEvent();
-		event.setEventType(EventTypes.MOVEMENT_START_WALK);
-		logger.info("Creating start walking event:");
-		return event;
-	}
+	
 
 	public void startWalking() {
 		ClientNetworkController.getInstance().handleOutgoingEvent(
 				createStartWalkingEvent());
+	}
+
+	public AbstractGameEvent createStopRunningEvent() {
+		return createMovementEvent(EventTypes.MOVEMENT_STOP_RUN);
+	}
+	public AbstractGameEvent createStopWalkingEvent() {
+		return createMovementEvent(EventTypes.MOVEMENT_STOP_WALK);
+	}
+	public AbstractGameEvent createStopTurnRightEvent() {
+		return createMovementEvent(EventTypes.MOVEMENT_STOP_TURN_RIGHT);
+	}
+	public AbstractGameEvent createStopTurnLeftEvent() {
+		return createMovementEvent(EventTypes.MOVEMENT_STOP_TURN_LEFT);
+	}
+	
+	public AbstractGameEvent createStartRunningEvent() {
+		return createMovementEvent(EventTypes.MOVEMENT_START_RUN);
+	}
+	public AbstractGameEvent createStartWalkingEvent() {
+		return createMovementEvent(EventTypes.MOVEMENT_START_WALK);
+	}
+	public AbstractGameEvent createStartTurnRightEvent() {
+		return createMovementEvent(EventTypes.MOVEMENT_START_TURN_RIGHT);
+	}
+	public AbstractGameEvent createStartTurnLeftEvent() {
+		return createMovementEvent(EventTypes.MOVEMENT_START_TURN_LEFT);
+	}
+	
+	public AbstractGameEvent createMovementEvent(int eventType) {
+		MoveData md = new MoveData();
+		MoveEvent me = new MoveEvent(md);
+		//TODO fill real data
+		IntVector3D location = new IntVector3D();
+		location.setLocationX(0);
+		location.setLocationY(0);
+		location.setLocationZ(0);
+		md.setLocation(location);
+		me.setEventType(eventType);
+		return me;
 	}
 
 }

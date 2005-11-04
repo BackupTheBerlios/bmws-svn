@@ -54,7 +54,8 @@ public class TestGameState extends StandardGameState {
 		// build the player input
 		buildInput();
 
-		addPlayer();
+		//just for testing we added some box as secondary player
+		//addPlayer();
 		// update the scene graph for rendering
 		rootNode.updateGeometricState(0.0f, true);
 		rootNode.updateRenderState();
@@ -78,8 +79,15 @@ public class TestGameState extends StandardGameState {
 		b.updateModelBound();
 
 		player = new Node("Player Node");
-		player.setLocalTranslation(new Vector3f(100, 0, 100));
-
+		//player.setLocalTranslation(new Vector3f(100, 0, 100));
+		Vector3f location = new Vector3f(ClientPlayerData.getInstance()
+				.getCharacterData().getCharacterStatus().getCoordinateX(),
+				ClientPlayerData.getInstance().getCharacterData()
+						.getCharacterStatus().getCoordinateY(),
+				ClientPlayerData.getInstance().getCharacterData()
+						.getCharacterStatus().getCoordinateZ());
+		player.setLocalTranslation(location);
+		
 		rootNode.attachChild(player);
 		player.attachChild(b);
 		player.updateWorldBound();

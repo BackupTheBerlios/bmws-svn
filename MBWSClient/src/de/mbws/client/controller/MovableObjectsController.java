@@ -2,19 +2,17 @@ package de.mbws.client.controller;
 
 import org.apache.log4j.Logger;
 
-import de.mbws.client.data.ClientPlayerData;
-import de.mbws.common.eventdata.generated.AccountData;
-import de.mbws.common.eventdata.generated.LoginData;
+import de.mbws.common.eventdata.generated.IntVector3D;
+import de.mbws.common.eventdata.generated.MoveData;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.EventTypes;
-import de.mbws.common.events.LoginEvent;
 import de.mbws.common.events.MoveEvent;
 
 /**
  * Description: This class handles all movementEvents related to objects that move, 
  * like NPCs, PCs etc. The player is NOT handled here !
  * 
- * @authorkerim
+ * @author kerim
  * 
  */
 public class MovableObjectsController {
@@ -60,24 +58,6 @@ public class MovableObjectsController {
 
 	}
 
-	public AbstractGameEvent createLoginEvent(AccountData account,
-			ClientPlayerData player) {
-		LoginData ld = new LoginData();
-		ld.setUserName(account.getUserName());
-		ld.setPassword(account.getPassword());
-		LoginEvent event = new LoginEvent(ld);
-		player.setSessionId(new Integer(0));
-		event.setPlayer(player);
-
-		event.setEventType(EventTypes.LOGIN);
-		return event;
-	}
-
-	public AbstractGameEvent createLogoutEvent(ClientPlayerData player) {
-		LoginEvent event = new LoginEvent();
-		event.setPlayer(player);
-		event.setEventType(EventTypes.LOGOUT);
-		return event;
-	}
-
+	
+	
 }

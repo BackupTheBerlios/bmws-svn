@@ -14,6 +14,10 @@ public class ClientPlayerData extends AbstractPlayerData {
 	
 	private Characterdata characterData;
 	
+	//TODO: Kerim Replace that with a different (private) field
+	public String walkingStatus = "stand";
+	public String turningStatus = "noTurn";
+	
 	private ClientPlayerData() {}
 	public static ClientPlayerData getInstance() {
 		if (instance == null) {

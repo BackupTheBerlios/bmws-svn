@@ -1,6 +1,11 @@
 package de.mbws.client.controller;
 
+import org.apache.log4j.Logger;
+
+import com.jme.app.GameStateManager;
+
 import de.mbws.client.data.ClientPlayerData;
+import de.mbws.client.state.MainMenuState;
 import de.mbws.common.data.AccountData;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.AccountEvent;
@@ -14,6 +19,7 @@ import de.mbws.common.events.EventTypes;
  */
 public class AccountController {
 
+	private Logger logger = Logger.getLogger(AccountController.class);
     private static AccountController instance;
     /**
      * 
@@ -30,9 +36,12 @@ public class AccountController {
     public void handleEvent(AccountEvent accountEvent) {
         if (accountEvent.getEventType() == EventTypes.ACCOUNT_CREATE_FAIL) {
         	//TODO: Kerim Correct error Handling here
-            System.out.println("Cant Register: " + accountEvent.getAccountErrorData().getReason());
+        	logger.info("Cant Register: " + accountEvent.getAccountErrorData().getReason());
+        	((MainMenuState)GameStateManager.getInstance().getChild("menu")).displayInfo("Account creation failed");
         } else if (accountEvent.getEventType() == EventTypes.ACCOUNT_CREATE_OK) {
             // TODO: Kerim enter next stage !
+        	logger.info("Registration ok");
+        	((MainMenuState)GameStateManager.getInstance().getChild("menu")).displayInfo("Account created");
         }
     }
 
