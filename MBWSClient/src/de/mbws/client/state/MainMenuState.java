@@ -11,10 +11,8 @@ import com.jme.image.Texture;
 import com.jme.input.MouseInput;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Renderer;
-import com.jme.scene.Node;
 import com.jme.scene.Text;
 import com.jme.scene.shape.Quad;
-import com.jme.scene.state.AlphaState;
 import com.jme.scene.state.LightState;
 import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
@@ -44,8 +42,8 @@ import de.mbws.client.state.handler.MainMenuHandler;
  */
 public class MainMenuState extends StandardGameState {
 
-	/** The cursor node which holds the mouse gotten from input. */
-	private Node cursor;
+//	/** THE CURSOR NODE WHICH HOLDS THE MOUSE GOTTEN FROM INPUT. */
+//	private Node cursor;
 
 	/** Our display system. */
 	private DisplaySystem display;
@@ -147,36 +145,36 @@ public class MainMenuState extends StandardGameState {
 		input = new MainMenuHandler(this);
 	}
 
-	/**
-	 * Creates a pretty cursor.
-	 */
-	private void initCursor() {
-		Texture texture = TextureManager.loadTexture(MainMenuState.class
-				.getClassLoader()
-				.getResource("rsrc/textures/cursor1.png"),
-				Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR);
-
-		TextureState ts = display.getRenderer().createTextureState();
-		ts.setEnabled(true);
-		ts.setTexture(texture);
-
-		AlphaState alpha = display.getRenderer().createAlphaState();
-		alpha.setBlendEnabled(true);
-		alpha.setSrcFunction(AlphaState.SB_SRC_ALPHA);
-		alpha.setDstFunction(AlphaState.DB_ONE);
-		alpha.setTestEnabled(true);
-		alpha.setTestFunction(AlphaState.TF_GREATER);
-		alpha.setEnabled(true);
-
-		input.getMouse().setRenderState(ts);
-		//input.getMouse().setRenderState(alpha);
-		input.getMouse().setLocalScale(new Vector3f(1, 1, 1));
-		
-		cursor = new Node("Cursor");
-		cursor.attachChild(input.getMouse());
-
-		rootNode.attachChild(cursor);
-	}
+//	/**
+//	 * Creates a pretty cursor.
+//	 */
+//	private void initCursor() {
+//		Texture texture = TextureManager.loadTexture(MainMenuState.class
+//				.getClassLoader()
+//				.getResource("rsrc/textures/cursor1.png"),
+//				Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR);
+//
+//		TextureState ts = display.getRenderer().createTextureState();
+//		ts.setEnabled(true);
+//		ts.setTexture(texture);
+//
+//		AlphaState alpha = display.getRenderer().createAlphaState();
+//		alpha.setBlendEnabled(true);
+//		alpha.setSrcFunction(AlphaState.SB_SRC_ALPHA);
+//		alpha.setDstFunction(AlphaState.DB_ONE);
+//		alpha.setTestEnabled(true);
+//		alpha.setTestFunction(AlphaState.TF_GREATER);
+//		alpha.setEnabled(true);
+//
+//		input.getMouse().setRenderState(ts);
+//		//input.getMouse().setRenderState(alpha);
+//		input.getMouse().setLocalScale(new Vector3f(1, 1, 1));
+//		
+//		cursor = new Node("Cursor");
+//		cursor.attachChild(input.getMouse());
+//
+//		rootNode.attachChild(cursor);
+//	}
 
 	/**
 	 * Initializes the 2D Background and the Buttons

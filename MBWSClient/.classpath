@@ -4,7 +4,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/MBWSCommons"/>
 	<classpathentry kind="lib" path="/MBWSCommons/lib/log4j-1.2.9.jar"/>
-	<classpathentry sourcepath="/JME/src" kind="lib" path="lib/jme.jar"/>
+	<classpathentry sourcepath="C:/Programmierung/projekte/jmecvs/src" kind="lib" path="lib/jme.jar"/>
 	<classpathentry kind="lib" path="lib/jme-awt.jar"/>
 	<classpathentry kind="lib" path="lib/jme-effects.jar"/>
 	<classpathentry kind="lib" path="lib/jme-model.jar"/>
