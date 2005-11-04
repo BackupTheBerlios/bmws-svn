@@ -14,9 +14,11 @@ import com.jme.input.action.KeyNodeRotateLeftAction;
 import com.jme.input.action.KeyNodeRotateRightAction;
 import com.jme.scene.Spatial;
 
+import de.mbws.client.MBWSClient;
 import de.mbws.client.controller.CharacterController;
 import de.mbws.client.controller.ClientNetworkController;
 import de.mbws.client.data.ClientPlayerData;
+
 
 /**
  * Input Handler for the Flag Rush game. This controls a supplied spatial
@@ -70,6 +72,12 @@ public class TestGameHandler extends InputHandler {
         keyboard.set(BACKWARD, KeyInput.KEY_S);
         keyboard.set(TURN_RIGHT, KeyInput.KEY_D);
         keyboard.set(TURN_LEFT, KeyInput.KEY_A);
+        
+        
+        //TODO make this cleaner later
+        keyboard.set("exit",
+				KeyInput.KEY_ESCAPE);
+		addAction(new ExitAction(), "exit", false);
     }
 
     /**
@@ -116,5 +124,11 @@ public class TestGameHandler extends InputHandler {
 //    	}
     	super.update(time);
     }
+    
+    private static class ExitAction extends InputAction {
+		public void performAction(InputActionEvent evt) {
+			MBWSClient.exit();
+		}
+	}
 
 }
