@@ -50,10 +50,10 @@ public class Attachment {
 	 * @return true if the event is ready, otherwise false
 	 */
 	public boolean eventReady() throws IllegalArgumentException {
-		if (checkHeader() && checkPayload())
+		if (checkHeader() && checkPayload()) {
 			return true;
-		else
-			return false;
+        }
+		return false;
 	}
 
 	/**
@@ -85,9 +85,8 @@ public class Attachment {
 								+ Globals.MAX_EVENT_SIZE + ")");
 			gotHeader = true;
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**
@@ -101,9 +100,8 @@ public class Attachment {
 				log.error("buffer underflow", bue);
 			}
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 	
 	public ByteBuffer getPayload() {

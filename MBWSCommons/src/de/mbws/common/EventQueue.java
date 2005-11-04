@@ -47,7 +47,7 @@ public class EventQueue {
             count--;
         }
 
-        AbstractGameEvent e = (AbstractGameEvent) events.poll();
+        AbstractGameEvent e = events.poll();
         // log.debug("deQueue " + e.hashCode());
         return e;
     }

@@ -2,8 +2,6 @@ package de.mbws.common.events;
 
 import java.nio.ByteBuffer;
 
-import org.apache.log4j.Logger;
-
 import de.mbws.common.eventdata.AbstractEventData;
 import de.mbws.common.eventdata.generated.PlayerInfo;
 import de.mbws.common.eventdata.generated.WorldObject;
@@ -13,10 +11,6 @@ import de.mbws.common.eventdata.generated.WorldObject;
  * @author Kerim
  */
 public class ObjectEvent extends AbstractGameEvent {
-
-    
-    
-    private static Logger logger = Logger.getLogger("ObjectEvent");
 
     /**
      * Constructor for the server. Should probably be package visible 

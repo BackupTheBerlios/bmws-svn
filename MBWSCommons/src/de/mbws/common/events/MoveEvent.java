@@ -2,8 +2,6 @@ package de.mbws.common.events;
 
 import java.nio.ByteBuffer;
 
-import org.apache.log4j.Logger;
-
 import de.mbws.common.eventdata.AbstractEventData;
 import de.mbws.common.eventdata.generated.PlayerInfo;
 
@@ -12,10 +10,6 @@ import de.mbws.common.eventdata.generated.PlayerInfo;
  * @author Kerim
  */
 public class MoveEvent extends AbstractGameEvent {
-
-    
-    
-    private static Logger logger = Logger.getLogger("MovementEvent");
 
     /**
      * Constructor for the server. Should probably be package visible 

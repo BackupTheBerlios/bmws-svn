@@ -8,7 +8,7 @@ package de.mbws.common.utils;
 public class StringUtils {
     /**
      * @param payload
-     * @return
+     * @return byte array as string
      */
     public static String bytesToString(byte[] payload) {
         int length = payload.length > 80 ? 80 : payload.length;

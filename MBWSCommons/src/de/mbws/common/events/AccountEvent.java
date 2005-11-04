@@ -2,8 +2,6 @@ package de.mbws.common.events;
 
 import java.nio.ByteBuffer;
 
-import org.apache.log4j.Logger;
-
 import de.mbws.common.eventdata.AbstractEventData;
 import de.mbws.common.eventdata.generated.AccountData;
 import de.mbws.common.eventdata.generated.AccountErrorData;
@@ -15,7 +13,6 @@ import de.mbws.common.eventdata.generated.AccountErrorData;
  */
 public class AccountEvent extends AbstractGameEvent {
     public static final int GE_ACCOUNT = 2;
-    private static Logger logger = Logger.getLogger("AccountEvent");
 
     /**
      * Constructor for the server. Should probably be package visible 
