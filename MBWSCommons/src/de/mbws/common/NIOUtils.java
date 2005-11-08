@@ -1,6 +1,5 @@
 package de.mbws.common;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SocketChannel;
@@ -16,35 +15,13 @@ import de.mbws.common.events.AbstractGameEvent;
 public class NIOUtils {
 
 	/**
-	 * Sends an event
-	 * 
-	 * @param sc
-	 * @param event
-	 * @throws IOException
-	 */
-	public static void sendEvent(SocketChannel sc, int sessionId,
-			AbstractGameEvent event) throws IOException {
-		ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
-		byteBuffer.putInt(sessionId);
-		// we don't know the size yet ...
-		byteBuffer.putInt(0);
-		byteBuffer.putInt(event.getEventId());
-		int size = event.serialize(byteBuffer);
-		// ... now owverwrite size
-		byteBuffer.putInt(4, size - 8);
-		System.err.println("size " + size);
-		byteBuffer.flip();
-		sc.write(byteBuffer);
-	}
-
-	/**
 	 * first, writes the header, then the event into the given ByteBuffer in
 	 * preparation for the channel write
 	 */
 	public static void prepBuffer(AbstractGameEvent event,
-			ByteBuffer writeBuffer) {
+			ByteBuffer writeBuffer, Integer sessionId) {
 		writeBuffer.clear();
-		writeBuffer.putInt(event.getPlayer().getSessionId()); //sessionid; not sure if we ever need it
+		writeBuffer.putInt(sessionId); //sessionid; not sure if we ever need it
 		writeBuffer.putInt(0); //size
 		writeBuffer.putInt(event.getEventType());
 		int size = event.serialize(writeBuffer);
