@@ -1,14 +1,11 @@
 package de.mbws.server.controller;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.MoveEvent;
 import de.mbws.server.account.AccountServer;
-import de.mbws.server.data.ServerPlayerData;
 
 /**
  * Description:
@@ -37,17 +34,12 @@ public class MovementEventController extends EventController {
         if (event instanceof MoveEvent) {
             MoveEvent me = (MoveEvent) event;
             Map m = accountServer.getAllPlayers();
-            Set keys = m.keySet();
-            ArrayList<Integer> receivers = new ArrayList<Integer>();
-            for (Iterator iter = keys.iterator(); iter.hasNext();) {
-                Integer key = (Integer) iter.next();
-                ServerPlayerData element = (ServerPlayerData) m.get(key);
-                if (element.getSessionId() != me.getPlayer().getSessionId()) {
-                    receivers.add(element.getSessionId());
-                }
+            ArrayList<Integer> receivers = (ArrayList<Integer>) accountServer.getSessionIDOfAllPlayers().clone();
+            if (receivers.size() > 1) {
+                receivers.remove(me.getPlayer().getSessionId());
+                me.setRecipients(receivers.toArray(new Integer[receivers.size()]));
+                sendEvent(me);
             }
-            me.setRecipients(receivers.toArray(new Integer[receivers.size()]));
-            sendEvent(me);
         }
     }
 }

@@ -7,6 +7,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -26,6 +27,7 @@ import de.mbws.server.controller.EventController;
 import de.mbws.server.controller.EventDispatcher;
 import de.mbws.server.controller.LoginEventController;
 import de.mbws.server.controller.MovementEventController;
+import de.mbws.server.data.ServerPlayerData;
 
 public class AccountServer extends Thread {
 
@@ -144,6 +146,18 @@ public class AccountServer extends Thread {
 
     public Map getAllPlayers() {
         return clients;
+    }
+    
+    public ArrayList<Integer> getSessionIDOfAllPlayers() {
+        Map m = getAllPlayers();
+        Set keys = m.keySet();
+        ArrayList<Integer> allPlayer = new ArrayList<Integer>();
+        for (Iterator iter = keys.iterator(); iter.hasNext();) {
+            Integer key = (Integer) iter.next();
+            ServerPlayerData element = (ServerPlayerData) m.get(key);
+            allPlayer.add(element.getSessionId());
+        }
+        return allPlayer;
     }
     
     public void addPlayer(Integer sessionId, AbstractPlayerData p) {

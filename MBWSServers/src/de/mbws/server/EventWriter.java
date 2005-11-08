@@ -55,10 +55,11 @@ public class EventWriter extends QueueWorker {
      * the writeBuffer
      */
     protected void processEvent(AbstractGameEvent event, ByteBuffer writeBuffer) {
-        NIOUtils.prepBuffer(event, writeBuffer);
+        
 
         Integer[] recipients = event.getRecipients();
         if (recipients == null) {
+            NIOUtils.prepBuffer(event, writeBuffer, event.getPlayer().getSessionId());
             logger.info("writeEvent: type=" + event.getClass().getName() + ", id=" + event.getPlayer().getSessionId()
             		+ ", eventType=" + event.getEventType()
             		+ "payload=" + StringUtils.bytesToString(writeBuffer.array()));
@@ -68,6 +69,7 @@ public class EventWriter extends QueueWorker {
                 if (recipients[i] != null) {
                     logger.info("writeEvent(B): type=" + event.getClass().getName() + ", id=" + recipients[i]);
                     AbstractPlayerData player = accountServer.getPlayerBySessionId(recipients[i]);
+                    NIOUtils.prepBuffer(event, writeBuffer, player.getSessionId());
                     write(player.getChannel(), writeBuffer);
                 }
             }
