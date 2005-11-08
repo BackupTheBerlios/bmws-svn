@@ -218,6 +218,9 @@ public class TestGameState extends StandardGameState {
 	}
 
 	public ObjectNode addObject(WorldObject objectInfo) {
+		Box b = new Box("box", new Vector3f(), 0.35f, 0.25f, 0.5f);
+		b.setModelBound(new BoundingBox());
+		b.updateModelBound();
 		ObjectNode n = new ObjectNode(""+objectInfo.getObjectID());
 		
 		IntVector3D l = objectInfo.getLocation();
@@ -229,6 +232,11 @@ public class TestGameState extends StandardGameState {
 		n.setLocalTranslation(rotation);
 		
 		rootNode.attachChild(n);
+		n.attachChild(b);
+		n.updateWorldBound();
+//		rootNode.updateGeometricState(0.0f, true);
+//		rootNode.updateRenderState();
+		
 		return n;
 	}
 	
