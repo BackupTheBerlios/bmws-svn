@@ -44,15 +44,15 @@ public class CharacterEventController extends EventController {
             pi.setVisualappearance(cdata.getCharacterVisualappearance().getHeight());
             WorldObject wo = new WorldObject();
             IntVector3D location = new IntVector3D();
-            location.setLocationX(cs.getCoordinateX());
-            location.setLocationY(cs.getCoordinateY());
-            location.setLocationZ(cs.getCoordinateZ());
+            location.setX(cs.getCoordinateX());
+            location.setY(cs.getCoordinateY());
+            location.setZ(cs.getCoordinateZ());
             wo.setLocation(location);
             
             IntVector3D heading = new IntVector3D();
-            heading.setLocationX(0);
-            heading.setLocationY(0);
-            heading.setLocationZ(0);
+            heading.setX(0);
+            heading.setY(0);
+            heading.setZ(0);
             wo.setHeading(heading);
             
             wo.setObjectID(ce.getPlayer().getSessionId());
