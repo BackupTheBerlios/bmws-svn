@@ -181,7 +181,7 @@ public class MainMenuState extends StandardGameState {
 	 */
 	private void initGUI() {
 		Quad backgroundQuad = new Quad("background");
-		backgroundQuad.initialize((float) display.getWidth(), (float) display
+		backgroundQuad.initialize(display.getWidth(), display
 				.getHeight());
 		backgroundQuad.setLocalTranslation((new Vector3f(
 				display.getWidth() / 2, display.getHeight() / 2, 0)));

@@ -49,14 +49,14 @@ public class CharacterController {
 			Characterdata characterData = new Characterdata();
 			PlayerInfo eventData = (PlayerInfo) event.getEventData();
 			logger.info("Playerinfo contains:");
-			logger.info(eventData.getObject().getLocation().getLocationX());
+			logger.info(eventData.getObject().getLocation().getX());
 			CharacterStatus status = new CharacterStatus();
 			status.setCoordinateX(eventData.getObject().getLocation()
-					.getLocationX());
+					.getX());
 			status.setCoordinateY(eventData.getObject().getLocation()
-					.getLocationX());
+					.getX());
 			status.setCoordinateZ(eventData.getObject().getLocation()
-					.getLocationX());
+					.getX());
 			characterData.setCharacterStatus(status);
 			ClientPlayerData.getInstance().setCharacterData(characterData);
 			logger.info("setting flag to start next state");
@@ -110,14 +110,14 @@ public class CharacterController {
 		MoveEvent me = new MoveEvent(md);
 		//TODO fill real data
 		IntVector3D location = new IntVector3D();
-		location.setLocationX(0);
-		location.setLocationY(0);
-		location.setLocationZ(0);
+		location.setX(0);
+		location.setY(0);
+		location.setZ(0);
 		md.setLocation(location);
 		IntVector3D heading = new IntVector3D();
-		heading.setLocationX(0);
-		heading.setLocationY(0);
-		heading.setLocationZ(0);
+		heading.setX(0);
+		heading.setY(0);
+		heading.setZ(0);
 		md.setHeading(heading);
 		me.setEventType(eventType);
 		return me;

@@ -21,7 +21,10 @@ import com.jme.scene.state.LightState;
 import com.jme.system.DisplaySystem;
 
 import de.mbws.client.data.ClientPlayerData;
+import de.mbws.client.data.ObjectNode;
 import de.mbws.client.state.handler.TestGameHandler;
+import de.mbws.common.eventdata.generated.IntVector3D;
+import de.mbws.common.eventdata.generated.WorldObject;
 
 public class TestGameState extends StandardGameState {
 
@@ -212,5 +215,24 @@ public class TestGameState extends StandardGameState {
 		// later when all works with a correct mouse
 		MouseInput.get().setCursorVisible(false);
 		super.onActivate();
+	}
+
+	public ObjectNode addObject(WorldObject objectInfo) {
+		ObjectNode n = new ObjectNode(""+objectInfo.getObjectID());
+		
+		IntVector3D l = objectInfo.getLocation();
+		Vector3f location = new Vector3f(l.getX(),l.getY(),l.getZ());
+		n.setLocalTranslation(location);
+		
+		IntVector3D h = objectInfo.getHeading();
+		Vector3f rotation = new Vector3f(h.getX(),h.getY(),h.getZ());
+		n.setLocalTranslation(rotation);
+		
+		rootNode.attachChild(n);
+		return n;
+	}
+	
+	public void deleteObject(ObjectNode node) {
+		rootNode.detachChild(node);
 	}
 }
