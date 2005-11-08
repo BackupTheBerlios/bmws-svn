@@ -115,9 +115,9 @@ public class NIOEventReader extends Thread {
     }
 //TODO Kerim refactor player stuff
     private AbstractGameEvent getEvent(Attachment attachment) {
-//        if (Client.getPlayer() != null) {
-//            Client.getPlayer().setSessionId(attachment.sessionId);
-//        }
+        if (attachment.sessionId != 0) {
+            ClientPlayerData.getInstance().setSessionId(attachment.sessionId);
+        }
         return GameEventFactory.getGameEvent(attachment.getPayload(), ClientPlayerData.getInstance());
     }
 }

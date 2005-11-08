@@ -95,7 +95,7 @@ public class ClientNetworkController extends Thread {
 	protected void writeEvent(AbstractGameEvent ge) {
 		ge.setPlayer(ClientPlayerData.getInstance());
 		ByteBuffer writeBuffer = ByteBuffer.allocate(Globals.MAX_EVENT_SIZE);
-		NIOUtils.prepBuffer(ge, writeBuffer);
+		NIOUtils.prepBuffer(ge, writeBuffer, ge.getPlayer().getSessionId());
 		NIOUtils.channelWrite(channel, writeBuffer);
 	}
 
