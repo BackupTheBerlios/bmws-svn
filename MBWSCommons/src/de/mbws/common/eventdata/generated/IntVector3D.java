@@ -5,46 +5,46 @@ import de.mbws.common.eventdata.AbstractEventData;
 import java.nio.ByteBuffer;
 
 public class IntVector3D extends AbstractEventData { 
-	private int locationX;
-	private int locationY;
-	private int locationZ;
+	private int x;
+	private int y;
+	private int z;
 
 
-	public int getLocationX() {
-		return locationX;
+	public int getX() {
+		return x;
 	}
 
-	public void setLocationX(int locationX) {
-		this.locationX = locationX;
+	public void setX(int x) {
+		this.x = x;
 	} 
 
-	public int getLocationY() {
-		return locationY;
+	public int getY() {
+		return y;
 	}
 
-	public void setLocationY(int locationY) {
-		this.locationY = locationY;
+	public void setY(int y) {
+		this.y = y;
 	} 
 
-	public int getLocationZ() {
-		return locationZ;
+	public int getZ() {
+		return z;
 	}
 
-	public void setLocationZ(int locationZ) {
-		this.locationZ = locationZ;
+	public void setZ(int z) {
+		this.z = z;
 	} 
 
 
 	public void deserialize(ByteBuffer payload) {
-		locationX = payload.getInt();
-		locationY = payload.getInt();
-		locationZ = payload.getInt();
+		x = payload.getInt();
+		y = payload.getInt();
+		z = payload.getInt();
 	}
 
 	public int serialize(ByteBuffer payload) {
-		payload.putInt(locationX);
-		payload.putInt(locationY);
-		payload.putInt(locationZ);
+		payload.putInt(x);
+		payload.putInt(y);
+		payload.putInt(z);
 		return payload.position();
 	}
 }

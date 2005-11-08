@@ -40,5 +40,9 @@ public class EventTypes {
     public static final int OBJECT_TAKEN = 202;
     public static final int OBJECT_DROPPED = 203;
     
+    public static final int MOVABLE_OBJECT_CREATE = 204;
+    public static final int MOVABLE_OBJECT_DESTROY = 205;
+    
+    
     
 }
