@@ -3,7 +3,6 @@ package de.mbws.common.events;
 import java.nio.ByteBuffer;
 
 import de.mbws.common.eventdata.AbstractEventData;
-import de.mbws.common.eventdata.generated.PlayerInfo;
 import de.mbws.common.eventdata.generated.WorldObject;
 
 /**
@@ -17,7 +16,7 @@ public class ObjectEvent extends AbstractGameEvent {
      * @param payload
      */
     ObjectEvent(ByteBuffer payload) {
-        super(payload, new PlayerInfo());
+        super(payload, new WorldObject());
     }
     
     /**
