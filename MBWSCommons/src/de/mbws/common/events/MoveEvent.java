@@ -34,10 +34,9 @@ public class MoveEvent extends AbstractGameEvent {
         return (PlayerInfo) eventData;
     }
 
-    //TODO: What is this used for ?
     @Override
     public int getEventId() {
-        return 0;
+        return EventTypes.GROUPID_EVENT_MOVEMENT;
     }
 
 }

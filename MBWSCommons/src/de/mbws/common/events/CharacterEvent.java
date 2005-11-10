@@ -12,9 +12,6 @@ import de.mbws.common.eventdata.generated.PlayerInfo;
  */
 public class CharacterEvent extends AbstractGameEvent {
 
-    
-    public static final int GE_CHARACTER = 3;
-
     /**
      * Constructor for the server. Should probably be package visible 
      * @param payload
@@ -40,7 +37,6 @@ public class CharacterEvent extends AbstractGameEvent {
 
     @Override
     public int getEventId() {
-        return GE_CHARACTER;
+        return EventTypes.GROUPID_EVENT_CHARACTER;
     }
-
 }

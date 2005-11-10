@@ -6,10 +6,8 @@ import de.mbws.common.eventdata.AbstractEventData;
 import de.mbws.common.eventdata.generated.LoginData;
 
 public class LoginEvent extends AbstractGameEvent {
-	
-	public static final int GE_LOGIN = 1;
 
-	/**
+    /**
 	 * Constructor for the server. Should probably be package visible 
 	 * @param payload
 	 */
@@ -37,6 +35,6 @@ public class LoginEvent extends AbstractGameEvent {
 
 	@Override
 	public int getEventId() {
-		return GE_LOGIN;
+		return EventTypes.GROUPID_EVENT_LOGIN;
 	}
 }

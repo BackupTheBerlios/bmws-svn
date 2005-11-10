@@ -12,7 +12,6 @@ import de.mbws.common.eventdata.generated.AccountErrorData;
  *
  */
 public class AccountEvent extends AbstractGameEvent {
-    public static final int GE_ACCOUNT = 2;
 
     /**
      * Constructor for the server. Should probably be package visible 
@@ -48,6 +47,6 @@ public class AccountEvent extends AbstractGameEvent {
     
     @Override
     public int getEventId() {
-        return GE_ACCOUNT;
+        return EventTypes.GROUPID_EVENT_ACCOUNT;
     }
 }

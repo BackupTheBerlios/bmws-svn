@@ -36,8 +36,7 @@ public class ObjectEvent extends AbstractGameEvent {
 
 	@Override
 	public int getEventId() {
-		// TODO Auto-generated method stub
-		return 0;
+		return EventTypes.GROUPID_EVENT_OBJECT;
 	}
 
     
