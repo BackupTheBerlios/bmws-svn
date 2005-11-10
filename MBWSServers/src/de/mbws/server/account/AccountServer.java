@@ -12,9 +12,9 @@ import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.events.EventTypes;
 import de.mbws.server.AbstractTcpServer;
 import de.mbws.server.ServerConfig;
-import de.mbws.server.controller.AccountEventController;
-import de.mbws.server.controller.CharacterEventController;
-import de.mbws.server.controller.LoginEventController;
+import de.mbws.server.account.controller.AccountEventController;
+import de.mbws.server.account.controller.CharacterEventController;
+import de.mbws.server.account.controller.LoginEventController;
 import de.mbws.server.controller.MovementEventController;
 import de.mbws.server.data.ServerPlayerData;
 

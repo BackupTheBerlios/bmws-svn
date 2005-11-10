@@ -6,6 +6,7 @@ import java.util.Map;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.MoveEvent;
 import de.mbws.server.account.AccountServer;
+import de.mbws.server.account.controller.AccountServerBaseEventController;
 
 /**
  * Description:

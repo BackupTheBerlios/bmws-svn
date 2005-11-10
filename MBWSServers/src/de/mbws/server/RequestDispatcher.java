@@ -132,9 +132,10 @@ public class RequestDispatcher extends Thread {
                             // read as many events as are available in the
                             // buffer
                             while (attachment.eventReady()) {
-                                logger.debug("Dispatching event");
+                                if (logger.isDebugEnabled()) {
+                                    logger.debug("Dispatching event");
+                                }
                                 AbstractPlayerData player = null;
-
                                 if (attachment.sessionId == 0) {
                                     player = new ServerPlayerData();
                                     player.setChannel(channel);
@@ -143,7 +144,9 @@ public class RequestDispatcher extends Thread {
                                     player = server.getPlayerBySessionId(attachment.sessionId);
                                 }
                                 AbstractGameEvent event = GameEventFactory.getGameEvent(attachment.getPayload(), player);
-                                logger.debug("Got Event: " + event);
+                                if (logger.isDebugEnabled()) {
+                                    logger.debug("Got Event: " + event);
+                                }
                                 if (event != null) {
                                     server.handleIncomingEvent(event);
                                 } else {

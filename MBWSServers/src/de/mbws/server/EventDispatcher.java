@@ -1,9 +1,9 @@
-package de.mbws.server.controller;
+package de.mbws.server;
 
 import de.mbws.common.EventQueue;
 import de.mbws.common.QueueWorker;
 import de.mbws.common.events.AbstractGameEvent;
-import de.mbws.server.AbstractTcpServer;
+import de.mbws.server.controller.AbstractEventController;
 
 /**
  * EventDispatcher

@@ -1,4 +1,4 @@
-package de.mbws.server.controller;
+package de.mbws.server.account.controller;
 
 import de.mbws.common.MessageKeys;
 import de.mbws.common.data.AbstractPlayerData;

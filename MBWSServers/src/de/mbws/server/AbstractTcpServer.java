@@ -17,7 +17,6 @@ import de.mbws.common.EventQueue;
 import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.server.controller.AbstractEventController;
-import de.mbws.server.controller.EventDispatcher;
 
 /**
  * Description: 
