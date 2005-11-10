@@ -3,7 +3,7 @@ package de.mbws.server.controller;
 import de.mbws.common.EventQueue;
 import de.mbws.common.QueueWorker;
 import de.mbws.common.events.AbstractGameEvent;
-import de.mbws.server.account.AccountServer;
+import de.mbws.server.AbstractTcpServer;
 
 /**
  * EventDispatcher
@@ -11,19 +11,19 @@ import de.mbws.server.account.AccountServer;
  */
 public class EventDispatcher extends QueueWorker {
 
-    protected AccountServer accountServer = null;
+    protected AbstractTcpServer server = null;
        
     /**
      * 
      */
-    public EventDispatcher(AccountServer accountServer, EventQueue queue, int queueWorkerSize) {
+    public EventDispatcher(AbstractTcpServer server, EventQueue queue, int queueWorkerSize) {
         super();
-        this.accountServer = accountServer;
+        this.server = server;
         initWorker(queueWorkerSize, queue);
     }
 
     protected void processEvent(AbstractGameEvent event) {
-        EventController ec = accountServer.getEventController(event.getEventType());
+        EventController ec = server.getEventController(event.getEventType());
         if (ec != null) {
             ec.handleEvent(event);
         }

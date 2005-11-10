@@ -36,8 +36,9 @@ public class ServerStarter {
 
     
     private static void startAccountServer() {
-        AccountServer gs = new AccountServer(config.getAccountserver().getC2sport(), config.getAccountserver().getS2sport(),
+        ServerConfig sc = new ServerConfig(config.getAccountserver().getC2sport(), config.getAccountserver().getS2sport(),
                 config.getAccountserver().getQueueworkersize());
-        gs.start();
+        AccountServer as = new AccountServer(sc);
+        as.start();
     }
 }

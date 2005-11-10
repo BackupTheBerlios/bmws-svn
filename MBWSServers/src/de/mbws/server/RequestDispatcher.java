@@ -16,7 +16,6 @@ import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.GameEventFactory;
 import de.mbws.common.utils.StringUtils;
-import de.mbws.server.account.AccountServer;
 import de.mbws.server.data.ServerPlayerData;
 
 /**
@@ -35,14 +34,13 @@ public class RequestDispatcher extends Thread {
     /** the selector, multiplexes access to client channels */
     private Selector selector;
 
-    /** reference to the AccountServer */
-    private AccountServer accountServer;
+    private AbstractTcpServer server;
 
     /**
      * Constructor.
      */
-    public RequestDispatcher(AccountServer accountServer) {
-        this.accountServer = accountServer;
+    public RequestDispatcher(AbstractTcpServer server) {
+        this.server = server;
         newClients = new LinkedList<SocketChannel>();
     }
 
@@ -142,12 +140,12 @@ public class RequestDispatcher extends Thread {
                                     player.setChannel(channel);
                                     player.setSessionId(attachment.sessionId);
                                 } else {
-                                    player = accountServer.getPlayerBySessionId(attachment.sessionId);
+                                    player = server.getPlayerBySessionId(attachment.sessionId);
                                 }
                                 AbstractGameEvent event = GameEventFactory.getGameEvent(attachment.getPayload(), player);
                                 logger.debug("Got Event: " + event);
                                 if (event != null) {
-                                    accountServer.handleIncomingEvent(event);
+                                    server.handleIncomingEvent(event);
                                 } else {
                                     logger.warn("Could not identify an event for payload '" + StringUtils.bytesToString(attachment.payload) + "'");
                                 }
@@ -160,7 +158,10 @@ public class RequestDispatcher extends Thread {
                         logger.error("illegal argument exception", e);
                     }
                 } catch (IOException ioe) {
-                    logger.warn("IOException during read(), closing channel:" + channel.socket().getInetAddress());
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("IOException during read(), closing channel:" + channel.socket().getInetAddress());
+                    }
+                    server.handleClientConnectionLost(channel);
                     channel.close();
                 }
             }
