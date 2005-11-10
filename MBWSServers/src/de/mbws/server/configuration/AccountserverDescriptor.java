@@ -11,7 +11,6 @@ package de.mbws.server.configuration;
  //- Imported classes and packages -/
 //---------------------------------/
 
-import org.exolab.castor.xml.validators.BooleanValidator;
 import org.exolab.castor.xml.validators.IntegerValidator;
 
 /**
@@ -54,7 +53,7 @@ public class AccountserverDescriptor extends org.exolab.castor.xml.util.XMLClass
     public AccountserverDescriptor() 
      {
         super();
-        nsURI = "http://mwbs/Configuration";
+        nsURI = "http://mbws/Configuration";
         xmlName = "accountserver";
         
         //-- set grouping compositor
@@ -66,46 +65,40 @@ public class AccountserverDescriptor extends org.exolab.castor.xml.util.XMLClass
         
         //-- initialize element descriptors
         
-        //-- _c2sport
-        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(java.lang.Integer.TYPE, "_c2sport", "c2sport", org.exolab.castor.xml.NodeType.Element);
+        //-- _basicAttributes
+        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(de.mbws.server.configuration.BasicAttributes.class, "_basicAttributes", "basicAttributes", org.exolab.castor.xml.NodeType.Element);
         handler = new org.exolab.castor.xml.XMLFieldHandler() {
             public java.lang.Object getValue( java.lang.Object object ) 
                 throws IllegalStateException
             {
                 Accountserver target = (Accountserver) object;
-                if(!target.hasC2sport())
-                    return null;
-                return new java.lang.Integer(target.getC2sport());
+                return target.getBasicAttributes();
             }
             public void setValue( java.lang.Object object, java.lang.Object value) 
                 throws IllegalStateException, IllegalArgumentException
             {
                 try {
                     Accountserver target = (Accountserver) object;
-                    // ignore null values for non optional primitives
-                    if (value == null) return;
-                    
-                    target.setC2sport( ((java.lang.Integer)value).intValue());
+                    target.setBasicAttributes( (de.mbws.server.configuration.BasicAttributes) value);
                 }
                 catch (java.lang.Exception ex) {
                     throw new IllegalStateException(ex.toString());
                 }
             }
             public java.lang.Object newInstance( java.lang.Object parent ) {
-                return null;
+                return new de.mbws.server.configuration.BasicAttributes();
             }
         };
         desc.setHandler(handler);
+        desc.setNameSpaceURI("http://mbws/Configuration");
         desc.setRequired(true);
         desc.setMultivalued(false);
         addFieldDescriptor(desc);
         
-        //-- validation code for: _c2sport
+        //-- validation code for: _basicAttributes
         fieldValidator = new org.exolab.castor.xml.FieldValidator();
         fieldValidator.setMinOccurs(1);
         { //-- local scope
-            IntegerValidator typeValidator = new IntegerValidator();
-            fieldValidator.setValidator(typeValidator);
         }
         desc.setValidator(fieldValidator);
         //-- _s2sport
@@ -150,88 +143,40 @@ public class AccountserverDescriptor extends org.exolab.castor.xml.util.XMLClass
             fieldValidator.setValidator(typeValidator);
         }
         desc.setValidator(fieldValidator);
-        //-- _queueworkersize
-        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(java.lang.Integer.TYPE, "_queueworkersize", "queueworkersize", org.exolab.castor.xml.NodeType.Element);
+        //-- _eventControllers
+        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(de.mbws.server.configuration.EventControllers.class, "_eventControllers", "eventControllers", org.exolab.castor.xml.NodeType.Element);
         handler = new org.exolab.castor.xml.XMLFieldHandler() {
             public java.lang.Object getValue( java.lang.Object object ) 
                 throws IllegalStateException
             {
                 Accountserver target = (Accountserver) object;
-                if(!target.hasQueueworkersize())
-                    return null;
-                return new java.lang.Integer(target.getQueueworkersize());
+                return target.getEventControllers();
             }
             public void setValue( java.lang.Object object, java.lang.Object value) 
                 throws IllegalStateException, IllegalArgumentException
             {
                 try {
                     Accountserver target = (Accountserver) object;
-                    // ignore null values for non optional primitives
-                    if (value == null) return;
-                    
-                    target.setQueueworkersize( ((java.lang.Integer)value).intValue());
+                    target.setEventControllers( (de.mbws.server.configuration.EventControllers) value);
                 }
                 catch (java.lang.Exception ex) {
                     throw new IllegalStateException(ex.toString());
                 }
             }
             public java.lang.Object newInstance( java.lang.Object parent ) {
-                return null;
+                return new de.mbws.server.configuration.EventControllers();
             }
         };
         desc.setHandler(handler);
+        desc.setNameSpaceURI("http://mbws/Configuration");
         desc.setRequired(true);
         desc.setMultivalued(false);
         addFieldDescriptor(desc);
         
-        //-- validation code for: _queueworkersize
+        //-- validation code for: _eventControllers
         fieldValidator = new org.exolab.castor.xml.FieldValidator();
         fieldValidator.setMinOccurs(1);
         { //-- local scope
-            IntegerValidator typeValidator = new IntegerValidator();
-            fieldValidator.setValidator(typeValidator);
-        }
-        desc.setValidator(fieldValidator);
-        //-- _startup
-        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(java.lang.Boolean.TYPE, "_startup", "startup", org.exolab.castor.xml.NodeType.Element);
-        handler = new org.exolab.castor.xml.XMLFieldHandler() {
-            public java.lang.Object getValue( java.lang.Object object ) 
-                throws IllegalStateException
-            {
-                Accountserver target = (Accountserver) object;
-                if(!target.hasStartup())
-                    return null;
-                return (target.getStartup() ? java.lang.Boolean.TRUE : java.lang.Boolean.FALSE);
-            }
-            public void setValue( java.lang.Object object, java.lang.Object value) 
-                throws IllegalStateException, IllegalArgumentException
-            {
-                try {
-                    Accountserver target = (Accountserver) object;
-                    // ignore null values for non optional primitives
-                    if (value == null) return;
-                    
-                    target.setStartup( ((java.lang.Boolean)value).booleanValue());
-                }
-                catch (java.lang.Exception ex) {
-                    throw new IllegalStateException(ex.toString());
-                }
-            }
-            public java.lang.Object newInstance( java.lang.Object parent ) {
-                return null;
-            }
-        };
-        desc.setHandler(handler);
-        desc.setRequired(true);
-        desc.setMultivalued(false);
-        addFieldDescriptor(desc);
-        
-        //-- validation code for: _startup
-        fieldValidator = new org.exolab.castor.xml.FieldValidator();
-        fieldValidator.setMinOccurs(1);
-        { //-- local scope
-            BooleanValidator typeValidator = new BooleanValidator();
-            fieldValidator.setValidator(typeValidator);
         }
         desc.setValidator(fieldValidator);
     } //-- de.mbws.server.configuration.AccountserverDescriptor()

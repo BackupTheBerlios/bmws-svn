@@ -17,7 +17,7 @@ import org.exolab.castor.xml.Marshaller;
 import org.exolab.castor.xml.Unmarshaller;
 
 /**
- * Configuration of the MWB System
+ * Configuration of MBWS
  *  
  * 
  * @version $Revision$ $Date$

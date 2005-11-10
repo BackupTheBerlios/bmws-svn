@@ -55,7 +55,7 @@ public class ZoneserverDescriptor extends org.exolab.castor.xml.util.XMLClassDes
     public ZoneserverDescriptor() 
      {
         super();
-        nsURI = "http://mwbs/Configuration";
+        nsURI = "http://mbws/Configuration";
         xmlName = "zoneserver";
         
         //-- set grouping compositor

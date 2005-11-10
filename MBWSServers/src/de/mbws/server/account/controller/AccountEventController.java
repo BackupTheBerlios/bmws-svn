@@ -23,8 +23,8 @@ public class AccountEventController extends AccountServerBaseEventController {
      * @param accountServer
      * @param eventType
      */
-    public AccountEventController(AccountServer accountServer, int eventType) {
-        super(accountServer, eventType);
+    public AccountEventController(AccountServer accountServer) {
+        super(accountServer);
     }
 
     /* (non-Javadoc)

@@ -20,8 +20,8 @@ public class MovementEventController extends AccountServerBaseEventController {
      * @param accountServer
      * @param eventType
      */
-    public MovementEventController(AccountServer accountServer, int eventType) {
-        super(accountServer, eventType);
+    public MovementEventController(AccountServer accountServer) {
+        super(accountServer);
         // TODO Auto-generated constructor stub
     }
 

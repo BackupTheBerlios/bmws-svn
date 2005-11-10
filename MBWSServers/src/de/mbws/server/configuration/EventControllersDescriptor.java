@@ -13,11 +13,11 @@ package de.mbws.server.configuration;
 
 
 /**
- * Class ConfigurationDescriptor.
+ * Class EventControllersDescriptor.
  * 
  * @version $Revision$ $Date$
  */
-public class ConfigurationDescriptor extends org.exolab.castor.xml.util.XMLClassDescriptorImpl {
+public class EventControllersDescriptor extends org.exolab.castor.xml.util.XMLClassDescriptorImpl {
 
 
       //--------------------------/
@@ -49,11 +49,11 @@ public class ConfigurationDescriptor extends org.exolab.castor.xml.util.XMLClass
      //- Constructors -/
     //----------------/
 
-    public ConfigurationDescriptor() 
+    public EventControllersDescriptor() 
      {
         super();
         nsURI = "http://mbws/Configuration";
-        xmlName = "configuration";
+        xmlName = "eventControllers";
         
         //-- set grouping compositor
         setCompositorAsSequence();
@@ -64,100 +64,28 @@ public class ConfigurationDescriptor extends org.exolab.castor.xml.util.XMLClass
         
         //-- initialize element descriptors
         
-        //-- _accountserver
-        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(de.mbws.server.configuration.Accountserver.class, "_accountserver", "accountserver", org.exolab.castor.xml.NodeType.Element);
+        //-- _eventControllerList
+        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(de.mbws.server.configuration.EventController.class, "_eventControllerList", "eventController", org.exolab.castor.xml.NodeType.Element);
         handler = new org.exolab.castor.xml.XMLFieldHandler() {
             public java.lang.Object getValue( java.lang.Object object ) 
                 throws IllegalStateException
             {
-                Configuration target = (Configuration) object;
-                return target.getAccountserver();
+                EventControllers target = (EventControllers) object;
+                return target.getEventController();
             }
             public void setValue( java.lang.Object object, java.lang.Object value) 
                 throws IllegalStateException, IllegalArgumentException
             {
                 try {
-                    Configuration target = (Configuration) object;
-                    target.setAccountserver( (de.mbws.server.configuration.Accountserver) value);
+                    EventControllers target = (EventControllers) object;
+                    target.addEventController( (de.mbws.server.configuration.EventController) value);
                 }
                 catch (java.lang.Exception ex) {
                     throw new IllegalStateException(ex.toString());
                 }
             }
             public java.lang.Object newInstance( java.lang.Object parent ) {
-                return new de.mbws.server.configuration.Accountserver();
-            }
-        };
-        desc.setHandler(handler);
-        desc.setNameSpaceURI("http://mbws/Configuration");
-        desc.setRequired(true);
-        desc.setMultivalued(false);
-        addFieldDescriptor(desc);
-        
-        //-- validation code for: _accountserver
-        fieldValidator = new org.exolab.castor.xml.FieldValidator();
-        fieldValidator.setMinOccurs(1);
-        { //-- local scope
-        }
-        desc.setValidator(fieldValidator);
-        //-- _gameserver
-        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(de.mbws.server.configuration.Gameserver.class, "_gameserver", "gameserver", org.exolab.castor.xml.NodeType.Element);
-        handler = new org.exolab.castor.xml.XMLFieldHandler() {
-            public java.lang.Object getValue( java.lang.Object object ) 
-                throws IllegalStateException
-            {
-                Configuration target = (Configuration) object;
-                return target.getGameserver();
-            }
-            public void setValue( java.lang.Object object, java.lang.Object value) 
-                throws IllegalStateException, IllegalArgumentException
-            {
-                try {
-                    Configuration target = (Configuration) object;
-                    target.setGameserver( (de.mbws.server.configuration.Gameserver) value);
-                }
-                catch (java.lang.Exception ex) {
-                    throw new IllegalStateException(ex.toString());
-                }
-            }
-            public java.lang.Object newInstance( java.lang.Object parent ) {
-                return new de.mbws.server.configuration.Gameserver();
-            }
-        };
-        desc.setHandler(handler);
-        desc.setNameSpaceURI("http://mbws/Configuration");
-        desc.setRequired(true);
-        desc.setMultivalued(false);
-        addFieldDescriptor(desc);
-        
-        //-- validation code for: _gameserver
-        fieldValidator = new org.exolab.castor.xml.FieldValidator();
-        fieldValidator.setMinOccurs(1);
-        { //-- local scope
-        }
-        desc.setValidator(fieldValidator);
-        //-- _zoneserverList
-        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(de.mbws.server.configuration.Zoneserver.class, "_zoneserverList", "zoneserver", org.exolab.castor.xml.NodeType.Element);
-        handler = new org.exolab.castor.xml.XMLFieldHandler() {
-            public java.lang.Object getValue( java.lang.Object object ) 
-                throws IllegalStateException
-            {
-                Configuration target = (Configuration) object;
-                return target.getZoneserver();
-            }
-            public void setValue( java.lang.Object object, java.lang.Object value) 
-                throws IllegalStateException, IllegalArgumentException
-            {
-                try {
-                    Configuration target = (Configuration) object;
-                    target.addZoneserver( (de.mbws.server.configuration.Zoneserver) value);
-                }
-                catch (java.lang.Exception ex) {
-                    throw new IllegalStateException(ex.toString());
-                }
-            }
-            public java.lang.Object newInstance( java.lang.Object parent ) {
-                return new de.mbws.server.configuration.Zoneserver();
+                return new de.mbws.server.configuration.EventController();
             }
         };
         desc.setHandler(handler);
@@ -165,13 +93,13 @@ public class ConfigurationDescriptor extends org.exolab.castor.xml.util.XMLClass
         desc.setMultivalued(true);
         addFieldDescriptor(desc);
         
-        //-- validation code for: _zoneserverList
+        //-- validation code for: _eventControllerList
         fieldValidator = new org.exolab.castor.xml.FieldValidator();
         fieldValidator.setMinOccurs(0);
         { //-- local scope
         }
         desc.setValidator(fieldValidator);
-    } //-- de.mbws.server.configuration.ConfigurationDescriptor()
+    } //-- de.mbws.server.configuration.EventControllersDescriptor()
 
 
       //-----------/
@@ -223,7 +151,7 @@ public class ConfigurationDescriptor extends org.exolab.castor.xml.util.XMLClass
      */
     public java.lang.Class getJavaClass()
     {
-        return de.mbws.server.configuration.Configuration.class;
+        return de.mbws.server.configuration.EventControllers.class;
     } //-- java.lang.Class getJavaClass() 
 
     /**

@@ -18,8 +18,8 @@ public class LoginEventController extends AccountServerBaseEventController {
 	 * @param accountServer
 	 * @param eventType
 	 */
-	public LoginEventController(AccountServer accountServer, int eventType) {
-		super(accountServer, eventType);
+	public LoginEventController(AccountServer accountServer) {
+		super(accountServer);
 	}
 
 	public void handleEvent(AbstractGameEvent event) {

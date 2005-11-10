@@ -1,5 +1,6 @@
 package de.mbws.server.account;
 
+import java.lang.reflect.Constructor;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -9,13 +10,10 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import de.mbws.common.data.AbstractPlayerData;
-import de.mbws.common.events.EventTypes;
 import de.mbws.server.AbstractTcpServer;
 import de.mbws.server.ServerConfig;
-import de.mbws.server.account.controller.AccountEventController;
-import de.mbws.server.account.controller.CharacterEventController;
-import de.mbws.server.account.controller.LoginEventController;
-import de.mbws.server.controller.MovementEventController;
+import de.mbws.server.configuration.EventController;
+import de.mbws.server.controller.AbstractEventController;
 import de.mbws.server.data.ServerPlayerData;
 
 public class AccountServer extends AbstractTcpServer {
@@ -31,12 +29,29 @@ public class AccountServer extends AbstractTcpServer {
     }
 
     protected void registerEventController() {
-        eventReader.put(new Integer(EventTypes.LOGIN), new LoginEventController(this, EventTypes.LOGIN));
-        eventReader.put(new Integer(EventTypes.LOGOUT), new LoginEventController(this, EventTypes.LOGOUT));
-        eventReader.put(new Integer(EventTypes.ACCOUNT_CREATE), new AccountEventController(this, EventTypes.ACCOUNT_CREATE));
+        EventController[] ecs = config.getEventControllers().getEventController();
+        Object arglist[] = new Object[1];
+        arglist[0] = this;
+        try {            
+            for (int i = 0; i < ecs.length; i++) {
+                Class cls = Class.forName(ecs[i].getClazz());
+                Class partypes[] = new Class[1];
+                partypes[0] = AccountServer.class;
+                Constructor ct = cls.getConstructor(partypes);
+                Object retobj = ct.newInstance(arglist);
+                eventReader.put(new Integer(ecs[i].getType()), (AbstractEventController) retobj);
+            }
+        } catch (Exception e) {
+            logger.error("Cant init EventController", e);
+            System.exit(1);
+        }
         
-        eventReader.put(new Integer(EventTypes.CHARACTER_RECEIVE_REQUEST), new CharacterEventController(this, EventTypes.CHARACTER_RECEIVE_REQUEST));
-        eventReader.put(new Integer(EventTypes.MOVEMENT_START_WALK), new MovementEventController(this, EventTypes.MOVEMENT_START_WALK));
+//        eventReader.put(new Integer(EventTypes.LOGIN), new LoginEventController(this, EventTypes.LOGIN));
+//        eventReader.put(new Integer(EventTypes.LOGOUT), new LoginEventController(this, EventTypes.LOGOUT));
+//        eventReader.put(new Integer(EventTypes.ACCOUNT_CREATE), new AccountEventController(this, EventTypes.ACCOUNT_CREATE));
+//        
+//        eventReader.put(new Integer(EventTypes.CHARACTER_RECEIVE_REQUEST), new CharacterEventController(this, EventTypes.CHARACTER_RECEIVE_REQUEST));
+//        eventReader.put(new Integer(EventTypes.MOVEMENT_START_WALK), new MovementEventController(this, EventTypes.MOVEMENT_START_WALK));
     }
 
 

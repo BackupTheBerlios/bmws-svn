@@ -26,8 +26,8 @@ public class CharacterEventController extends AccountServerBaseEventController {
      * @param accountServer
      * @param eventType
      */
-    public CharacterEventController(AccountServer accountServer, int eventType) {
-        super(accountServer, eventType);
+    public CharacterEventController(AccountServer accountServer) {
+        super(accountServer);
         // TODO Auto-generated constructor stub
     }
 

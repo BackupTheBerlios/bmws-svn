@@ -10,15 +10,13 @@ import de.mbws.server.AbstractTcpServer;
 public abstract class AbstractEventController {
 
     protected AbstractTcpServer server = null;
-    protected int eventType = 0; 
     public abstract void handleEvent(AbstractGameEvent event);
 
     /**
      * 
      */
-    public AbstractEventController(AbstractTcpServer server, int eventType) {
+    public AbstractEventController(AbstractTcpServer server) {
         super();
-        this.eventType = eventType;
         this.server = server;
     }
 

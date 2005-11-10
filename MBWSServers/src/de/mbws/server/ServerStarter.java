@@ -29,15 +29,15 @@ public class ServerStarter {
         BasePersistenceManager.init();
         logger.info("Init Hibernate ... done");
         
-        if (config.getAccountserver().getStartup()) {
+        if (config.getAccountserver().getBasicAttributes().getStartup()) {
             startAccountServer();
         }
     }
 
     
     private static void startAccountServer() {
-        ServerConfig sc = new ServerConfig(config.getAccountserver().getC2sport(), config.getAccountserver().getS2sport(),
-                config.getAccountserver().getQueueworkersize());
+        ServerConfig sc = new ServerConfig(config.getAccountserver().getBasicAttributes().getC2sport(), config.getAccountserver().getS2sport(),
+                config.getAccountserver().getBasicAttributes().getQueueworkersize(), config.getAccountserver().getEventControllers());
         AccountServer as = new AccountServer(sc);
         as.start();
     }

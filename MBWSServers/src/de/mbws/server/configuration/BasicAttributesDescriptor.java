@@ -13,14 +13,13 @@ package de.mbws.server.configuration;
 
 import org.exolab.castor.xml.validators.BooleanValidator;
 import org.exolab.castor.xml.validators.IntegerValidator;
-import org.exolab.castor.xml.validators.StringValidator;
 
 /**
- * Class GameserverDescriptor.
+ * Class BasicAttributesDescriptor.
  * 
  * @version $Revision$ $Date$
  */
-public class GameserverDescriptor extends org.exolab.castor.xml.util.XMLClassDescriptorImpl {
+public class BasicAttributesDescriptor extends org.exolab.castor.xml.util.XMLClassDescriptorImpl {
 
 
       //--------------------------/
@@ -52,11 +51,11 @@ public class GameserverDescriptor extends org.exolab.castor.xml.util.XMLClassDes
      //- Constructors -/
     //----------------/
 
-    public GameserverDescriptor() 
+    public BasicAttributesDescriptor() 
      {
         super();
         nsURI = "http://mbws/Configuration";
-        xmlName = "gameserver";
+        xmlName = "basicAttributes";
         
         //-- set grouping compositor
         setCompositorAsSequence();
@@ -67,26 +66,26 @@ public class GameserverDescriptor extends org.exolab.castor.xml.util.XMLClassDes
         
         //-- initialize element descriptors
         
-        //-- _port
-        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(java.lang.Integer.TYPE, "_port", "port", org.exolab.castor.xml.NodeType.Element);
+        //-- _c2sport
+        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(java.lang.Integer.TYPE, "_c2sport", "c2sport", org.exolab.castor.xml.NodeType.Element);
         handler = new org.exolab.castor.xml.XMLFieldHandler() {
             public java.lang.Object getValue( java.lang.Object object ) 
                 throws IllegalStateException
             {
-                Gameserver target = (Gameserver) object;
-                if(!target.hasPort())
+                BasicAttributes target = (BasicAttributes) object;
+                if(!target.hasC2sport())
                     return null;
-                return new java.lang.Integer(target.getPort());
+                return new java.lang.Integer(target.getC2sport());
             }
             public void setValue( java.lang.Object object, java.lang.Object value) 
                 throws IllegalStateException, IllegalArgumentException
             {
                 try {
-                    Gameserver target = (Gameserver) object;
+                    BasicAttributes target = (BasicAttributes) object;
                     // ignore null values for non optional primitives
                     if (value == null) return;
                     
-                    target.setPort( ((java.lang.Integer)value).intValue());
+                    target.setC2sport( ((java.lang.Integer)value).intValue());
                 }
                 catch (java.lang.Exception ex) {
                     throw new IllegalStateException(ex.toString());
@@ -101,7 +100,49 @@ public class GameserverDescriptor extends org.exolab.castor.xml.util.XMLClassDes
         desc.setMultivalued(false);
         addFieldDescriptor(desc);
         
-        //-- validation code for: _port
+        //-- validation code for: _c2sport
+        fieldValidator = new org.exolab.castor.xml.FieldValidator();
+        fieldValidator.setMinOccurs(1);
+        { //-- local scope
+            IntegerValidator typeValidator = new IntegerValidator();
+            fieldValidator.setValidator(typeValidator);
+        }
+        desc.setValidator(fieldValidator);
+        //-- _queueworkersize
+        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(java.lang.Integer.TYPE, "_queueworkersize", "queueworkersize", org.exolab.castor.xml.NodeType.Element);
+        handler = new org.exolab.castor.xml.XMLFieldHandler() {
+            public java.lang.Object getValue( java.lang.Object object ) 
+                throws IllegalStateException
+            {
+                BasicAttributes target = (BasicAttributes) object;
+                if(!target.hasQueueworkersize())
+                    return null;
+                return new java.lang.Integer(target.getQueueworkersize());
+            }
+            public void setValue( java.lang.Object object, java.lang.Object value) 
+                throws IllegalStateException, IllegalArgumentException
+            {
+                try {
+                    BasicAttributes target = (BasicAttributes) object;
+                    // ignore null values for non optional primitives
+                    if (value == null) return;
+                    
+                    target.setQueueworkersize( ((java.lang.Integer)value).intValue());
+                }
+                catch (java.lang.Exception ex) {
+                    throw new IllegalStateException(ex.toString());
+                }
+            }
+            public java.lang.Object newInstance( java.lang.Object parent ) {
+                return null;
+            }
+        };
+        desc.setHandler(handler);
+        desc.setRequired(true);
+        desc.setMultivalued(false);
+        addFieldDescriptor(desc);
+        
+        //-- validation code for: _queueworkersize
         fieldValidator = new org.exolab.castor.xml.FieldValidator();
         fieldValidator.setMinOccurs(1);
         { //-- local scope
@@ -115,7 +156,7 @@ public class GameserverDescriptor extends org.exolab.castor.xml.util.XMLClassDes
             public java.lang.Object getValue( java.lang.Object object ) 
                 throws IllegalStateException
             {
-                Gameserver target = (Gameserver) object;
+                BasicAttributes target = (BasicAttributes) object;
                 if(!target.hasStartup())
                     return null;
                 return (target.getStartup() ? java.lang.Boolean.TRUE : java.lang.Boolean.FALSE);
@@ -124,7 +165,7 @@ public class GameserverDescriptor extends org.exolab.castor.xml.util.XMLClassDes
                 throws IllegalStateException, IllegalArgumentException
             {
                 try {
-                    Gameserver target = (Gameserver) object;
+                    BasicAttributes target = (BasicAttributes) object;
                     // ignore null values for non optional primitives
                     if (value == null) return;
                     
@@ -151,88 +192,7 @@ public class GameserverDescriptor extends org.exolab.castor.xml.util.XMLClassDes
             fieldValidator.setValidator(typeValidator);
         }
         desc.setValidator(fieldValidator);
-        //-- _accountserverip
-        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(java.lang.String.class, "_accountserverip", "accountserverip", org.exolab.castor.xml.NodeType.Element);
-        desc.setImmutable(true);
-        handler = new org.exolab.castor.xml.XMLFieldHandler() {
-            public java.lang.Object getValue( java.lang.Object object ) 
-                throws IllegalStateException
-            {
-                Gameserver target = (Gameserver) object;
-                return target.getAccountserverip();
-            }
-            public void setValue( java.lang.Object object, java.lang.Object value) 
-                throws IllegalStateException, IllegalArgumentException
-            {
-                try {
-                    Gameserver target = (Gameserver) object;
-                    target.setAccountserverip( (java.lang.String) value);
-                }
-                catch (java.lang.Exception ex) {
-                    throw new IllegalStateException(ex.toString());
-                }
-            }
-            public java.lang.Object newInstance( java.lang.Object parent ) {
-                return null;
-            }
-        };
-        desc.setHandler(handler);
-        desc.setRequired(true);
-        desc.setMultivalued(false);
-        addFieldDescriptor(desc);
-        
-        //-- validation code for: _accountserverip
-        fieldValidator = new org.exolab.castor.xml.FieldValidator();
-        fieldValidator.setMinOccurs(1);
-        { //-- local scope
-            StringValidator typeValidator = new StringValidator();
-            typeValidator.setWhiteSpace("preserve");
-            fieldValidator.setValidator(typeValidator);
-        }
-        desc.setValidator(fieldValidator);
-        //-- _accountserverport
-        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(java.lang.Integer.TYPE, "_accountserverport", "accountserverport", org.exolab.castor.xml.NodeType.Element);
-        handler = new org.exolab.castor.xml.XMLFieldHandler() {
-            public java.lang.Object getValue( java.lang.Object object ) 
-                throws IllegalStateException
-            {
-                Gameserver target = (Gameserver) object;
-                if(!target.hasAccountserverport())
-                    return null;
-                return new java.lang.Integer(target.getAccountserverport());
-            }
-            public void setValue( java.lang.Object object, java.lang.Object value) 
-                throws IllegalStateException, IllegalArgumentException
-            {
-                try {
-                    Gameserver target = (Gameserver) object;
-                    // ignore null values for non optional primitives
-                    if (value == null) return;
-                    
-                    target.setAccountserverport( ((java.lang.Integer)value).intValue());
-                }
-                catch (java.lang.Exception ex) {
-                    throw new IllegalStateException(ex.toString());
-                }
-            }
-            public java.lang.Object newInstance( java.lang.Object parent ) {
-                return null;
-            }
-        };
-        desc.setHandler(handler);
-        desc.setRequired(true);
-        desc.setMultivalued(false);
-        addFieldDescriptor(desc);
-        
-        //-- validation code for: _accountserverport
-        fieldValidator = new org.exolab.castor.xml.FieldValidator();
-        fieldValidator.setMinOccurs(1);
-        { //-- local scope
-            IntegerValidator typeValidator = new IntegerValidator();
-            fieldValidator.setValidator(typeValidator);
-        }
-        desc.setValidator(fieldValidator);
-    } //-- de.mbws.server.configuration.GameserverDescriptor()
+    } //-- de.mbws.server.configuration.BasicAttributesDescriptor()
 
 
       //-----------/
@@ -284,7 +244,7 @@ public class GameserverDescriptor extends org.exolab.castor.xml.util.XMLClassDes
      */
     public java.lang.Class getJavaClass()
     {
-        return de.mbws.server.configuration.Gameserver.class;
+        return de.mbws.server.configuration.BasicAttributes.class;
     } //-- java.lang.Class getJavaClass() 
 
     /**

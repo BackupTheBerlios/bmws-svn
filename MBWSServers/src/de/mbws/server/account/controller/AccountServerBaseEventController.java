@@ -16,8 +16,8 @@ public class AccountServerBaseEventController extends AbstractEventController {
      * @param server
      * @param eventType
      */
-    public AccountServerBaseEventController(AbstractTcpServer server, int eventType) {
-        super(server, eventType);
+    public AccountServerBaseEventController(AbstractTcpServer server) {
+        super(server);
     }
 
     /* (non-Javadoc)

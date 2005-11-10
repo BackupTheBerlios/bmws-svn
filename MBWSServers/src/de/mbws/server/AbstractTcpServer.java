@@ -37,11 +37,13 @@ public abstract class AbstractTcpServer extends Thread {
     private static EventQueue incomingEventQueue = new EventQueue("GameEvents-in");
     private EventDispatcher eventController = null;
     private EventWriter eventWriter = null;
+    protected ServerConfig config;
     
     public AbstractTcpServer(ServerConfig config) {
         super();
         try {
             getLogger().info("Server initializing");
+            this.config = config;
             initServerSocket(config.getC2sport());
             registerEventController();
             eventController = new EventDispatcher(this,incomingEventQueue, config.getQueueWorkerSize());
