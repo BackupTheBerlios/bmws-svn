@@ -1,29 +1,29 @@
 package de.mbws.server.controller;
 
 import de.mbws.common.events.AbstractGameEvent;
-import de.mbws.server.account.AccountServer;
+import de.mbws.server.AbstractTcpServer;
 
 /**
  * EventController
  * @version 1.0
  */
-public abstract class EventController {
+public abstract class AbstractEventController {
 
-    protected AccountServer accountServer = null;
+    protected AbstractTcpServer server = null;
     protected int eventType = 0; 
     public abstract void handleEvent(AbstractGameEvent event);
 
     /**
      * 
      */
-    public EventController(AccountServer accountServer, int eventType) {
+    public AbstractEventController(AbstractTcpServer server, int eventType) {
         super();
         this.eventType = eventType;
-        this.accountServer = accountServer;
+        this.server = server;
     }
 
     public void sendEvent(AbstractGameEvent event) {
-        accountServer.handleOutgoingEvent(event);
+        server.handleOutgoingEvent(event);
     }
 }
 

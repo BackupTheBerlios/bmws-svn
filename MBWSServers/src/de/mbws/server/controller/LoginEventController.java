@@ -11,7 +11,7 @@ import de.mbws.server.account.AccountServer;
 import de.mbws.server.data.ServerPlayerData;
 import de.mbws.server.persistence.AccountPersistenceManager;
 
-public class LoginEventController extends EventController {
+public class LoginEventController extends AccountServerBaseEventController {
 	private static Logger logger = Logger.getLogger(LoginEventController.class);
 
 	/**
@@ -37,14 +37,14 @@ public class LoginEventController extends EventController {
 			} else {
                 AbstractPlayerData p = new ServerPlayerData();
 				p.setAccount(account);
-				Integer sessionId = accountServer.nextSessionId();
+				Integer sessionId = getAccountServer().nextSessionId();
 				if (logger.isDebugEnabled()) {
 					logger.debug("Given session id =" + sessionId
 							+ " to accountName =" + account.getUsername());
 				}
 				p.setSessionId(sessionId);
 				p.setChannel(l.getPlayer().getChannel());
-				accountServer.addPlayer(sessionId, p);
+                getAccountServer().addPlayer(sessionId, p);
 				LoginEvent lr = new LoginEvent();
 				lr.setPlayer(p);
 				lr.setEventType(EventTypes.LOGIN_OK);
@@ -55,9 +55,7 @@ public class LoginEventController extends EventController {
 			lr.setPlayer(event.getPlayer());
 			lr.setEventType(EventTypes.LOGOUT_OK);
 			sendEvent(lr);
-			accountServer.removePlayer(event.getPlayer());
+            getAccountServer().removePlayer(event.getPlayer());
 		}
-
 	}
-
 }

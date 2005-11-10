@@ -17,7 +17,7 @@ import de.mbws.server.persistence.AccountPersistenceManager;
  * @author azarai
  *
  */
-public class AccountEventController extends EventController {
+public class AccountEventController extends AccountServerBaseEventController {
 
     /**
      * @param accountServer
@@ -42,10 +42,10 @@ public class AccountEventController extends EventController {
                 AccountPersistenceManager.getInstance().createAccount(account);
                 AbstractPlayerData p = new ServerPlayerData();
                 p.setAccount(account);
-                Integer sessionId = accountServer.nextSessionId();
+                Integer sessionId = getAccountServer().nextSessionId();
                 p.setSessionId(sessionId);
                 p.setChannel(l.getPlayer().getChannel());
-                accountServer.addPlayer(sessionId, p);
+                getAccountServer().addPlayer(sessionId, p);
                 AccountEvent ae = new AccountEvent();
                 ae.setPlayer(p);
                 ae.setEventType(EventTypes.ACCOUNT_CREATE_OK);

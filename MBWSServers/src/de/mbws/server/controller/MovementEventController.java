@@ -13,7 +13,7 @@ import de.mbws.server.account.AccountServer;
  * @author Azarai
  * 
  */
-public class MovementEventController extends EventController {
+public class MovementEventController extends AccountServerBaseEventController {
 
     /**
      * @param accountServer
@@ -33,8 +33,8 @@ public class MovementEventController extends EventController {
     public void handleEvent(AbstractGameEvent event) {
         if (event instanceof MoveEvent) {
             MoveEvent me = (MoveEvent) event;
-            Map m = accountServer.getAllPlayers();
-            ArrayList<Integer> receivers = (ArrayList<Integer>) accountServer.getSessionIDOfAllPlayers().clone();
+            Map m = getAccountServer().getAllPlayers();
+            ArrayList<Integer> receivers = (ArrayList<Integer>) getAccountServer().getSessionIDOfAllPlayers().clone();
             if (receivers.size() > 1) {
                 receivers.remove(me.getPlayer().getSessionId());
                 me.setRecipients(receivers.toArray(new Integer[receivers.size()]));

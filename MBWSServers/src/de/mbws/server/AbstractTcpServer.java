@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 import de.mbws.common.EventQueue;
 import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.events.AbstractGameEvent;
-import de.mbws.server.controller.EventController;
+import de.mbws.server.controller.AbstractEventController;
 import de.mbws.server.controller.EventDispatcher;
 
 /**
@@ -32,7 +32,7 @@ public abstract class AbstractTcpServer extends Thread {
     private RequestDispatcher dispatcher;
 
     private Selector selector;
-    protected HashMap<Integer, EventController> eventReader = new HashMap<Integer, EventController>();
+    protected HashMap<Integer, AbstractEventController> eventReader = new HashMap<Integer, AbstractEventController>();
     private static EventQueue outgoingEventQueue = new EventQueue("GameEvents-out");
     protected HashMap<Integer, AbstractPlayerData> clients = new HashMap<Integer, AbstractPlayerData>();
     private static EventQueue incomingEventQueue = new EventQueue("GameEvents-in");
@@ -104,7 +104,7 @@ public abstract class AbstractTcpServer extends Thread {
         }
     }
     
-    public EventController getEventController(int eventType) {
+    public AbstractEventController getEventController(int eventType) {
         if (eventReader.containsKey(new Integer(eventType))) {
             return eventReader.get(new Integer(eventType));
         }

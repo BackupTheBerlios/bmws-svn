@@ -20,7 +20,7 @@ import de.mbws.server.persistence.CharacterPersistenceManager;
  * @author Azarai
  *
  */
-public class CharacterEventController extends EventController {
+public class CharacterEventController extends AccountServerBaseEventController {
 
     /**
      * @param accountServer
@@ -65,7 +65,7 @@ public class CharacterEventController extends EventController {
             result.setPlayer(ce.getPlayer());
             sendEvent(result);
 
-            ArrayList<Integer> receivers = (ArrayList<Integer>) accountServer.getSessionIDOfAllPlayers().clone();
+            ArrayList<Integer> receivers = (ArrayList<Integer>) getAccountServer().getSessionIDOfAllPlayers().clone();
             if (receivers.size() > 1) {
                 ObjectEvent oe = new ObjectEvent(wo);
                 oe.setEventType(EventTypes.MOVABLE_OBJECT_CREATE);
