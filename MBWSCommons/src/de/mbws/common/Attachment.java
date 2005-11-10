@@ -75,9 +75,8 @@ public class Attachment {
 			// read the header info
 			sessionId = readBuff.getInt();
 			payloadSize = readBuff.getInt();
-			System.out.println("payloadSize = "+payloadSize);
 
-			// check bounds on the payload
+            // check bounds on the payload
 			if (payloadSize > Globals.MAX_EVENT_SIZE)
 				throw new IllegalArgumentException(
 						"Header specifies payload size (" + payloadSize
