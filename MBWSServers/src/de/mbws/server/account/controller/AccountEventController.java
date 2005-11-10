@@ -8,9 +8,9 @@ import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.AccountEvent;
 import de.mbws.common.events.EventTypes;
 import de.mbws.server.account.AccountServer;
+import de.mbws.server.account.persistence.AccountPersistenceManager;
 import de.mbws.server.data.ServerPlayerData;
 import de.mbws.server.exceptions.DuplicateKeyException;
-import de.mbws.server.persistence.AccountPersistenceManager;
 
 /**
  * Description: 

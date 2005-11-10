@@ -1,10 +1,11 @@
-package de.mbws.server.persistence;
+package de.mbws.server.account.persistence;
 
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import de.mbws.common.data.generated.Characterdata;
+import de.mbws.server.persistence.BasePersistenceManager;
 
 /**
  * Description: 

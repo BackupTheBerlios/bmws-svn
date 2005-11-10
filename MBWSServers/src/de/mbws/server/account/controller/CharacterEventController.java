@@ -12,8 +12,8 @@ import de.mbws.common.events.CharacterEvent;
 import de.mbws.common.events.EventTypes;
 import de.mbws.common.events.ObjectEvent;
 import de.mbws.server.account.AccountServer;
+import de.mbws.server.account.persistence.CharacterPersistenceManager;
 import de.mbws.server.data.ServerPlayerData;
-import de.mbws.server.persistence.CharacterPersistenceManager;
 
 /**
  * Description: 

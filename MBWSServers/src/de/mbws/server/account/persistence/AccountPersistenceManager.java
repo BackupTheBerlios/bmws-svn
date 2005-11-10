@@ -1,4 +1,4 @@
-package de.mbws.server.persistence;
+package de.mbws.server.account.persistence;
 
 import java.util.List;
 
@@ -11,6 +11,7 @@ import org.hibernate.exception.ConstraintViolationException;
 import de.mbws.common.data.generated.Account;
 import de.mbws.server.exceptions.DuplicateKeyException;
 import de.mbws.server.exceptions.PersistenceException;
+import de.mbws.server.persistence.BasePersistenceManager;
 
 /**
  * Description: 
