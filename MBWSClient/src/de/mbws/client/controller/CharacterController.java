@@ -3,6 +3,8 @@
 import org.apache.log4j.Logger;
 
 import com.jme.app.GameStateManager;
+import com.jme.math.Quaternion;
+import com.jme.math.Vector3f;
 
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.state.MainMenuState;
@@ -11,6 +13,7 @@ import de.mbws.common.data.generated.Characterdata;
 import de.mbws.common.eventdata.generated.IntVector3D;
 import de.mbws.common.eventdata.generated.MoveData;
 import de.mbws.common.eventdata.generated.PlayerInfo;
+import de.mbws.common.eventdata.generated.Quaternation;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.CharacterEvent;
 import de.mbws.common.events.EventTypes;
@@ -74,52 +77,55 @@ public class CharacterController {
 
 	
 
-	public void startWalking() {
-		ClientNetworkController.getInstance().handleOutgoingEvent(
-				createStartWalkingEvent());
-	}
+//	public void startWalking() {
+//		ClientNetworkController.getInstance().handleOutgoingEvent(
+//				createStartWalkingEvent( loc,  rot));
+//	}
 
-	public AbstractGameEvent createStopRunningEvent() {
-		return createMovementEvent(EventTypes.MOVEMENT_STOP_RUN);
+	public AbstractGameEvent createStopRunningEvent(Vector3f loc, Quaternion rot) {
+		return createMovementEvent(EventTypes.MOVEMENT_STOP_RUN, loc,  rot);
 	}
-	public AbstractGameEvent createStopWalkingEvent() {
-		return createMovementEvent(EventTypes.MOVEMENT_STOP_WALK);
+	public AbstractGameEvent createStopWalkingEvent(Vector3f loc, Quaternion rot) {
+		return createMovementEvent(EventTypes.MOVEMENT_STOP_WALK, loc,  rot);
 	}
-	public AbstractGameEvent createStopTurnRightEvent() {
-		return createMovementEvent(EventTypes.MOVEMENT_STOP_TURN_RIGHT);
+	public AbstractGameEvent createStopTurnRightEvent(Vector3f loc, Quaternion rot) {
+		return createMovementEvent(EventTypes.MOVEMENT_STOP_TURN_RIGHT, loc,  rot);
 	}
-	public AbstractGameEvent createStopTurnLeftEvent() {
-		return createMovementEvent(EventTypes.MOVEMENT_STOP_TURN_LEFT);
-	}
-	
-	public AbstractGameEvent createStartRunningEvent() {
-		return createMovementEvent(EventTypes.MOVEMENT_START_RUN);
-	}
-	public AbstractGameEvent createStartWalkingEvent() {
-		return createMovementEvent(EventTypes.MOVEMENT_START_WALK);
-	}
-	public AbstractGameEvent createStartTurnRightEvent() {
-		return createMovementEvent(EventTypes.MOVEMENT_START_TURN_RIGHT);
-	}
-	public AbstractGameEvent createStartTurnLeftEvent() {
-		return createMovementEvent(EventTypes.MOVEMENT_START_TURN_LEFT);
+	public AbstractGameEvent createStopTurnLeftEvent(Vector3f loc, Quaternion rot) {
+		return createMovementEvent(EventTypes.MOVEMENT_STOP_TURN_LEFT, loc,  rot);
 	}
 	
-	public AbstractGameEvent createMovementEvent(int eventType) {
+	public AbstractGameEvent createStartRunningEvent(Vector3f loc, Quaternion rot) {
+		return createMovementEvent(EventTypes.MOVEMENT_START_RUN, loc,  rot);
+	}
+	public AbstractGameEvent createStartWalkingEvent(Vector3f loc, Quaternion rot) {
+		return createMovementEvent(EventTypes.MOVEMENT_START_WALK, loc,  rot);
+	}
+	public AbstractGameEvent createStartTurnRightEvent(Vector3f loc, Quaternion rot) {
+		return createMovementEvent(EventTypes.MOVEMENT_START_TURN_RIGHT, loc,  rot);
+	}
+	public AbstractGameEvent createStartTurnLeftEvent(Vector3f loc, Quaternion rot) {
+		return createMovementEvent(EventTypes.MOVEMENT_START_TURN_LEFT, loc,  rot);
+	}
+	
+	public AbstractGameEvent createMovementEvent(int eventType,Vector3f loc, Quaternion rot) {
 		MoveData md = new MoveData();
 		MoveEvent me = new MoveEvent(md);
 		//TODO fill real data
+		//TODO change int to float ?
 		IntVector3D location = new IntVector3D();
-		location.setX(0);
-		location.setY(0);
-		location.setZ(0);
+		location.setX((int)loc.x);
+		location.setY((int)loc.y);
+		location.setZ((int)loc.z);
 		md.setLocation(location);
-		IntVector3D heading = new IntVector3D();
-		heading.setX(0);
-		heading.setY(0);
-		heading.setZ(0);
+		Quaternation heading = new Quaternation();
+		heading.setW((int)rot.w);
+		heading.setX((int)rot.x);
+		heading.setY((int)rot.y);
+		heading.setZ((int)rot.z);
 		md.setHeading(heading);
 		me.setEventType(eventType);
+		System.out.println("assembled MoveObjectAction at: "+System.currentTimeMillis());
 		return me;
 	}
 

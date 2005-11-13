@@ -22,6 +22,7 @@ import com.jme.util.LoggingSystem;
 import com.jme.util.Timer;
 
 import de.mbws.client.controller.ClientNetworkController;
+import de.mbws.client.net.ActionQueue;
 import de.mbws.client.state.MainMenuState;
 
 /**
@@ -43,6 +44,8 @@ public class MBWSClient extends BaseGame {
 	private float timePerFrame;
 
 	public static final String CLIENT = "MBWSClient Version: 0.1";
+	
+	public static ActionQueue actionQueue = new ActionQueue();
 
 	/**
 	 * This is called every frame in BaseGame.start()

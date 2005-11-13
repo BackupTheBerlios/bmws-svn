@@ -12,6 +12,8 @@ import com.jme.input.action.KeyNodeBackwardAction;
 import com.jme.input.action.KeyNodeForwardAction;
 import com.jme.input.action.KeyNodeRotateLeftAction;
 import com.jme.input.action.KeyNodeRotateRightAction;
+import com.jme.math.Quaternion;
+import com.jme.math.Vector3f;
 import com.jme.scene.Spatial;
 
 import de.mbws.client.MBWSClient;
@@ -34,6 +36,7 @@ public class TestGameHandler extends InputHandler {
 	private static final String BACKWARD = "backward";
 	private static final String FORWARD = "forward";
 
+	private Spatial player;
 	/**
      * Supply the node to control and the api that will handle input creation.
      * @param node the node we wish to move
@@ -43,23 +46,24 @@ public class TestGameHandler extends InputHandler {
 
         setKeyBindings(api);
         setActions(node);
-        setStatusRelatedKeys();
+       // setStatusRelatedKeys();
+        player = node;
 
     }
     
     //TODO: Kerim: eventually we should extend the existing actions instead of
     //making a double binding to a key
-    private void setStatusRelatedKeys() {
-    	KeyBindingManager.getKeyBindingManager().set("walk",
-				KeyInput.KEY_W);
-		addAction(new ForwardWalkAction(), "walk", false);
-    }
-
-    private static class ForwardWalkAction extends InputAction {
-		public void performAction(InputActionEvent evt) {
-			CharacterController.getInstance().startWalking();
-		}
-	}
+//    private void setStatusRelatedKeys() {
+//    	KeyBindingManager.getKeyBindingManager().set("walk",
+//				KeyInput.KEY_W);
+//		addAction(new ForwardWalkAction(), "walk", false);
+//    }
+//
+//    private static class ForwardWalkAction extends InputAction {
+//		public void performAction(InputActionEvent evt) {
+//			CharacterController.getInstance().startWalking();
+//		}
+//	}
     /**
      * creates the keyboard object, allowing us to obtain the values of a keyboard as keys are
      * pressed. It then sets the actions to be triggered based on if certain keys are pressed (WSAD).
@@ -103,18 +107,21 @@ public class TestGameHandler extends InputHandler {
     
     public void update( float time ) {
 //      //TODO: We only take care of walking at the moment
+    	
+		Vector3f location = player.getLocalTranslation();
+		Quaternion rotation = player.getLocalRotation();
     	if (!KeyBindingManager.getKeyBindingManager().isValidCommand(FORWARD) && ClientPlayerData.getInstance().walkingStatus.equals(FORWARD)) {
-    		ClientPlayerData.getInstance().walkingStatus=STAND;
+    		ClientPlayerData.getInstance().walkingStatus=STAND;	
     		ClientNetworkController.getInstance().handleOutgoingEvent(
 					CharacterController.getInstance()
-							.createStopWalkingEvent());
+							.createStopWalkingEvent(location,rotation));
     	}
     	
     	if (KeyBindingManager.getKeyBindingManager().isValidCommand(FORWARD) && !ClientPlayerData.getInstance().walkingStatus.equals(FORWARD)) {
     		ClientPlayerData.getInstance().walkingStatus=FORWARD;
     		ClientNetworkController.getInstance().handleOutgoingEvent(
     				CharacterController.getInstance()
-							.createStartWalkingEvent());
+							.createStartWalkingEvent(location,rotation));
     	}
 //    	if (!KeyBindingManager.getKeyBindingManager().isValidCommand(BACKWARD) && ClientPlayerData.getInstance().walkingStatus.equals(BACKWARD)) {
 //    		ClientPlayerData.getInstance().walkingStatus=STAND;

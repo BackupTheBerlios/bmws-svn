@@ -20,11 +20,12 @@ import com.jme.scene.shape.Box;
 import com.jme.scene.state.LightState;
 import com.jme.system.DisplaySystem;
 
+import de.mbws.client.MBWSClient;
 import de.mbws.client.data.ClientPlayerData;
-import de.mbws.client.data.ObjectNode;
+import de.mbws.client.data.ObjectManager;
+import de.mbws.client.eventactions.AbstractEventAction;
+import de.mbws.client.net.ActionQueue;
 import de.mbws.client.state.handler.TestGameHandler;
-import de.mbws.common.eventdata.generated.IntVector3D;
-import de.mbws.common.eventdata.generated.WorldObject;
 
 public class TestGameState extends StandardGameState {
 
@@ -43,10 +44,17 @@ public class TestGameState extends StandardGameState {
 	// level
 	private ChaseCamera chaser;
 
+	private ActionQueue actionQueue = MBWSClient.actionQueue;
+
+	
+
+	
+
 	public TestGameState(String name) {
 		super(name);
-		display = DisplaySystem.getDisplaySystem();
-
+		this.display = DisplaySystem.getDisplaySystem();
+		ObjectManager.initialize(rootNode,display);
+		
 		// Light the world
 		buildLighting();
 		// Build the player
@@ -56,12 +64,13 @@ public class TestGameState extends StandardGameState {
 		buildChaseCamera();
 		// build the player input
 		buildInput();
-
-		//just for testing we added some box as secondary player
-		//addPlayer();
+		// addPlayer();
+		// just for testing we added some box as secondary player
+		// addPlayer();
 		// update the scene graph for rendering
 		rootNode.updateGeometricState(0.0f, true);
 		rootNode.updateRenderState();
+
 	}
 
 	private void buildInput() {
@@ -82,7 +91,7 @@ public class TestGameState extends StandardGameState {
 		b.updateModelBound();
 
 		player = new Node("Player Node");
-		//player.setLocalTranslation(new Vector3f(100, 0, 100));
+		// player.setLocalTranslation(new Vector3f(100, 0, 100));
 		Vector3f location = new Vector3f(ClientPlayerData.getInstance()
 				.getCharacterData().getCharacterStatus().getCoordinateX(),
 				ClientPlayerData.getInstance().getCharacterData()
@@ -90,7 +99,7 @@ public class TestGameState extends StandardGameState {
 				ClientPlayerData.getInstance().getCharacterData()
 						.getCharacterStatus().getCoordinateZ());
 		player.setLocalTranslation(location);
-		
+
 		rootNode.attachChild(player);
 		player.attachChild(b);
 		player.updateWorldBound();
@@ -159,7 +168,7 @@ public class TestGameState extends StandardGameState {
 		Vector3f targetOffset = new Vector3f();
 		targetOffset.y = ((BoundingBox) player.getWorldBound()).yExtent * 1.5f;
 		HashMap props = new HashMap();
-		props.put(ThirdPersonMouseLook.PROP_MAXROLLOUT, "60");
+		props.put(ThirdPersonMouseLook.PROP_MAXROLLOUT, "40");
 		props.put(ThirdPersonMouseLook.PROP_MINROLLOUT, "3");
 		props.put(ChaseCamera.PROP_TARGETOFFSET, targetOffset);
 		chaser = new ChaseCamera(cam, player, props);
@@ -186,6 +195,11 @@ public class TestGameState extends StandardGameState {
 		float camMinHeightPlayer = player.getWorldTranslation().y + 2f;
 		cam.getLocation().y = camMinHeightPlayer;
 		cam.update();
+
+		AbstractEventAction action = actionQueue.deQueue();
+		if (action!= null) {
+			action.performAction();
+		}
 
 		rootNode.updateGeometricState(tpf, true);
 	}
@@ -217,30 +231,34 @@ public class TestGameState extends StandardGameState {
 		super.onActivate();
 	}
 
-	public ObjectNode addObject(WorldObject objectInfo) {
-		Box b = new Box("box", new Vector3f(), 0.35f, 0.25f, 0.5f);
-		b.setModelBound(new BoundingBox());
-		b.updateModelBound();
-		ObjectNode n = new ObjectNode(""+objectInfo.getObjectID());
-		
-		IntVector3D l = objectInfo.getLocation();
-		Vector3f location = new Vector3f(l.getX(),l.getY(),l.getZ());
-		n.setLocalTranslation(location);
-		
-		IntVector3D h = objectInfo.getHeading();
-		Vector3f rotation = new Vector3f(h.getX(),h.getY(),h.getZ());
-		n.setLocalTranslation(rotation);
-		
-		rootNode.attachChild(n);
-		n.attachChild(b);
-		n.updateWorldBound();
+//	public GameObject addObject(WorldObject objectInfo) {
+//		Box b = new Box("box2", new Vector3f(), 0.35f, 0.25f, 0.5f);
+//		b.setDefaultColor(new ColorRGBA(ColorRGBA.white));
+//		b.setModelBound(new BoundingBox());
+//		b.updateModelBound();
+//		GameObject n = new GameObject("test");// +objectInfo.getObjectID());
+//
+//		// IntVector3D l = objectInfo.getLocation();
+//		Vector3f location = new Vector3f(new Vector3f(100, 0, 100));// l.getX(),l.getY(),l.getZ());
+//		n.setLocalTranslation(location);
+//
+//		// IntVector3D h = objectInfo.getHeading();
+//		// Vector3f rotation = new Vector3f(h.getX(),h.getY(),h.getZ());
+//		// n.setLocalTranslation(rotation);
+//
+//		rootNode.attachChild(n);
+//		n.attachChild(b);
+//		n.updateWorldBound();
 //		rootNode.updateGeometricState(0.0f, true);
 //		rootNode.updateRenderState();
-		
-		return n;
-	}
-	
-	public void deleteObject(ObjectNode node) {
-		rootNode.detachChild(node);
-	}
+//		// display.getRenderer().clearBuffers();
+//		// display.getRenderer().draw(rootNode);
+//
+//		return n;
+//	}
+//
+//	public void deleteObject(GameObject node) {
+//		rootNode.detachChild(node);
+//	}
+
 }

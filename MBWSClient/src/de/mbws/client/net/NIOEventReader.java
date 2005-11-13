@@ -11,6 +11,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import de.mbws.client.data.ClientPlayerData;
+import de.mbws.client.eventactions.AbstractEventAction;
 import de.mbws.common.Attachment;
 import de.mbws.common.EventQueue;
 import de.mbws.common.events.AbstractGameEvent;
@@ -30,15 +31,17 @@ public class NIOEventReader extends Thread {
     private boolean running;
     
     /** queue for incoming events */
-    private EventQueue queue = null;
+    private EventQueue evenQueue = null;
+    private ActionQueue actionQueue = null;
     
     /**
      * constructor.
      */
-    public NIOEventReader(SocketChannel channel, EventQueue queue) {
+    public NIOEventReader(SocketChannel channel, EventQueue queue, ActionQueue actions) {
         super("NIOEventReader");
         this.channel = channel;
-        this.queue = queue;
+        this.evenQueue = queue;
+        actionQueue = actions;
     }
 
     /**
@@ -89,8 +92,14 @@ public class NIOEventReader extends Thread {
                                     }
                                 	AbstractGameEvent event = getEvent(attachment);
                                     if (event != null) {
-                                        queue.enQueue(event);
+                                        evenQueue.enQueue(event);
                                         log.debug("incoming event = " + event.getEventType());
+                                    }
+                                    
+                                    AbstractEventAction action = getEventAction(attachment);
+                                    if (action != null) {
+                                    	actionQueue.enQueue(action);
+                                        log.debug("incoming event = " + action.getEventType());
                                     }
                                     
                                     attachment.reset();
@@ -119,5 +128,9 @@ public class NIOEventReader extends Thread {
             ClientPlayerData.getInstance().setSessionId(attachment.sessionId);
         }
         return GameEventFactory.getGameEvent(attachment.getPayload(), ClientPlayerData.getInstance());
+    }
+    
+    private AbstractEventAction getEventAction(Attachment attachment) {
+        return ClientGameEventActionFactory.getGameEventAction(attachment.getPayload(), ClientPlayerData.getInstance());
     }
 }

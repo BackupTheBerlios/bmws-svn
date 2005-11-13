@@ -6,6 +6,7 @@ import java.nio.channels.SocketChannel;
 
 import org.apache.log4j.Logger;
 
+import de.mbws.client.MBWSClient;
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.net.NIOEventReader;
 import de.mbws.common.EventQueue;
@@ -69,7 +70,7 @@ public class ClientNetworkController extends Thread {
 				channel.configureBlocking(false);
 				// we don't like Nagle's algorithm
 				channel.socket().setTcpNoDelay(true);
-				NIOEventReader n = new NIOEventReader(channel, inQueue);
+				NIOEventReader n = new NIOEventReader(channel, inQueue, MBWSClient.actionQueue);
 				n.start();
 			}
 		} catch (Exception e) {
@@ -91,7 +92,8 @@ public class ClientNetworkController extends Thread {
 			}
 		}
 	}
-//TODO: Kerim what is done with the "player" ?
+
+	// TODO: Kerim what is done with the "player" ?
 	protected void writeEvent(AbstractGameEvent ge) {
 		ge.setPlayer(ClientPlayerData.getInstance());
 		ByteBuffer writeBuffer = ByteBuffer.allocate(Globals.MAX_EVENT_SIZE);
@@ -111,16 +113,16 @@ public class ClientNetworkController extends Thread {
 				} else if (event instanceof AccountEvent) {
 					AccountController.getInstance().handleEvent(
 							(AccountEvent) event);
-				}  else if (event instanceof CharacterEvent) {
-                    CharacterEvent e = (CharacterEvent) event;
-                    CharacterController.getInstance().handleEvent(e);
-				}  else if (event instanceof MoveEvent) {
+				} else if (event instanceof CharacterEvent) {
+					CharacterEvent e = (CharacterEvent) event;
+					CharacterController.getInstance().handleEvent(e);
+				} else if (event instanceof MoveEvent) {
 					MoveEvent e = (MoveEvent) event;
-                    MovableObjectsController.getInstance().handleEvent(e);
-                }  else if (event instanceof ObjectEvent) {
-                	ObjectEvent e = (ObjectEvent) event;
-                    ObjectController.getInstance().handleEvent(e);
-                }
+					MovableObjectsController.getInstance().handleEvent(e);
+				} else if (event instanceof ObjectEvent) {
+					ObjectEvent e = (ObjectEvent) event;
+					ObjectController.getInstance().handleEvent(e);
+				}
 			} catch (InterruptedException ie) {
 				logger.info("InterruptedException in readin in-queue", ie);
 			}
@@ -130,4 +132,6 @@ public class ClientNetworkController extends Thread {
 	public void handleOutgoingEvent(AbstractGameEvent event) {
 		outQueue.enQueue(event);
 	}
+
+	
 }

@@ -95,6 +95,7 @@ public class MainMenuHandler extends InputHandler implements ComponentListener {
 	public void update( float time ) {
 		if (startNextState==true) {
 			startMainGameState();
+			startNextState=false;
 		}
 		super.update(time);
 	}
