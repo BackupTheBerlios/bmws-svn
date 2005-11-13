@@ -6,6 +6,7 @@ import de.mbws.common.data.generated.CharacterStatus;
 import de.mbws.common.data.generated.Characterdata;
 import de.mbws.common.eventdata.generated.IntVector3D;
 import de.mbws.common.eventdata.generated.PlayerInfo;
+import de.mbws.common.eventdata.generated.Quaternation;
 import de.mbws.common.eventdata.generated.WorldObject;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.CharacterEvent;
@@ -52,7 +53,9 @@ public class CharacterEventController extends AccountServerBaseEventController {
             location.setZ(cs.getCoordinateZ());
             wo.setLocation(location);
             
-            IntVector3D heading = new IntVector3D();
+            //TODO @Jens guck mal hier nach Parameter "W"
+            Quaternation heading = new Quaternation();
+            heading.setW(0);
             heading.setX(0);
             heading.setY(0);
             heading.setZ(0);
