@@ -45,15 +45,6 @@ public class GameEventFactory {
         } else if (eventKey == EventTypes.CHARACTER_RECEIVE_REQUEST) {
             event = new CharacterEvent(payload);
             event.setEventType(eventKey);
-        } else if (eventKey == EventTypes.MOVEMENT_START_WALK) {
-            event = new MoveEvent(payload);
-            event.setEventType(eventKey);
-        } else if (eventKey == EventTypes.MOVEMENT_STOP_WALK) {
-                event = new MoveEvent(payload);
-                event.setEventType(eventKey);            
-        } else if (eventKey == EventTypes.MOVABLE_OBJECT_CREATE) {
-            event = new ObjectEvent(payload);
-            event.setEventType(eventKey);
         }
         if (event != null) {
             event.setPlayer(p);
