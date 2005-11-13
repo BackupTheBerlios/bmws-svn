@@ -99,7 +99,7 @@ public class NIOEventReader extends Thread {
                                     AbstractEventAction action = getEventAction(attachment);
                                     if (action != null) {
                                     	actionQueue.enQueue(action);
-                                        log.debug("incoming event = " + action.getEventType());
+                                        log.debug("incoming actionevent = " + action.getEventType());
                                     }
                                     
                                     attachment.reset();
