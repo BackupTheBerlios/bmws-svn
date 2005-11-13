@@ -1,5 +1,6 @@
 package de.mbws.client.data;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -19,7 +20,9 @@ public class ObjectManager {
 
 	protected static DisplaySystem display;
 
-	private static Map<String, GameObject> objects;
+	private static Map<String, AbstractGameObject> objects;
+
+	private static ArrayList<String> listOfObjectsToDelete;
 
 	public ObjectManager() {
 		super();
@@ -28,26 +31,23 @@ public class ObjectManager {
 	public static void initialize(Node node, DisplaySystem displaysystem) {
 		rootNode = node;
 		display = displaysystem;
-		objects = new HashMap<String, GameObject>();
+		objects = new HashMap<String, AbstractGameObject>();
+		listOfObjectsToDelete = new ArrayList<String>();
 	}
 
 	public static void update(float f) {
 		synchronized (objects) {
-			Iterator iterator = objects.values().iterator();
-			do {
-				if (!iterator.hasNext())
-					break;
-				GameObject object = (GameObject) iterator.next();
-
-				// if(creature.getAIHandler().getTimeSinceDeath() > 30F)
-				// {
-				// m_rootNode.detachChild(creature.getModel());
-				// iterator.remove();
-				// } else
-				// if(creature.getAIHandler().getTimeSinceDeath() > 20F)
-				// creature.getModel().getLocalTranslation().y -= f * 2.0F;
-
-			} while (true);
+			for (Iterator<AbstractGameObject> object = objects.values()
+					.iterator(); object.hasNext();) {
+				object.next().update(f);
+			}
+			if (!listOfObjectsToDelete.isEmpty()) {
+				for (Iterator<String> objectsToDelete = listOfObjectsToDelete
+						.iterator(); objectsToDelete.hasNext();) {
+					detach(objectsToDelete.next());
+				}
+				listOfObjectsToDelete.clear();
+			}
 		}
 	}
 
@@ -57,7 +57,8 @@ public class ObjectManager {
 	 * @return
 	 */
 	// TODO: Should we use a map here with configurable values ?
-	public static GameObject create(WorldObject wo) {
+	// TODO: Replace GameObject by the correct type
+	public static AbstractGameObject create(WorldObject wo) {
 		GameObject object = new GameObject(wo.getObjectID());
 
 		// TODO: Just for testing:
@@ -111,12 +112,16 @@ public class ObjectManager {
 		rootNode.detachChildNamed(idString);
 	}
 
-	public static GameObject getObject(String s) {
-		return (GameObject) objects.get(s);
+	public static AbstractGameObject getObject(String s) {
+		return objects.get(s);
 	}
 
 	public static Map getObjects() {
 		return objects;
+	}
+
+	public static void markObjectForDeletion(String objectID) {
+		listOfObjectsToDelete.add(objectID);
 	}
 
 }
