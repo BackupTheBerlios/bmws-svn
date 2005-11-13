@@ -45,6 +45,14 @@ public class GameEventFactory {
         } else if (eventKey == EventTypes.CHARACTER_RECEIVE_REQUEST) {
             event = new CharacterEvent(payload);
             event.setEventType(eventKey);
+            //TODO take below check out
+        }  else if (eventKey == EventTypes.MOVEMENT_START_WALK) {
+        	 event = new MoveEvent(payload);
+             event.setEventType(eventKey);
+             System.out.println("Received MovementStartEvent " + System.currentTimeMillis());
+        }else if (eventKey == EventTypes.OBJECT_CREATE) {
+       	 event = new ObjectEvent(payload);
+         event.setEventType(eventKey);
         }
         if (event != null) {
             event.setPlayer(p);
