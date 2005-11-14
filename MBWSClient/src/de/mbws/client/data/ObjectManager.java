@@ -59,8 +59,10 @@ public class ObjectManager {
 	// TODO: Should we use a map here with configurable values ?
 	// TODO: Replace GameObject by the correct type
 	public static AbstractGameObject create(WorldObject wo) {
-		GameObject object = new GameObject(wo.getObjectID());
-
+		MovableObject object = new MovableObject(wo.getObjectID());
+		object.setAlive(true);
+		object.setMovespeed(30);
+		object.setTurnspeed(15);
 		// TODO: Just for testing:
 
 		// box stand in

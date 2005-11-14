@@ -12,8 +12,8 @@ import de.mbws.common.data.generated.CharacterStatus;
 import de.mbws.common.data.generated.Characterdata;
 import de.mbws.common.eventdata.generated.IntVector3D;
 import de.mbws.common.eventdata.generated.MoveData;
+import de.mbws.common.eventdata.generated.NetQuaternion;
 import de.mbws.common.eventdata.generated.PlayerInfo;
-import de.mbws.common.eventdata.generated.Quaternation;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.CharacterEvent;
 import de.mbws.common.events.EventTypes;
@@ -118,7 +118,7 @@ public class CharacterController {
 		location.setY((int)loc.y);
 		location.setZ((int)loc.z);
 		md.setLocation(location);
-		Quaternation heading = new Quaternation();
+		NetQuaternion heading = new NetQuaternion();
 		heading.setW((int)rot.w);
 		heading.setX((int)rot.x);
 		heading.setY((int)rot.y);

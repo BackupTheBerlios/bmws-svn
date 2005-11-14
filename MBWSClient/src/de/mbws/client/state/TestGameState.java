@@ -200,6 +200,7 @@ public class TestGameState extends StandardGameState {
 		if (action!= null) {
 			action.performAction();
 		}
+		ObjectManager.update(tpf);
 
 		rootNode.updateGeometricState(tpf, true);
 	}
