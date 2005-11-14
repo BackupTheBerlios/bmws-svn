@@ -37,10 +37,10 @@ public class Globals {
 	public static final byte WALKING_BACKWARD = 3;
 	
 	/** default status code for left turning models */
-	public static final byte TURN_LEFT = 0;
+	public static final byte TURN_LEFT = 1;
 	
 	/** default status code for not turning models */
-	public static final byte NO_TURN = 1;
+	public static final byte NO_TURN = 0;
 	
 	/** default status code for right turning models */
 	public static final byte TURN_RIGHT = 2;
