@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import de.mbws.common.data.generated.CharacterStatus;
 import de.mbws.common.data.generated.Characterdata;
 import de.mbws.common.eventdata.generated.IntVector3D;
+import de.mbws.common.eventdata.generated.NetQuaternion;
 import de.mbws.common.eventdata.generated.PlayerInfo;
-import de.mbws.common.eventdata.generated.Quaternation;
 import de.mbws.common.eventdata.generated.WorldObject;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.CharacterEvent;
@@ -54,7 +54,7 @@ public class CharacterEventController extends AccountServerBaseEventController {
             wo.setLocation(location);
             
             //TODO @Jens guck mal hier nach Parameter "W"
-            Quaternation heading = new Quaternation();
+            NetQuaternion heading = new NetQuaternion();
             heading.setW(0);
             heading.setX(0);
             heading.setY(0);
