@@ -1,6 +1,9 @@
 package de.mbws.server.account.controller;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 import de.mbws.common.data.generated.CharacterStatus;
 import de.mbws.common.data.generated.Characterdata;
@@ -17,9 +20,10 @@ import de.mbws.server.account.persistence.CharacterPersistenceManager;
 import de.mbws.server.data.ServerPlayerData;
 
 /**
- * Description: 
+ * Description:
+ * 
  * @author Azarai
- *
+ * 
  */
 public class CharacterEventController extends AccountServerBaseEventController {
 
@@ -32,14 +36,16 @@ public class CharacterEventController extends AccountServerBaseEventController {
         // TODO Auto-generated constructor stub
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see de.mbws.server.controller.EventController#handleEvent(de.mbws.common.events.AbstractGameEvent)
      */
     @Override
     public void handleEvent(AbstractGameEvent event) {
         if (event.getEventType() == EventTypes.CHARACTER_RECEIVE_REQUEST) {
             CharacterEvent ce = (CharacterEvent) event;
-            
+
             Characterdata cdata = CharacterPersistenceManager.getInstance().getCharacter(ce.getPlayer().getAccount().getUsername());
 
             CharacterStatus cs = cdata.getCharacterStatus();
@@ -52,16 +58,17 @@ public class CharacterEventController extends AccountServerBaseEventController {
             location.setY(cs.getCoordinateY());
             location.setZ(cs.getCoordinateZ());
             wo.setLocation(location);
-            
-            //TODO @Jens guck mal hier nach Parameter "W"
+
+            // TODO @Jens guck mal hier nach Parameter "W"
             NetQuaternion heading = new NetQuaternion();
             heading.setW(0);
             heading.setX(0);
             heading.setY(0);
             heading.setZ(0);
             wo.setHeading(heading);
-            
+
             wo.setObjectID(ce.getPlayer().getSessionId());
+            ((ServerPlayerData) ce.getPlayer()).setMovementInformation(wo);
             pi.setObject(wo);
             CharacterEvent result = new CharacterEvent(pi);
             result.setEventType(EventTypes.CHARACTER_RECEIVE);
@@ -72,11 +79,23 @@ public class CharacterEventController extends AccountServerBaseEventController {
             if (receivers.size() > 1) {
                 ObjectEvent oe = new ObjectEvent(wo);
                 oe.setEventType(EventTypes.MOVABLE_OBJECT_CREATE);
-                
                 receivers.remove(ce.getPlayer().getSessionId());
                 oe.setPlayer(ce.getPlayer());
                 oe.setRecipients(receivers.toArray(new Integer[receivers.size()]));
                 sendEvent(oe);
+            }
+
+            Map players = getAccountServer().getAllPlayers();
+            Set keys = players.keySet();
+            for (Iterator iter = receivers.iterator(); iter.hasNext();) {
+                Integer element = (Integer) iter.next();
+                if (!element.equals(ce.getPlayer().getSessionId())) {
+                    ServerPlayerData spd = (ServerPlayerData) players.get(element);
+                    ObjectEvent oe = new ObjectEvent(spd.getMovementInformation());
+                    oe.setEventType(EventTypes.MOVABLE_OBJECT_CREATE);
+                    oe.setPlayer(ce.getPlayer());
+                    sendEvent(oe);
+                }
             }
         }
     }

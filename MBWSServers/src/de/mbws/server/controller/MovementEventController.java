@@ -7,6 +7,7 @@ import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.MoveEvent;
 import de.mbws.server.account.AccountServer;
 import de.mbws.server.account.controller.AccountServerBaseEventController;
+import de.mbws.server.data.ServerPlayerData;
 
 /**
  * Description:
@@ -34,6 +35,9 @@ public class MovementEventController extends AccountServerBaseEventController {
     public void handleEvent(AbstractGameEvent event) {
         if (event instanceof MoveEvent) {
             MoveEvent me = (MoveEvent) event;
+            ServerPlayerData spd = (ServerPlayerData) me.getPlayer();
+            spd.getMovementInformation().setHeading(me.getMoveData().getHeading());
+            spd.getMovementInformation().setLocation(me.getMoveData().getLocation());
             Map m = getAccountServer().getAllPlayers();
             ArrayList<Integer> receivers = (ArrayList<Integer>) getAccountServer().getSessionIDOfAllPlayers().clone();
             if (receivers.size() > 1) {
