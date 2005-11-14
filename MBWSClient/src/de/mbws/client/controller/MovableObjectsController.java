@@ -43,12 +43,10 @@ public class MovableObjectsController {
 			logger.info("Received event stop running");
 		} else if (moveEvent.getEventType() == EventTypes.MOVEMENT_START_TURN_LEFT) {
 			logger.info("Received event start turning left");
-		} else if (moveEvent.getEventType() == EventTypes.MOVEMENT_STOP_TURN_LEFT) {
+		} else if (moveEvent.getEventType() == EventTypes.MOVEMENT_STOP_TURN) {
 			logger.info("Received event stop turning left");
 		} else if (moveEvent.getEventType() == EventTypes.MOVEMENT_START_TURN_RIGHT) {
 			logger.info("Received event start turning right");
-		} else if (moveEvent.getEventType() == EventTypes.MOVEMENT_STOP_TURN_RIGHT) {
-			logger.info("Received event stop turning right");
 		} else {
 			logger.error("Event not known to client !!");
 		}

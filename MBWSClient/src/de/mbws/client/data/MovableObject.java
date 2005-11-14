@@ -6,22 +6,20 @@ import com.jme.math.Vector3f;
 import de.mbws.common.Globals;
 
 public class MovableObject extends GameObject {
-
 	
-
 	public MovableObject(int id) {
 		super(id);
 		moveStatus = Globals.STANDING;
 		turnStatus = Globals.NO_TURN;
 	}
 
-	private byte moveStatus;
-	private byte turnStatus;
-	private int movespeed;
-	private int turnspeed;
-	private boolean alive;
-	private long timeOfDeath;
-	private boolean isPlayer = false;
+	protected byte moveStatus;
+	protected byte turnStatus;
+	protected int movespeed;
+	protected int turnspeed;
+	protected boolean alive;
+	protected long timeOfDeath;
+	protected boolean isPlayer = false;
 
 	public boolean isAlive() {
 		return alive;
