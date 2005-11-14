@@ -4,7 +4,7 @@ package de.mbws.common.eventdata.generated;
 import de.mbws.common.eventdata.AbstractEventData;
 import java.nio.ByteBuffer;
 
-public class Quaternation extends AbstractEventData { 
+public class NetQuaternion extends AbstractEventData { 
 	private int w;
 	private int x;
 	private int y;

@@ -8,7 +8,7 @@ public class WorldObject extends AbstractEventData {
 	private int objectID;
 	private int modelID;
 	private IntVector3D location;
-	private Quaternation heading;
+	private NetQuaternion heading;
 
 
 	public int getObjectID() {
@@ -35,11 +35,11 @@ public class WorldObject extends AbstractEventData {
 		this.location = location;
 	} 
 
-	public Quaternation getHeading() {
+	public NetQuaternion getHeading() {
 		return heading;
 	}
 
-	public void setHeading(Quaternation heading) {
+	public void setHeading(NetQuaternion heading) {
 		this.heading = heading;
 	} 
 
@@ -49,7 +49,7 @@ public class WorldObject extends AbstractEventData {
 		modelID = payload.getInt();
 		location = new IntVector3D();
 		location.deserialize(payload);
-		heading = new Quaternation();
+		heading = new NetQuaternion();
 		heading.deserialize(payload);
 	}
 
