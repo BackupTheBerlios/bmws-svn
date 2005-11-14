@@ -38,8 +38,9 @@ public class MovementEventController extends AccountServerBaseEventController {
             ArrayList<Integer> receivers = (ArrayList<Integer>) getAccountServer().getSessionIDOfAllPlayers().clone();
             if (receivers.size() > 1) {
                 receivers.remove(me.getPlayer().getSessionId());
-                //TEST
+                //TODO: TEST (below)
                 me.getMoveData().setObjectID(me.getPlayer().getSessionId());
+                //TODO: remove/change above
                 me.setRecipients(receivers.toArray(new Integer[receivers.size()]));
                 sendEvent(me);
             }
