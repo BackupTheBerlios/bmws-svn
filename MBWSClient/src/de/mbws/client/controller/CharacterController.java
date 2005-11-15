@@ -58,9 +58,9 @@ public class CharacterController {
 			status.setCoordinateX(eventData.getObject().getLocation()
 					.getX());
 			status.setCoordinateY(eventData.getObject().getLocation()
-					.getX());
+					.getY());
 			status.setCoordinateZ(eventData.getObject().getLocation()
-					.getX());
+					.getZ());
 			characterData.setCharacterStatus(status);
 			ClientPlayerData.getInstance().setCharacterData(characterData);
 			ClientPlayerData.getInstance().setPlayer(player);
