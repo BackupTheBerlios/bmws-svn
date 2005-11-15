@@ -78,33 +78,33 @@ public class CharacterController {
 	}
 
 
-	public AbstractGameEvent createStopRunningEvent(Vector3f loc, Quaternion rot) {
-		return createMovementEvent(EventTypes.MOVEMENT_STOP_RUN, loc,  rot);
+	public AbstractGameEvent createStopRunningEvent(byte movementType, byte turnType, Vector3f loc, Quaternion rot) {
+		return createMovementEvent(EventTypes.MOVEMENT_STOP_RUN, movementType, turnType, loc,  rot);
 	}
-	public AbstractGameEvent createStopWalkingEvent(Vector3f loc, Quaternion rot) {
-		return createMovementEvent(EventTypes.MOVEMENT_STOP_WALK, loc,  rot);
+	public AbstractGameEvent createStopWalkingEvent(byte movementType, byte turnType, Vector3f loc, Quaternion rot) {
+		return createMovementEvent(EventTypes.MOVEMENT_STOP_WALK, movementType, turnType, loc,  rot);
 	}
-	public AbstractGameEvent createStopTurnEvent(Vector3f loc, Quaternion rot) {
-		return createMovementEvent(EventTypes.MOVEMENT_STOP_TURN, loc,  rot);
+	public AbstractGameEvent createStopTurnEvent(byte movementType, byte turnType, Vector3f loc, Quaternion rot) {
+		return createMovementEvent(EventTypes.MOVEMENT_STOP_TURN, movementType, turnType, loc,  rot);
 	}	
 	
-	public AbstractGameEvent createStartRunningEvent(Vector3f loc, Quaternion rot) {
-		return createMovementEvent(EventTypes.MOVEMENT_START_RUN, loc,  rot);
+	public AbstractGameEvent createStartRunningEvent(byte movementType, byte turnType, Vector3f loc, Quaternion rot) {
+		return createMovementEvent(EventTypes.MOVEMENT_START_RUN, movementType, turnType, loc,  rot);
 	}
-	public AbstractGameEvent createStartWalkingEvent(Vector3f loc, Quaternion rot) {
-		return createMovementEvent(EventTypes.MOVEMENT_START_WALK, loc,  rot);
+	public AbstractGameEvent createStartWalkingEvent(byte movementType, byte turnType, Vector3f loc, Quaternion rot) {
+		return createMovementEvent(EventTypes.MOVEMENT_START_WALK, movementType, turnType, loc,  rot);
 	}
-	public AbstractGameEvent createStartWalkingBackwardsEvent(Vector3f loc, Quaternion rot) {
-		return createMovementEvent(EventTypes.MOVEMENT_START_WALK_BACKWARDS, loc,  rot);
+	public AbstractGameEvent createStartWalkingBackwardsEvent(byte movementType, byte turnType, Vector3f loc, Quaternion rot) {
+		return createMovementEvent(EventTypes.MOVEMENT_START_WALK_BACKWARDS, movementType, turnType, loc,  rot);
 	}
-	public AbstractGameEvent createStartTurnRightEvent(Vector3f loc, Quaternion rot) {
-		return createMovementEvent(EventTypes.MOVEMENT_START_TURN_RIGHT, loc,  rot);
+	public AbstractGameEvent createStartTurnRightEvent(byte movementType, byte turnType, Vector3f loc, Quaternion rot) {
+		return createMovementEvent(EventTypes.MOVEMENT_START_TURN_RIGHT, movementType, turnType, loc,  rot);
 	}
-	public AbstractGameEvent createStartTurnLeftEvent(Vector3f loc, Quaternion rot) {
-		return createMovementEvent(EventTypes.MOVEMENT_START_TURN_LEFT, loc,  rot);
+	public AbstractGameEvent createStartTurnLeftEvent(byte movementType, byte turnType, Vector3f loc, Quaternion rot) {
+		return createMovementEvent(EventTypes.MOVEMENT_START_TURN_LEFT, movementType, turnType, loc,  rot);
 	}
 	
-	public AbstractGameEvent createMovementEvent(int eventType,Vector3f loc, Quaternion rot) {
+	public AbstractGameEvent createMovementEvent(int eventType,byte movementType, byte turnType, Vector3f loc, Quaternion rot) {
 		MoveData md = new MoveData();
 		MoveEvent me = new MoveEvent(md);
 		//TODO fill real data
@@ -121,6 +121,8 @@ public class CharacterController {
 		heading.setZ((int)rot.z);
 		md.setHeading(heading);
 		me.setEventType(eventType);
+		md.setMovementType(movementType);
+		md.setTurnType(turnType);
 		System.out.println("assembled MoveObjectAction at: "+System.currentTimeMillis());
 		return me;
 	}
