@@ -22,13 +22,8 @@ import de.mbws.client.controller.ClientNetworkController;
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.common.Globals;
 
-/**
- * Input Handler for the Flag Rush game. This controls a supplied spatial
- * allowing us to move it forward, backward and rotate it left and right.
- * 
- * @author Mark Powell
- * 
- */
+
+
 public class TestGameHandler extends InputHandler {
 
 	private static final String STAND = "stand";

@@ -16,12 +16,10 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import com.jme.scene.Skybox;
-import com.jme.scene.shape.Box;
 import com.jme.scene.state.LightState;
 import com.jme.system.DisplaySystem;
 
 import de.mbws.client.MBWSClient;
-import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.data.ObjectManager;
 import de.mbws.client.eventactions.AbstractEventAction;
 import de.mbws.client.net.ActionQueue;
@@ -59,14 +57,12 @@ public class TestGameState extends StandardGameState {
 		buildLighting();
 		// Build the player
 		buildPlayer();
-
 		// build the chase cam
 		buildChaseCamera();
 		// build the player input
 		buildInput();
-		// addPlayer();
-		// just for testing we added some box as secondary player
-		// addPlayer();
+		// build the world around the player
+		
 		// update the scene graph for rendering
 		rootNode.updateGeometricState(0.0f, true);
 		rootNode.updateRenderState();
@@ -82,41 +78,13 @@ public class TestGameState extends StandardGameState {
 	 * as a place holder. This is a good demonstration that you don't always
 	 * need your graphics in place before you can start working on your
 	 * application.
-	 * 
+	 *
 	 */
+	//	TODO: Kerim do that in objectmanager ?
 	private void buildPlayer() {
-		// box stand in
-		Box b = new Box("box", new Vector3f(), 0.35f, 0.25f, 0.5f);
-		b.setModelBound(new BoundingBox());
-		b.updateModelBound();
-		//CharacterController.getInstance().playerid
-		player = new Node("test");
-		// player.setLocalTranslation(new Vector3f(100, 0, 100));
-		Vector3f location = new Vector3f(ClientPlayerData.getInstance()
-				.getCharacterData().getCharacterStatus().getCoordinateX(),
-				ClientPlayerData.getInstance().getCharacterData()
-						.getCharacterStatus().getCoordinateY(),
-				ClientPlayerData.getInstance().getCharacterData()
-						.getCharacterStatus().getCoordinateZ());
-		player.setLocalTranslation(location);
-
-		rootNode.attachChild(player);
-		player.attachChild(b);
-		player.updateWorldBound();
+		
+		player = ObjectManager.createPlayer();		
 	}
-
-	public void updatePlayer() {
-		Vector3f location = new Vector3f(ClientPlayerData.getInstance()
-				.getCharacterData().getCharacterStatus().getCoordinateX(),
-				ClientPlayerData.getInstance().getCharacterData()
-						.getCharacterStatus().getCoordinateY(),
-				ClientPlayerData.getInstance().getCharacterData()
-						.getCharacterStatus().getCoordinateZ());
-		player.setLocalTranslation(location);
-
-	}
-
-	
 
 	
 	/**

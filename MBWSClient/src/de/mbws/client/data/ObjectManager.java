@@ -126,4 +126,33 @@ public class ObjectManager {
 		listOfObjectsToDelete.add(objectID);
 	}
 
+	public static Node createPlayer() {
+		Player object = new Player(Integer.parseInt(ClientPlayerData.getInstance().getPlayer().getObjectID()));
+		object.setAlive(true);
+		object.setMovespeed(30);
+		object.setTurnspeed(15);
+		
+		Box b = new Box("box", new Vector3f(), 0.35f, 0.25f, 0.5f);
+		b.setModelBound(new BoundingBox());
+		b.updateModelBound();
+		Node player = new Node(ClientPlayerData.getInstance().getPlayer().getObjectID());
+		Vector3f location = new Vector3f(ClientPlayerData.getInstance()
+				.getCharacterData().getCharacterStatus().getCoordinateX(),
+				ClientPlayerData.getInstance().getCharacterData()
+						.getCharacterStatus().getCoordinateY(),
+				ClientPlayerData.getInstance().getCharacterData()
+						.getCharacterStatus().getCoordinateZ());
+		player.setLocalTranslation(location);
+
+		rootNode.attachChild(player);
+		player.attachChild(b);
+		player.updateWorldBound();
+		object.setModel(player);
+		
+		synchronized (objects) {
+			objects.put(object.getObjectID(), object);
+		}
+		return player;
+	}
+
 }
