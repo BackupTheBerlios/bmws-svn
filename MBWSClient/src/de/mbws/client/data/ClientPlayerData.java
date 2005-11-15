@@ -13,10 +13,9 @@ public class ClientPlayerData extends AbstractPlayerData {
 	private static ClientPlayerData instance;
 	
 	private Characterdata characterData;
+	private Player player;
 	
-	//TODO: Kerim Replace that with a different (private) field
-	public String walkingStatus = "stand";
-	public String turningStatus = "noTurn";
+	
 	
 	private ClientPlayerData() {}
 	public static ClientPlayerData getInstance() {
@@ -30,5 +29,13 @@ public class ClientPlayerData extends AbstractPlayerData {
 	}
 	public void setCharacterData(Characterdata characterData) {
 		this.characterData = characterData;
+	}
+	
+	public void setPlayer(Player aPlayer) {
+		this.player = aPlayer;
+	}
+	
+	public Player getPlayer() {
+		return player;
 	}
 }

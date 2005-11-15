@@ -7,6 +7,7 @@ import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 
 import de.mbws.client.data.ClientPlayerData;
+import de.mbws.client.data.Player;
 import de.mbws.client.state.MainMenuState;
 import de.mbws.common.data.generated.CharacterStatus;
 import de.mbws.common.data.generated.Characterdata;
@@ -31,7 +32,7 @@ public class CharacterController {
 
 	private static CharacterController instance;
 
-	public int playerid;
+	
 	/**
 	 * 
 	 */
@@ -49,8 +50,8 @@ public class CharacterController {
 	// TODO Kerim: correct error handling and next stages here !
 	public void handleEvent(CharacterEvent event) {
 		if (event.getEventType() == EventTypes.CHARACTER_RECEIVE) {
-			playerid=event.getPlayerInfo().getObject().getObjectID();
 			logger.info("Receiving Character!");
+			Player player = new Player(event.getPlayerInfo().getObject().getObjectID());
 			Characterdata characterData = new Characterdata();
 			PlayerInfo eventData = (PlayerInfo) event.getEventData();
 			CharacterStatus status = new CharacterStatus();
@@ -62,6 +63,7 @@ public class CharacterController {
 					.getX());
 			characterData.setCharacterStatus(status);
 			ClientPlayerData.getInstance().setCharacterData(characterData);
+			ClientPlayerData.getInstance().setPlayer(player);
 			logger.info("setting flag to start next state");
 			((MainMenuState) GameStateManager.getInstance().getChild("menu"))
 			.getInput().setStartNextState(true);
@@ -82,7 +84,7 @@ public class CharacterController {
 	public AbstractGameEvent createStopWalkingEvent(Vector3f loc, Quaternion rot) {
 		return createMovementEvent(EventTypes.MOVEMENT_STOP_WALK, loc,  rot);
 	}
-	public AbstractGameEvent createStopTurn(Vector3f loc, Quaternion rot) {
+	public AbstractGameEvent createStopTurnEvent(Vector3f loc, Quaternion rot) {
 		return createMovementEvent(EventTypes.MOVEMENT_STOP_TURN, loc,  rot);
 	}	
 	
@@ -91,6 +93,9 @@ public class CharacterController {
 	}
 	public AbstractGameEvent createStartWalkingEvent(Vector3f loc, Quaternion rot) {
 		return createMovementEvent(EventTypes.MOVEMENT_START_WALK, loc,  rot);
+	}
+	public AbstractGameEvent createStartWalkingBackwardsEvent(Vector3f loc, Quaternion rot) {
+		return createMovementEvent(EventTypes.MOVEMENT_START_WALK_BACKWARDS, loc,  rot);
 	}
 	public AbstractGameEvent createStartTurnRightEvent(Vector3f loc, Quaternion rot) {
 		return createMovementEvent(EventTypes.MOVEMENT_START_TURN_RIGHT, loc,  rot);
