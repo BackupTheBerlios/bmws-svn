@@ -75,7 +75,7 @@ public class EventWriter extends QueueWorker {
         } else {
             for (int i = 0; i < recipients.length; i++) {
                 if (recipients[i] != null) {
-                    logger.info("writeEvent(B): type=" + event.getClass().getName() + ", id=" + recipients[i]);
+                    logger.info("writeEvent(B): type=" + event.getClass().getName() + ", id=" + recipients[i]+ " at time: "+System.currentTimeMillis());
                     AbstractPlayerData player = server.getPlayerBySessionId(recipients[i]);
                     NIOUtils.prepBuffer(event, writeBuffer, player.getSessionId());
                     write(player.getChannel(), writeBuffer);
