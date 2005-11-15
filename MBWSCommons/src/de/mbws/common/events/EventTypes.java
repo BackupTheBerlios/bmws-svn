@@ -35,6 +35,7 @@ public class EventTypes {
     public static final int MOVEMENT_START_TURN_RIGHT = 104;
     public static final int MOVEMENT_STOP_TURN = 105;
     public static final int MOVEMENT_START_TURN_LEFT = 106;
+    public static final int MOVEMENT_START_WALK_BACKWARDS = 107;
     
     public static final int MOVEMENT_UPDATE_LOCATION = 150;
     
@@ -47,6 +48,7 @@ public class EventTypes {
     
     public static final int MOVABLE_OBJECT_CREATE = 204;
     public static final int MOVABLE_OBJECT_DESTROY = 205;
+	
     
     
     
