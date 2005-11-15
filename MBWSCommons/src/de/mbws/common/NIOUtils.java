@@ -29,7 +29,7 @@ public class NIOUtils {
 		if (size > 0) {
 			writeBuffer.putInt(4, size - 8);	
 		}
-		System.err.println("size " + size);
+		System.out.println("packet size " + size);
 		writeBuffer.flip();
 	}
 
