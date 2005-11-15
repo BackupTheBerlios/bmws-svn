@@ -15,7 +15,7 @@ public class GameEventFactory {
 			AbstractPlayerData p) {
 		int eventKey = payload.getInt();
 		logger.debug("got event " + eventKey + " with payload "
-				+ StringUtils.bytesToString(payload.array()));
+				+ StringUtils.bytesToString(payload.array())+" at Time: "+System.currentTimeMillis());
 		AbstractGameEvent event = null;
 		if (eventKey == EventTypes.LOGIN) {
 			event = new LoginEvent(payload);
