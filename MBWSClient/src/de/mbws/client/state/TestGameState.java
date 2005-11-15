@@ -15,7 +15,6 @@ import com.jme.light.DirectionalLight;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
-import com.jme.scene.Skybox;
 import com.jme.scene.state.LightState;
 import com.jme.system.DisplaySystem;
 
@@ -28,20 +27,18 @@ import de.mbws.client.state.handler.TestGameHandler;
 public class TestGameState extends StandardGameState {
 
 	private Node player;
-
-	
-
-	// private ChaseCamera chaser;
 	protected InputHandler input;
-
 	protected DisplaySystem display;
 
-	protected Skybox skybox;
+	//protected Skybox skybox;
 
 	// The chase camera, this will follow our player as he zooms around the
 	// level
 	private ChaseCamera chaser;
 
+	/**
+	 * the actionQueue is where we store those actions we receive from the net.
+	 */
 	private ActionQueue actionQueue = MBWSClient.actionQueue;
 
 	
@@ -82,7 +79,6 @@ public class TestGameState extends StandardGameState {
 	 */
 	//	TODO: Kerim do that in objectmanager ?
 	private void buildPlayer() {
-		
 		player = ObjectManager.createPlayer();		
 	}
 

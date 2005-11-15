@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.jme.bounding.BoundingBox;
+import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
@@ -72,7 +73,13 @@ public class ObjectManager {
 		b.updateModelBound();
 
 		Node player2 = new Node("Player2 Node");
-		player2.setLocalTranslation(new Vector3f(100, 0, 100));
+		// player2.setLocalTranslation(new Vector3f(100, 0, 100));
+
+		player2.setLocalTranslation(new Vector3f(wo.getLocation().getX(), wo
+				.getLocation().getY(), wo.getLocation().getZ()));
+		player2.setLocalRotation(new Quaternion(wo.getHeading().getX(), wo
+				.getHeading().getY(), wo.getHeading().getZ(), wo.getHeading()
+				.getW()));
 
 		rootNode.attachChild(player2);
 		player2.attachChild(b);
@@ -127,15 +134,17 @@ public class ObjectManager {
 	}
 
 	public static Node createPlayer() {
-		Player object = new Player(Integer.parseInt(ClientPlayerData.getInstance().getPlayer().getObjectID()));
+		Player object = new Player(Integer.parseInt(ClientPlayerData
+				.getInstance().getPlayer().getObjectID()));
 		object.setAlive(true);
 		object.setMovespeed(30);
 		object.setTurnspeed(15);
-		
+
 		Box b = new Box("box", new Vector3f(), 0.35f, 0.25f, 0.5f);
 		b.setModelBound(new BoundingBox());
 		b.updateModelBound();
-		Node player = new Node(ClientPlayerData.getInstance().getPlayer().getObjectID());
+		Node player = new Node(ClientPlayerData.getInstance().getPlayer()
+				.getObjectID());
 		Vector3f location = new Vector3f(ClientPlayerData.getInstance()
 				.getCharacterData().getCharacterStatus().getCoordinateX(),
 				ClientPlayerData.getInstance().getCharacterData()
@@ -148,7 +157,7 @@ public class ObjectManager {
 		player.attachChild(b);
 		player.updateWorldBound();
 		object.setModel(player);
-		
+
 		synchronized (objects) {
 			objects.put(object.getObjectID(), object);
 		}
