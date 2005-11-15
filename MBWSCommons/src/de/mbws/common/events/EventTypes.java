@@ -31,6 +31,7 @@ public class EventTypes {
     public static final int MOVEMENT_START_WALK = 100;
     public static final int MOVEMENT_STOP_WALK = 101;
     public static final int MOVEMENT_START_RUN = 102;
+    //TODO: is that needed ?
     public static final int MOVEMENT_STOP_RUN = 103;
     public static final int MOVEMENT_START_TURN_RIGHT = 104;
     public static final int MOVEMENT_STOP_TURN = 105;
