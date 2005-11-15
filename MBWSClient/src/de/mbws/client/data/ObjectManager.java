@@ -63,7 +63,7 @@ public class ObjectManager {
 		MovableObject object = new MovableObject(wo.getObjectID());
 		object.setAlive(true);
 		object.setMovespeed(30);
-		object.setTurnspeed(15);
+		object.setTurnspeed(5);
 		// TODO: Just for testing:
 
 		// box stand in
@@ -139,7 +139,7 @@ public class ObjectManager {
 				.getInstance().getPlayer().getObjectID()));
 		object.setAlive(true);
 		object.setMovespeed(30);
-		object.setTurnspeed(15);
+		object.setTurnspeed(5);
 
 		Box b = new Box("box", new Vector3f(), 0.35f, 0.25f, 0.5f);
 		b.setModelBound(new BoundingBox());

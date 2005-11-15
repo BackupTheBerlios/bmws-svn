@@ -55,6 +55,10 @@ public class ClientNetworkController extends Thread {
 				processIncomingEvents();
 				writeOutgoingEvents();
 				Thread.sleep(50);
+			//TODO: use two threads and wait !
+				synchronized (inQueue) {
+					inQueue.wait();
+				}
 			}
 		} catch (Exception e) {
 			logger.error("Error in main loop", e);
@@ -64,8 +68,8 @@ public class ClientNetworkController extends Thread {
 	public void connect() throws InitializationException {
 		try {
 			if (channel == null || !channel.isConnected()) {
-				// TODO: Kerim: FIX THAT ADRESS (localhost)
-				channel = SocketChannel.open(new InetSocketAddress("212.202.184.164",
+				// TODO: Kerim: FIX THAT ADRESS (localhost)212.202.184.164
+				channel = SocketChannel.open(new InetSocketAddress("localhost",
 						5000));
 				channel.configureBlocking(false);
 				// we don't like Nagle's algorithm

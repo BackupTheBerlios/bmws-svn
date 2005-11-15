@@ -21,6 +21,7 @@ import de.mbws.client.controller.CharacterController;
 import de.mbws.client.controller.ClientNetworkController;
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.common.Globals;
+import de.mbws.common.events.EventTypes;
 
 public class TestGameHandler extends InputHandler {
 
@@ -114,7 +115,8 @@ public class TestGameHandler extends InputHandler {
 	public void update(float time) {
 		// //TODO: We only take care of walking at the moment
 		// 2 events ?? why ?
-
+		super.update(time);
+		//TODO: Take this out and register individual actions !
 		Vector3f location = player.getLocalTranslation();
 		Quaternion rotation = player.getLocalRotation();
 		boolean forward = KeyBindingManager.getKeyBindingManager()
@@ -123,52 +125,17 @@ public class TestGameHandler extends InputHandler {
 				.isValidCommand(BACKWARD);
 		int moveStatus = ClientPlayerData.getInstance().getPlayer()
 				.getMoveStatus();
+		//TODO: Refactor !
 		if (!(forward && backward)) {
 			if (!forward
 					&& (moveStatus == Globals.WALKING || moveStatus == Globals.RUNNING)) {
-				ClientPlayerData.getInstance().getPlayer().setMoveStatus(
-						Globals.STANDING);
-				ClientNetworkController.getInstance().handleOutgoingEvent(
-						CharacterController.getInstance()
-								.createStopWalkingEvent(
-										ClientPlayerData.getInstance()
-												.getPlayer().getMoveStatus(),
-										ClientPlayerData.getInstance()
-												.getPlayer().getTurnStatus(),
-										location, rotation));
+				sendMovementEvent(Globals.STANDING, EventTypes.MOVEMENT_STOP_WALK,location, rotation);
 			} else if (forward && moveStatus != Globals.WALKING) {
-				ClientPlayerData.getInstance().getPlayer().setMoveStatus(
-						Globals.WALKING);
-				ClientNetworkController.getInstance().handleOutgoingEvent(
-						CharacterController.getInstance()
-								.createStartWalkingEvent(
-										ClientPlayerData.getInstance()
-												.getPlayer().getMoveStatus(),
-										ClientPlayerData.getInstance()
-												.getPlayer().getTurnStatus(),
-										location, rotation));
+				sendMovementEvent(Globals.WALKING, EventTypes.MOVEMENT_START_WALK,location, rotation);
 			} else if (!backward && moveStatus == Globals.WALKING_BACKWARD) {
-				ClientPlayerData.getInstance().getPlayer().setMoveStatus(
-						Globals.WALKING_BACKWARD);
-				ClientNetworkController.getInstance().handleOutgoingEvent(
-						CharacterController.getInstance()
-								.createStopWalkingEvent(
-										ClientPlayerData.getInstance()
-												.getPlayer().getMoveStatus(),
-										ClientPlayerData.getInstance()
-												.getPlayer().getTurnStatus(),
-										location, rotation));
+				sendMovementEvent(Globals.STANDING, EventTypes.MOVEMENT_STOP_WALK,location, rotation);
 			} else if (backward && moveStatus != Globals.WALKING_BACKWARD) {
-				ClientPlayerData.getInstance().getPlayer().setMoveStatus(
-						Globals.STANDING);
-				ClientNetworkController.getInstance().handleOutgoingEvent(
-						CharacterController.getInstance()
-								.createStartWalkingBackwardsEvent(
-										ClientPlayerData.getInstance()
-												.getPlayer().getMoveStatus(),
-										ClientPlayerData.getInstance()
-												.getPlayer().getTurnStatus(),
-										location, rotation));
+				sendMovementEvent(Globals.WALKING_BACKWARD, EventTypes.MOVEMENT_START_WALK_BACKWARDS,location, rotation);
 			}
 		}
 		boolean turnLeft = KeyBindingManager.getKeyBindingManager()
@@ -179,48 +146,38 @@ public class TestGameHandler extends InputHandler {
 			int turnStatus = ClientPlayerData.getInstance().getPlayer()
 					.getTurnStatus();
 			if (turnLeft && turnStatus != Globals.TURN_LEFT) {
-				ClientPlayerData.getInstance().getPlayer().setTurnStatus(
-						Globals.TURN_LEFT);
-				ClientNetworkController.getInstance().handleOutgoingEvent(
-						CharacterController.getInstance()
-								.createStartTurnLeftEvent(
-										ClientPlayerData.getInstance()
-												.getPlayer().getMoveStatus(),
-										ClientPlayerData.getInstance()
-												.getPlayer().getTurnStatus(),
-										location, rotation));
+				sendTurnMovementEvent(Globals.TURN_LEFT, EventTypes.MOVEMENT_START_TURN_LEFT,location, rotation);
 			} else if (!turnLeft && turnStatus == Globals.TURN_LEFT) {
-				ClientPlayerData.getInstance().getPlayer().setTurnStatus(
-						Globals.NO_TURN);
-				ClientNetworkController.getInstance().handleOutgoingEvent(
-						CharacterController.getInstance().createStopTurnEvent(
-								ClientPlayerData.getInstance().getPlayer()
-										.getMoveStatus(),
-								ClientPlayerData.getInstance().getPlayer()
-										.getTurnStatus(), location, rotation));
+				sendTurnMovementEvent(Globals.NO_TURN, EventTypes.MOVEMENT_STOP_TURN,location, rotation);
 			} else if (turnRight && turnStatus != Globals.TURN_RIGHT) {
-				ClientPlayerData.getInstance().getPlayer().setTurnStatus(
-						Globals.TURN_RIGHT);
-				ClientNetworkController.getInstance().handleOutgoingEvent(
-						CharacterController.getInstance()
-								.createStartTurnRightEvent(
-										ClientPlayerData.getInstance()
-												.getPlayer().getMoveStatus(),
-										ClientPlayerData.getInstance()
-												.getPlayer().getTurnStatus(),
-										location, rotation));
+				sendTurnMovementEvent(Globals.TURN_RIGHT, EventTypes.MOVEMENT_START_TURN_RIGHT,location, rotation);
 			} else if (!turnRight && turnStatus == Globals.TURN_RIGHT) {
-				ClientPlayerData.getInstance().getPlayer().setTurnStatus(
-						Globals.NO_TURN);
-				ClientNetworkController.getInstance().handleOutgoingEvent(
-						CharacterController.getInstance().createStopTurnEvent(
-								ClientPlayerData.getInstance().getPlayer()
-										.getMoveStatus(),
-								ClientPlayerData.getInstance().getPlayer()
-										.getTurnStatus(), location, rotation));
+				sendTurnMovementEvent(Globals.NO_TURN, EventTypes.MOVEMENT_STOP_TURN,location, rotation);
 			}
 		}
-		super.update(time);
+	}
+	private void sendMovementEvent(byte newMoveStatus, int movementType, Vector3f location, Quaternion rotation) {
+		ClientPlayerData.getInstance().getPlayer().setMoveStatus(
+				newMoveStatus);
+		ClientNetworkController.getInstance().handleOutgoingEvent(
+				CharacterController.getInstance()
+						.createMovementEvent(movementType,
+								newMoveStatus,
+								ClientPlayerData.getInstance()
+										.getPlayer().getTurnStatus(),
+								location, rotation));
+	}
+	
+	private void sendTurnMovementEvent(byte newTurnStatus, int movementType, Vector3f location, Quaternion rotation) {
+		ClientPlayerData.getInstance().getPlayer().setTurnStatus(
+				newTurnStatus);
+		ClientNetworkController.getInstance().handleOutgoingEvent(
+				CharacterController.getInstance()
+						.createMovementEvent(movementType,
+								ClientPlayerData.getInstance()
+								.getPlayer().getMoveStatus(),
+								newTurnStatus,
+								location, rotation));
 	}
 
 	private static class ExitAction extends InputAction {

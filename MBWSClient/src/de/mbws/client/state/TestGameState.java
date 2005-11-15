@@ -5,6 +5,8 @@ package de.mbws.client.state;
 
 import java.util.HashMap;
 
+import org.apache.log4j.Logger;
+
 import com.jme.app.StandardGameState;
 import com.jme.bounding.BoundingBox;
 import com.jme.input.ChaseCamera;
@@ -41,7 +43,7 @@ public class TestGameState extends StandardGameState {
 	 */
 	private ActionQueue actionQueue = MBWSClient.actionQueue;
 
-	
+	private static Logger logger = Logger.getLogger("TestGameState");
 
 	
 
@@ -143,7 +145,9 @@ public class TestGameState extends StandardGameState {
 		cam.update();
 
 		AbstractEventAction action = actionQueue.deQueue();
+		
 		if (action!= null) {
+			logger.info("Message dequeued: "+action.getEventType());
 			action.performAction();
 		}
 		ObjectManager.update(tpf);

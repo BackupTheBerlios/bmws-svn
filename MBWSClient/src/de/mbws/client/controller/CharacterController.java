@@ -78,31 +78,31 @@ public class CharacterController {
 	}
 
 
-	public AbstractGameEvent createStopRunningEvent(byte movementType, byte turnType, Vector3f loc, Quaternion rot) {
-		return createMovementEvent(EventTypes.MOVEMENT_STOP_RUN, movementType, turnType, loc,  rot);
-	}
-	public AbstractGameEvent createStopWalkingEvent(byte movementType, byte turnType, Vector3f loc, Quaternion rot) {
-		return createMovementEvent(EventTypes.MOVEMENT_STOP_WALK, movementType, turnType, loc,  rot);
-	}
-	public AbstractGameEvent createStopTurnEvent(byte movementType, byte turnType, Vector3f loc, Quaternion rot) {
-		return createMovementEvent(EventTypes.MOVEMENT_STOP_TURN, movementType, turnType, loc,  rot);
-	}	
-	
-	public AbstractGameEvent createStartRunningEvent(byte movementType, byte turnType, Vector3f loc, Quaternion rot) {
-		return createMovementEvent(EventTypes.MOVEMENT_START_RUN, movementType, turnType, loc,  rot);
-	}
-	public AbstractGameEvent createStartWalkingEvent(byte movementType, byte turnType, Vector3f loc, Quaternion rot) {
-		return createMovementEvent(EventTypes.MOVEMENT_START_WALK, movementType, turnType, loc,  rot);
-	}
-	public AbstractGameEvent createStartWalkingBackwardsEvent(byte movementType, byte turnType, Vector3f loc, Quaternion rot) {
-		return createMovementEvent(EventTypes.MOVEMENT_START_WALK_BACKWARDS, movementType, turnType, loc,  rot);
-	}
-	public AbstractGameEvent createStartTurnRightEvent(byte movementType, byte turnType, Vector3f loc, Quaternion rot) {
-		return createMovementEvent(EventTypes.MOVEMENT_START_TURN_RIGHT, movementType, turnType, loc,  rot);
-	}
-	public AbstractGameEvent createStartTurnLeftEvent(byte movementType, byte turnType, Vector3f loc, Quaternion rot) {
-		return createMovementEvent(EventTypes.MOVEMENT_START_TURN_LEFT, movementType, turnType, loc,  rot);
-	}
+//	public AbstractGameEvent createStopRunningEvent(byte movementType, byte turnType, Vector3f loc, Quaternion rot) {
+//		return createMovementEvent(EventTypes.MOVEMENT_STOP_RUN, movementType, turnType, loc,  rot);
+//	}
+//	public AbstractGameEvent createStopWalkingEvent(byte movementType, byte turnType, Vector3f loc, Quaternion rot) {
+//		return createMovementEvent(EventTypes.MOVEMENT_STOP_WALK, movementType, turnType, loc,  rot);
+//	}
+//	public AbstractGameEvent createStopTurnEvent(byte movementType, byte turnType, Vector3f loc, Quaternion rot) {
+//		return createMovementEvent(EventTypes.MOVEMENT_STOP_TURN, movementType, turnType, loc,  rot);
+//	}	
+//	
+//	public AbstractGameEvent createStartRunningEvent(byte movementType, byte turnType, Vector3f loc, Quaternion rot) {
+//		return createMovementEvent(EventTypes.MOVEMENT_START_RUN, movementType, turnType, loc,  rot);
+//	}
+//	public AbstractGameEvent createStartWalkingEvent(byte movementType, byte turnType, Vector3f loc, Quaternion rot) {
+//		return createMovementEvent(EventTypes.MOVEMENT_START_WALK, movementType, turnType, loc,  rot);
+//	}
+//	public AbstractGameEvent createStartWalkingBackwardsEvent(byte movementType, byte turnType, Vector3f loc, Quaternion rot) {
+//		return createMovementEvent(EventTypes.MOVEMENT_START_WALK_BACKWARDS, movementType, turnType, loc,  rot);
+//	}
+//	public AbstractGameEvent createStartTurnRightEvent(byte movementType, byte turnType, Vector3f loc, Quaternion rot) {
+//		return createMovementEvent(EventTypes.MOVEMENT_START_TURN_RIGHT, movementType, turnType, loc,  rot);
+//	}
+//	public AbstractGameEvent createStartTurnLeftEvent(byte movementType, byte turnType, Vector3f loc, Quaternion rot) {
+//		return createMovementEvent(EventTypes.MOVEMENT_START_TURN_LEFT, movementType, turnType, loc,  rot);
+//	}
 	
 	public AbstractGameEvent createMovementEvent(int eventType,byte movementType, byte turnType, Vector3f loc, Quaternion rot) {
 		MoveData md = new MoveData();
