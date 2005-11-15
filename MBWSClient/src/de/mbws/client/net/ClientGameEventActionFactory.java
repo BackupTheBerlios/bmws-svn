@@ -28,11 +28,14 @@ public class ClientGameEventActionFactory {
 		logger.debug("got event " + eventKey + " with payload "
 				+ StringUtils.bytesToString(payload.array()));
 		AbstractEventAction action = null;
-		if (eventKey == EventTypes.MOVEMENT_START_WALK) {
-			action = new MoveObjectAction(payload,new MoveData());
-			action.setEventType(eventKey);
-		} else if (eventKey == EventTypes.MOVEMENT_STOP_WALK) {
-			action = new MoveObjectAction(payload,new MoveData());
+		if (eventKey == EventTypes.MOVEMENT_START_WALK
+				|| eventKey == EventTypes.MOVEMENT_START_RUN
+				|| eventKey == EventTypes.MOVEMENT_STOP_WALK
+				|| eventKey == EventTypes.MOVEMENT_START_TURN_LEFT
+				|| eventKey == EventTypes.MOVEMENT_STOP_TURN
+				|| eventKey == EventTypes.MOVEMENT_START_TURN_RIGHT
+				|| eventKey == EventTypes.MOVEMENT_START_WALK_BACKWARDS) {
+			action = new MoveObjectAction(payload, new MoveData());
 			action.setEventType(eventKey);
 		} else if (eventKey == EventTypes.OBJECT_CREATE) {
 			action = new CreateObjectAction(payload, new WorldObject());
@@ -50,5 +53,4 @@ public class ClientGameEventActionFactory {
 		// }
 		return action;
 	}
-
 }

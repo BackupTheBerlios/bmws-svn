@@ -72,7 +72,8 @@ public class ObjectManager {
 		b.setModelBound(new BoundingBox());
 		b.updateModelBound();
 
-		Node player2 = new Node("Player2 Node");
+		//TODO: "player2 node" wont work, trying integer.toString of objectid!!
+		Node player2 = new Node(Integer.toString(wo.getObjectID()));
 		// player2.setLocalTranslation(new Vector3f(100, 0, 100));
 
 		player2.setLocalTranslation(new Vector3f(wo.getLocation().getX(), wo
