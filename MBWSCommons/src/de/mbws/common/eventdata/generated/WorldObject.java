@@ -6,17 +6,17 @@ import java.util.*;
 import java.nio.ByteBuffer;
 
 public class WorldObject extends AbstractEventData { 
-	private int objectID;
+	private String objectID;
 	private int modelID;
 	private IntVector3D location;
 	private NetQuaternion heading;
 
 
-	public int getObjectID() {
+	public String getObjectID() {
 		return objectID;
 	}
 
-	public void setObjectID(int objectID) {
+	public void setObjectID(String objectID) {
 		this.objectID = objectID;
 	} 
 
@@ -46,7 +46,7 @@ public class WorldObject extends AbstractEventData {
 
 
 	public void deserialize(ByteBuffer payload) {
-		objectID = payload.getInt();
+		objectID = readString(payload);
 		modelID = payload.getInt();
 		location = new IntVector3D();
 		location.deserialize(payload);
@@ -55,7 +55,7 @@ public class WorldObject extends AbstractEventData {
 	}
 
 	public int serialize(ByteBuffer payload) {
-		payload.putInt(objectID);
+		writeString(payload, objectID);
 		payload.putInt(modelID);
 		location.serialize(payload);
 		heading.serialize(payload);

@@ -51,7 +51,8 @@ public class GameEventFactory {
 				|| eventKey == EventTypes.MOVEMENT_STOP_RUN
 				|| eventKey == EventTypes.MOVEMENT_START_TURN_LEFT
 				|| eventKey == EventTypes.MOVEMENT_START_TURN_RIGHT
-				|| eventKey == EventTypes.MOVEMENT_STOP_TURN) {
+				|| eventKey == EventTypes.MOVEMENT_STOP_TURN
+                || eventKey == EventTypes.MOVEMENT_START_WALK_BACKWARDS) {
 			event = new MoveEvent(payload);
 			event.setEventType(eventKey);
 		} else if (eventKey == EventTypes.OBJECT_CREATE) {

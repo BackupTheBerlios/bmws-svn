@@ -6,7 +6,7 @@ import java.util.*;
 import java.nio.ByteBuffer;
 
 public class MoveData extends AbstractEventData { 
-	private int objectID;
+	private String objectID;
 	private long time;
 	private byte movementType;
 	private byte turnType;
@@ -14,11 +14,11 @@ public class MoveData extends AbstractEventData {
 	private NetQuaternion heading;
 
 
-	public int getObjectID() {
+	public String getObjectID() {
 		return objectID;
 	}
 
-	public void setObjectID(int objectID) {
+	public void setObjectID(String objectID) {
 		this.objectID = objectID;
 	} 
 
@@ -64,7 +64,7 @@ public class MoveData extends AbstractEventData {
 
 
 	public void deserialize(ByteBuffer payload) {
-		objectID = payload.getInt();
+		objectID = readString(payload);
 		time = payload.getLong();
 		movementType = payload.get();
 		turnType = payload.get();
@@ -75,7 +75,7 @@ public class MoveData extends AbstractEventData {
 	}
 
 	public int serialize(ByteBuffer payload) {
-		payload.putInt(objectID);
+		writeString(payload, objectID);
 		payload.putLong(time);
 		payload.put(movementType);
 		payload.put(turnType);

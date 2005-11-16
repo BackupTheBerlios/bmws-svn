@@ -44,6 +44,8 @@ public class Globals {
 	
 	/** default status code for right turning models */
 	public static final byte TURN_RIGHT = 2;
+    
+    public static final String OBJECT_ID_PREFIX_CHARACTER = "C";
 }
 
 
