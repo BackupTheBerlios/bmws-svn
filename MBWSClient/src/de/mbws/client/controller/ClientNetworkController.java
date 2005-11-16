@@ -16,8 +16,6 @@ import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.AccountEvent;
 import de.mbws.common.events.CharacterEvent;
 import de.mbws.common.events.LoginEvent;
-import de.mbws.common.events.MoveEvent;
-import de.mbws.common.events.ObjectEvent;
 import de.mbws.common.exceptions.InitializationException;
 
 public class ClientNetworkController extends Thread {
@@ -54,11 +52,12 @@ public class ClientNetworkController extends Thread {
 			while (running) {
 				processIncomingEvents();
 				writeOutgoingEvents();
-				Thread.sleep(50);
+				Thread.yield();
+				//Thread.sleep(50);
 			//TODO: use two threads and wait !
-				synchronized (inQueue) {
-					inQueue.wait();
-				}
+//				synchronized (inQueue) {
+//					inQueue.wait();
+//				}
 			}
 		} catch (Exception e) {
 			logger.error("Error in main loop", e);
@@ -110,7 +109,7 @@ public class ClientNetworkController extends Thread {
 		while (inQueue.size() > 0) {
 			try {
 				event = inQueue.deQueue();
-				// TODO Kerim : process the events HERE
+				logger.info("Event +"+event.getEventType()+" dequeued at: "+System.currentTimeMillis());
 				if (event instanceof LoginEvent) {
 					LoginController.getInstance().handleEvent(
 							(LoginEvent) event);
@@ -120,13 +119,7 @@ public class ClientNetworkController extends Thread {
 				} else if (event instanceof CharacterEvent) {
 					CharacterEvent e = (CharacterEvent) event;
 					CharacterController.getInstance().handleEvent(e);
-				} else if (event instanceof MoveEvent) {
-					MoveEvent e = (MoveEvent) event;
-					MovableObjectsController.getInstance().handleEvent(e);
-				} else if (event instanceof ObjectEvent) {
-					ObjectEvent e = (ObjectEvent) event;
-					ObjectController.getInstance().handleEvent(e);
-				}
+				} 
 			} catch (InterruptedException ie) {
 				logger.info("InterruptedException in readin in-queue", ie);
 			}

@@ -147,8 +147,9 @@ public class TestGameState extends StandardGameState {
 		AbstractEventAction action = actionQueue.deQueue();
 		
 		if (action!= null) {
-			logger.info("Message dequeued: "+action.getEventType());
+			logger.info("Message "+action.getEventType()+" dequeued at "+System.currentTimeMillis());
 			action.performAction();
+			logger.info("Message "+action.getEventType()+" performed at "+System.currentTimeMillis());
 		}
 		ObjectManager.update(tpf);
 

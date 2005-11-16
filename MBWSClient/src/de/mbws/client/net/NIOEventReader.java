@@ -15,7 +15,6 @@ import de.mbws.client.eventactions.AbstractEventAction;
 import de.mbws.common.Attachment;
 import de.mbws.common.EventQueue;
 import de.mbws.common.events.AbstractGameEvent;
-import de.mbws.common.events.GameEventFactory;
 
 public class NIOEventReader extends Thread {
     /** log4j logger */
@@ -127,7 +126,7 @@ public class NIOEventReader extends Thread {
         if (attachment.sessionId != 0) {
             ClientPlayerData.getInstance().setSessionId(attachment.sessionId);
         }
-        return GameEventFactory.getGameEvent(attachment.getPayload(), ClientPlayerData.getInstance());
+        return ClientGameEventActionFactory.getGameEvent(attachment.getPayload(), ClientPlayerData.getInstance());
     }
     
     private AbstractEventAction getEventAction(Attachment attachment) {
