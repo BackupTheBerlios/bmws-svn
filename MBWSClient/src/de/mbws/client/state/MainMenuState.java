@@ -35,7 +35,10 @@ import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.util.Dimension;
 
 import de.mbws.client.MBWSClient;
+import de.mbws.client.controller.AccountController;
+import de.mbws.client.controller.ClientNetworkController;
 import de.mbws.client.state.handler.MainMenuHandler;
+import de.mbws.common.data.AccountData;
 
 /**
  * @author Kerim
@@ -53,7 +56,6 @@ public class MainMenuState extends StandardGameState {
 	private MainMenuHandler input;
 
 	BTextField loginTF;
-
 	BTextField passwordTF;
 	BRootNode _root;
 	BWindow window ;
@@ -100,6 +102,7 @@ public class MainMenuState extends StandardGameState {
 		passwordTF = new BTextField("sack");//Settings.getInstance().getPassword());
 		passwordTF.setPreferredSize(new Dimension(100, 30));
 		BButton login = new BButton("Login");
+		BButton account = new BButton("Create Account");
 		BButton options = new BButton("Options");
 
 		loginContainer.add(loginLabel);
@@ -109,11 +112,12 @@ public class MainMenuState extends StandardGameState {
 		cont.add(loginContainer);
 		cont.add(passwordContainer);
 		cont.add(login);
+		cont.add(account);
 		cont.add(options);
 
 		window.add(cont, BorderLayout.CENTER);
 
-		window.setSize(200, 150);
+		window.setSize(200, 250);
 		window.setLocation(display.getWidth() / 2 - window.getWidth() / 2,
 				display.getHeight() / 2 - window.getHeight() / 2);
 		_root.addWindow(window);
@@ -123,6 +127,21 @@ public class MainMenuState extends StandardGameState {
 				String password = passwordTF.getText();
 				String login = loginTF.getText();
 				if (login != null && password != null) {
+					input.login(login, password);
+				}
+			}
+		});
+		account.addListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				String password = passwordTF.getText();
+				String login = loginTF.getText();
+				if (login != null && password != null) {
+					AccountData account = new AccountData();
+					account.setUsername(login);
+					account.setPassword(password);
+					account.setPasswordConfirmation(password);
+					//TODO correct that
+					ClientNetworkController.getInstance().handleOutgoingEvent(AccountController.getInstance().createRegisterEvent(account,null));
 					input.login(login, password);
 				}
 			}

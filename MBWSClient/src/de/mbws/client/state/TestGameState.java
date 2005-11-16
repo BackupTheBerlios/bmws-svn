@@ -3,12 +3,21 @@
  */
 package de.mbws.client.state;
 
+import java.awt.Image;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.HashMap;
+
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
+import javax.swing.ImageIcon;
 
 import org.apache.log4j.Logger;
 
 import com.jme.app.StandardGameState;
 import com.jme.bounding.BoundingBox;
+import com.jme.image.Texture;
 import com.jme.input.ChaseCamera;
 import com.jme.input.InputHandler;
 import com.jme.input.MouseInput;
@@ -16,9 +25,17 @@ import com.jme.input.thirdperson.ThirdPersonMouseLook;
 import com.jme.light.DirectionalLight;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
+import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.state.LightState;
+import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
+import com.jme.util.TextureManager;
+import com.jmex.terrain.TerrainBlock;
+import com.jmex.terrain.util.ImageBasedHeightMap;
+import com.jmex.terrain.util.ProceduralTextureGenerator;
+import com.sun.imageio.plugins.jpeg.JPEGImageReader;
+import com.sun.imageio.plugins.jpeg.JPEGImageReaderSpi;
 
 import de.mbws.client.MBWSClient;
 import de.mbws.client.data.ObjectManager;
@@ -32,7 +49,7 @@ public class TestGameState extends StandardGameState {
 	protected InputHandler input;
 	protected DisplaySystem display;
 
-	//protected Skybox skybox;
+	// protected Skybox skybox;
 
 	// The chase camera, this will follow our player as he zooms around the
 	// level
@@ -45,13 +62,11 @@ public class TestGameState extends StandardGameState {
 
 	private static Logger logger = Logger.getLogger("TestGameState");
 
-	
-
 	public TestGameState(String name) {
 		super(name);
 		this.display = DisplaySystem.getDisplaySystem();
-		ObjectManager.initialize(rootNode,display);
-		
+		ObjectManager.initialize(rootNode, display);
+		//buildTerrain();
 		// Light the world
 		buildLighting();
 		// Build the player
@@ -61,7 +76,7 @@ public class TestGameState extends StandardGameState {
 		// build the player input
 		buildInput();
 		// build the world around the player
-		
+
 		// update the scene graph for rendering
 		rootNode.updateGeometricState(0.0f, true);
 		rootNode.updateRenderState();
@@ -77,14 +92,65 @@ public class TestGameState extends StandardGameState {
 	 * as a place holder. This is a good demonstration that you don't always
 	 * need your graphics in place before you can start working on your
 	 * application.
-	 *
+	 * 
 	 */
-	//	TODO: Kerim do that in objectmanager ?
+	// TODO: Kerim do that in objectmanager ?
 	private void buildPlayer() {
-		player = ObjectManager.createPlayer();		
+		player = ObjectManager.createPlayer();
 	}
 
-	
+	private void buildTerrain() {
+		try {
+			Image result = null;
+			TerrainBlock tb;
+
+			File file = new File("map/demo.jpg");
+			ImageInputStream iis = ImageIO
+					.createImageInputStream(new FileInputStream(file));
+			ImageReader reader = new JPEGImageReader(new JPEGImageReaderSpi());
+			reader.setInput(iis, true);
+			result = reader.read(0);
+
+			ImageBasedHeightMap heightMap = new ImageBasedHeightMap(result);
+			// MidPointHeightMap heightMap = new MidPointHeightMap(64, 1f);
+			// Scale the data
+			Vector3f terrainScale = new Vector3f(10f, 1f, 10f);
+			// create a terrainblock
+			tb = new TerrainBlock("Terrain", heightMap.getSize(), terrainScale,
+					heightMap.getHeightMap(), new Vector3f(0, 0, 0), false);
+
+			tb.setModelBound(new BoundingBox());
+			tb.updateModelBound();
+
+			// generate a terrain texture with 2 textures
+			ProceduralTextureGenerator pt = new ProceduralTextureGenerator(
+					heightMap);
+			pt.addTexture(new ImageIcon(TestGameState.class.getClassLoader()
+					.getResource("texture/water.png")), 0, 0, 5);
+			pt.addTexture(new ImageIcon(TestGameState.class.getClassLoader()
+					.getResource("texture/dirt.jpg")), 1, 10, 20);
+			pt.addTexture(new ImageIcon(TestGameState.class.getClassLoader()
+					.getResource("texture/grassb.png")), 15, 70, 90);
+			pt.addTexture(new ImageIcon(TestGameState.class.getClassLoader()
+					.getResource("texture/highest.jpg")), 60, 130, 256);
+			pt.createTexture(256);
+
+			// assign the texture to the terrain
+			TextureState ts = display.getRenderer().createTextureState();
+			Texture t1 = TextureManager.loadTexture(pt.getImageIcon()
+					.getImage(), Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR,
+					true);
+			ts.setTexture(t1);
+
+			tb.setRenderState(ts);
+			tb.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+			rootNode.attachChild(tb);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
 	/**
 	 * creates a light for the terrain.
 	 */
@@ -145,11 +211,13 @@ public class TestGameState extends StandardGameState {
 		cam.update();
 
 		AbstractEventAction action = actionQueue.deQueue();
-		
-		if (action!= null) {
-			logger.info("Message "+action.getEventType()+" dequeued at "+System.currentTimeMillis());
+
+		if (action != null) {
+			logger.info("Message " + action.getEventType() + " dequeued at "
+					+ System.currentTimeMillis());
 			action.performAction();
-			logger.info("Message "+action.getEventType()+" performed at "+System.currentTimeMillis());
+			logger.info("Message " + action.getEventType() + " performed at "
+					+ System.currentTimeMillis());
 		}
 		ObjectManager.update(tpf);
 
@@ -182,35 +250,5 @@ public class TestGameState extends StandardGameState {
 		MouseInput.get().setCursorVisible(false);
 		super.onActivate();
 	}
-
-//	public GameObject addObject(WorldObject objectInfo) {
-//		Box b = new Box("box2", new Vector3f(), 0.35f, 0.25f, 0.5f);
-//		b.setDefaultColor(new ColorRGBA(ColorRGBA.white));
-//		b.setModelBound(new BoundingBox());
-//		b.updateModelBound();
-//		GameObject n = new GameObject("test");// +objectInfo.getObjectID());
-//
-//		// IntVector3D l = objectInfo.getLocation();
-//		Vector3f location = new Vector3f(new Vector3f(100, 0, 100));// l.getX(),l.getY(),l.getZ());
-//		n.setLocalTranslation(location);
-//
-//		// IntVector3D h = objectInfo.getHeading();
-//		// Vector3f rotation = new Vector3f(h.getX(),h.getY(),h.getZ());
-//		// n.setLocalTranslation(rotation);
-//
-//		rootNode.attachChild(n);
-//		n.attachChild(b);
-//		n.updateWorldBound();
-//		rootNode.updateGeometricState(0.0f, true);
-//		rootNode.updateRenderState();
-//		// display.getRenderer().clearBuffers();
-//		// display.getRenderer().draw(rootNode);
-//
-//		return n;
-//	}
-//
-//	public void deleteObject(GameObject node) {
-//		rootNode.detachChild(node);
-//	}
 
 }

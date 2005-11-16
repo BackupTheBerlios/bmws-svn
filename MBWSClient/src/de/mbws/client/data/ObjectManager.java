@@ -141,7 +141,7 @@ public class ObjectManager {
 		object.setMovespeed(30);
 		object.setTurnspeed(5);
 
-		Box b = new Box("box", new Vector3f(), 0.35f, 0.25f, 0.5f);
+		Box b = new Box("box2", new Vector3f(), 0.35f, 0.25f, 0.5f);
 		b.setModelBound(new BoundingBox());
 		b.updateModelBound();
 		Node player = new Node(ClientPlayerData.getInstance().getPlayer()
