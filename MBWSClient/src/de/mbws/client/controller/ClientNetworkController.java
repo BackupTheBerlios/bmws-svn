@@ -52,8 +52,8 @@ public class ClientNetworkController extends Thread {
 			while (running) {
 				processIncomingEvents();
 				writeOutgoingEvents();
-				Thread.yield();
-				//Thread.sleep(50);
+				//Thread.yield();
+				Thread.sleep(10);
 			//TODO: use two threads and wait !
 //				synchronized (inQueue) {
 //					inQueue.wait();
@@ -68,7 +68,7 @@ public class ClientNetworkController extends Thread {
 		try {
 			if (channel == null || !channel.isConnected()) {
 				// TODO: Kerim: FIX THAT ADRESS (localhost)212.202.184.164
-				channel = SocketChannel.open(new InetSocketAddress("localhost",
+				channel = SocketChannel.open(new InetSocketAddress("212.202.184.164",
 						5000));
 				channel.configureBlocking(false);
 				// we don't like Nagle's algorithm
