@@ -11,7 +11,7 @@ public class LoginEvent extends AbstractGameEvent {
 	 * Constructor for the server. Should probably be package visible 
 	 * @param payload
 	 */
-	LoginEvent(ByteBuffer payload) {
+	public LoginEvent(ByteBuffer payload) {
 		super(payload, new LoginData());
 	}
 	

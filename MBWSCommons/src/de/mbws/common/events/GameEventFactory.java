@@ -6,7 +6,6 @@ import org.apache.log4j.Logger;
 
 import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.eventdata.generated.AccountErrorData;
-import de.mbws.common.utils.StringUtils;
 
 public class GameEventFactory {
 	private static Logger logger = Logger.getLogger("GameEventFactory");
@@ -14,8 +13,8 @@ public class GameEventFactory {
 	public static AbstractGameEvent getGameEvent(ByteBuffer payload,
 			AbstractPlayerData p) {
 		int eventKey = payload.getInt();
-		logger.debug("got event " + eventKey + " with payload "
-				+ StringUtils.bytesToString(payload.array())+" at Time: "+System.currentTimeMillis());
+		logger.info("got event " + eventKey + " at Time: "
+				+ System.currentTimeMillis());
 		AbstractGameEvent event = null;
 		if (eventKey == EventTypes.LOGIN) {
 			event = new LoginEvent(payload);

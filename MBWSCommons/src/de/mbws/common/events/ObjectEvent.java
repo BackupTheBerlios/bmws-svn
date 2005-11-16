@@ -15,7 +15,7 @@ public class ObjectEvent extends AbstractGameEvent {
      * Constructor for the server. Should probably be package visible 
      * @param payload
      */
-    ObjectEvent(ByteBuffer payload) {
+	public  ObjectEvent(ByteBuffer payload) {
         super(payload, new WorldObject());
     }
     

@@ -15,7 +15,7 @@ public class MoveEvent extends AbstractGameEvent {
      * Constructor for the server. Should probably be package visible 
      * @param payload
      */
-    MoveEvent(ByteBuffer payload) {
+	public  MoveEvent(ByteBuffer payload) {
         super(payload, new MoveData());
     }
     

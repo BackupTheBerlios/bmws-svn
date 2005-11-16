@@ -17,11 +17,11 @@ public class AccountEvent extends AbstractGameEvent {
      * Constructor for the server. Should probably be package visible 
      * @param payload
      */
-    AccountEvent(ByteBuffer payload) {
+	public AccountEvent(ByteBuffer payload) {
         super(payload, new AccountData());
     }
     
-    AccountEvent(ByteBuffer payload, AbstractEventData eventData) {
+	public AccountEvent(ByteBuffer payload, AbstractEventData eventData) {
         super(payload, eventData);
     }   
     /**
