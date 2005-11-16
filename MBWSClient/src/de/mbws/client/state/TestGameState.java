@@ -3,21 +3,12 @@
  */
 package de.mbws.client.state;
 
-import java.awt.Image;
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.HashMap;
-
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.ImageInputStream;
-import javax.swing.ImageIcon;
 
 import org.apache.log4j.Logger;
 
 import com.jme.app.StandardGameState;
 import com.jme.bounding.BoundingBox;
-import com.jme.image.Texture;
 import com.jme.input.ChaseCamera;
 import com.jme.input.InputHandler;
 import com.jme.input.MouseInput;
@@ -25,17 +16,10 @@ import com.jme.input.thirdperson.ThirdPersonMouseLook;
 import com.jme.light.DirectionalLight;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
-import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
+import com.jme.scene.shape.Box;
 import com.jme.scene.state.LightState;
-import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
-import com.jme.util.TextureManager;
-import com.jmex.terrain.TerrainBlock;
-import com.jmex.terrain.util.ImageBasedHeightMap;
-import com.jmex.terrain.util.ProceduralTextureGenerator;
-import com.sun.imageio.plugins.jpeg.JPEGImageReader;
-import com.sun.imageio.plugins.jpeg.JPEGImageReaderSpi;
 
 import de.mbws.client.MBWSClient;
 import de.mbws.client.data.ObjectManager;
@@ -66,7 +50,7 @@ public class TestGameState extends StandardGameState {
 		super(name);
 		this.display = DisplaySystem.getDisplaySystem();
 		ObjectManager.initialize(rootNode, display);
-		//buildTerrain();
+		
 		// Light the world
 		buildLighting();
 		// Build the player
@@ -76,7 +60,7 @@ public class TestGameState extends StandardGameState {
 		// build the player input
 		buildInput();
 		// build the world around the player
-
+		buildTerrain();
 		// update the scene graph for rendering
 		rootNode.updateGeometricState(0.0f, true);
 		rootNode.updateRenderState();
@@ -100,54 +84,66 @@ public class TestGameState extends StandardGameState {
 	}
 
 	private void buildTerrain() {
-		try {
-			Image result = null;
-			TerrainBlock tb;
+		Box b = new Box("terrainbox", new Vector3f(), 200f, 0.1f, 200f);
+		b.setModelBound(new BoundingBox());
+		b.updateModelBound();
+		Node player = new Node("terrainnode");
+		Vector3f location = new Vector3f(0,0,0);
+		player.setLocalTranslation(location);
 
-			File file = new File("map/demo.jpg");
-			ImageInputStream iis = ImageIO
-					.createImageInputStream(new FileInputStream(file));
-			ImageReader reader = new JPEGImageReader(new JPEGImageReaderSpi());
-			reader.setInput(iis, true);
-			result = reader.read(0);
-
-			ImageBasedHeightMap heightMap = new ImageBasedHeightMap(result);
-			// MidPointHeightMap heightMap = new MidPointHeightMap(64, 1f);
-			// Scale the data
-			Vector3f terrainScale = new Vector3f(10f, 1f, 10f);
-			// create a terrainblock
-			tb = new TerrainBlock("Terrain", heightMap.getSize(), terrainScale,
-					heightMap.getHeightMap(), new Vector3f(0, 0, 0), false);
-
-			tb.setModelBound(new BoundingBox());
-			tb.updateModelBound();
-
-			// generate a terrain texture with 2 textures
-			ProceduralTextureGenerator pt = new ProceduralTextureGenerator(
-					heightMap);
-			pt.addTexture(new ImageIcon(TestGameState.class.getClassLoader()
-					.getResource("texture/water.png")), 0, 0, 5);
-			pt.addTexture(new ImageIcon(TestGameState.class.getClassLoader()
-					.getResource("texture/dirt.jpg")), 1, 10, 20);
-			pt.addTexture(new ImageIcon(TestGameState.class.getClassLoader()
-					.getResource("texture/grassb.png")), 15, 70, 90);
-			pt.addTexture(new ImageIcon(TestGameState.class.getClassLoader()
-					.getResource("texture/highest.jpg")), 60, 130, 256);
-			pt.createTexture(256);
-
-			// assign the texture to the terrain
-			TextureState ts = display.getRenderer().createTextureState();
-			Texture t1 = TextureManager.loadTexture(pt.getImageIcon()
-					.getImage(), Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR,
-					true);
-			ts.setTexture(t1);
-
-			tb.setRenderState(ts);
-			tb.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
-			rootNode.attachChild(tb);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		rootNode.attachChild(player);
+		player.attachChild(b);
+		player.updateWorldBound();
+		
+		
+//		try {
+//			Image result = null;
+//			TerrainBlock tb;
+//
+//			File file = new File("map/demo.jpg");
+//			ImageInputStream iis = ImageIO
+//					.createImageInputStream(new FileInputStream(file));
+//			ImageReader reader = new JPEGImageReader(new JPEGImageReaderSpi());
+//			reader.setInput(iis, true);
+//			result = reader.read(0);
+//
+//			ImageBasedHeightMap heightMap = new ImageBasedHeightMap(result);
+//			// MidPointHeightMap heightMap = new MidPointHeightMap(64, 1f);
+//			// Scale the data
+//			Vector3f terrainScale = new Vector3f(10f, 1f, 10f);
+//			// create a terrainblock
+//			tb = new TerrainBlock("Terrain", heightMap.getSize(), terrainScale,
+//					heightMap.getHeightMap(), new Vector3f(0, 0, 0), false);
+//
+//			tb.setModelBound(new BoundingBox());
+//			tb.updateModelBound();
+//
+//			// generate a terrain texture with 2 textures
+//			ProceduralTextureGenerator pt = new ProceduralTextureGenerator(
+//					heightMap);
+//			pt.addTexture(new ImageIcon(TestGameState.class.getClassLoader()
+//					.getResource("texture/water.png")), 0, 0, 5);
+//			pt.addTexture(new ImageIcon(TestGameState.class.getClassLoader()
+//					.getResource("texture/dirt.jpg")), 1, 10, 20);
+//			pt.addTexture(new ImageIcon(TestGameState.class.getClassLoader()
+//					.getResource("texture/grassb.png")), 15, 70, 90);
+//			pt.addTexture(new ImageIcon(TestGameState.class.getClassLoader()
+//					.getResource("texture/highest.jpg")), 60, 130, 256);
+//			pt.createTexture(32);
+//
+//			// assign the texture to the terrain
+//			TextureState ts = display.getRenderer().createTextureState();
+//			Texture t1 = TextureManager.loadTexture(pt.getImageIcon()
+//					.getImage(), Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR,
+//					true);
+//			ts.setTexture(t1,0);
+//
+//			tb.setRenderState(ts);
+//			tb.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+//			rootNode.attachChild(tb);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 
 	}
 
