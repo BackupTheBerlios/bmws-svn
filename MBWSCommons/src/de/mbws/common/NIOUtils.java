@@ -46,11 +46,12 @@ public class NIOUtils {
 		try {
 			while (nbytes != toWrite) {
 				nbytes += channel.write(writeBuffer);
-
-				try {
-					Thread.sleep(Globals.CHANNEL_WRITE_SLEEP);
-				} catch (InterruptedException e) {
-				}
+				if (toWrite != nbytes) {
+    				try {
+    					Thread.sleep(Globals.CHANNEL_WRITE_SLEEP);
+    				} catch (InterruptedException e) {
+    				}
+                }
 			}
 		} catch (ClosedChannelException cce) {
 		} catch (Exception e) {
