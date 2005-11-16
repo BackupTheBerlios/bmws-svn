@@ -2,13 +2,14 @@
 package de.mbws.common.eventdata.generated;
 
 import de.mbws.common.eventdata.AbstractEventData;
+import java.util.*;
 import java.nio.ByteBuffer;
 
 public class WorldObject extends AbstractEventData { 
 	private int objectID;
 	private int modelID;
 	private IntVector3D location;
-	private NetQuaternion heading;
+	private IntVector3D heading;
 
 
 	public int getObjectID() {
@@ -35,11 +36,11 @@ public class WorldObject extends AbstractEventData {
 		this.location = location;
 	} 
 
-	public NetQuaternion getHeading() {
+	public IntVector3D getHeading() {
 		return heading;
 	}
 
-	public void setHeading(NetQuaternion heading) {
+	public void setHeading(IntVector3D heading) {
 		this.heading = heading;
 	} 
 
@@ -49,7 +50,7 @@ public class WorldObject extends AbstractEventData {
 		modelID = payload.getInt();
 		location = new IntVector3D();
 		location.deserialize(payload);
-		heading = new NetQuaternion();
+		heading = new IntVector3D();
 		heading.deserialize(payload);
 	}
 
@@ -59,5 +60,24 @@ public class WorldObject extends AbstractEventData {
 		location.serialize(payload);
 		heading.serialize(payload);
 		return payload.position();
+	}
+
+	public static void serializeList(ByteBuffer payload, List<WorldObject> list) {
+		payload.putInt(list.size());
+		Iterator<WorldObject> it = list.iterator();
+		while (it.hasNext()) {
+			it.next().serialize(payload);
+		}
+	}
+
+	public static List<WorldObject> deserializeList(ByteBuffer payload) {
+		List<WorldObject> list = new LinkedList<WorldObject>();
+		int size = payload.getInt();
+		for (int i=0; i<size; i++) {
+			WorldObject element = new WorldObject();
+			element.deserialize(payload);
+			list.add(element);
+		}
+		return list;
 	}
 }

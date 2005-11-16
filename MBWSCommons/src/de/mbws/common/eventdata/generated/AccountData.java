@@ -2,6 +2,7 @@
 package de.mbws.common.eventdata.generated;
 
 import de.mbws.common.eventdata.AbstractEventData;
+import java.util.*;
 import java.nio.ByteBuffer;
 
 public class AccountData extends AbstractEventData { 
@@ -68,5 +69,24 @@ public class AccountData extends AbstractEventData {
 		payload.putInt(age);
 		writeString(payload, emailAddress);
 		return payload.position();
+	}
+
+	public static void serializeList(ByteBuffer payload, List<AccountData> list) {
+		payload.putInt(list.size());
+		Iterator<AccountData> it = list.iterator();
+		while (it.hasNext()) {
+			it.next().serialize(payload);
+		}
+	}
+
+	public static List<AccountData> deserializeList(ByteBuffer payload) {
+		List<AccountData> list = new LinkedList<AccountData>();
+		int size = payload.getInt();
+		for (int i=0; i<size; i++) {
+			AccountData element = new AccountData();
+			element.deserialize(payload);
+			list.add(element);
+		}
+		return list;
 	}
 }

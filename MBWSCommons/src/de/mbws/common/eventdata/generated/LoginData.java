@@ -2,6 +2,7 @@
 package de.mbws.common.eventdata.generated;
 
 import de.mbws.common.eventdata.AbstractEventData;
+import java.util.*;
 import java.nio.ByteBuffer;
 
 public class LoginData extends AbstractEventData { 
@@ -35,5 +36,24 @@ public class LoginData extends AbstractEventData {
 		writeString(payload, userName);
 		writeString(payload, password);
 		return payload.position();
+	}
+
+	public static void serializeList(ByteBuffer payload, List<LoginData> list) {
+		payload.putInt(list.size());
+		Iterator<LoginData> it = list.iterator();
+		while (it.hasNext()) {
+			it.next().serialize(payload);
+		}
+	}
+
+	public static List<LoginData> deserializeList(ByteBuffer payload) {
+		List<LoginData> list = new LinkedList<LoginData>();
+		int size = payload.getInt();
+		for (int i=0; i<size; i++) {
+			LoginData element = new LoginData();
+			element.deserialize(payload);
+			list.add(element);
+		}
+		return list;
 	}
 }
