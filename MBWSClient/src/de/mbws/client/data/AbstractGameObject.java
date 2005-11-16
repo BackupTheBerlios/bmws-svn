@@ -8,8 +8,8 @@ public abstract class AbstractGameObject  {
 	protected Node model;
 
 	
-	public AbstractGameObject(int id) {
-		objectID = Integer.toString(id);
+	public AbstractGameObject(String id) {
+		objectID = id;
 	}
 
 	public Node getModel() {

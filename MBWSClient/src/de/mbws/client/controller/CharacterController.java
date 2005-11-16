@@ -81,6 +81,7 @@ public class CharacterController {
 		MoveData md = new MoveData();
 		MoveEvent me = new MoveEvent(md);
 		// TODO change int to float ?
+        md.setObjectID(ClientPlayerData.getInstance().getPlayer().getObjectID());
 		IntVector3D location = new IntVector3D();
 		location.setX((int) loc.x);
 		location.setY((int) loc.y);

@@ -4,7 +4,7 @@ package de.mbws.client.data;
 public class GameObject extends AbstractGameObject {
 	
 	
-	public GameObject(int id) {
+	public GameObject(String id) {
 		super(id);
 	}
 

@@ -7,7 +7,7 @@ import de.mbws.common.Globals;
 
 public class MovableObject extends GameObject {
 	
-	public MovableObject(int id) {
+	public MovableObject(String id) {
 		super(id);
 		moveStatus = Globals.STANDING;
 		turnStatus = Globals.NO_TURN;

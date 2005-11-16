@@ -31,8 +31,7 @@ public class MoveObjectAction extends AbstractEventAction {
 		MoveData md = (MoveData) eventData;
 		logger.info("performing MoveObjectAction for object: "
 				+ md.getObjectID());
-		AbstractGameObject object = ObjectManager.getObject(Integer.toString(md
-				.getObjectID()));
+		AbstractGameObject object = ObjectManager.getObject(md.getObjectID());
 		if (object instanceof MovableObject) {
 			MovableObject mo = (MovableObject) object;
 			mo.setMoveStatus(md.getMovementType());

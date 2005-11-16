@@ -73,7 +73,7 @@ public class ObjectManager {
 		b.updateModelBound();
 
 		//TODO: "player2 node" wont work, trying integer.toString of objectid!!
-		Node player2 = new Node(Integer.toString(wo.getObjectID()));
+		Node player2 = new Node(wo.getObjectID());
 		// player2.setLocalTranslation(new Vector3f(100, 0, 100));
 
 		player2.setLocalTranslation(new Vector3f(wo.getLocation().getX(), wo
@@ -135,8 +135,8 @@ public class ObjectManager {
 	}
 
 	public static Node createPlayer() {
-		Player object = new Player(Integer.parseInt(ClientPlayerData
-				.getInstance().getPlayer().getObjectID()));
+		Player object = new Player(ClientPlayerData
+				.getInstance().getPlayer().getObjectID());
 		object.setAlive(true);
 		object.setMovespeed(30);
 		object.setTurnspeed(5);
