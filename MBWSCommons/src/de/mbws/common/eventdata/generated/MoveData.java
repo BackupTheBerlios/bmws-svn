@@ -8,9 +8,9 @@ import java.nio.ByteBuffer;
 public class MoveData extends AbstractEventData { 
 	private int objectID;
 	private byte movementType;
+	private byte turnType;
 	private IntVector3D location;
-	private IntVector3D heading;
-	private List<IntVector3D> otherObjects;
+	private NetQuaternion heading;
 
 
 	public int getObjectID() {
@@ -29,6 +29,14 @@ public class MoveData extends AbstractEventData {
 		this.movementType = movementType;
 	} 
 
+	public byte getTurnType() {
+		return turnType;
+	}
+
+	public void setTurnType(byte turnType) {
+		this.turnType = turnType;
+	} 
+
 	public IntVector3D getLocation() {
 		return location;
 	}
@@ -37,39 +45,31 @@ public class MoveData extends AbstractEventData {
 		this.location = location;
 	} 
 
-	public IntVector3D getHeading() {
+	public NetQuaternion getHeading() {
 		return heading;
 	}
 
-	public void setHeading(IntVector3D heading) {
+	public void setHeading(NetQuaternion heading) {
 		this.heading = heading;
-	} 
-
-	public List<IntVector3D> getOtherObjects() {
-		return otherObjects;
-	}
-
-	public void setOtherObjects(List<IntVector3D> otherObjects) {
-		this.otherObjects = otherObjects;
 	} 
 
 
 	public void deserialize(ByteBuffer payload) {
 		objectID = payload.getInt();
 		movementType = payload.get();
+		turnType = payload.get();
 		location = new IntVector3D();
 		location.deserialize(payload);
-		heading = new IntVector3D();
+		heading = new NetQuaternion();
 		heading.deserialize(payload);
-		otherObjects = IntVector3D.deserializeList(payload);
 	}
 
 	public int serialize(ByteBuffer payload) {
 		payload.putInt(objectID);
 		payload.put(movementType);
+		payload.put(turnType);
 		location.serialize(payload);
 		heading.serialize(payload);
-		IntVector3D.serializeList(payload, otherObjects);
 		return payload.position();
 	}
 
