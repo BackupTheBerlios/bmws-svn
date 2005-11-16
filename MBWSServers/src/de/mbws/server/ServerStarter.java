@@ -17,7 +17,8 @@ public class ServerStarter {
      * @param args
      */
     public static void main(String[] args) throws Exception{
-        BasicConfigurator.configure();
+              
+         BasicConfigurator.configure();
         PropertyConfigurator.configure("log4j.properties");
         logger.info("Init log4j ... done");
 

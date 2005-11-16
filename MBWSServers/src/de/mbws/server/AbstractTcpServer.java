@@ -9,6 +9,7 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -110,6 +111,9 @@ public abstract class AbstractTcpServer extends Thread {
             return eventReader.get(new Integer(eventType));
         }
         return null;
+    }
+    public Map getAllPlayers() {
+        return clients;
     }
     
     protected abstract Logger getLogger();

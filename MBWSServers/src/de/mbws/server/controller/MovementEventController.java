@@ -43,7 +43,7 @@ public class MovementEventController extends AccountServerBaseEventController {
             if (receivers.size() > 1) {
                 receivers.remove(me.getPlayer().getSessionId());
                 //TODO: TEST (below)
-                me.getMoveData().setObjectID(me.getPlayer().getSessionId());
+                me.getMoveData().setObjectID(spd.getActiveCharacterAsObjectID());
                 //TODO: remove/change above
                 me.setRecipients(receivers.toArray(new Integer[receivers.size()]));
                 sendEvent(me);

@@ -67,7 +67,7 @@ public class CharacterEventController extends AccountServerBaseEventController {
             heading.setZ(0);
             wo.setHeading(heading);
 
-            wo.setObjectID(ce.getPlayer().getSessionId());
+            wo.setObjectID(((ServerPlayerData) ce.getPlayer()).getActiveCharacterAsObjectID());
             ((ServerPlayerData) ce.getPlayer()).setMovementInformation(wo);
             pi.setObject(wo);
             CharacterEvent result = new CharacterEvent(pi);

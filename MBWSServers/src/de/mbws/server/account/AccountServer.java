@@ -7,6 +7,12 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
+import javax.management.remote.JMXConnectorServer;
+import javax.management.remote.JMXConnectorServerFactory;
+import javax.management.remote.JMXServiceURL;
+
 import org.apache.log4j.Logger;
 
 import de.mbws.common.data.AbstractPlayerData;
@@ -15,6 +21,8 @@ import de.mbws.server.ServerConfig;
 import de.mbws.server.configuration.EventController;
 import de.mbws.server.controller.AbstractEventController;
 import de.mbws.server.data.ServerPlayerData;
+import de.mbws.server.management.MBeanHelper;
+import de.mbws.server.management.statistic.Statatistic;
 
 public class AccountServer extends AbstractTcpServer {
 
@@ -26,6 +34,25 @@ public class AccountServer extends AbstractTcpServer {
      */
     public AccountServer(ServerConfig config) {
         super(config);
+        try {
+            MBeanServer mbs = MBeanHelper.getMBeanServer();
+            ObjectName namingName = ObjectName.getInstance("naming:type=rmiregistry");
+            mbs.createMBean("mx4j.tools.naming.NamingService", namingName, null);
+            mbs.invoke(namingName, "start", null, null);
+            int namingPort = ((Integer)mbs.getAttribute(namingName, "Port")).intValue();
+            String jndiPath = "/jmxconnector";
+            JMXServiceURL url = new JMXServiceURL("service:jmx:rmi://localhost/jndi/rmi://localhost:" + namingPort + jndiPath);
+            // Create and start the RMIConnectorServer
+            JMXConnectorServer connectorServer = JMXConnectorServerFactory.newJMXConnectorServer(url, null, mbs);
+            connectorServer.start();
+
+            ObjectName name = new ObjectName(this.getClass().getCanonicalName()+ ":type=Statistics");
+            Statatistic smb = new Statatistic(this);
+            mbs.registerMBean(smb, name);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 
     protected void registerEventController() {
@@ -52,11 +79,6 @@ public class AccountServer extends AbstractTcpServer {
 //        
 //        eventReader.put(new Integer(EventTypes.CHARACTER_RECEIVE_REQUEST), new CharacterEventController(this, EventTypes.CHARACTER_RECEIVE_REQUEST));
 //        eventReader.put(new Integer(EventTypes.MOVEMENT_START_WALK), new MovementEventController(this, EventTypes.MOVEMENT_START_WALK));
-    }
-
-
-    public Map getAllPlayers() {
-        return clients;
     }
     
     public ArrayList<Integer> getSessionIDOfAllPlayers() {

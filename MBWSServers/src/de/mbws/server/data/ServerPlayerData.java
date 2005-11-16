@@ -1,5 +1,6 @@
 package de.mbws.server.data;
 
+import de.mbws.common.Globals;
 import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.eventdata.generated.WorldObject;
 
@@ -28,5 +29,9 @@ public class ServerPlayerData extends AbstractPlayerData {
 
     public void setMovementInformation(WorldObject movementInformation) {
         this.movementInformation = movementInformation;
+    }
+    
+    public String getActiveCharacterAsObjectID() {
+        return Globals.OBJECT_ID_PREFIX_CHARACTER + activeCharacter;
     }
 }

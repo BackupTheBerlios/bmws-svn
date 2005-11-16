@@ -24,5 +24,13 @@
 	<classpathentry kind="lib" path="/MBWSCommons/lib/asm-attrs.jar"/>
 	<classpathentry kind="lib" path="/MBWSCommons/lib/jdbc2_0-stdext.jar"/>
 	<classpathentry kind="lib" path="/MBWSCommons/lib/xml-apis.jar"/>
+	<classpathentry kind="lib" path="lib/mx4j.jar"/>
+	<classpathentry kind="lib" path="lib/mx4j-examples.jar"/>
+	<classpathentry kind="lib" path="lib/mx4j-impl.jar"/>
+	<classpathentry kind="lib" path="lib/mx4j-jmx.jar"/>
+	<classpathentry kind="lib" path="lib/mx4j-remote.jar"/>
+	<classpathentry kind="lib" path="lib/mx4j-rimpl.jar"/>
+	<classpathentry kind="lib" path="lib/mx4j-rjmx.jar"/>
+	<classpathentry kind="lib" path="lib/mx4j-tools.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
