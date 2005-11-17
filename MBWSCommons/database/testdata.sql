@@ -22,6 +22,13 @@ INSERT INTO account VALUES("sack","sack","sack@sack.de");
 #
 
 
+
+#
+# Dumping data for table 'characterdata'
+#
+INSERT INTO characterdata VALUES("1","Sir Sackerus","1","sack","0","0","0","0","0","0","0","0","0");
+INSERT INTO characterdata VALUES("2","Mr SugaMaDig","1","minisack","0","0","0","0","0","0","0","0","0");
+
 #
 # Dumping data for table 'character_status'
 #
@@ -40,12 +47,6 @@ INSERT INTO character_visualappearance VALUES("2","2","0","0","0","0","0","0","0
 # Dumping data for table 'character_worldobject_mapping'
 #
 
-
-#
-# Dumping data for table 'characterdata'
-#
-INSERT INTO characterdata VALUES("1","Sir Sackerus","1","sack","0","0","0","0","0","0","0","0","0");
-INSERT INTO characterdata VALUES("2","Mr SugaMaDig","1","minisack","0","0","0","0","0","0","0","0","0");
 
 
 #
@@ -92,7 +93,7 @@ INSERT INTO map VALUES("1","Testkarte","");
 #
 # Dumping data for table 'race'
 #
-INSERT INTO race VALUES("1","Mensch","0","0","0","0","0","0","0","0","Ganz toll, zerstören alles was ihnen in den Weg kommt.");
+INSERT INTO race VALUES("1","Mensch","0","0","0","0","0","0","0","0","Ganz toll, zerstren alles was ihnen in den Weg kommt.");
 
 
 #
