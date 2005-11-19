@@ -84,7 +84,7 @@ public class MainMenuState extends StandardGameState {
 	}
 
 	private void setupButtons() {
-		_root = new PolledRootNode(MBWSClient.timer, input);
+		_root = new PolledRootNode(MBWSClient.timer, input);//FixedLogicalRateClient.timer, input);
 		rootNode.attachChild(_root);
 		lnf = BLookAndFeel.getDefaultLookAndFeel();
 		window = new BDecoratedWindow(lnf, null);

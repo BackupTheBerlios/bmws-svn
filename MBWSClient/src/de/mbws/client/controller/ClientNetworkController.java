@@ -68,7 +68,7 @@ public class ClientNetworkController extends Thread {
 		try {
 			if (channel == null || !channel.isConnected()) {
 				// TODO: Kerim: FIX THAT ADRESS (localhost)212.202.184.164
-				channel = SocketChannel.open(new InetSocketAddress("212.202.184.164",
+				channel = SocketChannel.open(new InetSocketAddress("localhost",
 						5000));
 				channel.configureBlocking(false);
 				// we don't like Nagle's algorithm
@@ -98,10 +98,12 @@ public class ClientNetworkController extends Thread {
 
 	// TODO: Kerim what is done with the "player" ?
 	protected void writeEvent(AbstractGameEvent ge) {
+		logger.debug("writing event: "+ge.getEventType()+" at: "+System.currentTimeMillis());
 		ge.setPlayer(ClientPlayerData.getInstance());
 		ByteBuffer writeBuffer = ByteBuffer.allocate(Globals.MAX_EVENT_SIZE);
 		NIOUtils.prepBuffer(ge, writeBuffer, ge.getPlayer().getSessionId());
 		NIOUtils.channelWrite(channel, writeBuffer);
+		logger.debug("wrote event: "+ge.getEventType()+" at: "+System.currentTimeMillis());
 	}
 
 	protected void processIncomingEvents() {
