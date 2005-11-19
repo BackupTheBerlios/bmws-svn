@@ -37,7 +37,10 @@ public class EventTypes {
     public static final int MOVEMENT_STOP_TURN = 105;
     public static final int MOVEMENT_START_TURN_LEFT = 106;
     public static final int MOVEMENT_START_WALK_BACKWARDS = 107;
-    
+    public static final int MOVEMENT_START_WALK_AND_TURN_RIGHT = 108;
+    public static final int MOVEMENT_START_WALK_AND_TURN_LEFT = 109;
+    public static final int MOVEMENT_START_WALK_BACKWARDS_AND_TURN_RIGHT = 109;
+    public static final int MOVEMENT_START_WALK_BACKWARDS_AND_TURN_LEFT = 110;
     public static final int MOVEMENT_UPDATE_LOCATION = 150;
     
     //Numbers 200 to 250 are reserved to object related events
