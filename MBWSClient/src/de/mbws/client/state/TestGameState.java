@@ -101,7 +101,7 @@ public class TestGameState extends StandardGameState {
 		TextureState ts = display.getRenderer().createTextureState();
 		Texture t1 = TextureManager.loadTexture(new ImageIcon(
 				TestGameState.class.getClassLoader().getResource(
-						"texture/water.png")).getImage(),
+						"resources/textures/water.png")).getImage(),
 				Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR, true);
 		ts.setTexture(t1, 0);
 		b.setRenderState(ts);
@@ -110,8 +110,6 @@ public class TestGameState extends StandardGameState {
 		player.attachChild(b);
 		player.updateWorldBound();
 
-		
-	
 	}
 
 	/**
