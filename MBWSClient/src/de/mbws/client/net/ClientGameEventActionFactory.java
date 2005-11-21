@@ -11,6 +11,7 @@ import de.mbws.client.eventactions.DestroyObjectAction;
 import de.mbws.client.eventactions.MoveObjectAction;
 import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.eventdata.generated.AccountErrorData;
+import de.mbws.common.eventdata.generated.CharactersOfPlayer;
 import de.mbws.common.eventdata.generated.MoveData;
 import de.mbws.common.eventdata.generated.WorldObject;
 import de.mbws.common.events.AbstractGameEvent;
@@ -95,6 +96,10 @@ public class ClientGameEventActionFactory {
 		} else if (eventKey == EventTypes.CHARACTER_RECEIVE
 				|| eventKey == EventTypes.CHARACTER_RECEIVE_REQUEST) {
 			event = new CharacterEvent(payload);
+			event.setEventType(eventKey);
+		} else if (eventKey == EventTypes.CHARACTER_LIST_RECEIVE
+				|| eventKey == EventTypes.CHARACTER_LIST_RECEIVE_REQUEST) {
+			event = new CharacterEvent(payload, new CharactersOfPlayer());
 			event.setEventType(eventKey);
 			
 		}

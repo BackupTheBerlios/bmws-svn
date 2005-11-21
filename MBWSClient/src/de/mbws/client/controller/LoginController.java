@@ -45,7 +45,7 @@ public class LoginController {
 			System.out.println("Login ok, trying to receive character data");
 			ClientNetworkController.getInstance().handleOutgoingEvent(
 					CharacterController.getInstance()
-							.createCharacterReceiveEvent());
+							.createCharacterListReceiveEvent());
 
 		} else if (loginEvent.getEventType() == EventTypes.LOGOUT_OK) {
 			System.out.println("Logout Successfull!");

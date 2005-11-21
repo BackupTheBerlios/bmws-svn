@@ -1,7 +1,10 @@
 package de.mbws.client.data;
 
+import java.util.List;
+
 import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.data.generated.Characterdata;
+import de.mbws.common.eventdata.generated.CharacterShortDescription;
 
 /**
  * Description: 
@@ -14,9 +17,17 @@ public class ClientPlayerData extends AbstractPlayerData {
 	
 	private Characterdata characterData;
 	private Player player;
+	private List<CharacterShortDescription> allCharactersOfPlayer;
 	
 	
 	
+	public List<CharacterShortDescription> getAllCharactersOfPlayer() {
+		return allCharactersOfPlayer;
+	}
+	public void setAllCharactersOfPlayer(
+			List<CharacterShortDescription> allCharactersOfPlayer) {
+		this.allCharactersOfPlayer = allCharactersOfPlayer;
+	}
 	private ClientPlayerData() {}
 	public static ClientPlayerData getInstance() {
 		if (instance == null) {

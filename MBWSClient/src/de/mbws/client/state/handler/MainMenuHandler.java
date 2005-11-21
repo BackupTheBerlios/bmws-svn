@@ -22,6 +22,7 @@ import de.mbws.client.MBWSClient;
 import de.mbws.client.controller.ClientNetworkController;
 import de.mbws.client.controller.LoginController;
 import de.mbws.client.data.ClientPlayerData;
+import de.mbws.client.state.CharacterSelectionState;
 import de.mbws.client.state.TestGameState;
 import de.mbws.common.eventdata.generated.AccountData;
 import de.mbws.common.events.AbstractGameEvent;
@@ -75,10 +76,10 @@ public class MainMenuHandler extends InputHandler implements ComponentListener {
 		ClientNetworkController.getInstance().handleOutgoingEvent(event);
 	}
 
-	public void startMainGameState() {
-		 GameState testgame = new TestGameState("game");
-		 testgame.setActive(true);
-		 GameStateManager.getInstance().attachChild(testgame);
+	public void startCharacterSelectionState() {
+		 GameState characterSelection = new CharacterSelectionState("characterSelection");
+		 characterSelection.setActive(true);
+		 GameStateManager.getInstance().attachChild(characterSelection);
 		 GameStateManager.getInstance().deactivateChildNamed("menu");
 		 GameStateManager.getInstance().detachChild("intro");
 	}
@@ -94,7 +95,7 @@ public class MainMenuHandler extends InputHandler implements ComponentListener {
 	 */ 
 	public void update( float time ) {
 		if (startNextState==true) {
-			startMainGameState();
+			startCharacterSelectionState();
 			startNextState=false;
 		}
 		super.update(time);
@@ -102,5 +103,14 @@ public class MainMenuHandler extends InputHandler implements ComponentListener {
 	
 	public void setStartNextState(boolean b) {
 		startNextState = b;
+	}
+	
+//	TODO: move that to the characterselectionstate !
+	public void startMainGameState() {
+		 GameState testgame = new TestGameState("game");
+		 testgame.setActive(true);
+		 GameStateManager.getInstance().attachChild(testgame);
+		 GameStateManager.getInstance().deactivateChildNamed("menu");
+		 GameStateManager.getInstance().detachChild("intro");
 	}
 }
