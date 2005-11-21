@@ -119,7 +119,7 @@ public class CharacterEventController extends AccountServerBaseEventController {
         } else if (event.getEventType() == EventTypes.CHARACTER_LIST_RECEIVE_REQUEST) {
             List chars = CharacterPersistenceManager.getInstance().getAllCharacters(ce.getPlayer().getAccount().getUsername());
             LinkedList<CharacterShortDescription> charsToSend = new LinkedList<CharacterShortDescription>();
-            for (Iterator iter = charsToSend.iterator(); iter.hasNext();) {
+            for (Iterator iter = chars.iterator(); iter.hasNext();) {
                 Characterdata element = (Characterdata) iter.next();
                 charsToSend.add(getCharacterShortDescription(element));
             }
