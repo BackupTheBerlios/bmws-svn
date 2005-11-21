@@ -49,7 +49,7 @@ public class GameEventFactory {
         } else if (eventKey == EventTypes.CHARACTER_START_PLAYING_REQUEST) {
             event = new CharacterEvent(payload, new CharacterSelection());
         } else if (eventKey == EventTypes.CHARACTER_START_PLAYING) {
-            event = new CharacterEvent(payload);
+            event = new CharacterEvent(payload, new CharacterSelection());
         } else if (eventKey == EventTypes.CHARACTER_LIST_RECEIVE_REQUEST) {
             event = new CharacterEvent(payload);
         } else if (eventKey == EventTypes.CHARACTER_LIST_RECEIVE) {
