@@ -10,9 +10,11 @@ import com.jme.math.Vector3f;
 
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.data.Player;
+import de.mbws.client.state.CharacterSelectionState;
 import de.mbws.client.state.MainMenuState;
 import de.mbws.common.data.generated.CharacterStatus;
 import de.mbws.common.data.generated.Characterdata;
+import de.mbws.common.eventdata.generated.CharacterSelection;
 import de.mbws.common.eventdata.generated.CharacterShortDescription;
 import de.mbws.common.eventdata.generated.CharactersOfPlayer;
 import de.mbws.common.eventdata.generated.IntVector3D;
@@ -53,7 +55,7 @@ public class CharacterController {
 	// TODO Kerim: correct error handling and next stages here !
 	public void handleEvent(CharacterEvent event) {
 		if (event.getEventType() == EventTypes.CHARACTER_RECEIVE) {
-			logger.info("Receiving Character!");
+			logger.info("Receiving Details of Character!");
 			Player player = new Player(event.getPlayerInfo().getObject()
 					.getObjectID());
 			Characterdata characterData = new Characterdata();
@@ -68,21 +70,38 @@ public class CharacterController {
 			logger.info("setting flag to start next state");
 			((MainMenuState) GameStateManager.getInstance().getChild("menu"))
 					.getInput().setStartNextState(true);
-		} else if (event.getEventType() == EventTypes.CHARACTER_LIST_RECEIVE)
+		} else if (event.getEventType() == EventTypes.CHARACTER_LIST_RECEIVE) {
 			logger.info("Receiving all Characters of Player!");
 
-		List<CharacterShortDescription> allCharacters = ((CharactersOfPlayer) event
-				.getEventData()).getDescriptions();
+			List<CharacterShortDescription> allCharacters = ((CharactersOfPlayer) event
+					.getEventData()).getDescriptions();
 
-		ClientPlayerData.getInstance().setAllCharactersOfPlayer(allCharacters);
-		if (allCharacters != null) {
+			ClientPlayerData.getInstance().setAllCharactersOfPlayer(
+					allCharacters);
+			if (allCharacters != null) {
 
+			}
+			logger
+					.info("retrieved all existing characters, going into selectionstate");
+			((MainMenuState) GameStateManager.getInstance().getChild("menu"))
+					.getInput().setStartNextState(true);
+		} else if (event.getEventType() == EventTypes.CHARACTER_START_PLAYING) {
+			logger.info("Start gameplay!");
+			Player player = new Player(event.getPlayerInfo().getObject()
+					.getObjectID());
+			Characterdata characterData = new Characterdata();
+			PlayerInfo eventData = (PlayerInfo) event.getEventData();
+			CharacterStatus status = new CharacterStatus();
+			status.setCoordinateX(eventData.getObject().getLocation().getX());
+			status.setCoordinateY(eventData.getObject().getLocation().getY());
+			status.setCoordinateZ(eventData.getObject().getLocation().getZ());
+			characterData.setCharacterStatus(status);
+			ClientPlayerData.getInstance().setCharacterData(characterData);
+			ClientPlayerData.getInstance().setPlayer(player);
+			logger.info("setting flag to start next state");
+			((CharacterSelectionState) GameStateManager.getInstance().getChild(
+					"characterSelection")).getInput().setStartGame(true);
 		}
-		logger
-				.info("retrieved all existing characters, going into selectionstate");
-		((MainMenuState) GameStateManager.getInstance().getChild("menu"))
-				.getInput().setStartNextState(true);
-
 	}
 
 	public AbstractGameEvent createCharacterReceiveEvent() {
@@ -90,7 +109,7 @@ public class CharacterController {
 		event.setEventType(EventTypes.CHARACTER_RECEIVE_REQUEST);
 		return event;
 	}
-	
+
 	public AbstractGameEvent createCharacterListReceiveEvent() {
 		CharacterEvent event = new CharacterEvent();
 		event.setEventType(EventTypes.CHARACTER_LIST_RECEIVE_REQUEST);
@@ -128,5 +147,14 @@ public class CharacterController {
 						+ turnType
 						+ " at: " + System.currentTimeMillis());
 		return me;
+	}
+
+	public AbstractGameEvent createCharacterStartPlayingEvent(String characterID) {
+		CharacterSelection cs = new CharacterSelection();
+		cs.setCharacterID(characterID);
+		CharacterEvent event = new CharacterEvent(cs);
+		event.setEventType(EventTypes.CHARACTER_START_PLAYING_REQUEST);
+
+		return event;
 	}
 }

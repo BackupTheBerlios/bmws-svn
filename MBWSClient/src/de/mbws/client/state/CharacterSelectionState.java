@@ -118,9 +118,12 @@ public class CharacterSelectionState extends StandardGameState {
 			Iterator<CharacterShortDescription> it = allCharacters.iterator();
 			while (it.hasNext()) {
 				CharacterShortDescription aCharacter = it.next();
-				BButton characterButton = new BButton(aCharacter.getName(),
-						input, aCharacter.getName());
+				BButton characterButton = new BButton(aCharacter.getName()
+//						+ " (" + aCharacter.getRace() + "/"
+//						+ aCharacter.getGender() //+ "/" + aCharacter.getClass()
+						+ ")", input, aCharacter.getCharacterID());
 				cont.add(characterButton);
+				
 			}
 		}
 	}
@@ -130,15 +133,15 @@ public class CharacterSelectionState extends StandardGameState {
 		rootNode.attachChild(_root);
 		lnf = BLookAndFeel.getDefaultLookAndFeel();
 		window = new BDecoratedWindow(lnf, null);
-//		 GroupLayout glay = GroupLayout.makeVStretch();
-//		 glay.setGap(0);
-	//	 cont = new BContainer(glay);
+		// GroupLayout glay = GroupLayout.makeVStretch();
+		// glay.setGap(0);
+		// cont = new BContainer(glay);
 		cont = new BContainer(GroupLayout.makeVert(GroupLayout.CENTER));
 		fillData();
-		window.add(new BScrollPane(cont),BorderLayout.EAST);
-		//_root.addWindow(window);
-//		Dimension ps = window.getPreferredSize();
-//		window.setBounds(100, 300, ps.width, 2 * ps.height / 3);
+		window.add(new BScrollPane(cont), BorderLayout.EAST);
+		// _root.addWindow(window);
+		// Dimension ps = window.getPreferredSize();
+		// window.setBounds(100, 300, ps.width, 2 * ps.height / 3);
 		window.setSize(200, 250);
 		window.setLocation(0, 0);
 		_root.addWindow(window);

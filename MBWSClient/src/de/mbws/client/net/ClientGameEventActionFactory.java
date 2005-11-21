@@ -102,7 +102,13 @@ public class ClientGameEventActionFactory {
 			event = new CharacterEvent(payload, new CharactersOfPlayer());
 			event.setEventType(eventKey);
 			
+		} else if (eventKey == EventTypes.CHARACTER_START_PLAYING) {
+			event = new CharacterEvent(payload);
+			event.setEventType(eventKey);
+			
 		}
+		
+		
 		if (event != null) {
 			event.setPlayer(p);
 		}
