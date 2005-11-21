@@ -16,7 +16,6 @@ import de.mbws.common.eventdata.generated.CharacterShortDescription;
 import de.mbws.common.eventdata.generated.CharactersOfPlayer;
 import de.mbws.common.eventdata.generated.IntVector3D;
 import de.mbws.common.eventdata.generated.NetQuaternion;
-import de.mbws.common.eventdata.generated.PlayerInfo;
 import de.mbws.common.eventdata.generated.WorldObject;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.CharacterEvent;
@@ -69,8 +68,8 @@ public class CharacterEventController extends AccountServerBaseEventController {
                     IdHelper.removePrefix(csel.getCharacterID()));            
             CharacterStatus cs = cdata.getCharacterStatus();
             ((ServerPlayerData) ce.getPlayer()).setActiveCharacter(cdata.getId());
-            PlayerInfo pi = new PlayerInfo();
-            pi.setVisualappearance(cdata.getCharacterVisualappearance().getHeight());
+            CharacterDetails charDetails = new CharacterDetails();
+            charDetails.setVisualappearance(cdata.getCharacterVisualappearance().getHeight());
             WorldObject wo = new WorldObject();
             IntVector3D location = new IntVector3D();
             location.setX(cs.getCoordinateX());
@@ -88,8 +87,11 @@ public class CharacterEventController extends AccountServerBaseEventController {
 
             wo.setObjectID(((ServerPlayerData) ce.getPlayer()).getActiveCharacterAsObjectID());
             ((ServerPlayerData) ce.getPlayer()).setMovementInformation(wo);
-            pi.setObject(wo);
-            CharacterEvent result = new CharacterEvent(pi);
+            
+            charDetails.setDescription(getCharacterShortDescription(cdata));
+            charDetails.setHeading(heading);
+            charDetails.setLocation(location);
+            CharacterEvent result = new CharacterEvent(charDetails);
             result.setEventType(EventTypes.CHARACTER_START_PLAYING);
             result.setPlayer(ce.getPlayer());
             sendEvent(result);

@@ -93,9 +93,9 @@ public class EventWriter extends QueueWorker {
             logger.error("writeEvent: client channel null or not connected");
             return;
         }
-        logger.error("writing event at " + System.currentTimeMillis());
+        //logger.debug("writing event at " + System.currentTimeMillis());
         NIOUtils.channelWrite(channel, writeBuffer);
-        logger.error("writing event at " + System.currentTimeMillis() + "..done");
+        //logger.debug("writing event at " + System.currentTimeMillis() + "..done");
     }
     // Unused
     protected void processEvent(AbstractGameEvent event) {      
