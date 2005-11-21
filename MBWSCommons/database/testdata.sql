@@ -28,20 +28,20 @@ INSERT INTO account VALUES("sack","sack","sack@sack.de");
 #
 INSERT INTO characterdata VALUES("1","Sir Sackerus","1","sack","0","0","0","0","0","0","0","0","0");
 INSERT INTO characterdata VALUES("2","Mr SugaMaDig","1","minisack","0","0","0","0","0","0","0","0","0");
-
+INSERT INTO characterdata VALUES("3","Mag ma Dig","1","sack","0","0","0","0","0","0","0","0","0");
 #
 # Dumping data for table 'character_status'
 #
 INSERT INTO character_status VALUES("1","A","0","0","1","1","10","0","0","0","0","0","0","0","0","0");
 INSERT INTO character_status VALUES("2","A","0","0","1","10","1","0","0","0","0","0","0","0","0","0");
-
+INSERT INTO character_status VALUES("3","A","0","0","1","1","10","0","0","0","0","0","0","0","0","0");
 
 #
 # Dumping data for table 'character_visualappearance'
 #
 INSERT INTO character_visualappearance VALUES("1","1","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0");
 INSERT INTO character_visualappearance VALUES("2","2","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0");
-
+INSERT INTO character_visualappearance VALUES("3","3","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0","0");
 
 #
 # Dumping data for table 'character_worldobject_mapping'

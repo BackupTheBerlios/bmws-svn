@@ -20,32 +20,23 @@ public class GameEventFactory {
 		AbstractGameEvent event = null;
 		if (eventKey == EventTypes.LOGIN) {
 			event = new LoginEvent(payload);
-			event.setEventType(eventKey);
 		} else if (eventKey == EventTypes.LOGIN_FAILED) {
 			event = new LoginEvent(payload);
-			event.setEventType(eventKey);
 		} else if (eventKey == EventTypes.LOGIN_OK) {
 			event = new LoginEvent(payload);
-			event.setEventType(eventKey);
 		} else if (eventKey == EventTypes.LOGOUT) {
 			event = new LoginEvent(payload);
-			event.setEventType(eventKey);
 		} else if (eventKey == EventTypes.LOGOUT_OK) {
 			event = new LoginEvent(payload);
-			event.setEventType(eventKey);
 		} else if (eventKey == EventTypes.ACCOUNT_CREATE) {
 			event = new AccountEvent(payload);
-			event.setEventType(eventKey);
 		} else if (eventKey == EventTypes.ACCOUNT_CREATE_FAIL) {
 			event = new AccountEvent(payload, new AccountErrorData());
-			event.setEventType(eventKey);
 		} else if (eventKey == EventTypes.ACCOUNT_CREATE_OK) {
 			event = new AccountEvent(payload);
-			event.setEventType(eventKey);
 		} else if (eventKey == EventTypes.CHARACTER_RECEIVE
 				|| eventKey == EventTypes.CHARACTER_RECEIVE_REQUEST) {
 			event = new CharacterEvent(payload, new CharacterSelection());
-			event.setEventType(eventKey);
         } else if (eventKey == EventTypes.CHARACTER_START_PLAYING_REQUEST) {
             event = new CharacterEvent(payload, new CharacterSelection());
         } else if (eventKey == EventTypes.CHARACTER_START_PLAYING) {
@@ -64,12 +55,11 @@ public class GameEventFactory {
 				|| eventKey == EventTypes.MOVEMENT_STOP_TURN
                 || eventKey == EventTypes.MOVEMENT_START_WALK_BACKWARDS) {
 			event = new MoveEvent(payload);
-			event.setEventType(eventKey);
 		} else if (eventKey == EventTypes.OBJECT_CREATE) {
 			event = new ObjectEvent(payload);
-			event.setEventType(eventKey);
 		}
 		if (event != null) {
+            event.setEventType(eventKey);
 			event.setPlayer(p);
 		}
 		return event;
