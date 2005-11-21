@@ -19,7 +19,9 @@ public class CharacterEvent extends AbstractGameEvent {
 	public  CharacterEvent(ByteBuffer payload) {
         super(payload, new PlayerInfo());
     }
-    
+    public CharacterEvent(ByteBuffer payload, AbstractEventData eventData) {
+        super(payload, eventData);
+    }
     /**
      * Constructor for the client.
      */

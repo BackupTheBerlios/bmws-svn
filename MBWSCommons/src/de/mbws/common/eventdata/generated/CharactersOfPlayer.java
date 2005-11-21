@@ -6,24 +6,24 @@ import java.util.*;
 import java.nio.ByteBuffer;
 
 public class CharactersOfPlayer extends AbstractEventData { 
-	private List<CharacterDescription> descriptions;
+	private List<CharacterShortDescription> descriptions;
 
 
-	public List<CharacterDescription> getDescriptions() {
+	public List<CharacterShortDescription> getDescriptions() {
 		return descriptions;
 	}
 
-	public void setDescriptions(List<CharacterDescription> descriptions) {
+	public void setDescriptions(List<CharacterShortDescription> descriptions) {
 		this.descriptions = descriptions;
 	} 
 
 
 	public void deserialize(ByteBuffer payload) {
-		descriptions = CharacterDescription.deserializeList(payload);
+		descriptions = CharacterShortDescription.deserializeList(payload);
 	}
 
 	public int serialize(ByteBuffer payload) {
-		CharacterDescription.serializeList(payload, descriptions);
+		CharacterShortDescription.serializeList(payload, descriptions);
 		return payload.position();
 	}
 
