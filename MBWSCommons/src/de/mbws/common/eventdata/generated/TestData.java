@@ -39,6 +39,7 @@ public class TestData extends AbstractEventData {
 	}
 
 	public static void serializeList(ByteBuffer payload, List<TestData> list) {
+		if(list==null) return;
 		payload.putInt(list.size());
 		Iterator<TestData> it = list.iterator();
 		while (it.hasNext()) {

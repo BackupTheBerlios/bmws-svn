@@ -50,6 +50,7 @@ public class IntVector3D extends AbstractEventData {
 	}
 
 	public static void serializeList(ByteBuffer payload, List<IntVector3D> list) {
+		if(list==null) return;
 		payload.putInt(list.size());
 		Iterator<IntVector3D> it = list.iterator();
 		while (it.hasNext()) {

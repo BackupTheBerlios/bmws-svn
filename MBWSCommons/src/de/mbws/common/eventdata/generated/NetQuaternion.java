@@ -61,6 +61,7 @@ public class NetQuaternion extends AbstractEventData {
 	}
 
 	public static void serializeList(ByteBuffer payload, List<NetQuaternion> list) {
+		if(list==null) return;
 		payload.putInt(list.size());
 		Iterator<NetQuaternion> it = list.iterator();
 		while (it.hasNext()) {

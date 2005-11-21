@@ -63,6 +63,7 @@ public class WorldObject extends AbstractEventData {
 	}
 
 	public static void serializeList(ByteBuffer payload, List<WorldObject> list) {
+		if(list==null) return;
 		payload.putInt(list.size());
 		Iterator<WorldObject> it = list.iterator();
 		while (it.hasNext()) {

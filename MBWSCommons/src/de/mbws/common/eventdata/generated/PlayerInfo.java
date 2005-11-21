@@ -40,6 +40,7 @@ public class PlayerInfo extends AbstractEventData {
 	}
 
 	public static void serializeList(ByteBuffer payload, List<PlayerInfo> list) {
+		if(list==null) return;
 		payload.putInt(list.size());
 		Iterator<PlayerInfo> it = list.iterator();
 		while (it.hasNext()) {

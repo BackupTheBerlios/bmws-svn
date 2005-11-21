@@ -7,7 +7,6 @@ import java.nio.ByteBuffer;
 
 public class MoveData extends AbstractEventData { 
 	private String objectID;
-	private long time;
 	private byte movementType;
 	private byte turnType;
 	private IntVector3D location;
@@ -20,14 +19,6 @@ public class MoveData extends AbstractEventData {
 
 	public void setObjectID(String objectID) {
 		this.objectID = objectID;
-	} 
-
-	public long getTime() {
-		return time;
-	}
-
-	public void setTime(long time) {
-		this.time = time;
 	} 
 
 	public byte getMovementType() {
@@ -65,7 +56,6 @@ public class MoveData extends AbstractEventData {
 
 	public void deserialize(ByteBuffer payload) {
 		objectID = readString(payload);
-		time = payload.getLong();
 		movementType = payload.get();
 		turnType = payload.get();
 		location = new IntVector3D();
@@ -76,7 +66,6 @@ public class MoveData extends AbstractEventData {
 
 	public int serialize(ByteBuffer payload) {
 		writeString(payload, objectID);
-		payload.putLong(time);
 		payload.put(movementType);
 		payload.put(turnType);
 		location.serialize(payload);
@@ -85,6 +74,7 @@ public class MoveData extends AbstractEventData {
 	}
 
 	public static void serializeList(ByteBuffer payload, List<MoveData> list) {
+		if(list==null) return;
 		payload.putInt(list.size());
 		Iterator<MoveData> it = list.iterator();
 		while (it.hasNext()) {

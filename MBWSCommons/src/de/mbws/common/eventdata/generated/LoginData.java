@@ -39,6 +39,7 @@ public class LoginData extends AbstractEventData {
 	}
 
 	public static void serializeList(ByteBuffer payload, List<LoginData> list) {
+		if(list==null) return;
 		payload.putInt(list.size());
 		Iterator<LoginData> it = list.iterator();
 		while (it.hasNext()) {

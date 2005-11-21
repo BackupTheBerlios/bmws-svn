@@ -72,6 +72,7 @@ public class AccountData extends AbstractEventData {
 	}
 
 	public static void serializeList(ByteBuffer payload, List<AccountData> list) {
+		if(list==null) return;
 		payload.putInt(list.size());
 		Iterator<AccountData> it = list.iterator();
 		while (it.hasNext()) {

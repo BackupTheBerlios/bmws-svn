@@ -28,6 +28,7 @@ public class AccountErrorData extends AbstractEventData {
 	}
 
 	public static void serializeList(ByteBuffer payload, List<AccountErrorData> list) {
+		if(list==null) return;
 		payload.putInt(list.size());
 		Iterator<AccountErrorData> it = list.iterator();
 		while (it.hasNext()) {
