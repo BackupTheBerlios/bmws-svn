@@ -7,6 +7,9 @@ import java.nio.ByteBuffer;
 
 public class CharacterDetails extends AbstractEventData { 
 	private CharacterShortDescription description;
+	private int visualappearance;
+	private IntVector3D location;
+	private NetQuaternion heading;
 
 
 	public CharacterShortDescription getDescription() {
@@ -17,14 +20,46 @@ public class CharacterDetails extends AbstractEventData {
 		this.description = description;
 	} 
 
+	public int getVisualappearance() {
+		return visualappearance;
+	}
+
+	public void setVisualappearance(int visualappearance) {
+		this.visualappearance = visualappearance;
+	} 
+
+	public IntVector3D getLocation() {
+		return location;
+	}
+
+	public void setLocation(IntVector3D location) {
+		this.location = location;
+	} 
+
+	public NetQuaternion getHeading() {
+		return heading;
+	}
+
+	public void setHeading(NetQuaternion heading) {
+		this.heading = heading;
+	} 
+
 
 	public void deserialize(ByteBuffer payload) {
 		description = new CharacterShortDescription();
 		description.deserialize(payload);
+		visualappearance = payload.getInt();
+		location = new IntVector3D();
+		location.deserialize(payload);
+		heading = new NetQuaternion();
+		heading.deserialize(payload);
 	}
 
 	public int serialize(ByteBuffer payload) {
 		description.serialize(payload);
+		payload.putInt(visualappearance);
+		location.serialize(payload);
+		heading.serialize(payload);
 		return payload.position();
 	}
 

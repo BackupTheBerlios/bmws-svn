@@ -3,7 +3,7 @@ package de.mbws.common.events;
 import java.nio.ByteBuffer;
 
 import de.mbws.common.eventdata.AbstractEventData;
-import de.mbws.common.eventdata.generated.PlayerInfo;
+import de.mbws.common.eventdata.generated.CharacterDetails;
 
 /**
  * Description: 
@@ -17,7 +17,7 @@ public class CharacterEvent extends AbstractGameEvent {
      * @param payload
      */
 	public  CharacterEvent(ByteBuffer payload) {
-        super(payload, new PlayerInfo());
+        super(payload, new CharacterDetails());
     }
     public CharacterEvent(ByteBuffer payload, AbstractEventData eventData) {
         super(payload, eventData);
@@ -33,8 +33,8 @@ public class CharacterEvent extends AbstractGameEvent {
         super(eventData);
     }
 
-    public PlayerInfo getPlayerInfo() {
-        return (PlayerInfo) eventData;
+    public CharacterDetails getCharacterDetails() {
+        return (CharacterDetails) eventData;
     }
 
     @Override

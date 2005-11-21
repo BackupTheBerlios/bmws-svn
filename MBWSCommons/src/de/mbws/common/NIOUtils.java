@@ -59,7 +59,7 @@ public class NIOUtils {
 
 		// get ready for another write if needed
 		writeBuffer.rewind();
-		System.out.println("Wrote event at: "+System.currentTimeMillis());
+		//System.out.println("Wrote event at: "+System.currentTimeMillis());
 	}
 
 	/**
