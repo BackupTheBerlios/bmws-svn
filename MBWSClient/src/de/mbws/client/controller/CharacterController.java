@@ -14,13 +14,13 @@ import de.mbws.client.state.CharacterSelectionState;
 import de.mbws.client.state.MainMenuState;
 import de.mbws.common.data.generated.CharacterStatus;
 import de.mbws.common.data.generated.Characterdata;
+import de.mbws.common.eventdata.generated.CharacterDetails;
 import de.mbws.common.eventdata.generated.CharacterSelection;
 import de.mbws.common.eventdata.generated.CharacterShortDescription;
 import de.mbws.common.eventdata.generated.CharactersOfPlayer;
 import de.mbws.common.eventdata.generated.IntVector3D;
 import de.mbws.common.eventdata.generated.MoveData;
 import de.mbws.common.eventdata.generated.NetQuaternion;
-import de.mbws.common.eventdata.generated.PlayerInfo;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.CharacterEvent;
 import de.mbws.common.events.EventTypes;
@@ -56,14 +56,13 @@ public class CharacterController {
 	public void handleEvent(CharacterEvent event) {
 		if (event.getEventType() == EventTypes.CHARACTER_RECEIVE) {
 			logger.info("Receiving Details of Character!");
-			Player player = new Player(event.getPlayerInfo().getObject()
-					.getObjectID());
+			Player player = new Player(event.getCharacterDetails().getDescription().getCharacterID());
 			Characterdata characterData = new Characterdata();
-			PlayerInfo eventData = (PlayerInfo) event.getEventData();
+			CharacterDetails eventData = (CharacterDetails) event.getEventData();
 			CharacterStatus status = new CharacterStatus();
-			status.setCoordinateX(eventData.getObject().getLocation().getX());
-			status.setCoordinateY(eventData.getObject().getLocation().getY());
-			status.setCoordinateZ(eventData.getObject().getLocation().getZ());
+			status.setCoordinateX(eventData.getLocation().getX());
+			status.setCoordinateY(eventData.getLocation().getY());
+			status.setCoordinateZ(eventData.getLocation().getZ());
 			characterData.setCharacterStatus(status);
 			ClientPlayerData.getInstance().setCharacterData(characterData);
 			ClientPlayerData.getInstance().setPlayer(player);
@@ -87,14 +86,13 @@ public class CharacterController {
 					.getInput().setStartNextState(true);
 		} else if (event.getEventType() == EventTypes.CHARACTER_START_PLAYING) {
 			logger.info("Start gameplay!");
-			Player player = new Player(event.getPlayerInfo().getObject()
-					.getObjectID());
+			Player player = new Player(event.getCharacterDetails().getDescription().getCharacterID());
 			Characterdata characterData = new Characterdata();
-			PlayerInfo eventData = (PlayerInfo) event.getEventData();
+            CharacterDetails eventData = (CharacterDetails) event.getEventData();
 			CharacterStatus status = new CharacterStatus();
-			status.setCoordinateX(eventData.getObject().getLocation().getX());
-			status.setCoordinateY(eventData.getObject().getLocation().getY());
-			status.setCoordinateZ(eventData.getObject().getLocation().getZ());
+			status.setCoordinateX(eventData.getLocation().getX());
+			status.setCoordinateY(eventData.getLocation().getY());
+			status.setCoordinateZ(eventData.getLocation().getZ());
 			characterData.setCharacterStatus(status);
 			ClientPlayerData.getInstance().setCharacterData(characterData);
 			ClientPlayerData.getInstance().setPlayer(player);
