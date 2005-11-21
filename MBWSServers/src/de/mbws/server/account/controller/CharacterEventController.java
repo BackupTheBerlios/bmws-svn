@@ -2,11 +2,18 @@ package de.mbws.server.account.controller;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import de.mbws.common.Globals;
 import de.mbws.common.data.generated.CharacterStatus;
 import de.mbws.common.data.generated.Characterdata;
+import de.mbws.common.eventdata.generated.CharacterDetails;
+import de.mbws.common.eventdata.generated.CharacterSelection;
+import de.mbws.common.eventdata.generated.CharacterShortDescription;
+import de.mbws.common.eventdata.generated.CharactersOfPlayer;
 import de.mbws.common.eventdata.generated.IntVector3D;
 import de.mbws.common.eventdata.generated.NetQuaternion;
 import de.mbws.common.eventdata.generated.PlayerInfo;
@@ -18,12 +25,12 @@ import de.mbws.common.events.ObjectEvent;
 import de.mbws.server.account.AccountServer;
 import de.mbws.server.account.persistence.CharacterPersistenceManager;
 import de.mbws.server.data.ServerPlayerData;
+import de.mbws.server.utils.IdHelper;
 
 /**
  * Description:
  * 
  * @author Azarai
- * 
  */
 public class CharacterEventController extends AccountServerBaseEventController {
 
@@ -43,11 +50,23 @@ public class CharacterEventController extends AccountServerBaseEventController {
      */
     @Override
     public void handleEvent(AbstractGameEvent event) {
+        CharacterEvent ce = (CharacterEvent) event;
         if (event.getEventType() == EventTypes.CHARACTER_RECEIVE_REQUEST) {
-            CharacterEvent ce = (CharacterEvent) event;
+            CharacterSelection cs = (CharacterSelection) event.getEventData();
+            Characterdata cdata = CharacterPersistenceManager.getInstance().getCharacter(ce.getPlayer().getAccount().getUsername(),
+                    IdHelper.removePrefix(cs.getCharacterID()));
 
-            Characterdata cdata = CharacterPersistenceManager.getInstance().getCharacter(ce.getPlayer().getAccount().getUsername());
-
+            CharacterDetails cd = new CharacterDetails();
+            cd.setDescription(getCharacterShortDescription(cdata));
+            
+            CharacterEvent result = new CharacterEvent(cd);
+            result.setEventType(EventTypes.CHARACTER_RECEIVE);
+            result.setPlayer(ce.getPlayer());
+            sendEvent(result);
+        } else if (event.getEventType() == EventTypes.CHARACTER_START_PLAYING_REQUEST) {
+            CharacterSelection csel = (CharacterSelection) event.getEventData();
+            Characterdata cdata = CharacterPersistenceManager.getInstance().getCharacter(ce.getPlayer().getAccount().getUsername(),
+                    IdHelper.removePrefix(csel.getCharacterID()));            
             CharacterStatus cs = cdata.getCharacterStatus();
             ((ServerPlayerData) ce.getPlayer()).setActiveCharacter(cdata.getId());
             PlayerInfo pi = new PlayerInfo();
@@ -58,8 +77,8 @@ public class CharacterEventController extends AccountServerBaseEventController {
             location.setY(cs.getCoordinateY());
             location.setZ(cs.getCoordinateZ());
             wo.setLocation(location);
-
             // TODO @Jens guck mal hier nach Parameter "W"
+
             NetQuaternion heading = new NetQuaternion();
             heading.setW(0);
             heading.setX(0);
@@ -71,7 +90,7 @@ public class CharacterEventController extends AccountServerBaseEventController {
             ((ServerPlayerData) ce.getPlayer()).setMovementInformation(wo);
             pi.setObject(wo);
             CharacterEvent result = new CharacterEvent(pi);
-            result.setEventType(EventTypes.CHARACTER_RECEIVE);
+            result.setEventType(EventTypes.CHARACTER_START_PLAYING);
             result.setPlayer(ce.getPlayer());
             sendEvent(result);
 
@@ -96,7 +115,31 @@ public class CharacterEventController extends AccountServerBaseEventController {
                     oe.setPlayer(ce.getPlayer());
                     sendEvent(oe);
                 }
+            }            
+        } else if (event.getEventType() == EventTypes.CHARACTER_LIST_RECEIVE_REQUEST) {
+            List chars = CharacterPersistenceManager.getInstance().getAllCharacters(ce.getPlayer().getAccount().getUsername());
+            LinkedList<CharacterShortDescription> charsToSend = new LinkedList<CharacterShortDescription>();
+            for (Iterator iter = charsToSend.iterator(); iter.hasNext();) {
+                Characterdata element = (Characterdata) iter.next();
+                charsToSend.add(getCharacterShortDescription(element));
             }
+            CharactersOfPlayer cop = new CharactersOfPlayer();
+            cop.setDescriptions(charsToSend);
+            CharacterEvent result = new CharacterEvent(cop);
+            result.setEventType(EventTypes.CHARACTER_LIST_RECEIVE);
+            result.setPlayer(ce.getPlayer());
+            sendEvent(result);
         }
+    }
+    
+    
+    private CharacterShortDescription getCharacterShortDescription(Characterdata cdata) {
+        CharacterShortDescription csd = new CharacterShortDescription();
+        csd.setGender(cdata.getGender());
+        csd.setLocation(cdata.getCharacterStatus().getMap().getName());
+        csd.setName(cdata.getCharactername());
+        csd.setRace(cdata.getRace().getId());
+        csd.setCharacterID(Globals.OBJECT_ID_PREFIX_CHARACTER + cdata.getId());
+        return csd;
     }
 }

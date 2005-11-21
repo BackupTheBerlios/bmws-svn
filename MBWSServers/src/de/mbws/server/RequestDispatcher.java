@@ -69,7 +69,7 @@ public class RequestDispatcher extends Thread {
 
                 // sleep just a bit
                 try {
-                    Thread.sleep(30);
+                    Thread.sleep(1);
                 } catch (InterruptedException e) {
                 }
             }
@@ -107,14 +107,12 @@ public class RequestDispatcher extends Thread {
             // be interrupted when new clients come in
             selector.select();
             Set readyKeys = selector.selectedKeys();
-
             Iterator i = readyKeys.iterator();
             while (i.hasNext()) {
                 SelectionKey key = (SelectionKey) i.next();
                 i.remove();
                 SocketChannel channel = (SocketChannel) key.channel();
                 Attachment attachment = (Attachment) key.attachment();
-
                 try {
                     // read from the channel
                     long nbytes = channel.read(attachment.readBuff);
@@ -123,7 +121,6 @@ public class RequestDispatcher extends Thread {
                         logger.info("disconnect: " + channel.socket().getRemoteSocketAddress() + ", end-of-stream");
                         channel.close();
                     }
-
                     // check for a complete event
                     try {
                         if (attachment.readBuff.position() >= Attachment.HEADER_SIZE) {
