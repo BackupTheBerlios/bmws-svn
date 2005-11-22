@@ -60,51 +60,59 @@ public class ObjectManager {
 	// TODO: Should we use a map here with configurable values ?
 	// TODO: Replace GameObject by the correct type
 	public static AbstractGameObject create(WorldObject wo) {
-		MovableObject object = new MovableObject(wo.getObjectID());
-		object.setAlive(true);
-		object.setMovespeed(30);
-		object.setTurnspeed(5);
-		// TODO: Just for testing:
 
-		// box stand in
-		Box b = new Box("box", new Vector3f(), 0.35f, 0.5f, 0.25f);
-		b.setDefaultColor(new ColorRGBA(ColorRGBA.white));
-		b.setModelBound(new BoundingBox());
-		b.updateModelBound();
+		if (wo.getMovespeed() == 0 && wo.getTurnspeed() == 0) {
+			// TODO Set a nonmovable object here
+		} else {
+			MovableObject object = new MovableObject(wo.getObjectID());
+			object.setAlive(true);
+			// object.setMovespeed(wo.getMovespeed());
+			// object.setTurnspeed(wo.getTurnspeed());
+			// TODO: Just for testing:
+			object.setMovespeed(30);
+			object.setTurnspeed(5);
+			// box stand in
+			Box b = new Box("box", new Vector3f(), 0.35f, 0.5f, 0.25f);
+			b.setDefaultColor(new ColorRGBA(ColorRGBA.white));
+			b.setModelBound(new BoundingBox());
+			b.updateModelBound();
 
-		//TODO: "player2 node" wont work, trying integer.toString of objectid!!
-		Node player2 = new Node(wo.getObjectID());
-		// player2.setLocalTranslation(new Vector3f(100, 0, 100));
+			// TODO: "player2 node" wont work, trying integer.toString of
+			// objectid!!
+			Node player2 = new Node(wo.getObjectID());
+			// player2.setLocalTranslation(new Vector3f(100, 0, 100));
 
-		player2.setLocalTranslation(new Vector3f(wo.getLocation().getX(), wo
-				.getLocation().getY(), wo.getLocation().getZ()));
-		player2.setLocalRotation(new Quaternion(wo.getHeading().getX(), wo
-				.getHeading().getY(), wo.getHeading().getZ(), wo.getHeading()
-				.getW()));
+			player2.setLocalTranslation(new Vector3f(wo.getLocation().getX(),
+					wo.getLocation().getY(), wo.getLocation().getZ()));
+			player2.setLocalRotation(new Quaternion(wo.getHeading().getX(), wo
+					.getHeading().getY(), wo.getHeading().getZ(), wo
+					.getHeading().getW()));
 
-		rootNode.attachChild(player2);
-		player2.attachChild(b);
-		player2.updateWorldBound();
-		object.setModel(player2);
-		rootNode.attachChild(player2);
+			rootNode.attachChild(player2);
+			player2.attachChild(b);
+			player2.updateWorldBound();
+			object.setModel(player2);
+			rootNode.attachChild(player2);
 
-		// TODO Remove above
-		// STEP1: Load
-		// Node n = ....
-		// object.setModel(n);
-		// STEP2: Set coordinates and attach
-		// m_rootNode.attachChild(n);
-		// STEP 3: UPDATE STATES
-		// ((Node) (n)).setLocalScale(15F);
-		// ((Node) (n)).updateGeometricState(10F, true);
-		// ((Node) (n)).updateRenderState();
+			// TODO Remove above
+			// STEP1: Load
+			// Node n = ....
+			// object.setModel(n);
+			// STEP2: Set coordinates and attach
+			// m_rootNode.attachChild(n);
+			// STEP 3: UPDATE STATES
+			// ((Node) (n)).setLocalScale(15F);
+			// ((Node) (n)).updateGeometricState(10F, true);
+			// ((Node) (n)).updateRenderState();
 
-		// object.initialize(map);
-		synchronized (objects) {
-			objects.put(object.getObjectID(), object);
+			// object.initialize(map);
+			synchronized (objects) {
+				objects.put(object.getObjectID(), object);
+			}
+
+			return object;
 		}
-
-		return object;
+		return null;
 	}
 
 	public static void detach(String id) {
@@ -135,8 +143,8 @@ public class ObjectManager {
 	}
 
 	public static Node createPlayer() {
-		Player object = new Player(ClientPlayerData
-				.getInstance().getPlayer().getObjectID());
+		Player object = new Player(ClientPlayerData.getInstance().getPlayer()
+				.getObjectID());
 		object.setAlive(true);
 		object.setMovespeed(30);
 		object.setTurnspeed(5);
