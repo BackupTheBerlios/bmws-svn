@@ -39,6 +39,7 @@ import com.jmex.sound.openAL.SoundSystem;
 import de.mbws.client.MBWSClient;
 import de.mbws.client.controller.AccountController;
 import de.mbws.client.controller.ClientNetworkController;
+import de.mbws.client.gui.MenuLookAndFeel;
 import de.mbws.client.state.handler.MainMenuHandler;
 import de.mbws.common.data.AccountData;
 
@@ -93,7 +94,7 @@ public class MainMenuState extends StandardGameState {
 		_root = new PolledRootNode(MBWSClient.timer, input);// FixedLogicalRateClient.timer,
 		// input);
 		rootNode.attachChild(_root);
-		lnf = BLookAndFeel.getDefaultLookAndFeel();
+		lnf = MenuLookAndFeel.getDefaultLookAndFeel();
 		window = new BDecoratedWindow(lnf, null);
 
 		BContainer cont = new BContainer(GroupLayout
@@ -111,8 +112,11 @@ public class MainMenuState extends StandardGameState {
 		BButton login = new BButton("Login");
 		BButton account = new BButton("Create Account");
 		BButton options = new BButton("Options");
+        login.setPreferredSize(new Dimension(200, 25));
+        account.setPreferredSize(new Dimension(200, 25));
+        options.setPreferredSize(new Dimension(200, 25));
 
-		loginContainer.add(loginLabel);
+        loginContainer.add(loginLabel);
 		loginContainer.add(loginTF);
 		passwordContainer.add(passwordLabel);
 		passwordContainer.add(passwordTF);

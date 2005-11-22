@@ -31,6 +31,7 @@ import com.jmex.bui.layout.GroupLayout;
 
 import de.mbws.client.MBWSClient;
 import de.mbws.client.data.ClientPlayerData;
+import de.mbws.client.gui.MenuLookAndFeel;
 import de.mbws.client.state.handler.CharacterSelectionStateHandler;
 import de.mbws.common.eventdata.generated.CharacterShortDescription;
 
@@ -135,7 +136,7 @@ public class CharacterSelectionState extends StandardGameState {
 	private void initBUIGUI() {
 		_root = new PolledRootNode(MBWSClient.timer, input);
 		rootNode.attachChild(_root);
-		lnf = BLookAndFeel.getDefaultLookAndFeel();
+		lnf = MenuLookAndFeel.getDefaultLookAndFeel();
 		window = new BDecoratedWindow(lnf, null);
 		// GroupLayout glay = GroupLayout.makeVStretch();
 		// glay.setGap(0);
