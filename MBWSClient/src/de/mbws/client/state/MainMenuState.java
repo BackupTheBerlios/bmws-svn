@@ -3,6 +3,7 @@
  */
 package de.mbws.client.state;
 
+import java.io.File;
 import java.util.logging.Level;
 
 import com.jme.app.GameState;
@@ -33,6 +34,7 @@ import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.util.Dimension;
+import com.jmex.sound.openAL.SoundSystem;
 
 import de.mbws.client.MBWSClient;
 import de.mbws.client.controller.AccountController;
@@ -45,8 +47,8 @@ import de.mbws.common.data.AccountData;
  */
 public class MainMenuState extends StandardGameState {
 
-//	/** THE CURSOR NODE WHICH HOLDS THE MOUSE GOTTEN FROM INPUT. */
-//	private Node cursor;
+	// /** THE CURSOR NODE WHICH HOLDS THE MOUSE GOTTEN FROM INPUT. */
+	// private Node cursor;
 
 	/** Our display system. */
 	private DisplaySystem display;
@@ -54,28 +56,32 @@ public class MainMenuState extends StandardGameState {
 	private Text text;
 
 	private MainMenuHandler input;
+	private int musicID;
 
 	BTextField loginTF;
 	BTextField passwordTF;
 	BRootNode _root;
-	BWindow window ;
+	BWindow window;
 	BLookAndFeel lnf;
 	BPopupWindow infoWindow;
-	
 
 	public MainMenuState(String name) {
 		super(name);
-		
+		SoundSystem.init(null, SoundSystem.OUTPUT_DEFAULT);
+		//TODO: Take "bin" out
+		musicID = SoundSystem.createStream(System.getProperty("user.dir")+File.separator+"bin"+File.separator+"resources" + File.separator
+				+ "audio" + File.separator + "music" + File.separator
+				+ "intro.ogg", false);
+		if (SoundSystem.isStreamOpened(musicID)) {
+			SoundSystem.playStream(musicID);
+		}
 		display = DisplaySystem.getDisplaySystem();
 		initInput();
 		initGUI();
 		initText();
 		setupButtons();
-		//initCursor();
-		 MouseInput.get().setCursorVisible(true);
-
-		
-		
+		// initCursor();
+		MouseInput.get().setCursorVisible(true);
 
 		rootNode.setLightCombineMode(LightState.OFF);
 		rootNode.setRenderQueueMode(Renderer.QUEUE_ORTHO);
@@ -84,7 +90,8 @@ public class MainMenuState extends StandardGameState {
 	}
 
 	private void setupButtons() {
-		_root = new PolledRootNode(MBWSClient.timer, input);//FixedLogicalRateClient.timer, input);
+		_root = new PolledRootNode(MBWSClient.timer, input);// FixedLogicalRateClient.timer,
+		// input);
 		rootNode.attachChild(_root);
 		lnf = BLookAndFeel.getDefaultLookAndFeel();
 		window = new BDecoratedWindow(lnf, null);
@@ -97,9 +104,9 @@ public class MainMenuState extends StandardGameState {
 				.makeHoriz(GroupLayout.LEFT));
 		BLabel loginLabel = new BLabel("Login");
 		BLabel passwordLabel = new BLabel("Pass");
-		loginTF = new BTextField("sack");//Settings.getInstance().getLogin());
+		loginTF = new BTextField("sack");// Settings.getInstance().getLogin());
 		loginTF.setPreferredSize(new Dimension(100, 30));
-		passwordTF = new BTextField("sack");//Settings.getInstance().getPassword());
+		passwordTF = new BTextField("sack");// Settings.getInstance().getPassword());
 		passwordTF.setPreferredSize(new Dimension(100, 30));
 		BButton login = new BButton("Login");
 		BButton account = new BButton("Create Account");
@@ -128,6 +135,7 @@ public class MainMenuState extends StandardGameState {
 				String login = loginTF.getText();
 				if (login != null && password != null) {
 					input.login(login, password);
+					SoundSystem.stopStream(musicID);
 				}
 			}
 		});
@@ -140,8 +148,10 @@ public class MainMenuState extends StandardGameState {
 					account.setUsername(login);
 					account.setPassword(password);
 					account.setPasswordConfirmation(password);
-					//TODO correct that
-					ClientNetworkController.getInstance().handleOutgoingEvent(AccountController.getInstance().createRegisterEvent(account,null));
+					// TODO correct that
+					ClientNetworkController.getInstance().handleOutgoingEvent(
+							AccountController.getInstance()
+									.createRegisterEvent(account, null));
 					input.login(login, password);
 				}
 			}
@@ -164,44 +174,43 @@ public class MainMenuState extends StandardGameState {
 		input = new MainMenuHandler(this);
 	}
 
-//	/**
-//	 * Creates a pretty cursor.
-//	 */
-//	private void initCursor() {
-//		Texture texture = TextureManager.loadTexture(MainMenuState.class
-//				.getClassLoader()
-//				.getResource("rsrc/textures/cursor1.png"),
-//				Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR);
-//
-//		TextureState ts = display.getRenderer().createTextureState();
-//		ts.setEnabled(true);
-//		ts.setTexture(texture);
-//
-//		AlphaState alpha = display.getRenderer().createAlphaState();
-//		alpha.setBlendEnabled(true);
-//		alpha.setSrcFunction(AlphaState.SB_SRC_ALPHA);
-//		alpha.setDstFunction(AlphaState.DB_ONE);
-//		alpha.setTestEnabled(true);
-//		alpha.setTestFunction(AlphaState.TF_GREATER);
-//		alpha.setEnabled(true);
-//
-//		input.getMouse().setRenderState(ts);
-//		//input.getMouse().setRenderState(alpha);
-//		input.getMouse().setLocalScale(new Vector3f(1, 1, 1));
-//		
-//		cursor = new Node("Cursor");
-//		cursor.attachChild(input.getMouse());
-//
-//		rootNode.attachChild(cursor);
-//	}
+	// /**
+	// * Creates a pretty cursor.
+	// */
+	// private void initCursor() {
+	// Texture texture = TextureManager.loadTexture(MainMenuState.class
+	// .getClassLoader()
+	// .getResource("rsrc/textures/cursor1.png"),
+	// Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR);
+	//
+	// TextureState ts = display.getRenderer().createTextureState();
+	// ts.setEnabled(true);
+	// ts.setTexture(texture);
+	//
+	// AlphaState alpha = display.getRenderer().createAlphaState();
+	// alpha.setBlendEnabled(true);
+	// alpha.setSrcFunction(AlphaState.SB_SRC_ALPHA);
+	// alpha.setDstFunction(AlphaState.DB_ONE);
+	// alpha.setTestEnabled(true);
+	// alpha.setTestFunction(AlphaState.TF_GREATER);
+	// alpha.setEnabled(true);
+	//
+	// input.getMouse().setRenderState(ts);
+	// //input.getMouse().setRenderState(alpha);
+	// input.getMouse().setLocalScale(new Vector3f(1, 1, 1));
+	//		
+	// cursor = new Node("Cursor");
+	// cursor.attachChild(input.getMouse());
+	//
+	// rootNode.attachChild(cursor);
+	// }
 
 	/**
 	 * Initializes the 2D Background and the Buttons
 	 */
 	private void initGUI() {
 		Quad backgroundQuad = new Quad("background");
-		backgroundQuad.initialize(display.getWidth(), display
-				.getHeight());
+		backgroundQuad.initialize(display.getWidth(), display.getHeight());
 		backgroundQuad.setLocalTranslation((new Vector3f(
 				display.getWidth() / 2, display.getHeight() / 2, 0)));
 
@@ -245,22 +254,22 @@ public class MainMenuState extends StandardGameState {
 		input.update(tpf);
 		rootNode.updateGeometricState(tpf, true);
 	}
-	
+
 	public void displayInfo(String info) {
-		infoWindow = new BPopupWindow(window,new BorderLayout());
-		infoWindow.add(new BLabel(info),BorderLayout.CENTER);
+		infoWindow = new BPopupWindow(window, new BorderLayout());
+		infoWindow.add(new BLabel(info), BorderLayout.CENTER);
 		BButton button = new BButton("OK");
 		button.addListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				infoWindow.dismiss();
-				}
-			
+			}
+
 		});
 		infoWindow.add(button, BorderLayout.SOUTH);
 		infoWindow.setLocation(display.getWidth() / 2 - window.getWidth() / 2,
 				display.getHeight() / 2 - window.getHeight() / 2);
 		_root.addWindow(infoWindow);
-		
+
 	}
 
 	public MainMenuHandler getInput() {

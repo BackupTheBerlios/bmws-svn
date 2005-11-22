@@ -26,6 +26,7 @@ public class CharacterSelectionStateHandler extends InputHandler implements Acti
 	}
 
 	public void actionPerformed(ActionEvent event) {
+		
 		String selectedCharacter = event.getAction();
 		ClientNetworkController.getInstance().handleOutgoingEvent(
 				CharacterController.getInstance()
