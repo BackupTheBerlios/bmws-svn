@@ -23,6 +23,7 @@ import com.jmex.bui.BDecoratedWindow;
 import com.jmex.bui.BLookAndFeel;
 import com.jmex.bui.BRootNode;
 import com.jmex.bui.BScrollPane;
+import com.jmex.bui.BTextArea;
 import com.jmex.bui.BWindow;
 import com.jmex.bui.PolledRootNode;
 import com.jmex.bui.layout.BorderLayout;
@@ -50,11 +51,13 @@ public class CharacterSelectionState extends StandardGameState {
 
 	BRootNode _root;
 	BWindow window;
+	// BWindow characterWindow;
 	BLookAndFeel lnf;
 	BButton abortBtn;
 	BButton startGameBtn;
 	BButton createNewCharacterBtn;
 	BContainer cont;
+	BTextArea characterDescription;
 
 	public CharacterSelectionState(String name) {
 		super(name);
@@ -119,11 +122,12 @@ public class CharacterSelectionState extends StandardGameState {
 			while (it.hasNext()) {
 				CharacterShortDescription aCharacter = it.next();
 				BButton characterButton = new BButton(aCharacter.getName()
-//						+ " (" + aCharacter.getRace() + "/"
-//						+ aCharacter.getGender() //+ "/" + aCharacter.getClass()
-						+ ")", input, aCharacter.getCharacterID());
+						+ " (" + aCharacter.getRace() + "/"
+						+ aCharacter.getGender() + "/"
+						+ aCharacter.getLocation() + ")", input, aCharacter
+						.getCharacterID());
 				cont.add(characterButton);
-				
+
 			}
 		}
 	}
@@ -136,15 +140,23 @@ public class CharacterSelectionState extends StandardGameState {
 		// GroupLayout glay = GroupLayout.makeVStretch();
 		// glay.setGap(0);
 		// cont = new BContainer(glay);
-		cont = new BContainer(GroupLayout.makeVert(GroupLayout.CENTER));
+		cont = new BContainer(GroupLayout.makeVert(GroupLayout.TOP));
 		fillData();
-		window.add(new BScrollPane(cont), BorderLayout.EAST);
+		characterDescription = new BTextArea();
+
+		window.add(new BScrollPane(cont), BorderLayout.WEST);
 		// _root.addWindow(window);
 		// Dimension ps = window.getPreferredSize();
 		// window.setBounds(100, 300, ps.width, 2 * ps.height / 3);
-		window.setSize(200, 250);
+		window.setSize(250, 250);
 		window.setLocation(0, 0);
+
+		// characterWindow = new BDecoratedWindow(lnf, null);
+		// characterWindow.add(characterDescription, BorderLayout.EAST);
+		// characterWindow.setSize(200, 250);
+		// characterWindow.setLocation(display.getWidth()-200, 0);
 		_root.addWindow(window);
+		// _root.addWindow(characterWindow);
 	}
 
 	/**
@@ -189,16 +201,7 @@ public class CharacterSelectionState extends StandardGameState {
 
 	}
 
-	/**
-	 * Inits the button placed at the center of the screen.
-	 */
-	private void initText() {
-		text = Text.createDefaultTextLabel("menu");
-		text.print("just click on the character you want to use !)");
-		text.getLocalTranslation().set(0, 100, 0);
-
-		rootNode.attachChild(text);
-	}
+	
 
 	/**
 	 * Updates input and button.
@@ -231,5 +234,13 @@ public class CharacterSelectionState extends StandardGameState {
 
 	public CharacterSelectionStateHandler getInput() {
 		return input;
+	}
+
+	public BTextArea getCharacterDescription() {
+		return characterDescription;
+	}
+
+	public void setCharacterDescription(BTextArea characterDescription) {
+		this.characterDescription = characterDescription;
 	}
 }
