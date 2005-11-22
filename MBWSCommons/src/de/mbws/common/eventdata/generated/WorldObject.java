@@ -7,6 +7,8 @@ import java.nio.ByteBuffer;
 
 public class WorldObject extends AbstractEventData { 
 	private String objectID;
+	private byte movespeed;
+	private byte turnspeed;
 	private int modelID;
 	private IntVector3D location;
 	private NetQuaternion heading;
@@ -18,6 +20,22 @@ public class WorldObject extends AbstractEventData {
 
 	public void setObjectID(String objectID) {
 		this.objectID = objectID;
+	} 
+
+	public byte getMovespeed() {
+		return movespeed;
+	}
+
+	public void setMovespeed(byte movespeed) {
+		this.movespeed = movespeed;
+	} 
+
+	public byte getTurnspeed() {
+		return turnspeed;
+	}
+
+	public void setTurnspeed(byte turnspeed) {
+		this.turnspeed = turnspeed;
 	} 
 
 	public int getModelID() {
@@ -47,6 +65,8 @@ public class WorldObject extends AbstractEventData {
 
 	public void deserialize(ByteBuffer payload) {
 		objectID = readString(payload);
+		movespeed = payload.get();
+		turnspeed = payload.get();
 		modelID = payload.getInt();
 		location = new IntVector3D();
 		location.deserialize(payload);
@@ -56,6 +76,8 @@ public class WorldObject extends AbstractEventData {
 
 	public int serialize(ByteBuffer payload) {
 		writeString(payload, objectID);
+		payload.put(movespeed);
+		payload.put(turnspeed);
 		payload.putInt(modelID);
 		location.serialize(payload);
 		heading.serialize(payload);
