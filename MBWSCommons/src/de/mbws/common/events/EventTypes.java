@@ -29,6 +29,8 @@ public class EventTypes {
     public static final int CHARACTER_LIST_RECEIVE = 24;
     public static final int CHARACTER_START_PLAYING_REQUEST = 25;
     public static final int CHARACTER_START_PLAYING = 26;
+    public static final int CHARACTER_DELETE_REQUEST = 27;
+    public static final int CHARACTER_CREATE_REQUEST = 28;
     
     //Numbers 100 to 150 are reserved for movement related events
     public static final int GROUPID_EVENT_MOVEMENT = 10;
