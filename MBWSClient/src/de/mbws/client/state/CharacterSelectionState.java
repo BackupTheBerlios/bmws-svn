@@ -9,20 +9,21 @@ import java.util.logging.Level;
 
 import com.jme.app.GameState;
 import com.jme.app.StandardGameState;
+import com.jme.image.Texture;
 import com.jme.input.MouseInput;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Renderer;
-import com.jme.scene.Text;
 import com.jme.scene.shape.Quad;
 import com.jme.scene.state.LightState;
+import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
 import com.jme.util.LoggingSystem;
+import com.jme.util.TextureManager;
 import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BDecoratedWindow;
 import com.jmex.bui.BLookAndFeel;
 import com.jmex.bui.BRootNode;
-import com.jmex.bui.BScrollPane;
 import com.jmex.bui.BTextArea;
 import com.jmex.bui.BWindow;
 import com.jmex.bui.PolledRootNode;
@@ -43,21 +44,30 @@ public class CharacterSelectionState extends StandardGameState {
 	// /** THE CURSOR NODE WHICH HOLDS THE MOUSE GOTTEN FROM INPUT. */
 	// private Node cursor;
 
+	public static final String CREATE_CHARACTER = "CREATECHARACTER";
+	public static final String DELETE_CHARACTER = "DELETECHARACTER";
+	public static final String STARTGAME = "STARTGAME";
+
 	/** Our display system. */
 	private DisplaySystem display;
 
-	private Text text;
+	//private Text text;
 
 	private CharacterSelectionStateHandler input;
 
 	BRootNode _root;
-	BWindow window;
+	public BWindow characterWindow;
+	BContainer cont;
+
+	BWindow controllWindow;
+	BContainer controllContainer;
 	// BWindow characterWindow;
 	BLookAndFeel lnf;
-	BButton abortBtn;
-	BButton startGameBtn;
-	BButton createNewCharacterBtn;
-	BContainer cont;
+
+	public BButton startGameBtn;
+	public BButton deleteBtn;
+	public BButton createBtn;
+
 	BTextArea characterDescription;
 
 	public CharacterSelectionState(String name) {
@@ -77,43 +87,6 @@ public class CharacterSelectionState extends StandardGameState {
 		rootNode.updateRenderState();
 		rootNode.updateGeometricState(0, true);
 	}
-
-	// private void setupButtons() {
-	//	 
-	//	
-	// BContainer cont = new BContainer(GroupLayout
-	// .makeVert(GroupLayout.CENTER));
-	// BContainer loginContainer = new BContainer(GroupLayout
-	// .makeHoriz(GroupLayout.LEFT));
-	// BContainer passwordContainer = new BContainer(GroupLayout
-	// .makeHoriz(GroupLayout.LEFT));
-	// BLabel loginLabel = new BLabel("Login");
-	// BLabel passwordLabel = new BLabel("Pass");
-	// loginTF = new BTextField("sack");//Settings.getInstance().getLogin());
-	// loginTF.setPreferredSize(new Dimension(100, 30));
-	// passwordTF = new
-	// BTextField("sack");//Settings.getInstance().getPassword());
-	// passwordTF.setPreferredSize(new Dimension(100, 30));
-	// BButton login = new BButton("Login");
-	// BButton account = new BButton("Create Account");
-	// BButton options = new BButton("Options");
-	//	
-	// loginContainer.add(loginLabel);
-	// loginContainer.add(loginTF);
-	// passwordContainer.add(passwordLabel);
-	// passwordContainer.add(passwordTF);
-	// cont.add(loginContainer);
-	// cont.add(passwordContainer);
-	// cont.add(login);
-	// cont.add(account);
-	// cont.add(options);
-	//	
-	// window.add(cont, BorderLayout.CENTER);
-	//	
-	// window.setSize(200, 250);
-	// window.setLocation(display.getWidth() / 2 - window.getWidth() / 2,
-	// display.getHeight() / 2 - window.getHeight() / 2);
-	// _root.addWindow(window);
 
 	private void fillData() {
 		List<CharacterShortDescription> allCharacters = ClientPlayerData
@@ -137,27 +110,41 @@ public class CharacterSelectionState extends StandardGameState {
 		_root = new PolledRootNode(MBWSClient.timer, input);
 		rootNode.attachChild(_root);
 		lnf = MenuLookAndFeel.getDefaultLookAndFeel();
-		window = new BDecoratedWindow(lnf, null);
-		// GroupLayout glay = GroupLayout.makeVStretch();
-		// glay.setGap(0);
-		// cont = new BContainer(glay);
+		characterWindow = new BDecoratedWindow(lnf, null);
 		cont = new BContainer(GroupLayout.makeVert(GroupLayout.TOP));
 		fillData();
 		characterDescription = new BTextArea();
 
-		window.add(new BScrollPane(cont), BorderLayout.WEST);
-		// _root.addWindow(window);
-		// Dimension ps = window.getPreferredSize();
-		// window.setBounds(100, 300, ps.width, 2 * ps.height / 3);
-		window.setSize(250, 250);
-		window.setLocation(0, 0);
+		// window.add(new BScrollPane(cont), BorderLayout.WEST);
+		characterWindow.add(cont, BorderLayout.WEST);
+		characterWindow.setSize(250, 250);
+		characterWindow.setLocation(display.getWidth() - 250, display
+				.getHeight() - 250);
 
-		// characterWindow = new BDecoratedWindow(lnf, null);
-		// characterWindow.add(characterDescription, BorderLayout.EAST);
-		// characterWindow.setSize(200, 250);
-		// characterWindow.setLocation(display.getWidth()-200, 0);
-		_root.addWindow(window);
-		// _root.addWindow(characterWindow);
+		controllWindow = new BDecoratedWindow(lnf, null);
+		controllContainer = new BContainer(GroupLayout
+				.makeHoriz(GroupLayout.CENTER));
+
+		controllWindow.setSize(250, 50);
+		controllWindow.setLocation(display.getWidth() - 250, 0);
+
+		startGameBtn = new BButton("Start", input, STARTGAME);
+		startGameBtn.setEnabled(false);
+		controllContainer.add(startGameBtn);
+		controllWindow.add(controllContainer, BorderLayout.WEST);
+
+		deleteBtn = new BButton("Delete", input, DELETE_CHARACTER);
+		deleteBtn.setEnabled(false);
+		controllContainer.add(deleteBtn);
+		controllWindow.add(controllContainer, BorderLayout.CENTER);
+
+		createBtn = new BButton("Create", input, CREATE_CHARACTER);
+		createBtn.setEnabled(false);
+		controllContainer.add(createBtn);
+		controllWindow.add(controllContainer, BorderLayout.EAST);
+
+		_root.addWindow(characterWindow);
+		_root.addWindow(controllWindow);
 	}
 
 	/**
@@ -189,20 +176,18 @@ public class CharacterSelectionState extends StandardGameState {
 				"display size = " + (float) display.getWidth() + " "
 						+ (float) display.getHeight());
 
-		// TextureState ts = display.getRenderer().createTextureState();
-		// ts.setTexture(TextureManager.loadTexture(getClass().getClassLoader()
-		// .getResource("resources/IntroAndMainMenu/Background.jpg"),
-		// Texture.MM_LINEAR, Texture.FM_LINEAR, ts.getMaxAnisotropic(),
-		// true));
-		//
-		// ts.setEnabled(true);
-		// backgroundQuad.setRenderState(ts);
+		 TextureState ts = display.getRenderer().createTextureState();
+		 ts.setTexture(TextureManager.loadTexture(getClass().getClassLoader()
+		 .getResource("resources/IntroAndMainMenu/Background.jpg"),
+		 Texture.MM_LINEAR, Texture.FM_LINEAR, ts.getMaxAnisotropic(),
+		 true));
+		
+		 ts.setEnabled(true);
+		 backgroundQuad.setRenderState(ts);
 
 		rootNode.attachChild(backgroundQuad);
 
 	}
-
-	
 
 	/**
 	 * Updates input and button.
