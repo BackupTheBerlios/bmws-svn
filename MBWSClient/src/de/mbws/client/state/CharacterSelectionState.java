@@ -31,6 +31,7 @@ import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 
 import de.mbws.client.MBWSClient;
+import de.mbws.client.ValueMapper;
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.gui.MenuLookAndFeel;
 import de.mbws.client.state.handler.CharacterSelectionStateHandler;
@@ -96,7 +97,7 @@ public class CharacterSelectionState extends StandardGameState {
 			while (it.hasNext()) {
 				CharacterShortDescription aCharacter = it.next();
 				BButton characterButton = new BButton(aCharacter.getName()
-						+ " (" + MBWSClient.languageResources.getString("race." + String.valueOf(aCharacter.getRace())) + "/"
+						+ " (" + ValueMapper.getRaceName(aCharacter.getRace()) + "/"
 						+ aCharacter.getGender() + "/"
 						+ aCharacter.getLocation() + ")", input, aCharacter
 						.getCharacterID());

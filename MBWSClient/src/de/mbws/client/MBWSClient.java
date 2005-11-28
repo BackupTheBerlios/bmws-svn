@@ -3,9 +3,6 @@
  */
 package de.mbws.client;
 
-import java.util.Locale;
-import java.util.PropertyResourceBundle;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 
 import org.apache.log4j.BasicConfigurator;
@@ -47,7 +44,7 @@ public class MBWSClient extends BaseGame {
 	private float timePerFrame;
 
 	public static final String CLIENT = "MBWSClient Version: 0.1";
-	public static ResourceBundle languageResources;
+	public static ValueMapper languageResources;
     
 	public static ActionQueue actionQueue = new ActionQueue();
 
@@ -89,9 +86,9 @@ public class MBWSClient extends BaseGame {
 	 */
 	protected final void initSystem() {
 		try {
-          languageResources =
-          PropertyResourceBundle.getBundle("LanguageBundle", Locale.getDefault());
-			/**
+          languageResources = new ValueMapper();
+
+          /**
 			 * Get a DisplaySystem acording to the renderer selected in the
 			 * startup box.
 			 */
