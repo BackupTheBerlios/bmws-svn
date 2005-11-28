@@ -96,7 +96,7 @@ public class CharacterSelectionState extends StandardGameState {
 			while (it.hasNext()) {
 				CharacterShortDescription aCharacter = it.next();
 				BButton characterButton = new BButton(aCharacter.getName()
-						+ " (" + aCharacter.getRace() + "/"
+						+ " (" + MBWSClient.languageResources.getString("race." + String.valueOf(aCharacter.getRace())) + "/"
 						+ aCharacter.getGender() + "/"
 						+ aCharacter.getLocation() + ")", input, aCharacter
 						.getCharacterID());

@@ -150,7 +150,7 @@ public class TestGameState extends StandardGameState {
 		props.put(ThirdPersonMouseLook.PROP_MOUSEYMULT, 0.11);
 
 		chaser = new ChaseCamera(cam, player, props);
-		chaser.setActionSpeed(100f);
+		chaser.setActionSpeed(10000f);
 	}
 
 	/**
