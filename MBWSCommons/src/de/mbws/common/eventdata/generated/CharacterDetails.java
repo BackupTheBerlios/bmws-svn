@@ -7,7 +7,6 @@ import java.nio.ByteBuffer;
 
 public class CharacterDetails extends AbstractEventData { 
 	private CharacterShortDescription description;
-	private int visualappearance;
 	private IntVector3D location;
 	private NetQuaternion heading;
 
@@ -18,14 +17,6 @@ public class CharacterDetails extends AbstractEventData {
 
 	public void setDescription(CharacterShortDescription description) {
 		this.description = description;
-	} 
-
-	public int getVisualappearance() {
-		return visualappearance;
-	}
-
-	public void setVisualappearance(int visualappearance) {
-		this.visualappearance = visualappearance;
 	} 
 
 	public IntVector3D getLocation() {
@@ -48,7 +39,6 @@ public class CharacterDetails extends AbstractEventData {
 	public void deserialize(ByteBuffer payload) {
 		description = new CharacterShortDescription();
 		description.deserialize(payload);
-		visualappearance = payload.getInt();
 		location = new IntVector3D();
 		location.deserialize(payload);
 		heading = new NetQuaternion();
@@ -57,7 +47,6 @@ public class CharacterDetails extends AbstractEventData {
 
 	public int serialize(ByteBuffer payload) {
 		description.serialize(payload);
-		payload.putInt(visualappearance);
 		location.serialize(payload);
 		heading.serialize(payload);
 		return payload.position();

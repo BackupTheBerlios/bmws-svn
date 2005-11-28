@@ -34,9 +34,9 @@
         length="45"
     />
     <property
-        name="condition"
+        name="maxCondition"
         type="int"
-        column="condition"
+        column="max_condition"
         not-null="true"
         length="10"
     />

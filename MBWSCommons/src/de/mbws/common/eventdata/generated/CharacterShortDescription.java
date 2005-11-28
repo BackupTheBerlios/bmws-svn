@@ -11,6 +11,7 @@ public class CharacterShortDescription extends AbstractEventData {
 	private String gender;
 	private int race;
 	private String location;
+	private CharacterVisualAppearance visualAppearance;
 
 
 	public String getCharacterID() {
@@ -53,6 +54,14 @@ public class CharacterShortDescription extends AbstractEventData {
 		this.location = location;
 	} 
 
+	public CharacterVisualAppearance getVisualAppearance() {
+		return visualAppearance;
+	}
+
+	public void setVisualAppearance(CharacterVisualAppearance visualAppearance) {
+		this.visualAppearance = visualAppearance;
+	} 
+
 
 	public void deserialize(ByteBuffer payload) {
 		characterID = readString(payload);
@@ -60,6 +69,8 @@ public class CharacterShortDescription extends AbstractEventData {
 		gender = readString(payload);
 		race = payload.getInt();
 		location = readString(payload);
+		visualAppearance = new CharacterVisualAppearance();
+		visualAppearance.deserialize(payload);
 	}
 
 	public int serialize(ByteBuffer payload) {
@@ -68,6 +79,7 @@ public class CharacterShortDescription extends AbstractEventData {
 		writeString(payload, gender);
 		payload.putInt(race);
 		writeString(payload, location);
+		visualAppearance.serialize(payload);
 		return payload.position();
 	}
 
