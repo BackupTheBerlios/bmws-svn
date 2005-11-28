@@ -48,10 +48,10 @@ public class Characterdata implements Serializable {
     private de.mbws.common.data.generated.CharacterVisualappearance characterVisualappearance;
 
     /** persistent field */
-    private de.mbws.common.data.generated.Account account;
+    private de.mbws.common.data.generated.Race race;
 
     /** persistent field */
-    private de.mbws.common.data.generated.Race race;
+    private de.mbws.common.data.generated.Account account;
 
     /** persistent field */
     private Set characterSkillMappings;
@@ -63,7 +63,7 @@ public class Characterdata implements Serializable {
     private Set characterWorldobjectMappings;
 
     /** full constructor */
-    public Characterdata(Long id, String charactername, String gender, int health, int mana, int stamina, short age, int strength, int intelligence, int dexterity, int constitution, de.mbws.common.data.generated.CharacterStatus characterStatus, de.mbws.common.data.generated.CharacterVisualappearance characterVisualappearance, de.mbws.common.data.generated.Account account, de.mbws.common.data.generated.Race race, Set characterSkillMappings, Set characterItemMappings, Set characterWorldobjectMappings) {
+    public Characterdata(Long id, String charactername, String gender, int health, int mana, int stamina, short age, int strength, int intelligence, int dexterity, int constitution, de.mbws.common.data.generated.CharacterStatus characterStatus, de.mbws.common.data.generated.CharacterVisualappearance characterVisualappearance, de.mbws.common.data.generated.Race race, de.mbws.common.data.generated.Account account, Set characterSkillMappings, Set characterItemMappings, Set characterWorldobjectMappings) {
         this.id = id;
         this.charactername = charactername;
         this.gender = gender;
@@ -77,8 +77,8 @@ public class Characterdata implements Serializable {
         this.constitution = constitution;
         this.characterStatus = characterStatus;
         this.characterVisualappearance = characterVisualappearance;
-        this.account = account;
         this.race = race;
+        this.account = account;
         this.characterSkillMappings = characterSkillMappings;
         this.characterItemMappings = characterItemMappings;
         this.characterWorldobjectMappings = characterWorldobjectMappings;
@@ -89,7 +89,7 @@ public class Characterdata implements Serializable {
     }
 
     /** minimal constructor */
-    public Characterdata(Long id, String charactername, String gender, int health, int mana, int stamina, short age, int strength, int intelligence, int dexterity, int constitution, de.mbws.common.data.generated.Account account, de.mbws.common.data.generated.Race race, Set characterSkillMappings, Set characterItemMappings, Set characterWorldobjectMappings) {
+    public Characterdata(Long id, String charactername, String gender, int health, int mana, int stamina, short age, int strength, int intelligence, int dexterity, int constitution, de.mbws.common.data.generated.Race race, de.mbws.common.data.generated.Account account, Set characterSkillMappings, Set characterItemMappings, Set characterWorldobjectMappings) {
         this.id = id;
         this.charactername = charactername;
         this.gender = gender;
@@ -101,8 +101,8 @@ public class Characterdata implements Serializable {
         this.intelligence = intelligence;
         this.dexterity = dexterity;
         this.constitution = constitution;
-        this.account = account;
         this.race = race;
+        this.account = account;
         this.characterSkillMappings = characterSkillMappings;
         this.characterItemMappings = characterItemMappings;
         this.characterWorldobjectMappings = characterWorldobjectMappings;
@@ -212,20 +212,20 @@ public class Characterdata implements Serializable {
         this.characterVisualappearance = characterVisualappearance;
     }
 
-    public de.mbws.common.data.generated.Account getAccount() {
-        return this.account;
-    }
-
-    public void setAccount(de.mbws.common.data.generated.Account account) {
-        this.account = account;
-    }
-
     public de.mbws.common.data.generated.Race getRace() {
         return this.race;
     }
 
     public void setRace(de.mbws.common.data.generated.Race race) {
         this.race = race;
+    }
+
+    public de.mbws.common.data.generated.Account getAccount() {
+        return this.account;
+    }
+
+    public void setAccount(de.mbws.common.data.generated.Account account) {
+        this.account = account;
     }
 
     public Set getCharacterSkillMappings() {

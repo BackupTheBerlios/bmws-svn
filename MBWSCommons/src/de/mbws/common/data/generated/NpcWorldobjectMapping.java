@@ -13,16 +13,16 @@ public class NpcWorldobjectMapping implements Serializable {
     private de.mbws.common.data.generated.NpcWorldobjectMappingPK comp_id;
 
     /** nullable persistent field */
-    private de.mbws.common.data.generated.Npc npc;
-
-    /** nullable persistent field */
     private de.mbws.common.data.generated.Worldobject worldobject;
 
+    /** nullable persistent field */
+    private de.mbws.common.data.generated.Npc npc;
+
     /** full constructor */
-    public NpcWorldobjectMapping(de.mbws.common.data.generated.NpcWorldobjectMappingPK comp_id, de.mbws.common.data.generated.Npc npc, de.mbws.common.data.generated.Worldobject worldobject) {
+    public NpcWorldobjectMapping(de.mbws.common.data.generated.NpcWorldobjectMappingPK comp_id, de.mbws.common.data.generated.Worldobject worldobject, de.mbws.common.data.generated.Npc npc) {
         this.comp_id = comp_id;
-        this.npc = npc;
         this.worldobject = worldobject;
+        this.npc = npc;
     }
 
     /** default constructor */
@@ -42,20 +42,20 @@ public class NpcWorldobjectMapping implements Serializable {
         this.comp_id = comp_id;
     }
 
-    public de.mbws.common.data.generated.Npc getNpc() {
-        return this.npc;
-    }
-
-    public void setNpc(de.mbws.common.data.generated.Npc npc) {
-        this.npc = npc;
-    }
-
     public de.mbws.common.data.generated.Worldobject getWorldobject() {
         return this.worldobject;
     }
 
     public void setWorldobject(de.mbws.common.data.generated.Worldobject worldobject) {
         this.worldobject = worldobject;
+    }
+
+    public de.mbws.common.data.generated.Npc getNpc() {
+        return this.npc;
+    }
+
+    public void setNpc(de.mbws.common.data.generated.Npc npc) {
+        this.npc = npc;
     }
 
     public String toString() {

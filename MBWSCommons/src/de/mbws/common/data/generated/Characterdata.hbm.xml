@@ -99,14 +99,6 @@
 
     <!-- Associations -->
   
-    <!-- bi-directional many-to-one association to Account -->
-    <many-to-one
-        name="account"
-        class="de.mbws.common.data.generated.Account"
-        not-null="true"
-    >
-        <column name="account_username" />
-    </many-to-one>
     <!-- bi-directional many-to-one association to Race -->
     <many-to-one
         name="race"
@@ -178,6 +170,14 @@
             class="de.mbws.common.data.generated.CharacterWorldobjectMapping"
         />
     </set>
+    <!-- bi-directional many-to-one association to Account -->
+    <many-to-one
+        name="account"
+        class="de.mbws.common.data.generated.Account"
+        not-null="true"
+    >
+        <column name="account_username" />
+    </many-to-one>
 
 </class>
 </hibernate-mapping>

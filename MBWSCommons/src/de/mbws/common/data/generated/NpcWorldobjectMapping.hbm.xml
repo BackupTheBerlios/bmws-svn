@@ -35,16 +35,6 @@
 
     <!-- Associations -->
     <!-- derived association(s) for compound key -->
-    <!-- bi-directional many-to-one association to Npc -->
-    <many-to-one
-        name="npc"
-	    class="de.mbws.common.data.generated.Npc"
-	    update="false"
-	    insert="false"
-	>
-    	<column name="npc_id" />
-	</many-to-one>
-	
     <!-- bi-directional many-to-one association to Worldobject -->
     <many-to-one
         name="worldobject"
@@ -53,6 +43,16 @@
 	    insert="false"
 	>
     	<column name="worldobject_id" />
+	</many-to-one>
+	
+    <!-- bi-directional many-to-one association to Npc -->
+    <many-to-one
+        name="npc"
+	    class="de.mbws.common.data.generated.Npc"
+	    update="false"
+	    insert="false"
+	>
+    	<column name="npc_id" />
 	</many-to-one>
 	
     <!-- end of derived association(s) -->

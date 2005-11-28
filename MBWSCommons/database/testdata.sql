@@ -129,3 +129,17 @@ INSERT INTO race VALUES("1","Mensch","0","0","0","0","0","0","0","0","Ganz toll,
 #
 # Dumping data for table 'zoneserver_map_mapping'
 #
+
+
+#
+# Dumping data for table 'language_text_mapping'
+#
+INSERT INTO language_text_mapping VALUES("1","race.1","1","Mensch");
+INSERT INTO language_text_mapping VALUES("2","race.1","2","Human");
+
+
+#
+# Dumping data for table 'languages'
+#
+INSERT INTO languages VALUES("1","de","Deutsch");
+INSERT INTO languages VALUES("2","en","Englisch");

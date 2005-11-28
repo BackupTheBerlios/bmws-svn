@@ -1,3 +1,28 @@
+CREATE TABLE map (
+  id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  name VARCHAR(45) NOT NULL,
+  filename VARCHAR(255) NOT NULL,
+  PRIMARY KEY(id)
+)
+TYPE=InnoDB;
+
+CREATE TABLE languages (
+  id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  shortname VARCHAR(255) NOT NULL,
+  description VARCHAR(255) NOT NULL,
+  PRIMARY KEY(id)
+)
+TYPE=InnoDB;
+
+CREATE TABLE item_type (
+  id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  containersize INTEGER UNSIGNED NOT NULL,
+  wearable BOOL NOT NULL,
+  PRIMARY KEY(id)
+)
+TYPE=InnoDB;
+
 CREATE TABLE race (
   id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   name VARCHAR(45) NOT NULL,
@@ -14,11 +39,28 @@ CREATE TABLE race (
 )
 TYPE=InnoDB;
 
-CREATE TABLE item_type (
+CREATE TABLE zoneserver (
+  id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  name VARCHAR(45) NOT NULL,
+  ip VARCHAR(15) NOT NULL,
+  port INTEGER UNSIGNED NOT NULL,
+  PRIMARY KEY(id)
+)
+TYPE=InnoDB;
+
+CREATE TABLE worldobject_type (
   id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   name VARCHAR(255) NOT NULL,
-  containersize INTEGER UNSIGNED NOT NULL,
-  wearable BOOL NOT NULL,
+  moveable BOOL NOT NULL,
+  maxspeed INTEGER UNSIGNED NULL,
+  stamina INTEGER UNSIGNED NULL,
+  PRIMARY KEY(id)
+)
+TYPE=InnoDB;
+
+CREATE TABLE skill_group (
+  id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
   PRIMARY KEY(id)
 )
 TYPE=InnoDB;
@@ -26,23 +68,6 @@ TYPE=InnoDB;
 CREATE TABLE configuration (
   id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   value VARCHAR(255) NOT NULL,
-  PRIMARY KEY(id)
-)
-TYPE=InnoDB;
-
-CREATE TABLE map (
-  id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  name VARCHAR(45) NOT NULL,
-  filename VARCHAR(255) NOT NULL,
-  PRIMARY KEY(id)
-)
-TYPE=InnoDB;
-
-CREATE TABLE zoneserver (
-  id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  name VARCHAR(45) NOT NULL,
-  ip VARCHAR(15) NOT NULL,
-  port INTEGER UNSIGNED NOT NULL,
   PRIMARY KEY(id)
 )
 TYPE=InnoDB;
@@ -55,20 +80,25 @@ CREATE TABLE account (
 )
 TYPE=InnoDB;
 
-CREATE TABLE skill_group (
-  id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE npc (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  race_id INTEGER UNSIGNED NOT NULL,
   name VARCHAR(255) NOT NULL,
-  PRIMARY KEY(id)
-)
-TYPE=InnoDB;
-
-CREATE TABLE worldobject_type (
-  id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-  name VARCHAR(255) NOT NULL,
-  moveable BOOL NOT NULL,
-  maxspeed INTEGER UNSIGNED NULL,
-  stamina INTEGER UNSIGNED NULL,
-  PRIMARY KEY(id)
+  health INTEGER UNSIGNED NOT NULL,
+  mana INTEGER UNSIGNED NOT NULL,
+  stamina INTEGER UNSIGNED NOT NULL,
+  age INTEGER UNSIGNED NOT NULL,
+  strength INTEGER UNSIGNED NOT NULL,
+  intelligence INTEGER UNSIGNED NOT NULL,
+  dexterity INTEGER UNSIGNED NOT NULL,
+  constitution INTEGER UNSIGNED NOT NULL,
+  isspecial BOOL NOT NULL,
+  PRIMARY KEY(id),
+  INDEX npc_FKIndex1(race_id),
+  FOREIGN KEY(race_id)
+    REFERENCES race(id)
+      ON DELETE NO ACTION
+      ON UPDATE NO ACTION
 )
 TYPE=InnoDB;
 
@@ -96,23 +126,15 @@ CREATE TABLE skill (
 )
 TYPE=InnoDB;
 
-CREATE TABLE npc (
+CREATE TABLE language_text_mapping (
   id BIGINT NOT NULL AUTO_INCREMENT,
-  race_id INTEGER UNSIGNED NOT NULL,
-  name VARCHAR(255) NOT NULL,
-  health INTEGER UNSIGNED NOT NULL,
-  mana INTEGER UNSIGNED NOT NULL,
-  stamina INTEGER UNSIGNED NOT NULL,
-  age INTEGER UNSIGNED NOT NULL,
-  strength INTEGER UNSIGNED NOT NULL,
-  intelligence INTEGER UNSIGNED NOT NULL,
-  dexterity INTEGER UNSIGNED NOT NULL,
-  constitution INTEGER UNSIGNED NOT NULL,
-  isspecial BOOL NOT NULL,
+  text_key VARCHAR(255) NOT NULL,
+  languages_id INTEGER UNSIGNED NOT NULL,
+  text VARCHAR(255) NOT NULL,
   PRIMARY KEY(id),
-  INDEX npc_FKIndex1(race_id),
-  FOREIGN KEY(race_id)
-    REFERENCES race(id)
+  UNIQUE INDEX language_text_mapping_index1659(languages_id, text_key),
+  FOREIGN KEY(languages_id)
+    REFERENCES languages(id)
       ON DELETE NO ACTION
       ON UPDATE NO ACTION
 )
@@ -130,29 +152,6 @@ CREATE TABLE item (
   INDEX Item_FKIndex1(item_type_id),
   FOREIGN KEY(item_type_id)
     REFERENCES item_type(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
-)
-TYPE=InnoDB;
-
-CREATE TABLE worldobject (
-  id BIGINT NOT NULL AUTO_INCREMENT,
-  map_id INTEGER UNSIGNED NOT NULL,
-  worldobject_type_id INTEGER UNSIGNED NOT NULL,
-  name VARCHAR(255) NOT NULL,
-  description TEXT NOT NULL,
-  coordinate_x INTEGER UNSIGNED NOT NULL,
-  coordinate_y INTEGER UNSIGNED NOT NULL,
-  coordinate_z INTEGER UNSIGNED NOT NULL,
-  PRIMARY KEY(id),
-  INDEX worldobject_FKIndex1(worldobject_type_id),
-  INDEX worldobject_FKIndex2(map_id),
-  FOREIGN KEY(worldobject_type_id)
-    REFERENCES worldobject_type(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION,
-  FOREIGN KEY(map_id)
-    REFERENCES map(id)
       ON DELETE NO ACTION
       ON UPDATE NO ACTION
 )
@@ -222,41 +221,24 @@ CREATE TABLE characterdata (
 )
 TYPE=InnoDB;
 
-CREATE TABLE character_item_mapping (
-  id BIGINT NOT NULL,
-  characterdata_id BIGINT UNSIGNED NOT NULL,
-  item_id BIGINT NOT NULL,
-  position CHAR NOT NULL,
-  currentcondition INTEGER UNSIGNED NOT NULL,
-  deposit_item INTEGER UNSIGNED NOT NULL,
+CREATE TABLE worldobject (
+  id BIGINT NOT NULL AUTO_INCREMENT,
+  map_id INTEGER UNSIGNED NOT NULL,
+  worldobject_type_id INTEGER UNSIGNED NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  description TEXT NOT NULL,
+  coordinate_x INTEGER UNSIGNED NOT NULL,
+  coordinate_y INTEGER UNSIGNED NOT NULL,
+  coordinate_z INTEGER UNSIGNED NOT NULL,
   PRIMARY KEY(id),
-  INDEX character_item_mapping_FKIndex1(item_id),
-  INDEX character_item_mapping_FKIndex2(characterdata_id),
-  FOREIGN KEY(item_id)
-    REFERENCES item(id)
+  INDEX worldobject_FKIndex1(worldobject_type_id),
+  INDEX worldobject_FKIndex2(map_id),
+  FOREIGN KEY(worldobject_type_id)
+    REFERENCES worldobject_type(id)
       ON DELETE NO ACTION
       ON UPDATE NO ACTION,
-  FOREIGN KEY(characterdata_id)
-    REFERENCES characterdata(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
-)
-TYPE=InnoDB;
-
-CREATE TABLE character_skill_mapping (
-  characterdata_id BIGINT UNSIGNED NOT NULL,
-  skill_id INTEGER UNSIGNED NOT NULL,
-  bonusvalue INTEGER UNSIGNED NOT NULL,
-  basevalue INTEGER UNSIGNED NOT NULL,
-  PRIMARY KEY(characterdata_id, skill_id),
-  INDEX character_skill_mapping_FKIndex1(characterdata_id),
-  INDEX character_skill_mapping_FKIndex2(skill_id),
-  FOREIGN KEY(characterdata_id)
-    REFERENCES characterdata(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION,
-  FOREIGN KEY(skill_id)
-    REFERENCES skill(id)
+  FOREIGN KEY(map_id)
+    REFERENCES map(id)
       ON DELETE NO ACTION
       ON UPDATE NO ACTION
 )
@@ -275,51 +257,6 @@ CREATE TABLE npc_skill_mapping (
       ON UPDATE NO ACTION,
   FOREIGN KEY(npc_id)
     REFERENCES npc(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
-)
-TYPE=InnoDB;
-
-CREATE TABLE character_worldobject_mapping (
-  worldobject_id BIGINT NOT NULL,
-  characterdata_id BIGINT UNSIGNED NOT NULL,
-  PRIMARY KEY(worldobject_id, characterdata_id),
-  INDEX character_worldobject_mapping_FKIndex1(worldobject_id),
-  INDEX character_worldobject_mapping_FKIndex2(characterdata_id),
-  FOREIGN KEY(worldobject_id)
-    REFERENCES worldobject(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION,
-  FOREIGN KEY(characterdata_id)
-    REFERENCES characterdata(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
-)
-TYPE=InnoDB;
-
-CREATE TABLE npc_status (
-  npc_id BIGINT NOT NULL,
-  npcstatus CHAR NOT NULL,
-  map_id INTEGER UNSIGNED NOT NULL,
-  gamestatus CHAR NULL,
-  coordinate_x INTEGER UNSIGNED NULL,
-  coordinate_z INTEGER UNSIGNED NULL,
-  currentmana INTEGER UNSIGNED NULL,
-  currenthelth INTEGER UNSIGNED NULL,
-  currentstamina INTEGER UNSIGNED NULL,
-  currentstrength INTEGER UNSIGNED NULL,
-  currentintelligence INTEGER UNSIGNED NULL,
-  currentdexterity INTEGER UNSIGNED NULL,
-  currentconstitution INTEGER UNSIGNED NULL,
-  PRIMARY KEY(npc_id),
-  INDEX npc_status_FKIndex1(npc_id),
-  INDEX npc_status_FKIndex2(map_id),
-  FOREIGN KEY(npc_id)
-    REFERENCES npc(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION,
-  FOREIGN KEY(map_id)
-    REFERENCES map(id)
       ON DELETE NO ACTION
       ON UPDATE NO ACTION
 )
@@ -356,6 +293,42 @@ CREATE TABLE character_status (
 )
 TYPE=InnoDB;
 
+CREATE TABLE character_worldobject_mapping (
+  worldobject_id BIGINT NOT NULL,
+  characterdata_id BIGINT UNSIGNED NOT NULL,
+  PRIMARY KEY(worldobject_id, characterdata_id),
+  INDEX character_worldobject_mapping_FKIndex1(worldobject_id),
+  INDEX character_worldobject_mapping_FKIndex2(characterdata_id),
+  FOREIGN KEY(worldobject_id)
+    REFERENCES worldobject(id)
+      ON DELETE NO ACTION
+      ON UPDATE NO ACTION,
+  FOREIGN KEY(characterdata_id)
+    REFERENCES characterdata(id)
+      ON DELETE NO ACTION
+      ON UPDATE NO ACTION
+)
+TYPE=InnoDB;
+
+CREATE TABLE character_skill_mapping (
+  characterdata_id BIGINT UNSIGNED NOT NULL,
+  skill_id INTEGER UNSIGNED NOT NULL,
+  bonusvalue INTEGER UNSIGNED NOT NULL,
+  basevalue INTEGER UNSIGNED NOT NULL,
+  PRIMARY KEY(characterdata_id, skill_id),
+  INDEX character_skill_mapping_FKIndex1(characterdata_id),
+  INDEX character_skill_mapping_FKIndex2(skill_id),
+  FOREIGN KEY(characterdata_id)
+    REFERENCES characterdata(id)
+      ON DELETE NO ACTION
+      ON UPDATE NO ACTION,
+  FOREIGN KEY(skill_id)
+    REFERENCES skill(id)
+      ON DELETE NO ACTION
+      ON UPDATE NO ACTION
+)
+TYPE=InnoDB;
+
 CREATE TABLE npc_worldobject_mapping (
   worldobject_id BIGINT NOT NULL,
   npc_id BIGINT NOT NULL,
@@ -368,6 +341,34 @@ CREATE TABLE npc_worldobject_mapping (
       ON UPDATE NO ACTION,
   FOREIGN KEY(worldobject_id)
     REFERENCES worldobject(id)
+      ON DELETE NO ACTION
+      ON UPDATE NO ACTION
+)
+TYPE=InnoDB;
+
+CREATE TABLE npc_status (
+  npc_id BIGINT NOT NULL,
+  npcstatus CHAR NOT NULL,
+  map_id INTEGER UNSIGNED NOT NULL,
+  gamestatus CHAR NULL,
+  coordinate_x INTEGER UNSIGNED NULL,
+  coordinate_z INTEGER UNSIGNED NULL,
+  currentmana INTEGER UNSIGNED NULL,
+  currenthelth INTEGER UNSIGNED NULL,
+  currentstamina INTEGER UNSIGNED NULL,
+  currentstrength INTEGER UNSIGNED NULL,
+  currentintelligence INTEGER UNSIGNED NULL,
+  currentdexterity INTEGER UNSIGNED NULL,
+  currentconstitution INTEGER UNSIGNED NULL,
+  PRIMARY KEY(npc_id),
+  INDEX npc_status_FKIndex1(npc_id),
+  INDEX npc_status_FKIndex2(map_id),
+  FOREIGN KEY(npc_id)
+    REFERENCES npc(id)
+      ON DELETE NO ACTION
+      ON UPDATE NO ACTION,
+  FOREIGN KEY(map_id)
+    REFERENCES map(id)
       ON DELETE NO ACTION
       ON UPDATE NO ACTION
 )
@@ -395,6 +396,27 @@ CREATE TABLE character_visualappearance (
   item_hand_right INTEGER UNSIGNED NOT NULL,
   PRIMARY KEY(id),
   FOREIGN KEY(id)
+    REFERENCES characterdata(id)
+      ON DELETE NO ACTION
+      ON UPDATE NO ACTION
+)
+TYPE=InnoDB;
+
+CREATE TABLE character_item_mapping (
+  id BIGINT NOT NULL,
+  characterdata_id BIGINT UNSIGNED NOT NULL,
+  item_id BIGINT NOT NULL,
+  position CHAR NOT NULL,
+  currentcondition INTEGER UNSIGNED NOT NULL,
+  deposit_item INTEGER UNSIGNED NOT NULL,
+  PRIMARY KEY(id),
+  INDEX character_item_mapping_FKIndex1(item_id),
+  INDEX character_item_mapping_FKIndex2(characterdata_id),
+  FOREIGN KEY(item_id)
+    REFERENCES item(id)
+      ON DELETE NO ACTION
+      ON UPDATE NO ACTION,
+  FOREIGN KEY(characterdata_id)
     REFERENCES characterdata(id)
       ON DELETE NO ACTION
       ON UPDATE NO ACTION

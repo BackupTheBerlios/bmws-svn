@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.2
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="de.mbws.common.data.generated.LanguageTextMapping" 
+    table="language_text_mapping"
+    lazy="false"
+>
+
+    <id
+        name="id"
+        type="java.lang.String"
+        column="id"
+    >
+    
+        <generator class="assigned" />
+    </id>
+
+    <property
+        name="textKey"
+        type="java.lang.String"
+        column="text_key"
+        not-null="true"
+        length="255"
+    />
+    <property
+        name="text"
+        type="java.lang.String"
+        column="text"
+        not-null="true"
+        length="255"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to Language -->
+    <many-to-one
+        name="language"
+        class="de.mbws.common.data.generated.Language"
+        not-null="true"
+    >
+        <column name="languages_id" />
+    </many-to-one>
+
+</class>
+</hibernate-mapping>

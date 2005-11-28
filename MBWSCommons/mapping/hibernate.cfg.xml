@@ -48,5 +48,7 @@
 		<mapping resource="de/mbws/common/data/generated/WorldobjectType.hbm.xml" />
 		<mapping resource="de/mbws/common/data/generated/Zoneserver.hbm.xml" />
 		<mapping resource="de/mbws/common/data/generated/ZoneserverMapMapping.hbm.xml" />
+		<mapping resource="de/mbws/common/data/generated/Language.hbm.xml" />
+		<mapping resource="de/mbws/common/data/generated/LanguageTextMapping.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

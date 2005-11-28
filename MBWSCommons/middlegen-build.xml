@@ -120,6 +120,8 @@
    	 <table name="worldobject_type" />
    	 <table name="zoneserver" />
    	 <table name="zoneserver_map_mapping" />
+     <table name="languages" />
+   	 <table name="language_text_mapping" />
     </middlegen>
   </target>
 

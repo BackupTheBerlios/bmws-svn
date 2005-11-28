@@ -64,22 +64,6 @@
 
     <!-- Associations -->
   
-    <!-- bi-directional many-to-one association to WorldobjectType -->
-    <many-to-one
-        name="worldobjectType"
-        class="de.mbws.common.data.generated.WorldobjectType"
-        not-null="true"
-    >
-        <column name="worldobject_type_id" />
-    </many-to-one>
-    <!-- bi-directional many-to-one association to Map -->
-    <many-to-one
-        name="map"
-        class="de.mbws.common.data.generated.Map"
-        not-null="true"
-    >
-        <column name="map_id" />
-    </many-to-one>
     <!-- bi-directional one-to-many association to NpcWorldobjectMapping -->
 
     <set
@@ -114,6 +98,22 @@
             class="de.mbws.common.data.generated.CharacterWorldobjectMapping"
         />
     </set>
+    <!-- bi-directional many-to-one association to WorldobjectType -->
+    <many-to-one
+        name="worldobjectType"
+        class="de.mbws.common.data.generated.WorldobjectType"
+        not-null="true"
+    >
+        <column name="worldobject_type_id" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to Map -->
+    <many-to-one
+        name="map"
+        class="de.mbws.common.data.generated.Map"
+        not-null="true"
+    >
+        <column name="map_id" />
+    </many-to-one>
 
 </class>
 </hibernate-mapping>
