@@ -122,7 +122,7 @@ CREATE TABLE item (
   id BIGINT NOT NULL,
   item_type_id INTEGER UNSIGNED NOT NULL,
   name VARCHAR(45) NOT NULL,
-  `condition` INTEGER UNSIGNED NOT NULL,
+  max_condition INTEGER UNSIGNED NOT NULL,
   weight DECIMAL NOT NULL,
   size DECIMAL NOT NULL,
   description TEXT NOT NULL,
@@ -400,4 +400,5 @@ CREATE TABLE character_visualappearance (
       ON UPDATE NO ACTION
 )
 TYPE=InnoDB;
+
 
