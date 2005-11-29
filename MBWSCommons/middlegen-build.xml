@@ -12,7 +12,7 @@
    <property name="package"              value="de.mbws.common.data.generated" />
    <property name="gen.xdoclet-tag"      value="false" />
    <property name="gui"                  value="true" />
-   <property name="jdbc.jar"             value="C:\Development\Projekte\MWBs\workspace\MBWSCommons\lib\mysql-connector-java-3.1.8-bin.jar" />
+   <property name="jdbc.jar"             value="lib\mysql-connector-java-3.1.8-bin.jar" />
    <property name="database.driver"      value="com.mysql.jdbc.Driver" />
    <property name="lib.dir"              value="/c:/Development/eclipse/plugins/net.sf.middlegen_2.1.91/lib/" />
    <property name="database.url"         value="jdbc:mysql://localhost:3306/game" />
