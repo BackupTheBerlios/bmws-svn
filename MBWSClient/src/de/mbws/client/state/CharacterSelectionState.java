@@ -29,6 +29,7 @@ import com.jmex.bui.BWindow;
 import com.jmex.bui.PolledRootNode;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
+import com.jmex.bui.util.Dimension;
 
 import de.mbws.client.MBWSClient;
 import de.mbws.client.ValueMapper;
@@ -130,20 +131,26 @@ public class CharacterSelectionState extends StandardGameState {
 		controllWindow.setLocation(display.getWidth() - 250, 0);
 
 		startGameBtn = new BButton("Start", input, STARTGAME);
+		startGameBtn.setPreferredSize(new Dimension(70, 30));
 		startGameBtn.setEnabled(false);
 		controllContainer.add(startGameBtn);
-		controllWindow.add(controllContainer, BorderLayout.WEST);
+		
+		
 
 		deleteBtn = new BButton("Delete", input, DELETE_CHARACTER);
 		deleteBtn.setEnabled(false);
+		deleteBtn.setPreferredSize(new Dimension(70, 30));
 		controllContainer.add(deleteBtn);
-		controllWindow.add(controllContainer, BorderLayout.CENTER);
+		
 
 		createBtn = new BButton("Create", input, CREATE_CHARACTER);
 		createBtn.setEnabled(false);
+		createBtn.setPreferredSize(new Dimension(70, 30));
 		controllContainer.add(createBtn);
-		controllWindow.add(controllContainer, BorderLayout.EAST);
-
+		
+		
+		controllWindow.add(controllContainer, BorderLayout.CENTER);
+		
 		_root.addWindow(characterWindow);
 		_root.addWindow(controllWindow);
 	}
@@ -201,23 +208,6 @@ public class CharacterSelectionState extends StandardGameState {
 		// input.update(tpf);
 		rootNode.updateGeometricState(tpf, true);
 	}
-
-	// public void displayInfo(String info) {
-	// infoWindow = new BPopupWindow(window,new BorderLayout());
-	// infoWindow.add(new BLabel(info),BorderLayout.CENTER);
-	// BButton button = new BButton("OK");
-	// button.addListener(new ActionListener() {
-	// public void actionPerformed(ActionEvent event) {
-	// infoWindow.dismiss();
-	// }
-	//			
-	// });
-	// infoWindow.add(button, BorderLayout.SOUTH);
-	// infoWindow.setLocation(display.getWidth() / 2 - window.getWidth() / 2,
-	// display.getHeight() / 2 - window.getHeight() / 2);
-	// _root.addWindow(infoWindow);
-	//		
-	// }
 
 	public CharacterSelectionStateHandler getInput() {
 		return input;
