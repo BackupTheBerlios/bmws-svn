@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<project name="MBWS" default="buildAll" basedir=".">
+
+   <property name="lib.dir"                 value="../MBWSCommons/lib"/>
+   <property name="base.common.dir" value="../MBWSCommons"/>
+   <property name="base.server.dir" value="../MBWSServers"/>
+   <property name="base.client.dir" value="../MBWSClient"/>
+   <property name="build.common-src.dir" value="${base.common.dir}/src"/>
+   <property name="build.server-src.dir" value="${base.server.dir}/src"/>
+   <property name="build.client-src.dir" value="${base.client.dir}/src"/>
+	
+   <property name="dist" value="${basedir}/temp/dist"/>
+   <property name="name" value="de.mbws.common.data.generated" />
+   
+   <path id="lib.class.path">
+      <pathelement path="${basedir}"/>
+      <fileset dir="${lib.dir}">
+         <include name="*.jar"/>
+      </fileset>
+   </path>
+	
+	<target name="castor" depends="buildCommons">
+		<taskdef name="castor"
+		         classname="org.exolab.castor.tools.ant.taskdefs.CastorSourceGenTask"
+		         classpathref="lib.class.path"/>		
+		<castor file="${base.common.dir}/mapping/configuration.xsd" todir="${build.server-src.dir}"
+		        package="de.mbws.server.configuration"
+		        warnings="false" types="j2"/>
+	</target>
+	
+	<target name="prepare">
+		<delete dir="${basedir}/temp" />
+	 	<mkdir dir="${basedir}/temp"/>
+		<mkdir dir="${basedir}/temp/commons-bin"/>
+		<mkdir dir="${basedir}/temp/server-bin"/>
+		<mkdir dir="${dist}"/>
+		<mkdir dir="${dist}/lib"/>
+	</target>
+
+	<target name="buildCommons" depends="prepare">
+		  <javac srcdir="${build.common-src.dir}"
+		  	classpathref="lib.class.path"
+		         destdir="temp/commons-bin"
+		         source="1.5"
+		  />
+		  <copy todir="temp/commons-bin">
+		    <fileset dir="${build.common-src.dir}" includes="**/*.xml"/>
+		  </copy>
+
+		<jar destfile="${dist}/lib/mbws-commons.jar" basedir="temp/commons-bin" />
+	</target>
+	
+	<target name="buildServer" depends="castor">
+		   <path id="serverlib.class.path">
+		      <path refid="lib.class.path"/>
+		      <fileset dir="${dist}/lib">
+		         <include name="*.jar"/>
+		      </fileset>
+		   </path>
+		  <javac srcdir="${build.server-src.dir}"
+		  	classpathref="serverlib.class.path"
+		         destdir="temp/server-bin"
+		         source="1.5"
+		  />
+		<jar destfile="${dist}/lib/mbws-server.jar" basedir="temp/server-bin"/>
+	</target>
+	
+	<target name="packServer" depends="buildServer">
+		  <copy todir="${dist}/lib">
+		    <fileset dir="${lib.dir}"/>
+		  </copy>
+		  <copy todir="${dist}/lib">
+		    <fileset dir="${base.server.dir}/lib"/>
+		  </copy>
+		  <copy todir="${dist}/config">
+		    <fileset dir="${base.server.dir}/config/"/>
+		  </copy>
+		<copy todir="${dist}" file="cp.bat" />
+		<copy todir="${dist}" file="server.bat" />
+	</target>
+		
+	<target name="buildAll" depends="packServer"/>
+</project>
