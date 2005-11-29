@@ -19,11 +19,11 @@ public class ServerStarter {
     public static void main(String[] args) throws Exception{
               
          BasicConfigurator.configure();
-        PropertyConfigurator.configure("log4j.properties");
+        PropertyConfigurator.configure("config/log4j.properties");
         logger.info("Init log4j ... done");
 
         logger.info("Read configuration file");
-        config = (Configuration) Configuration.unmarshal(new FileReader("configuration.xml"));
+        config = (Configuration) Configuration.unmarshal(new FileReader("config/configuration.xml"));
         logger.info("Read configuration file .. done");
         
         logger.info("Init Hibernate");

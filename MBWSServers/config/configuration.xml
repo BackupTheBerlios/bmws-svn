@@ -3,7 +3,7 @@
 	<accountserver>
 		<basicAttributes>
 			<c2sport>5000</c2sport>
-			<queueworkersize>2</queueworkersize>
+			<queueworkersize>1</queueworkersize>
 			<startup>true</startup>
 		</basicAttributes>
 		<s2sport>5001</s2sport>
