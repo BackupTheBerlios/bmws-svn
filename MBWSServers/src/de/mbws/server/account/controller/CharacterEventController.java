@@ -7,12 +7,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.beanutils.BeanUtils;
+
 import de.mbws.common.Globals;
 import de.mbws.common.data.generated.CharacterStatus;
+import de.mbws.common.data.generated.CharacterVisualappearance;
 import de.mbws.common.data.generated.Characterdata;
 import de.mbws.common.eventdata.generated.CharacterDetails;
 import de.mbws.common.eventdata.generated.CharacterSelection;
 import de.mbws.common.eventdata.generated.CharacterShortDescription;
+import de.mbws.common.eventdata.generated.CharacterVisualAppearance;
 import de.mbws.common.eventdata.generated.CharactersOfPlayer;
 import de.mbws.common.eventdata.generated.IntVector3D;
 import de.mbws.common.eventdata.generated.NetQuaternion;
@@ -57,7 +61,6 @@ public class CharacterEventController extends AccountServerBaseEventController {
 
             CharacterDetails cd = new CharacterDetails();
             cd.setDescription(getCharacterShortDescription(cdata));
-            
             CharacterEvent result = new CharacterEvent(cd);
             result.setEventType(EventTypes.CHARACTER_RECEIVE);
             result.setPlayer(ce.getPlayer());
@@ -69,7 +72,6 @@ public class CharacterEventController extends AccountServerBaseEventController {
             CharacterStatus cs = cdata.getCharacterStatus();
             ((ServerPlayerData) ce.getPlayer()).setActiveCharacter(cdata.getId());
             CharacterDetails charDetails = new CharacterDetails();
-            charDetails.setVisualappearance(cdata.getCharacterVisualappearance().getHeight());
             WorldObject wo = new WorldObject();
             IntVector3D location = new IntVector3D();
             location.setX(cs.getCoordinateX());
@@ -142,6 +144,35 @@ public class CharacterEventController extends AccountServerBaseEventController {
         csd.setName(cdata.getCharactername());
         csd.setRace(cdata.getRace().getId());
         csd.setCharacterID(Globals.OBJECT_ID_PREFIX_CHARACTER + cdata.getId());
+        csd.setVisualAppearance(getCharacterVisualAppearance(cdata.getCharacterVisualappearance()));
         return csd;
+    }
+    
+    private CharacterVisualAppearance getCharacterVisualAppearance(CharacterVisualappearance cdata) {
+        CharacterVisualAppearance cva = new CharacterVisualAppearance();
+//        cva.setFaceType(cdata.getFaceType());
+//        cva.setHairColor(cdata.getHairColor())
+//        cva.setHairFacial(cdata.getHairFacial())
+//        cva.setHairStyle(cdata.getHairStyle())
+//        cva.setHeight(cdata.getHeight())
+//        cva.setItemBelt(cdata.getItemBelt())
+//        cva.setItemBoots(cdata.get)
+//        cva.setItemBracers()
+//        cva.setItemCape()
+//        cva.setItemChest()
+//        cva.setItemGloves()
+//        cva.setItemHandLeft()
+//        cva.setItemHandRight()
+//        cva.setItemHead()
+//        cva.setItemLegs()
+//        cva.setItemShirt()
+//        cva.setItemShoulders()
+        try {
+            BeanUtils.copyProperties(cva,cdata);    
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        
+        return cva;
     }
 }

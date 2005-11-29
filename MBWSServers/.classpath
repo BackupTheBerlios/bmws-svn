@@ -32,5 +32,6 @@
 	<classpathentry kind="lib" path="lib/mx4j-rimpl.jar"/>
 	<classpathentry kind="lib" path="lib/mx4j-rjmx.jar"/>
 	<classpathentry kind="lib" path="lib/mx4j-tools.jar"/>
+	<classpathentry kind="lib" path="/MBWSCommons/lib/commons-beanutils.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
