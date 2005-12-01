@@ -78,6 +78,7 @@
 		<copy todir="${dist}" file="cp.bat" />
 		<copy todir="${dist}" file="server.bat" />
 		<copy todir="${dist}" file="server.sh" />
+		<zip destfile="${dist}/mbws-server.zip" basedir="${dist}"/>
 	</target>
 		
 	<target name="buildAll" depends="packServer"/>
