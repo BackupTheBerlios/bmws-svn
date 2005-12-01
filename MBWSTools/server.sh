@@ -14,4 +14,4 @@ JAVA=$JAVA_HOME/bin/java
 
 CLASSPATH=`echo lib/*.jar | tr ' ' ':'`:$CLASSPATH:.
 
-$JAVA -cp $CLASSPATH de.mbws.server.ServerStarter
+$JAVA -cp $CLASSPATH -Djavax.management.builder.initial=mx4j.server.MX4JMBeanServerBuilder de.mbws.server.ServerStarter
