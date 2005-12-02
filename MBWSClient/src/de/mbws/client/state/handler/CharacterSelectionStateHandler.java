@@ -12,6 +12,7 @@ import com.jmex.bui.layout.BorderLayout;
 
 import de.mbws.client.controller.CharacterController;
 import de.mbws.client.controller.ClientNetworkController;
+import de.mbws.client.state.CharacterCreationState;
 import de.mbws.client.state.CharacterSelectionState;
 import de.mbws.client.state.TestGameState;
 
@@ -48,34 +49,16 @@ public class CharacterSelectionStateHandler extends InputHandler implements
 			deletePopUp.add(new BButton("Yes"), BorderLayout.WEST);
 			deletePopUp.add(new BButton("No"), BorderLayout.EAST);
 			deletePopUp.setModal(true);
-			deletePopUp.popup(0,0,true);
+			deletePopUp.popup(0, 0, true);
 
 		} else if (event.getAction().equals(
 				CharacterSelectionState.CREATE_CHARACTER)) {
+			startCharacterCreationState();
 
 		} else {
 			selectedCharacter = event.getAction();
 			state.startGameBtn.setEnabled(true);
 			state.deleteBtn.setEnabled(true);
-			state.createBtn.setEnabled(true);
-
-			// state.getCharacterDescription().clearText();
-			// List<CharacterShortDescription> allCharacters = ClientPlayerData
-			// .getInstance().getAllCharactersOfPlayer();
-			// if (allCharacters != null) {
-			// Iterator<CharacterShortDescription> it =
-			// allCharacters.iterator();
-			// while (it.hasNext()) {
-			// CharacterShortDescription aCharacter = it.next();
-			// if (aCharacter.getCharacterID() == event.getAction()) {
-			//
-			// state.getCharacterDescription().setText(
-			// aCharacter.getName() + " " + aCharacter.getGender()
-			// + "\n " + aCharacter.getRace());
-			// }
-			// }
-			// }
-
 		}
 	}
 
@@ -94,13 +77,25 @@ public class CharacterSelectionStateHandler extends InputHandler implements
 		super.update(time);
 	}
 
-	// TODO: move that to the characterselectionstate !
-	public void startMainGameState() {
-		GameState testgame = new TestGameState("game");
+	
+	public void startCharacterCreationState() {
+		GameState testgame = GameStateManager.getInstance().getChild(
+				"characterCreation");
+		if (testgame == null) {
+			testgame = new CharacterCreationState("characterCreation");
+		}
 		testgame.setActive(true);
 		GameStateManager.getInstance().attachChild(testgame);
 		GameStateManager.getInstance().deactivateChildNamed(
 				"characterSelection");
 	}
+
+	 public void startMainGameState() {
+	 GameState testgame = new TestGameState("game");
+	 testgame.setActive(true);
+	 GameStateManager.getInstance().attachChild(testgame);
+	 GameStateManager.getInstance().deactivateChildNamed(
+	 "characterSelection");
+	 }
 
 }

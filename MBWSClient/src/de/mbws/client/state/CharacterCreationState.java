@@ -3,11 +3,10 @@
  */
 package de.mbws.client.state;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.logging.Level;
 
 import com.jme.app.GameState;
+import com.jme.app.GameStateManager;
 import com.jme.app.StandardGameState;
 import com.jme.image.Texture;
 import com.jme.input.MouseInput;
@@ -27,21 +26,19 @@ import com.jmex.bui.BRootNode;
 import com.jmex.bui.BTextArea;
 import com.jmex.bui.BWindow;
 import com.jmex.bui.PolledRootNode;
+import com.jmex.bui.event.ActionEvent;
+import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.util.Dimension;
 
 import de.mbws.client.MBWSClient;
-import de.mbws.client.ValueMapper;
-import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.gui.MenuLookAndFeel;
-import de.mbws.client.state.handler.CharacterSelectionStateHandler;
-import de.mbws.common.eventdata.generated.CharacterShortDescription;
 
 /**
  * @author Kerim
  */
-public class CharacterSelectionState extends StandardGameState {
+public class CharacterCreationState extends StandardGameState {
 
 	// /** THE CURSOR NODE WHICH HOLDS THE MOUSE GOTTEN FROM INPUT. */
 	// private Node cursor;
@@ -55,7 +52,7 @@ public class CharacterSelectionState extends StandardGameState {
 
 	//private Text text;
 
-	private CharacterSelectionStateHandler input;
+	//private CharacterSelectionStateHandler input;
 
 	BRootNode _root;
 	public BWindow characterWindow;
@@ -63,25 +60,23 @@ public class CharacterSelectionState extends StandardGameState {
 
 	BWindow controllWindow;
 	BContainer controllContainer;
-	// BWindow characterWindow;
+	
 	BLookAndFeel lnf;
 
-	public BButton startGameBtn;
-	public BButton deleteBtn;
+	
+	public BButton abortBtn;
 	public BButton createBtn;
 
 	BTextArea characterDescription;
 
-	public CharacterSelectionState(String name) {
+	public CharacterCreationState(String name) {
 		super(name);
 
 		display = DisplaySystem.getDisplaySystem();
 		initInput();
 		initGUI();
 		initBUIGUI();
-		// initText();
-		// setupButtons();
-		// initCursor();
+		
 		MouseInput.get().setCursorVisible(true);
 
 		rootNode.setLightCombineMode(LightState.OFF);
@@ -90,31 +85,15 @@ public class CharacterSelectionState extends StandardGameState {
 		rootNode.updateGeometricState(0, true);
 	}
 
-	private void fillData() {
-		List<CharacterShortDescription> allCharacters = ClientPlayerData
-				.getInstance().getAllCharactersOfPlayer();
-		if (allCharacters != null) {
-			Iterator<CharacterShortDescription> it = allCharacters.iterator();
-			while (it.hasNext()) {
-				CharacterShortDescription aCharacter = it.next();
-				BButton characterButton = new BButton(aCharacter.getName()
-						+ " (" + ValueMapper.getRaceName(aCharacter.getRace()) + "/"
-						+ aCharacter.getGender() + "/"
-						+ aCharacter.getLocation() + ")", input, aCharacter
-						.getCharacterID());
-				cont.add(characterButton);
 
-			}
-		}
-	}
 
 	private void initBUIGUI() {
-		_root = new PolledRootNode(MBWSClient.timer, input);
+		_root = new PolledRootNode(MBWSClient.timer, null);
 		rootNode.attachChild(_root);
 		lnf = MenuLookAndFeel.getDefaultLookAndFeel();
 		characterWindow = new BDecoratedWindow(lnf, null);
 		cont = new BContainer(GroupLayout.makeVert(GroupLayout.TOP));
-		fillData();
+		//fillData();
 		characterDescription = new BTextArea();
 
 		// window.add(new BScrollPane(cont), BorderLayout.WEST);
@@ -130,21 +109,24 @@ public class CharacterSelectionState extends StandardGameState {
 		controllWindow.setSize(250, 50);
 		controllWindow.setLocation(display.getWidth() - 250, 0);
 
-		startGameBtn = new BButton("Start", input, STARTGAME);
-		startGameBtn.setPreferredSize(new Dimension(70, 30));
-		startGameBtn.setEnabled(false);
-		controllContainer.add(startGameBtn);
+		
 		
 		
 
-		deleteBtn = new BButton("Delete", input, DELETE_CHARACTER);
-		deleteBtn.setEnabled(false);
-		deleteBtn.setPreferredSize(new Dimension(70, 30));
-		controllContainer.add(deleteBtn);
+		abortBtn = new BButton("Delete");//, input, DELETE_CHARACTER);
+		abortBtn.addListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				returnToCharacterSelectionState();
+			}});
+		abortBtn.setPreferredSize(new Dimension(70, 30));
+		controllContainer.add(abortBtn);
 		
 
-		createBtn = new BButton("Create", input, CREATE_CHARACTER);
-		//createBtn.setEnabled(false);
+		createBtn = new BButton("Create");//, input, CREATE_CHARACTER);
+		createBtn.addListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				returnToCharacterSelectionState();
+			}});
 		createBtn.setPreferredSize(new Dimension(70, 30));
 		controllContainer.add(createBtn);
 		
@@ -161,13 +143,13 @@ public class CharacterSelectionState extends StandardGameState {
 	public void onActivate() {
 		display.setTitle("MBWS - Select Your Character State");
 		super.onActivate();
-	}
+	}  
 
 	/**
 	 * Inits the input handler we will use for navigation of the menu.
 	 */
 	protected void initInput() {
-		input = new CharacterSelectionStateHandler(this);
+		//input = new CharacterSelectionStateHandler(this);
 	}
 
 	/**
@@ -209,15 +191,13 @@ public class CharacterSelectionState extends StandardGameState {
 		rootNode.updateGeometricState(tpf, true);
 	}
 
-	public CharacterSelectionStateHandler getInput() {
-		return input;
-	}
+	
 
-	public BTextArea getCharacterDescription() {
-		return characterDescription;
-	}
-
-	public void setCharacterDescription(BTextArea characterDescription) {
-		this.characterDescription = characterDescription;
+	
+	
+	public void returnToCharacterSelectionState() {
+		 GameState characterSelection = GameStateManager.getInstance().getChild("characterSelection");
+		 characterSelection.setActive(true);
+		 GameStateManager.getInstance().deactivateChildNamed("characterCreation");
 	}
 }
