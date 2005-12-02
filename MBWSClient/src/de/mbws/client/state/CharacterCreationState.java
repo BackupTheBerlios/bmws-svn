@@ -19,6 +19,7 @@ import com.jme.system.DisplaySystem;
 import com.jme.util.LoggingSystem;
 import com.jme.util.TextureManager;
 import com.jmex.bui.BButton;
+import com.jmex.bui.BComboBox;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BDecoratedWindow;
 import com.jmex.bui.BLookAndFeel;
@@ -60,7 +61,7 @@ public class CharacterCreationState extends StandardGameState {
 
 	BWindow controllWindow;
 	BContainer controllContainer;
-	
+	BComboBox combobox;
 	BLookAndFeel lnf;
 
 	
@@ -109,7 +110,12 @@ public class CharacterCreationState extends StandardGameState {
 		controllWindow.setSize(250, 50);
 		controllWindow.setLocation(display.getWidth() - 250, 0);
 
-		
+		combobox = new BComboBox();
+		//combobox.setPreferredSize(new Dimension(250,50));
+		combobox.addItem("test1");
+		combobox.addItem("test2");
+		combobox.selectItem(0);
+		cont.add(combobox);
 		
 		
 
