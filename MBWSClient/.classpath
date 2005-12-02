@@ -9,7 +9,7 @@
 	<classpathentry kind="lib" path="lib/jme-effects.jar"/>
 	<classpathentry kind="lib" path="lib/jme-model.jar"/>
 	<classpathentry sourcepath="C:/Programmierung/projekte/jmecvs/src" kind="lib" path="lib/jme-sound.jar"/>
-	<classpathentry sourcepath="/JME/src" kind="lib" path="lib/jme-terrain.jar"/>
+	<classpathentry sourcepath="C:/Programmierung/projekte/jmecvs/src" kind="lib" path="lib/jme-terrain.jar"/>
 	<classpathentry sourcepath="C:/Programmierung/projekte/bui/src/java" kind="lib" path="lib/jme-bui.jar"/>
 	<classpathentry kind="lib" path="lib/jinput.jar"/>
 	<classpathentry kind="lib" path="lib/jogg-0.0.5.jar"/>

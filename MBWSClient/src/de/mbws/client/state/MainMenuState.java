@@ -3,7 +3,6 @@
  */
 package de.mbws.client.state;
 
-import java.io.File;
 import java.util.logging.Level;
 
 import com.jme.app.GameState;
@@ -34,7 +33,6 @@ import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
 import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.util.Dimension;
-import com.jmex.sound.openAL.SoundSystem;
 
 import de.mbws.client.MBWSClient;
 import de.mbws.client.controller.AccountController;
@@ -57,7 +55,7 @@ public class MainMenuState extends StandardGameState {
 	private Text text;
 
 	private MainMenuHandler input;
-	private int musicID;
+	//private int musicID;
 
 	BTextField loginTF;
 	BTextField passwordTF;
@@ -68,14 +66,14 @@ public class MainMenuState extends StandardGameState {
 
 	public MainMenuState(String name) {
 		super(name);
-		SoundSystem.init(null, SoundSystem.OUTPUT_DEFAULT);
-		//TODO: Take "bin" out
-		musicID = SoundSystem.createStream(System.getProperty("user.dir")+File.separator+"bin"+File.separator+"resources" + File.separator
-				+ "audio" + File.separator + "music" + File.separator
-				+ "intro.ogg", false);
-		if (SoundSystem.isStreamOpened(musicID)) {
-			SoundSystem.playStream(musicID);
-		}
+//		SoundSystem.init(null, SoundSystem.OUTPUT_DEFAULT);
+//		//TODO: Take "bin" out
+//		musicID = SoundSystem.createStream(System.getProperty("user.dir")+File.separator+"bin"+File.separator+"resources" + File.separator
+//				+ "audio" + File.separator + "music" + File.separator
+//				+ "intro.ogg", false);
+//		if (SoundSystem.isStreamOpened(musicID)) {
+//			SoundSystem.playStream(musicID);
+//		}
 		display = DisplaySystem.getDisplaySystem();
 		initInput();
 		initGUI();
@@ -139,7 +137,7 @@ public class MainMenuState extends StandardGameState {
 				String login = loginTF.getText();
 				if (login != null && password != null) {
 					input.login(login, password);
-					SoundSystem.stopStream(musicID);
+	//				SoundSystem.stopStream(musicID);
 				}
 			}
 		});

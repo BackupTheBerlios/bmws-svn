@@ -3,6 +3,11 @@
  */
 package de.mbws.client.state;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
@@ -17,18 +22,26 @@ import com.jme.input.InputHandler;
 import com.jme.input.MouseInput;
 import com.jme.input.thirdperson.ThirdPersonMouseLook;
 import com.jme.light.DirectionalLight;
+import com.jme.math.FastMath;
+import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
-import com.jme.scene.shape.Box;
 import com.jme.scene.state.LightState;
 import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
+import com.jmex.model.XMLparser.JmeBinaryReader;
+import com.jmex.model.XMLparser.Converters.MaxToJme;
+import com.jmex.terrain.TerrainBlock;
+import com.jmex.terrain.util.ProceduralTextureGenerator;
+import com.jmex.terrain.util.RawHeightMap;
 
 import de.mbws.client.MBWSClient;
+import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.data.ObjectManager;
 import de.mbws.client.eventactions.AbstractEventAction;
+import de.mbws.client.experimental.Terrainloader;
 import de.mbws.client.net.ActionQueue;
 import de.mbws.client.state.handler.TestGameHandler;
 
@@ -56,6 +69,7 @@ public class TestGameState extends StandardGameState {
 		this.display = DisplaySystem.getDisplaySystem();
 		ObjectManager.initialize(rootNode, display);
 		// build the world around the player
+		buildEnvironment();
 		buildTerrain();
 		// Light the world
 		buildLighting();
@@ -65,6 +79,8 @@ public class TestGameState extends StandardGameState {
 		buildChaseCamera();
 		// build the player input
 		buildInput();
+		// build trees
+		
 
 		// update the scene graph for rendering
 		rootNode.updateGeometricState(0.0f, true);
@@ -89,29 +105,128 @@ public class TestGameState extends StandardGameState {
 	}
 
 	private void buildTerrain() {
-		Box b = new Box("terrainbox", new Vector3f(), 200f, 0.1f, 200f);
-		b.setModelBound(new BoundingBox());
-		b.updateModelBound();
-		Node player = new Node("terrainnode");
-		Vector3f location = new Vector3f(0, 0, 0);
-		player.setLocalTranslation(location);
-		//		
+		RawHeightMap rhm = new RawHeightMap(
+				"c:/programmierung/projekte/mbwsclient/src/resources/00000_00000_000.raw",
+				256);
 
-		// assign the texture to the terrain
-		TextureState ts = display.getRenderer().createTextureState();
-		Texture t1 = TextureManager.loadTexture(new ImageIcon(
-				TestGameState.class.getClassLoader().getResource(
-						"resources/textures/water.png")).getImage(),
-				Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR, true);
-		ts.setTexture(t1, 0);
-		b.setRenderState(ts);
+		// Create a terrain block. Our integer height values will scale on the
+		// map 2x larger x,
+		// and 2x larger z. Our map's origin will be the regular origin, and it
+		// won't create an
+		// AreaClodMesh from it.
+		TerrainBlock tb = new TerrainBlock("block", 256, new Vector3f(1, 1, 1),
+				rhm.getHeightMap(), new Vector3f(0, 0, 0), false);
 
-		rootNode.attachChild(player);
-		player.attachChild(b);
-		player.updateWorldBound();
+		URL grass = Terrainloader.class.getClassLoader().getResource(
+				"resources/textures/grassb.png");
+		 ProceduralTextureGenerator pg=new ProceduralTextureGenerator(rhm);
+		 pg.addTexture(new ImageIcon(grass),0,0,1);
+		 
+		 // pg.addTexture(new ImageIcon(waterImage),0,30,60);
+		 pg.createTexture(1024);
+		 TextureState ts=display.getRenderer().createTextureState();
+		 // // Load the texture and assign it.
+		 ts.setTexture(
+		 TextureManager.loadTexture(
+		 pg.getImageIcon().getImage(),
+		 Texture.MM_LINEAR_LINEAR,
+		 Texture.FM_LINEAR,
+		 true
+		 )
+		 );
+		 tb.setRenderState(ts);
+		        
+
+//		TextureState ts = display.getRenderer().createTextureState();
+//		ts.setTexture(TextureManager.loadTexture(grass, Texture.MM_LINEAR,
+//				Texture.FM_LINEAR));
+//
+//		tb.setRenderState(ts);
+		// Give the terrain a bounding box.
+		tb.setModelBound(new BoundingBox());
+		tb.updateModelBound();
+		Vector3f location = new Vector3f(ClientPlayerData.getInstance()
+				.getCharacterData().getCharacterStatus().getCoordinateX(),
+				-0,
+				ClientPlayerData.getInstance().getCharacterData()
+						.getCharacterStatus().getCoordinateZ());
+		tb.setLocalTranslation(location);
+		// Attach the terrain TriMesh to our rootNode
+		rootNode.attachChild(tb);
+
+//		Box b = new Box("terrainbox", new Vector3f(), 200f, 0.1f, 200f);
+//		b.setModelBound(new BoundingBox());
+//		b.updateModelBound();
+//		Node player = new Node("terrainnode");
+//		Vector3f location = new Vector3f(0, 0, 0);
+//		player.setLocalTranslation(location);
+//		//		
+//
+//		// assign the texture to the terrain
+//		TextureState ts = display.getRenderer().createTextureState();
+//		Texture t1 = TextureManager.loadTexture(new ImageIcon(
+//				TestGameState.class.getClassLoader().getResource(
+//						"resources/textures/water.png")).getImage(),
+//				Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR, true);
+//		ts.setTexture(t1, 0);
+//		b.setRenderState(ts);
+//
+//		rootNode.attachChild(player);
+//		player.attachChild(b);
+		//player.updateWorldBound();
 
 	}
 
+	private void buildEnvironment() {
+		try {
+			MaxToJme C1 = new MaxToJme();
+			ByteArrayOutputStream BO = new ByteArrayOutputStream();
+			URL maxFile = Terrainloader.class.getClassLoader().getResource(
+					"resources/models/crypt3.3ds");
+			C1.convert(new BufferedInputStream(maxFile.openStream()), BO);
+			JmeBinaryReader jbr = new JmeBinaryReader();
+			jbr.setProperty("bound", "box");
+			Node r = jbr.loadBinaryFormat(new ByteArrayInputStream(BO
+					.toByteArray()));
+			//TODO: Skaling is not used correctly here
+			r.setLocalScale(.01f);
+			//TODO: Tree says it needs no rotationchange
+			Quaternion temp = new Quaternion();
+			temp.fromAngleAxis(FastMath.PI/2,new Vector3f(-1,0,0));
+//			// <POSITION X="9.301813" Y="2.130375" HEIGHT="-0.393879"/>
+			r.setLocalTranslation(new Vector3f(20f, 0f, 20f));
+			r.setLocalRotation(temp);
+			rootNode.attachChild(r);
+		} catch (IOException e) {
+			System.out.println("Damn exceptions:" + e);
+			e.printStackTrace();
+		}
+		try {
+			MaxToJme C1 = new MaxToJme();
+			ByteArrayOutputStream BO = new ByteArrayOutputStream();
+			URL maxFile = Terrainloader.class.getClassLoader().getResource(
+					"resources/models/dec_autumn01.3ds");
+			C1.convert(new BufferedInputStream(maxFile.openStream()), BO);
+			JmeBinaryReader jbr = new JmeBinaryReader();
+			jbr.setProperty("bound", "box");
+			Node r = jbr.loadBinaryFormat(new ByteArrayInputStream(BO
+					.toByteArray()));
+			//TODO: Skaling is not used correctly here
+			r.setLocalScale(.1f);
+			//TODO: Tree says it needs no rotationchange
+			Quaternion temp = new Quaternion();
+			 temp.fromAngleAxis(FastMath.PI/2,new Vector3f(-1,0,0));
+			// <POSITION X="9.301813" Y="2.130375" HEIGHT="-0.393879"/>
+			r.setLocalTranslation(new Vector3f(9.3f, 2.13f, -0.4f));
+			r.setLocalRotation(temp);
+			rootNode.attachChild(r);
+		} catch (IOException e) {
+			System.out.println("Damn exceptions:" + e);
+			e.printStackTrace();
+		}
+
+		
+	}
 	/**
 	 * creates a light for the terrain.
 	 */

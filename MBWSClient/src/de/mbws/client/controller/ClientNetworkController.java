@@ -68,7 +68,7 @@ public class ClientNetworkController extends Thread {
 		try {
 			if (channel == null || !channel.isConnected()) {
 				// TODO: Kerim: FIX THAT ADRESS (localhost)212.202.184.164
-				channel = SocketChannel.open(new InetSocketAddress("localhost",
+				channel = SocketChannel.open(new InetSocketAddress("localhost",//62.75.214.103",
 						5000));
 				channel.configureBlocking(false);
 				// we don't like Nagle's algorithm
