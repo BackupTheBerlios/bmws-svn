@@ -19,12 +19,15 @@ import com.jme.system.DisplaySystem;
 import com.jme.util.LoggingSystem;
 import com.jme.util.TextureManager;
 import com.jmex.bui.BButton;
+import com.jmex.bui.BCheckBox;
 import com.jmex.bui.BComboBox;
 import com.jmex.bui.BContainer;
 import com.jmex.bui.BDecoratedWindow;
+import com.jmex.bui.BLabel;
 import com.jmex.bui.BLookAndFeel;
 import com.jmex.bui.BRootNode;
 import com.jmex.bui.BTextArea;
+import com.jmex.bui.BTextField;
 import com.jmex.bui.BWindow;
 import com.jmex.bui.PolledRootNode;
 import com.jmex.bui.event.ActionEvent;
@@ -34,6 +37,8 @@ import com.jmex.bui.layout.GroupLayout;
 import com.jmex.bui.util.Dimension;
 
 import de.mbws.client.MBWSClient;
+import de.mbws.client.controller.CharacterController;
+import de.mbws.client.controller.ClientNetworkController;
 import de.mbws.client.gui.MenuLookAndFeel;
 
 /**
@@ -61,7 +66,10 @@ public class CharacterCreationState extends StandardGameState {
 
 	BWindow controllWindow;
 	BContainer controllContainer;
-	BComboBox combobox;
+	BComboBox raceCB;
+	BCheckBox gender;
+	BTextField nameTF;
+	
 	BLookAndFeel lnf;
 
 	
@@ -110,14 +118,27 @@ public class CharacterCreationState extends StandardGameState {
 		controllWindow.setSize(250, 50);
 		controllWindow.setLocation(display.getWidth() - 250, 0);
 
-		combobox = new BComboBox();
+		BContainer nameContainer = new BContainer(GroupLayout.makeHoriz(GroupLayout.LEFT));;
+		
+		BLabel nameLb = new BLabel("Name: ");
+		nameTF = new BTextField("Enter Your name here ");
+		nameContainer.add(nameLb);
+		nameContainer.add(nameTF);
+		cont.add(nameContainer);
+		
+		BContainer raceContainer = new BContainer(GroupLayout.makeHoriz(GroupLayout.LEFT));;
+		BLabel raceLb = new BLabel("Race: ");
+		raceCB = new BComboBox();
 		//combobox.setPreferredSize(new Dimension(250,50));
-		combobox.addItem("test1");
-		combobox.addItem("test2");
-		combobox.selectItem(0);
-		cont.add(combobox);
+		raceCB.addItem("test1");
+		raceCB.addItem("test2");
+		raceCB.selectItem(0);
+		raceContainer.add(raceLb);
+		raceContainer.add(raceCB);
+		cont.add(raceContainer);
 		
-		
+		gender = new BCheckBox("Male");
+		cont.add(gender);
 
 		abortBtn = new BButton("Delete");//, input, DELETE_CHARACTER);
 		abortBtn.addListener(new ActionListener() {
@@ -131,6 +152,15 @@ public class CharacterCreationState extends StandardGameState {
 		createBtn = new BButton("Create");//, input, CREATE_CHARACTER);
 		createBtn.addListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
+				//TODO: implement mapping
+				byte genderValue = 0;
+				if (gender.isChecked()) {
+					genderValue = 1;
+				}
+				byte raceValue  = 0;
+				ClientNetworkController.getInstance().handleOutgoingEvent(CharacterController.getInstance()
+						.createCreateCharacterEvent(
+								nameTF.getText().trim(),genderValue, raceValue)); 
 				returnToCharacterSelectionState();
 			}});
 		createBtn.setPreferredSize(new Dimension(70, 30));

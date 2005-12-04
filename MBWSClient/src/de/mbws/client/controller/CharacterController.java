@@ -18,6 +18,7 @@ import de.mbws.common.eventdata.generated.CharacterDetails;
 import de.mbws.common.eventdata.generated.CharacterSelection;
 import de.mbws.common.eventdata.generated.CharacterShortDescription;
 import de.mbws.common.eventdata.generated.CharactersOfPlayer;
+import de.mbws.common.eventdata.generated.CreateCharacter;
 import de.mbws.common.eventdata.generated.IntVector3D;
 import de.mbws.common.eventdata.generated.MoveData;
 import de.mbws.common.eventdata.generated.NetQuaternion;
@@ -152,6 +153,17 @@ public class CharacterController {
 		cs.setCharacterID(characterID);
 		CharacterEvent event = new CharacterEvent(cs);
 		event.setEventType(EventTypes.CHARACTER_START_PLAYING_REQUEST);
+
+		return event;
+	}
+	
+	public AbstractGameEvent createCreateCharacterEvent(String name, byte gender, byte race) {
+		CreateCharacter cc = new CreateCharacter();
+		cc.setGender(gender);
+		cc.setRace(race);
+		cc.setName(name);
+		CharacterEvent event = new CharacterEvent(cc);
+		event.setEventType(EventTypes.CHARACTER_CREATE_REQUEST);
 
 		return event;
 	}
