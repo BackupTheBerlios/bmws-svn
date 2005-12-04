@@ -136,6 +136,10 @@ INSERT INTO race VALUES("1","Mensch","0","0","0","0","0","0","0","0","Ganz toll,
 #
 INSERT INTO language_text_mapping VALUES("1","race.1","1","Mensch");
 INSERT INTO language_text_mapping VALUES("2","race.1","2","Human");
+insert into language_text_mapping (id,text_key,languages_id,text) values (3,'yes',1,'ja')
+insert into language_text_mapping (id,text_key,languages_id,text) values (4,'yes',2,'yes')
+insert into language_text_mapping (id,text_key,languages_id,text) values (5,'no',1,'nein')
+insert into language_text_mapping (id,text_key,languages_id,text) values (6,'no',2,'no')
 
 
 #
