@@ -12,8 +12,7 @@
       <xsd:complexType>
       	 <xsd:sequence>
 			<xsd:element ref="accountserver" maxOccurs="1" minOccurs="1"/>
-			<xsd:element ref="gameserver" maxOccurs="1" minOccurs="1"/>
-			<xsd:element ref="zoneserver" maxOccurs="unbounded" minOccurs="0"/>
+			<xsd:element ref="worldserver" maxOccurs="1" minOccurs="1"/>
       	</xsd:sequence>
       </xsd:complexType>
    </xsd:element>
@@ -52,26 +51,13 @@
     	</xsd:complexType>
    	</xsd:element>
 
-   <xsd:element name="gameserver">
+   <xsd:element name="worldserver">
    		<xsd:complexType>	
 	        <xsd:sequence>
-	             <xsd:element name="port" type="xsd:integer"/>
-	             <xsd:element name="startup" type="xsd:boolean"/>
-			     <xsd:element name="accountserverip" type="xsd:string"/>
+	             <xsd:element ref="basicAttributes" />
+	             <xsd:element ref="eventControllers" />
+   			     <xsd:element name="accountserverip" type="xsd:string"/>
 			     <xsd:element name="accountserverport" type="xsd:integer"/>
-	         </xsd:sequence>
-    	</xsd:complexType>
-   	</xsd:element>
-
-   <xsd:element name="zoneserver">
-   		<xsd:complexType>	
-	        <xsd:sequence>
-			     <xsd:element name="name" type="xsd:string"/>
-			     <xsd:element name="gameserverip" type="xsd:string"/>
-			     <xsd:element name="gameserverport" type="xsd:integer"/>
-			     <xsd:element name="mapid" type="xsd:integer"/>
-	             <xsd:element name="port" type="xsd:integer"/>
-	             <xsd:element name="startup" type="xsd:boolean"/>
 	         </xsd:sequence>
     	</xsd:complexType>
    	</xsd:element>

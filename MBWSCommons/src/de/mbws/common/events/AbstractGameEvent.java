@@ -2,6 +2,8 @@ package de.mbws.common.events;
 
 import java.nio.ByteBuffer;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.eventdata.AbstractEventData;
 
@@ -63,4 +65,12 @@ public abstract class AbstractGameEvent {
         return eventData;
     }
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).
+        append("eventType", eventType).
+        toString();
+    }
+
+    
 }

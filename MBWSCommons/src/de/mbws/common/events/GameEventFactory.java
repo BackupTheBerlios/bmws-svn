@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.eventdata.generated.AccountErrorData;
 import de.mbws.common.eventdata.generated.CharacterSelection;
+import de.mbws.common.eventdata.generated.CharacterWorldServerInformation;
 import de.mbws.common.eventdata.generated.CharactersOfPlayer;
 
 public class GameEventFactory {
@@ -18,11 +19,11 @@ public class GameEventFactory {
 		logger.info("got event " + eventKey + " at Time: "
 				+ System.currentTimeMillis());
 		AbstractGameEvent event = null;
-		if (eventKey == EventTypes.LOGIN) {
+		if (eventKey == EventTypes.LOGIN || eventKey == EventTypes.LOGIN_S2S) {
 			event = new LoginEvent(payload);
 		} else if (eventKey == EventTypes.LOGIN_FAILED) {
 			event = new LoginEvent(payload);
-		} else if (eventKey == EventTypes.LOGIN_OK) {
+		} else if (eventKey == EventTypes.LOGIN_OK || eventKey == EventTypes.LOGIN_S2S_OK) {
 			event = new LoginEvent(payload);
 		} else if (eventKey == EventTypes.LOGOUT) {
 			event = new LoginEvent(payload);
@@ -43,6 +44,12 @@ public class GameEventFactory {
             event = new CharacterEvent(payload, new CharacterSelection());
         } else if (eventKey == EventTypes.CHARACTER_LIST_RECEIVE_REQUEST) {
             event = new CharacterEvent(payload);
+        } else if (eventKey == EventTypes.CHARACTER_ENTERS_WORLD_REQUEST) {
+            event = new CharacterEvent(payload, new CharacterSelection());
+        } else if (eventKey == EventTypes.CHARACTER_ENTERS_WORLD) {
+            event = new CharacterEvent(payload, new CharacterSelection());
+        } else if (eventKey == EventTypes.CHARACTER_NEW_CHARACTER_ENTERS_WORLD_S2S) {
+            event = new CharacterEvent(payload, new CharacterWorldServerInformation());
         } else if (eventKey == EventTypes.CHARACTER_LIST_RECEIVE) {
             event = new CharacterEvent(payload, new CharactersOfPlayer());
 			// TODO take below check out ?
