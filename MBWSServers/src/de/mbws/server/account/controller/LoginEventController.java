@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 
 import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.data.generated.Account;
+import de.mbws.common.eventdata.generated.ServerLoginData;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.EventTypes;
 import de.mbws.common.events.LoginEvent;
@@ -59,6 +60,8 @@ public class LoginEventController extends AccountServerBaseEventController {
             getAccountServer().removePlayer(event.getPlayer());
 		} else if (event.getEventType() == EventTypes.LOGIN_S2S) {
             ServerCommunicationData scd = new ServerCommunicationData();
+            ServerLoginData sld = (ServerLoginData) event.getEventData();
+            scd.setHostInfo(sld.getHostData());
             Integer sessionId = getAccountServer().nextSessionId();
             if (logger.isDebugEnabled()) {
                 logger.debug("Given session id =" + sessionId

@@ -18,8 +18,10 @@ import de.mbws.common.eventdata.generated.CharactersOfPlayer;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.CharacterEvent;
 import de.mbws.common.events.EventTypes;
+import de.mbws.common.events.ServerRedirectEvent;
 import de.mbws.server.account.AccountServer;
 import de.mbws.server.account.persistence.CharacterPersistenceManager;
+import de.mbws.server.data.ServerCommunicationData;
 import de.mbws.server.utils.IdHelper;
 
 /**
@@ -65,7 +67,11 @@ public class CharacterEventController extends AccountServerBaseEventController {
             result.setEventType(EventTypes.CHARACTER_NEW_CHARACTER_ENTERS_WORLD_S2S);
             result.setPlayer(getAccountServer().getPlayerBySessionId(getAccountServer().getWorldServerSessionId()));
             sendEvent(result);
-            //need to send redirect event to client
+
+            ServerRedirectEvent sre = new ServerRedirectEvent(((ServerCommunicationData) result.getPlayer()).getHostInfo());
+            sre.setEventType(EventTypes.REDIRECT_TO_WORLDSERVER);
+            sre.setPlayer(event.getPlayer());
+            sendEvent(sre);
         } else if (event.getEventType() == EventTypes.CHARACTER_LIST_RECEIVE_REQUEST) {
             List chars = CharacterPersistenceManager.getInstance().getAllCharacters(ce.getPlayer().getAccount().getUsername());
             LinkedList<CharacterShortDescription> charsToSend = new LinkedList<CharacterShortDescription>();

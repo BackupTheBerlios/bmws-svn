@@ -14,7 +14,8 @@ import javax.management.ObjectName;
 import org.apache.log4j.Logger;
 
 import de.mbws.common.data.AbstractPlayerData;
-import de.mbws.common.eventdata.generated.LoginData;
+import de.mbws.common.eventdata.generated.ServerLoginData;
+import de.mbws.common.eventdata.generated.ServerRedirectData;
 import de.mbws.common.events.EventTypes;
 import de.mbws.common.events.LoginEvent;
 import de.mbws.common.exceptions.InitializationException;
@@ -62,10 +63,14 @@ public class WorldServer extends AbstractTcpServer {
                 ServerCommunicationData scd = new ServerCommunicationData();
                 scd.setChannel(accountServerChannel);
                 scd.setSessionId(0);
-                LoginData ld = new LoginData();
-                ld.setUserName("worldserver");
-                ld.setPassword("worldserver");
-                LoginEvent lv = new LoginEvent(ld);
+                ServerLoginData sld = new ServerLoginData();
+                sld.setName("worldserver");
+                sld.setPassword("worldserver");
+                ServerRedirectData srd = new ServerRedirectData();
+                srd.setHost(accountServerChannel.socket().getLocalAddress().getHostAddress());
+                srd.setPort(config.getC2sport());
+                sld.setHostData(srd);
+                LoginEvent lv = new LoginEvent(sld);
                 lv.setPlayer(scd);
                 lv.setEventType(EventTypes.LOGIN_S2S);
                 handleOutgoingEvent(lv);
