@@ -12,7 +12,25 @@ public class ServerConfig {
     int s2sport;
     int queueWorkerSize;
     EventControllers eventControllers;
+    String accountServerIp;
+    int accountServerPort;
     
+    /**
+     * @param ip
+     * @param port
+     * @param c2sport
+     * @param controllers
+     * @param size
+     */
+    public ServerConfig(String ip, int port, int c2sport, EventControllers controllers, int size) {
+        super();
+        // TODO Auto-generated constructor stub
+        accountServerIp = ip;
+        accountServerPort = port;
+        this.c2sport = c2sport;
+        eventControllers = controllers;
+        queueWorkerSize = size;
+    }
     /**
      * @param c2sport
      * @param size
@@ -37,5 +55,11 @@ public class ServerConfig {
     }
     public EventControllers getEventControllers() {
         return eventControllers;
+    }
+    public String getAccountServerIp() {
+        return accountServerIp;
+    }
+    public int getAccountServerPort() {
+        return accountServerPort;
     }    
 }

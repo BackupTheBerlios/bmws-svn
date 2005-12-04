@@ -1,13 +1,12 @@
-package de.mbws.server.controller;
+package de.mbws.server.world.controller;
 
 import java.util.ArrayList;
 import java.util.Map;
 
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.MoveEvent;
-import de.mbws.server.account.AccountServer;
-import de.mbws.server.account.controller.AccountServerBaseEventController;
 import de.mbws.server.data.ServerPlayerData;
+import de.mbws.server.world.WorldServer;
 
 /**
  * Description:
@@ -15,14 +14,14 @@ import de.mbws.server.data.ServerPlayerData;
  * @author Azarai
  * 
  */
-public class MovementEventController extends AccountServerBaseEventController {
+public class MovementEventController extends WorldServerBaseEventController {
 
     /**
      * @param accountServer
      * @param eventType
      */
-    public MovementEventController(AccountServer accountServer) {
-        super(accountServer);
+    public MovementEventController(WorldServer worldServer) {
+        super(worldServer);
         // TODO Auto-generated constructor stub
     }
 
@@ -38,8 +37,8 @@ public class MovementEventController extends AccountServerBaseEventController {
             ServerPlayerData spd = (ServerPlayerData) me.getPlayer();
             spd.getMovementInformation().setHeading(me.getMoveData().getHeading());
             spd.getMovementInformation().setLocation(me.getMoveData().getLocation());
-            Map m = getAccountServer().getAllPlayers();
-            ArrayList<Integer> receivers = (ArrayList<Integer>) getAccountServer().getSessionIDOfAllPlayers().clone();
+            Map m = getWorldServer().getAllPlayers();
+            ArrayList<Integer> receivers = (ArrayList<Integer>) getWorldServer().getSessionIDOfAllPlayers().clone();
             if (receivers.size() > 1) {
                 receivers.remove(me.getPlayer().getSessionId());
                 //TODO: TEST (below)

@@ -9,6 +9,7 @@ import de.mbws.common.events.EventTypes;
 import de.mbws.common.events.LoginEvent;
 import de.mbws.server.account.AccountServer;
 import de.mbws.server.account.persistence.AccountPersistenceManager;
+import de.mbws.server.data.ServerCommunicationData;
 import de.mbws.server.data.ServerPlayerData;
 
 public class LoginEventController extends AccountServerBaseEventController {
@@ -24,8 +25,8 @@ public class LoginEventController extends AccountServerBaseEventController {
 
 	public void handleEvent(AbstractGameEvent event) {
 
+        LoginEvent l = (LoginEvent) event;
 		if (event.getEventType() == EventTypes.LOGIN) {
-			LoginEvent l = (LoginEvent) event;
 			Account account = AccountPersistenceManager.getInstance()
 					.getAccount(l.getLoginData().getUserName(),
 							l.getLoginData().getPassword());
@@ -56,6 +57,22 @@ public class LoginEventController extends AccountServerBaseEventController {
 			lr.setEventType(EventTypes.LOGOUT_OK);
 			sendEvent(lr);
             getAccountServer().removePlayer(event.getPlayer());
-		}
+		} else if (event.getEventType() == EventTypes.LOGIN_S2S) {
+            ServerCommunicationData scd = new ServerCommunicationData();
+            Integer sessionId = getAccountServer().nextSessionId();
+            if (logger.isDebugEnabled()) {
+                logger.debug("Given session id =" + sessionId
+                        + " to new worldserver");
+            }
+            scd.setSessionId(sessionId);
+            scd.setChannel(l.getPlayer().getChannel());
+            getAccountServer().addPlayer(sessionId, scd);
+
+            getAccountServer().setWorldServerSessionId(sessionId);
+            LoginEvent lr = new LoginEvent();
+            lr.setPlayer(scd);
+            lr.setEventType(EventTypes.LOGIN_S2S_OK);
+            sendEvent(lr);
+        }
 	}
 }

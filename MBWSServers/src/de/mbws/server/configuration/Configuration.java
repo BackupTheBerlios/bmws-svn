@@ -11,8 +11,6 @@ package de.mbws.server.configuration;
  //- Imported classes and packages -/
 //---------------------------------/
 
-import java.util.ArrayList;
-
 import org.exolab.castor.xml.Marshaller;
 import org.exolab.castor.xml.Unmarshaller;
 
@@ -35,14 +33,9 @@ public class Configuration implements java.io.Serializable {
     private de.mbws.server.configuration.Accountserver _accountserver;
 
     /**
-     * Field _gameserver
+     * Field _worldserver
      */
-    private de.mbws.server.configuration.Gameserver _gameserver;
-
-    /**
-     * Field _zoneserverList
-     */
-    private java.util.ArrayList _zoneserverList;
+    private de.mbws.server.configuration.Worldserver _worldserver;
 
 
       //----------------/
@@ -52,61 +45,12 @@ public class Configuration implements java.io.Serializable {
     public Configuration() 
      {
         super();
-        _zoneserverList = new ArrayList();
     } //-- de.mbws.server.configuration.Configuration()
 
 
       //-----------/
      //- Methods -/
     //-----------/
-
-    /**
-     * Method addZoneserver
-     * 
-     * 
-     * 
-     * @param vZoneserver
-     */
-    public void addZoneserver(de.mbws.server.configuration.Zoneserver vZoneserver)
-        throws java.lang.IndexOutOfBoundsException
-    {
-        _zoneserverList.add(vZoneserver);
-    } //-- void addZoneserver(de.mbws.server.configuration.Zoneserver) 
-
-    /**
-     * Method addZoneserver
-     * 
-     * 
-     * 
-     * @param index
-     * @param vZoneserver
-     */
-    public void addZoneserver(int index, de.mbws.server.configuration.Zoneserver vZoneserver)
-        throws java.lang.IndexOutOfBoundsException
-    {
-        _zoneserverList.add(index, vZoneserver);
-    } //-- void addZoneserver(int, de.mbws.server.configuration.Zoneserver) 
-
-    /**
-     * Method clearZoneserver
-     * 
-     */
-    public void clearZoneserver()
-    {
-        _zoneserverList.clear();
-    } //-- void clearZoneserver() 
-
-    /**
-     * Method enumerateZoneserver
-     * 
-     * 
-     * 
-     * @return Enumeration
-     */
-    public java.util.Enumeration enumerateZoneserver()
-    {
-        return new org.exolab.castor.util.IteratorEnumeration(_zoneserverList.iterator());
-    } //-- java.util.Enumeration enumerateZoneserver() 
 
     /**
      * Returns the value of field 'accountserver'.
@@ -120,63 +64,15 @@ public class Configuration implements java.io.Serializable {
     } //-- de.mbws.server.configuration.Accountserver getAccountserver() 
 
     /**
-     * Returns the value of field 'gameserver'.
+     * Returns the value of field 'worldserver'.
      * 
-     * @return Gameserver
-     * @return the value of field 'gameserver'.
+     * @return Worldserver
+     * @return the value of field 'worldserver'.
      */
-    public de.mbws.server.configuration.Gameserver getGameserver()
+    public de.mbws.server.configuration.Worldserver getWorldserver()
     {
-        return this._gameserver;
-    } //-- de.mbws.server.configuration.Gameserver getGameserver() 
-
-    /**
-     * Method getZoneserver
-     * 
-     * 
-     * 
-     * @param index
-     * @return Zoneserver
-     */
-    public de.mbws.server.configuration.Zoneserver getZoneserver(int index)
-        throws java.lang.IndexOutOfBoundsException
-    {
-        //-- check bounds for index
-        if ((index < 0) || (index > _zoneserverList.size())) {
-            throw new IndexOutOfBoundsException();
-        }
-        
-        return (de.mbws.server.configuration.Zoneserver) _zoneserverList.get(index);
-    } //-- de.mbws.server.configuration.Zoneserver getZoneserver(int) 
-
-    /**
-     * Method getZoneserver
-     * 
-     * 
-     * 
-     * @return Zoneserver
-     */
-    public de.mbws.server.configuration.Zoneserver[] getZoneserver()
-    {
-        int size = _zoneserverList.size();
-        de.mbws.server.configuration.Zoneserver[] mArray = new de.mbws.server.configuration.Zoneserver[size];
-        for (int index = 0; index < size; index++) {
-            mArray[index] = (de.mbws.server.configuration.Zoneserver) _zoneserverList.get(index);
-        }
-        return mArray;
-    } //-- de.mbws.server.configuration.Zoneserver[] getZoneserver() 
-
-    /**
-     * Method getZoneserverCount
-     * 
-     * 
-     * 
-     * @return int
-     */
-    public int getZoneserverCount()
-    {
-        return _zoneserverList.size();
-    } //-- int getZoneserverCount() 
+        return this._worldserver;
+    } //-- de.mbws.server.configuration.Worldserver getWorldserver() 
 
     /**
      * Method isValid
@@ -225,20 +121,6 @@ public class Configuration implements java.io.Serializable {
     } //-- void marshal(org.xml.sax.ContentHandler) 
 
     /**
-     * Method removeZoneserver
-     * 
-     * 
-     * 
-     * @param vZoneserver
-     * @return boolean
-     */
-    public boolean removeZoneserver(de.mbws.server.configuration.Zoneserver vZoneserver)
-    {
-        boolean removed = _zoneserverList.remove(vZoneserver);
-        return removed;
-    } //-- boolean removeZoneserver(de.mbws.server.configuration.Zoneserver) 
-
-    /**
      * Sets the value of field 'accountserver'.
      * 
      * @param accountserver the value of field 'accountserver'.
@@ -249,48 +131,14 @@ public class Configuration implements java.io.Serializable {
     } //-- void setAccountserver(de.mbws.server.configuration.Accountserver) 
 
     /**
-     * Sets the value of field 'gameserver'.
+     * Sets the value of field 'worldserver'.
      * 
-     * @param gameserver the value of field 'gameserver'.
+     * @param worldserver the value of field 'worldserver'.
      */
-    public void setGameserver(de.mbws.server.configuration.Gameserver gameserver)
+    public void setWorldserver(de.mbws.server.configuration.Worldserver worldserver)
     {
-        this._gameserver = gameserver;
-    } //-- void setGameserver(de.mbws.server.configuration.Gameserver) 
-
-    /**
-     * Method setZoneserver
-     * 
-     * 
-     * 
-     * @param index
-     * @param vZoneserver
-     */
-    public void setZoneserver(int index, de.mbws.server.configuration.Zoneserver vZoneserver)
-        throws java.lang.IndexOutOfBoundsException
-    {
-        //-- check bounds for index
-        if ((index < 0) || (index > _zoneserverList.size())) {
-            throw new IndexOutOfBoundsException();
-        }
-        _zoneserverList.set(index, vZoneserver);
-    } //-- void setZoneserver(int, de.mbws.server.configuration.Zoneserver) 
-
-    /**
-     * Method setZoneserver
-     * 
-     * 
-     * 
-     * @param zoneserverArray
-     */
-    public void setZoneserver(de.mbws.server.configuration.Zoneserver[] zoneserverArray)
-    {
-        //-- copy array
-        _zoneserverList.clear();
-        for (int i = 0; i < zoneserverArray.length; i++) {
-            _zoneserverList.add(zoneserverArray[i]);
-        }
-    } //-- void setZoneserver(de.mbws.server.configuration.Zoneserver) 
+        this._worldserver = worldserver;
+    } //-- void setWorldserver(de.mbws.server.configuration.Worldserver) 
 
     /**
      * Method unmarshal

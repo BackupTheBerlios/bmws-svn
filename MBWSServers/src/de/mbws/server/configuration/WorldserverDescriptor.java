@@ -11,13 +11,15 @@ package de.mbws.server.configuration;
  //- Imported classes and packages -/
 //---------------------------------/
 
+import org.exolab.castor.xml.validators.IntegerValidator;
+import org.exolab.castor.xml.validators.StringValidator;
 
 /**
- * Class ConfigurationDescriptor.
+ * Class WorldserverDescriptor.
  * 
  * @version $Revision$ $Date$
  */
-public class ConfigurationDescriptor extends org.exolab.castor.xml.util.XMLClassDescriptorImpl {
+public class WorldserverDescriptor extends org.exolab.castor.xml.util.XMLClassDescriptorImpl {
 
 
       //--------------------------/
@@ -49,11 +51,11 @@ public class ConfigurationDescriptor extends org.exolab.castor.xml.util.XMLClass
      //- Constructors -/
     //----------------/
 
-    public ConfigurationDescriptor() 
+    public WorldserverDescriptor() 
      {
         super();
         nsURI = "http://mbws/Configuration";
-        xmlName = "configuration";
+        xmlName = "worldserver";
         
         //-- set grouping compositor
         setCompositorAsSequence();
@@ -64,28 +66,28 @@ public class ConfigurationDescriptor extends org.exolab.castor.xml.util.XMLClass
         
         //-- initialize element descriptors
         
-        //-- _accountserver
-        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(de.mbws.server.configuration.Accountserver.class, "_accountserver", "accountserver", org.exolab.castor.xml.NodeType.Element);
+        //-- _basicAttributes
+        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(de.mbws.server.configuration.BasicAttributes.class, "_basicAttributes", "basicAttributes", org.exolab.castor.xml.NodeType.Element);
         handler = new org.exolab.castor.xml.XMLFieldHandler() {
             public java.lang.Object getValue( java.lang.Object object ) 
                 throws IllegalStateException
             {
-                Configuration target = (Configuration) object;
-                return target.getAccountserver();
+                Worldserver target = (Worldserver) object;
+                return target.getBasicAttributes();
             }
             public void setValue( java.lang.Object object, java.lang.Object value) 
                 throws IllegalStateException, IllegalArgumentException
             {
                 try {
-                    Configuration target = (Configuration) object;
-                    target.setAccountserver( (de.mbws.server.configuration.Accountserver) value);
+                    Worldserver target = (Worldserver) object;
+                    target.setBasicAttributes( (de.mbws.server.configuration.BasicAttributes) value);
                 }
                 catch (java.lang.Exception ex) {
                     throw new IllegalStateException(ex.toString());
                 }
             }
             public java.lang.Object newInstance( java.lang.Object parent ) {
-                return new de.mbws.server.configuration.Accountserver();
+                return new de.mbws.server.configuration.BasicAttributes();
             }
         };
         desc.setHandler(handler);
@@ -94,34 +96,34 @@ public class ConfigurationDescriptor extends org.exolab.castor.xml.util.XMLClass
         desc.setMultivalued(false);
         addFieldDescriptor(desc);
         
-        //-- validation code for: _accountserver
+        //-- validation code for: _basicAttributes
         fieldValidator = new org.exolab.castor.xml.FieldValidator();
         fieldValidator.setMinOccurs(1);
         { //-- local scope
         }
         desc.setValidator(fieldValidator);
-        //-- _worldserver
-        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(de.mbws.server.configuration.Worldserver.class, "_worldserver", "worldserver", org.exolab.castor.xml.NodeType.Element);
+        //-- _eventControllers
+        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(de.mbws.server.configuration.EventControllers.class, "_eventControllers", "eventControllers", org.exolab.castor.xml.NodeType.Element);
         handler = new org.exolab.castor.xml.XMLFieldHandler() {
             public java.lang.Object getValue( java.lang.Object object ) 
                 throws IllegalStateException
             {
-                Configuration target = (Configuration) object;
-                return target.getWorldserver();
+                Worldserver target = (Worldserver) object;
+                return target.getEventControllers();
             }
             public void setValue( java.lang.Object object, java.lang.Object value) 
                 throws IllegalStateException, IllegalArgumentException
             {
                 try {
-                    Configuration target = (Configuration) object;
-                    target.setWorldserver( (de.mbws.server.configuration.Worldserver) value);
+                    Worldserver target = (Worldserver) object;
+                    target.setEventControllers( (de.mbws.server.configuration.EventControllers) value);
                 }
                 catch (java.lang.Exception ex) {
                     throw new IllegalStateException(ex.toString());
                 }
             }
             public java.lang.Object newInstance( java.lang.Object parent ) {
-                return new de.mbws.server.configuration.Worldserver();
+                return new de.mbws.server.configuration.EventControllers();
             }
         };
         desc.setHandler(handler);
@@ -130,13 +132,94 @@ public class ConfigurationDescriptor extends org.exolab.castor.xml.util.XMLClass
         desc.setMultivalued(false);
         addFieldDescriptor(desc);
         
-        //-- validation code for: _worldserver
+        //-- validation code for: _eventControllers
         fieldValidator = new org.exolab.castor.xml.FieldValidator();
         fieldValidator.setMinOccurs(1);
         { //-- local scope
         }
         desc.setValidator(fieldValidator);
-    } //-- de.mbws.server.configuration.ConfigurationDescriptor()
+        //-- _accountserverip
+        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(java.lang.String.class, "_accountserverip", "accountserverip", org.exolab.castor.xml.NodeType.Element);
+        desc.setImmutable(true);
+        handler = new org.exolab.castor.xml.XMLFieldHandler() {
+            public java.lang.Object getValue( java.lang.Object object ) 
+                throws IllegalStateException
+            {
+                Worldserver target = (Worldserver) object;
+                return target.getAccountserverip();
+            }
+            public void setValue( java.lang.Object object, java.lang.Object value) 
+                throws IllegalStateException, IllegalArgumentException
+            {
+                try {
+                    Worldserver target = (Worldserver) object;
+                    target.setAccountserverip( (java.lang.String) value);
+                }
+                catch (java.lang.Exception ex) {
+                    throw new IllegalStateException(ex.toString());
+                }
+            }
+            public java.lang.Object newInstance( java.lang.Object parent ) {
+                return null;
+            }
+        };
+        desc.setHandler(handler);
+        desc.setRequired(true);
+        desc.setMultivalued(false);
+        addFieldDescriptor(desc);
+        
+        //-- validation code for: _accountserverip
+        fieldValidator = new org.exolab.castor.xml.FieldValidator();
+        fieldValidator.setMinOccurs(1);
+        { //-- local scope
+            StringValidator typeValidator = new StringValidator();
+            typeValidator.setWhiteSpace("preserve");
+            fieldValidator.setValidator(typeValidator);
+        }
+        desc.setValidator(fieldValidator);
+        //-- _accountserverport
+        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(java.lang.Integer.TYPE, "_accountserverport", "accountserverport", org.exolab.castor.xml.NodeType.Element);
+        handler = new org.exolab.castor.xml.XMLFieldHandler() {
+            public java.lang.Object getValue( java.lang.Object object ) 
+                throws IllegalStateException
+            {
+                Worldserver target = (Worldserver) object;
+                if(!target.hasAccountserverport())
+                    return null;
+                return new java.lang.Integer(target.getAccountserverport());
+            }
+            public void setValue( java.lang.Object object, java.lang.Object value) 
+                throws IllegalStateException, IllegalArgumentException
+            {
+                try {
+                    Worldserver target = (Worldserver) object;
+                    // ignore null values for non optional primitives
+                    if (value == null) return;
+                    
+                    target.setAccountserverport( ((java.lang.Integer)value).intValue());
+                }
+                catch (java.lang.Exception ex) {
+                    throw new IllegalStateException(ex.toString());
+                }
+            }
+            public java.lang.Object newInstance( java.lang.Object parent ) {
+                return null;
+            }
+        };
+        desc.setHandler(handler);
+        desc.setRequired(true);
+        desc.setMultivalued(false);
+        addFieldDescriptor(desc);
+        
+        //-- validation code for: _accountserverport
+        fieldValidator = new org.exolab.castor.xml.FieldValidator();
+        fieldValidator.setMinOccurs(1);
+        { //-- local scope
+            IntegerValidator typeValidator = new IntegerValidator();
+            fieldValidator.setValidator(typeValidator);
+        }
+        desc.setValidator(fieldValidator);
+    } //-- de.mbws.server.configuration.WorldserverDescriptor()
 
 
       //-----------/
@@ -188,7 +271,7 @@ public class ConfigurationDescriptor extends org.exolab.castor.xml.util.XMLClass
      */
     public java.lang.Class getJavaClass()
     {
-        return de.mbws.server.configuration.Configuration.class;
+        return de.mbws.server.configuration.Worldserver.class;
     } //-- java.lang.Class getJavaClass() 
 
     /**

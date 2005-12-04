@@ -29,13 +29,13 @@ public abstract class AbstractTcpServer extends Thread {
 
     private boolean running;
 
-    private RequestDispatcher dispatcher;
+    protected RequestDispatcher dispatcher;
 
-    private Selector selector;
+    protected Selector selector;
     protected HashMap<Integer, AbstractEventController> eventReader = new HashMap<Integer, AbstractEventController>();
-    private static EventQueue outgoingEventQueue = new EventQueue("GameEvents-out");
+    private EventQueue outgoingEventQueue = new EventQueue("GameEvents-out");
     protected HashMap<Integer, AbstractPlayerData> clients = new HashMap<Integer, AbstractPlayerData>();
-    private static EventQueue incomingEventQueue = new EventQueue("GameEvents-in");
+    private EventQueue incomingEventQueue = new EventQueue("GameEvents-in");
     private EventDispatcher eventController = null;
     private EventWriter eventWriter = null;
     protected ServerConfig config;

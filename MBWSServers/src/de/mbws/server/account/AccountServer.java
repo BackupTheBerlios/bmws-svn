@@ -9,9 +9,6 @@ import java.util.Set;
 
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
-import javax.management.remote.JMXConnectorServer;
-import javax.management.remote.JMXConnectorServerFactory;
-import javax.management.remote.JMXServiceURL;
 
 import org.apache.log4j.Logger;
 
@@ -29,6 +26,7 @@ public class AccountServer extends AbstractTcpServer {
     private static Logger logger = Logger.getLogger(AccountServer.class);
     private static int nextSessionId = 0;
 
+    private Integer worldServerSessionId=0;
     /**
      * @param config
      */
@@ -36,16 +34,6 @@ public class AccountServer extends AbstractTcpServer {
         super(config);
         try {
             MBeanServer mbs = MBeanHelper.getMBeanServer();
-            ObjectName namingName = ObjectName.getInstance("naming:type=rmiregistry");
-            mbs.createMBean("mx4j.tools.naming.NamingService", namingName, null);
-            mbs.invoke(namingName, "start", null, null);
-            int namingPort = ((Integer)mbs.getAttribute(namingName, "Port")).intValue();
-            String jndiPath = "/jmxconnector";
-            JMXServiceURL url = new JMXServiceURL("service:jmx:rmi://localhost/jndi/rmi://localhost:" + namingPort + jndiPath);
-            // Create and start the RMIConnectorServer
-            JMXConnectorServer connectorServer = JMXConnectorServerFactory.newJMXConnectorServer(url, null, mbs);
-            connectorServer.start();
-
             ObjectName name = new ObjectName(this.getClass().getCanonicalName()+ ":type=Statistics");
             Statatistic smb = new Statatistic(this);
             mbs.registerMBean(smb, name);
@@ -135,5 +123,13 @@ public class AccountServer extends AbstractTcpServer {
     @Override
     protected Logger getLogger() {
         return logger;
+    }
+
+    public Integer getWorldServerSessionId() {
+        return worldServerSessionId;
+    }
+
+    public void setWorldServerSessionId(Integer worldServerSessionId) {
+        this.worldServerSessionId = worldServerSessionId;
     }
 }

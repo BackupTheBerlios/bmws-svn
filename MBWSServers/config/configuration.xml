@@ -11,21 +11,20 @@
 			<eventController type="0" class="de.mbws.server.account.controller.LoginEventController"/>
 			<eventController type="1" class="de.mbws.server.account.controller.AccountEventController"/>
 			<eventController type="2" class="de.mbws.server.account.controller.CharacterEventController"/>
-			<eventController type="10" class="de.mbws.server.controller.MovementEventController"/>
 		</eventControllers>
 	</accountserver>
-	<gameserver>
-		<port>5002</port>
+	<worldserver>
+		<basicAttributes>
+			<c2sport>5001</c2sport>
+			<queueworkersize>1</queueworkersize>
+			<startup>true</startup>
+		</basicAttributes>
+		<eventControllers>
+			<eventController type="0" class="de.mbws.server.world.controller.LoginEventController"/>
+			<eventController type="2" class="de.mbws.server.world.controller.CharacterEventController"/>
+ 			<eventController type="10" class="de.mbws.server.world.controller.MovementEventController"/>
+		</eventControllers>
 		<accountserverip>localhost</accountserverip>
-		<accountserverport>5002</accountserverport>		
-		<startup>true</startup>
-	</gameserver>
-	<zoneserver>
-		<name>Zone 1</name>
-		<gameserverip>localhost</gameserverip>
-		<gameserverport>5002</gameserverport>
-		<mapid>1</mapid>
-		<port>5020</port>
-		<startup>true</startup>
-	</zoneserver>
+		<accountserverport>5000</accountserverport>
+	</worldserver>
 </configuration>

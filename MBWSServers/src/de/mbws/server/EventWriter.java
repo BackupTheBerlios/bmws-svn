@@ -82,7 +82,6 @@ public class EventWriter extends QueueWorker {
                 }
             }
         }
-
     }
 
     /**
