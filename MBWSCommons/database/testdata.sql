@@ -140,6 +140,8 @@ insert into language_text_mapping (id,text_key,languages_id,text) values (3,'yes
 insert into language_text_mapping (id,text_key,languages_id,text) values (4,'yes',2,'yes')
 insert into language_text_mapping (id,text_key,languages_id,text) values (5,'no',1,'nein')
 insert into language_text_mapping (id,text_key,languages_id,text) values (6,'no',2,'no')
+insert into language_text_mapping (id,text_key,languages_id,text) values (7,'confirm_delete',1,'Wirklich löschen ?')
+insert into language_text_mapping (id,text_key,languages_id,text) values (8,'confirm_delete',2,'Really delete ?')
 
 
 #
