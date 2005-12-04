@@ -9,6 +9,7 @@ import de.mbws.common.eventdata.generated.AccountErrorData;
 import de.mbws.common.eventdata.generated.CharacterSelection;
 import de.mbws.common.eventdata.generated.CharacterWorldServerInformation;
 import de.mbws.common.eventdata.generated.CharactersOfPlayer;
+import de.mbws.common.eventdata.generated.ServerLoginData;
 
 public class GameEventFactory {
 	private static Logger logger = Logger.getLogger("GameEventFactory");
@@ -19,11 +20,11 @@ public class GameEventFactory {
 		logger.info("got event " + eventKey + " at Time: "
 				+ System.currentTimeMillis());
 		AbstractGameEvent event = null;
-		if (eventKey == EventTypes.LOGIN || eventKey == EventTypes.LOGIN_S2S) {
+		if (eventKey == EventTypes.LOGIN) {
 			event = new LoginEvent(payload);
 		} else if (eventKey == EventTypes.LOGIN_FAILED) {
 			event = new LoginEvent(payload);
-		} else if (eventKey == EventTypes.LOGIN_OK || eventKey == EventTypes.LOGIN_S2S_OK) {
+		} else if (eventKey == EventTypes.LOGIN_OK) {
 			event = new LoginEvent(payload);
 		} else if (eventKey == EventTypes.LOGOUT) {
 			event = new LoginEvent(payload);
@@ -64,8 +65,16 @@ public class GameEventFactory {
 			event = new MoveEvent(payload);
 		} else if (eventKey == EventTypes.OBJECT_CREATE) {
 			event = new ObjectEvent(payload);
-		}
-		if (event != null) {
+        } else if (eventKey == EventTypes.REDIRECT_TO_WORLDSERVER) {
+            event = new ServerRedirectEvent(payload);
+            //down here just S2S Events; maybe we should move em to a own Factory
+        } else if (eventKey == EventTypes.LOGIN || eventKey == EventTypes.LOGIN_S2S) {
+            event = new LoginEvent(payload, new ServerLoginData());
+        } else if (eventKey == EventTypes.LOGIN_OK || eventKey == EventTypes.LOGIN_S2S_OK) {
+            event = new LoginEvent(payload);
+        }
+
+        if (event != null) {
             event.setEventType(eventKey);
 			event.setPlayer(p);
 		}

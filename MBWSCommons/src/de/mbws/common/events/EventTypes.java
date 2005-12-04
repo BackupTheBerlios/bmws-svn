@@ -37,6 +37,9 @@ public class EventTypes {
     public static final int CHARACTER_ENTERS_WORLD = 30;
     public static final int CHARACTER_NEW_CHARACTER_ENTERS_WORLD_S2S = 31;
     
+    public static final int GROUPID_EVENT_REDIRECT = 4;
+    public static final int REDIRECT_TO_WORLDSERVER = 41;
+    
     //Numbers 100 to 150 are reserved for movement related events
     public static final int GROUPID_EVENT_MOVEMENT = 10;
     public static final int MOVEMENT_START_WALK = 100;

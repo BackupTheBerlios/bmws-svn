@@ -8,33 +8,38 @@ import de.mbws.common.eventdata.generated.LoginData;
 public class LoginEvent extends AbstractGameEvent {
 
     /**
-	 * Constructor for the server. Should probably be package visible 
-	 * @param payload
-	 */
-	public LoginEvent(ByteBuffer payload) {
-		super(payload, new LoginData());
-	}
-	
-	/**
-	 * Constructor for the client.
-	 */
-	public LoginEvent() {
-		super(null);
-	}
-	
-	// TODO create delegators for setter and getter of the data
+     * Constructor for the server. Should probably be package visible
+     * 
+     * @param payload
+     */
+    public LoginEvent(ByteBuffer payload) {
+        super(payload, new LoginData());
+    }
 
-	public LoginEvent(AbstractEventData eventData) {
-		super(eventData);
-		// TODO Auto-generated constructor stub
-	}
+    public LoginEvent(ByteBuffer payload, AbstractEventData eventData) {
+        super(payload, eventData);
+    }
 
-	public LoginData getLoginData() {
-		return (LoginData) eventData;
-	}
+    /**
+     * Constructor for the client.
+     */
+    public LoginEvent() {
+        super(null);
+    }
 
-	@Override
-	public int getEventId() {
-		return EventTypes.GROUPID_EVENT_LOGIN;
-	}
+    // TODO create delegators for setter and getter of the data
+
+    public LoginEvent(AbstractEventData eventData) {
+        super(eventData);
+        // TODO Auto-generated constructor stub
+    }
+
+    public LoginData getLoginData() {
+        return (LoginData) eventData;
+    }
+
+    @Override
+    public int getEventId() {
+        return EventTypes.GROUPID_EVENT_LOGIN;
+    }
 }
