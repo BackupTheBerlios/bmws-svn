@@ -34,7 +34,7 @@ public class LanguageFileCreator  {
             BasicConfigurator.configure();
             PropertyConfigurator.configure("log4j.properties");
             logger.info("Init log4j ... done");
-            Configuration cfg = new Configuration().configure(new File("../MBWSCommons/mapping/hibernate.cfg.xml"));
+            Configuration cfg = new Configuration().configure(new File("../MBWSServers/config/hibernate.cfg.xml"));
             SessionFactory sessions = cfg.buildSessionFactory();
             session = sessions.openSession();
             List languages = session.createQuery("from Language").list();
@@ -49,7 +49,7 @@ public class LanguageFileCreator  {
                     System.out.println(element.getShortname() + "  " + ltm.getText());
                     props.put(ltm.getTextKey(), ltm.getText());
                 }
-                File out = new File("LanguageBundle_" + element.getShortname() + ".properties");
+                File out = new File("../MBWSClient/config/LanguageBundle_" + element.getShortname() + ".properties");
                 FileOutputStream fout = new FileOutputStream(out);
                 props.store(fout,"");
             }
