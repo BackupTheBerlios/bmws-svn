@@ -22,6 +22,8 @@ public class CharacterSelectionStateHandler extends InputHandler implements
 	private CharacterSelectionState state;
 	private boolean startGame = false;
 	private String selectedCharacter = null;
+	private BButton deleteBtn;
+	private BPopupWindow deletePopUp;
 
 	public CharacterSelectionStateHandler() {
 		super();
@@ -42,11 +44,13 @@ public class CharacterSelectionStateHandler extends InputHandler implements
 											selectedCharacter));
 		} else if (event.getAction().equals(
 				CharacterSelectionState.DELETE_CHARACTER)) {
-			BPopupWindow deletePopUp = new BPopupWindow(state.characterWindow,
+			deletePopUp = new BPopupWindow(state.characterWindow,
 					new BorderLayout());
 			deletePopUp.add(new BLabel("Really want to delete the char ?"),
 					BorderLayout.NORTH);
-			deletePopUp.add(new BButton("Yes"), BorderLayout.WEST);
+			deleteBtn = new BButton("Yes");
+			deleteBtn.addListener(this);
+			deletePopUp.add(deleteBtn, BorderLayout.WEST);
 			deletePopUp.add(new BButton("No"), BorderLayout.EAST);
 			deletePopUp.setModal(true);
 			deletePopUp.popup(0, 0, true);
@@ -54,6 +58,11 @@ public class CharacterSelectionStateHandler extends InputHandler implements
 		} else if (event.getAction().equals(
 				CharacterSelectionState.CREATE_CHARACTER)) {
 			startCharacterCreationState();
+		} else if (event.getSource().equals(deleteBtn)) {
+			deletePopUp.dismiss();
+			ClientNetworkController.getInstance().handleOutgoingEvent(
+					CharacterController.getInstance()
+							.createDeleteCharacterEvent(selectedCharacter));
 
 		} else {
 			selectedCharacter = event.getAction();
@@ -77,7 +86,6 @@ public class CharacterSelectionStateHandler extends InputHandler implements
 		super.update(time);
 	}
 
-	
 	public void startCharacterCreationState() {
 		GameState testgame = GameStateManager.getInstance().getChild(
 				"characterCreation");
@@ -90,12 +98,12 @@ public class CharacterSelectionStateHandler extends InputHandler implements
 				"characterSelection");
 	}
 
-	 public void startMainGameState() {
-	 GameState testgame = new TestGameState("game");
-	 testgame.setActive(true);
-	 GameStateManager.getInstance().attachChild(testgame);
-	 GameStateManager.getInstance().deactivateChildNamed(
-	 "characterSelection");
-	 }
+	public void startMainGameState() {
+		GameState testgame = new TestGameState("game");
+		testgame.setActive(true);
+		GameStateManager.getInstance().attachChild(testgame);
+		GameStateManager.getInstance().deactivateChildNamed(
+				"characterSelection");
+	}
 
 }

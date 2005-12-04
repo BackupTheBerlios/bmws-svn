@@ -156,6 +156,14 @@ public class CharacterController {
 
 		return event;
 	}
+	public AbstractGameEvent createDeleteCharacterEvent(String characterID) {
+		CharacterSelection cs = new CharacterSelection();
+		cs.setCharacterID(characterID);
+		CharacterEvent event = new CharacterEvent(cs);
+		event.setEventType(EventTypes.CHARACTER_DELETE_REQUEST);
+
+		return event;
+	}
 	
 	public AbstractGameEvent createCreateCharacterEvent(String name, byte gender, byte race) {
 		CreateCharacter cc = new CreateCharacter();
