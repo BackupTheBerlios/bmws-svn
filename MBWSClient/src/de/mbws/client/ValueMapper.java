@@ -31,4 +31,8 @@ public class ValueMapper {
     public static String getRaceName(int raceId) {
         return props.getProperty(new StringBuffer("race.").append(raceId).toString());
     }
+    
+    public static String getText(String key) {
+    	return props.getProperty(key);
+    }
 }
