@@ -24,7 +24,7 @@ public class BasePersistenceManager {
 
     public static void init() throws InitializationException {
         try {
-            cfg = new Configuration().configure(new File("config/hibernate.cfg.xml"));
+            cfg = new Configuration().configure(new File("../MBWSServers/config/hibernate.cfg.xml"));
             sessions = cfg.buildSessionFactory();
         } catch (Throwable e) {
             e.printStackTrace();
