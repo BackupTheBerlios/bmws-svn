@@ -109,7 +109,7 @@ public class AccountServer extends AbstractTcpServer {
         Integer sessionId = null;
         for (Iterator iter = sessiosnIdKeys.iterator(); iter.hasNext();) {
             Integer element = (Integer) iter.next();
-            ServerPlayerData spd = (ServerPlayerData) players.get(element);
+            AbstractPlayerData spd = (AbstractPlayerData) players.get(element);
             if (channel.equals(spd.getChannel())) {
                 sessionId = element;
                 break;
