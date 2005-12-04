@@ -83,7 +83,7 @@ public class CharacterEventController extends WorldServerBaseEventController {
             charDetails.setHeading(heading);
             charDetails.setLocation(location);
             CharacterEvent result = new CharacterEvent(charDetails);
-            result.setEventType(EventTypes.CHARACTER_START_PLAYING);
+            result.setEventType(EventTypes.CHARACTER_ENTERS_WORLD);
             result.setPlayer(ce.getPlayer());
             sendEvent(result);
 
