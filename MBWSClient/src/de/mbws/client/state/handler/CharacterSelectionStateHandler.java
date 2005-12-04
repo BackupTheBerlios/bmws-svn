@@ -10,6 +10,7 @@ import com.jmex.bui.event.ActionEvent;
 import com.jmex.bui.event.ActionListener;
 import com.jmex.bui.layout.BorderLayout;
 
+import de.mbws.client.ValueMapper;
 import de.mbws.client.controller.CharacterController;
 import de.mbws.client.controller.ClientNetworkController;
 import de.mbws.client.state.CharacterCreationState;
@@ -48,10 +49,10 @@ public class CharacterSelectionStateHandler extends InputHandler implements
 					new BorderLayout());
 			deletePopUp.add(new BLabel("Really want to delete the char ?"),
 					BorderLayout.NORTH);
-			deleteBtn = new BButton("Yes");
+			deleteBtn = new BButton(ValueMapper.getText("yes"));
 			deleteBtn.addListener(this);
 			deletePopUp.add(deleteBtn, BorderLayout.WEST);
-			deletePopUp.add(new BButton("No"), BorderLayout.EAST);
+			deletePopUp.add(new BButton(ValueMapper.getText("no")), BorderLayout.EAST);
 			deletePopUp.setModal(true);
 			deletePopUp.popup(0, 0, true);
 
