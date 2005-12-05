@@ -136,12 +136,27 @@ INSERT INTO race VALUES("1","Mensch","0","0","0","0","0","0","0","0","Ganz toll,
 #
 INSERT INTO language_text_mapping VALUES("1","race.1","1","Mensch");
 INSERT INTO language_text_mapping VALUES("2","race.1","2","Human");
-insert into language_text_mapping (id,text_key,languages_id,text) values (3,'yes',1,'ja')
-insert into language_text_mapping (id,text_key,languages_id,text) values (4,'yes',2,'yes')
-insert into language_text_mapping (id,text_key,languages_id,text) values (5,'no',1,'nein')
-insert into language_text_mapping (id,text_key,languages_id,text) values (6,'no',2,'no')
-insert into language_text_mapping (id,text_key,languages_id,text) values (7,'confirm_delete',1,'Wirklich löschen ?')
-insert into language_text_mapping (id,text_key,languages_id,text) values (8,'confirm_delete',2,'Really delete ?')
+insert into language_text_mapping (id,text_key,languages_id,text) values (3,'yes',1,'ja');
+insert into language_text_mapping (id,text_key,languages_id,text) values (4,'yes',2,'yes');
+insert into language_text_mapping (id,text_key,languages_id,text) values (5,'no',1,'nein');
+insert into language_text_mapping (id,text_key,languages_id,text) values (6,'no',2,'no');
+insert into language_text_mapping (id,text_key,languages_id,text) values (7,'confirm_delete',1,'Wirklich lschen ?');
+insert into language_text_mapping (id,text_key,languages_id,text) values (8,'confirm_delete',2,'Really delete ?');
+insert into language_text_mapping (id,text_key,languages_id,text) values (9,'login',1,'Login');
+insert into language_text_mapping (id,text_key,languages_id,text) values (10,'login',2,'Login');
+insert into language_text_mapping (id,text_key,languages_id,text) values (11,'password',1,'Passwort');
+insert into language_text_mapping (id,text_key,languages_id,text) values (12,'password',2,'Password');
+insert into language_text_mapping (id,text_key,languages_id,text) values (13,'create_account',1,'Konto anlegen');
+insert into language_text_mapping (id,text_key,languages_id,text) values (14,'create_account',2,'Create Account');
+insert into language_text_mapping (id,text_key,languages_id,text) values (15,'cancel',1,'Abbrechen');
+insert into language_text_mapping (id,text_key,languages_id,text) values (16,'cancel',2,'Cancel');
+insert into language_text_mapping (id,text_key,languages_id,text) values (17,'delete',1,'Löschen');
+insert into language_text_mapping (id,text_key,languages_id,text) values (18,'delete',2,'Delete');
+insert into language_text_mapping (id,text_key,languages_id,text) values (19,'create',1,'Anlegen');
+insert into language_text_mapping (id,text_key,languages_id,text) values (20,'create',2,'Create');
+insert into language_text_mapping (id,text_key,languages_id,text) values (21,'start',1,'Start');
+insert into language_text_mapping (id,text_key,languages_id,text) values (22,'start',2,'Start');
+
 
 
 #
