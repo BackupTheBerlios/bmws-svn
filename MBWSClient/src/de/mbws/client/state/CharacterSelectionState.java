@@ -33,6 +33,7 @@ import com.jmex.bui.util.Dimension;
 
 import de.mbws.client.MBWSClient;
 import de.mbws.client.ValueMapper;
+import de.mbws.client.data.ClientGlobals;
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.gui.MenuLookAndFeel;
 import de.mbws.client.state.handler.CharacterSelectionStateHandler;
@@ -130,20 +131,20 @@ public class CharacterSelectionState extends StandardGameState {
 		controllWindow.setSize(250, 50);
 		controllWindow.setLocation(display.getWidth() - 250, 0);
 
-		startGameBtn = new BButton("Start", input, STARTGAME);
+		startGameBtn = new BButton(ValueMapper.getText(ClientGlobals.START), input, STARTGAME);
 		startGameBtn.setPreferredSize(new Dimension(70, 30));
 		startGameBtn.setEnabled(false);
 		controllContainer.add(startGameBtn);
 		
 		
 
-		deleteBtn = new BButton("Delete", input, DELETE_CHARACTER);
+		deleteBtn = new BButton(ValueMapper.getText(ClientGlobals.DELETE), input, DELETE_CHARACTER);
 		deleteBtn.setEnabled(false);
 		deleteBtn.setPreferredSize(new Dimension(70, 30));
 		controllContainer.add(deleteBtn);
 		
 
-		createBtn = new BButton("Create", input, CREATE_CHARACTER);
+		createBtn = new BButton(ValueMapper.getText(ClientGlobals.CREATE_ACCOUNT), input, CREATE_CHARACTER);
 		//createBtn.setEnabled(false);
 		createBtn.setPreferredSize(new Dimension(70, 30));
 		controllContainer.add(createBtn);
