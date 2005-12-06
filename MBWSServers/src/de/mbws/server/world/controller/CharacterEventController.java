@@ -57,7 +57,7 @@ public class CharacterEventController extends WorldServerBaseEventController {
             ServerPlayerData spd = new ServerPlayerData();
             spd.setActiveCharacter(IdHelper.removePrefix(cwsi.getCharacter().getCharacterID()));
             getWorldServer().addPlayer(cwsi.getSessionId(),spd);
-        } else if (event.getEventType() == EventTypes.CHARACTER_ENTERS_WORLD_REQUEST) {
+        } else if (event.getEventType() == EventTypes.C2S_CHARACTER_ENTERS_WORLD_REQUEST) {
             CharacterSelection csel = (CharacterSelection) event.getEventData();
             Characterdata cdata = CharacterPersistenceManager.getInstance().getCharacter(ce.getPlayer().getAccount().getUsername(),
                     IdHelper.removePrefix(csel.getCharacterID()));            
@@ -83,14 +83,14 @@ public class CharacterEventController extends WorldServerBaseEventController {
             charDetails.setHeading(heading);
             charDetails.setLocation(location);
             CharacterEvent result = new CharacterEvent(charDetails);
-            result.setEventType(EventTypes.CHARACTER_ENTERS_WORLD);
+            result.setEventType(EventTypes.S2C_CHARACTER_ENTERS_WORLD);
             result.setPlayer(ce.getPlayer());
             sendEvent(result);
 
             ArrayList<Integer> receivers = (ArrayList<Integer>) getWorldServer().getSessionIDOfAllPlayers().clone();
             if (receivers.size() > 1) {
                 ObjectEvent oe = new ObjectEvent(wo);
-                oe.setEventType(EventTypes.MOVABLE_OBJECT_CREATE);
+                oe.setEventType(EventTypes.S2C_MOVABLE_OBJECT_CREATE);
                 receivers.remove(ce.getPlayer().getSessionId());
                 oe.setPlayer(ce.getPlayer());
                 oe.setRecipients(receivers.toArray(new Integer[receivers.size()]));
@@ -104,7 +104,7 @@ public class CharacterEventController extends WorldServerBaseEventController {
                 if (!element.equals(ce.getPlayer().getSessionId())) {
                     ServerPlayerData spd = (ServerPlayerData) players.get(element);
                     ObjectEvent oe = new ObjectEvent(spd.getMovementInformation());
-                    oe.setEventType(EventTypes.MOVABLE_OBJECT_CREATE);
+                    oe.setEventType(EventTypes.S2C_MOVABLE_OBJECT_CREATE);
                     oe.setPlayer(ce.getPlayer());
                     sendEvent(oe);
                 }

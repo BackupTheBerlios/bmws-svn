@@ -47,7 +47,7 @@ public class CharacterEventController extends AccountServerBaseEventController {
     @Override
     public void handleEvent(AbstractGameEvent event) {
         CharacterEvent ce = (CharacterEvent) event;
-        if (event.getEventType() == EventTypes.CHARACTER_RECEIVE_REQUEST) {
+        if (event.getEventType() == EventTypes.C2S_CHARACTER_RECEIVE_REQUEST) {
             CharacterSelection cs = (CharacterSelection) event.getEventData();
             Characterdata cdata = CharacterPersistenceManager.getInstance().getCharacter(ce.getPlayer().getAccount().getUsername(),
                     IdHelper.removePrefix(cs.getCharacterID()));
@@ -55,10 +55,10 @@ public class CharacterEventController extends AccountServerBaseEventController {
             CharacterDetails cd = new CharacterDetails();
             cd.setDescription(getCharacterShortDescription(cdata));
             CharacterEvent result = new CharacterEvent(cd);
-            result.setEventType(EventTypes.CHARACTER_RECEIVE);
+            result.setEventType(EventTypes.S2C_CHARACTER_RECEIVE);
             result.setPlayer(ce.getPlayer());
             sendEvent(result);
-        } else if (event.getEventType() == EventTypes.CHARACTER_START_PLAYING_REQUEST) {
+        } else if (event.getEventType() == EventTypes.C2S_CHARACTER_START_PLAYING_REQUEST) {
             CharacterSelection csel = (CharacterSelection) event.getEventData();
             CharacterWorldServerInformation cwsi = new CharacterWorldServerInformation();
             cwsi.setCharacter(csel);
@@ -69,10 +69,10 @@ public class CharacterEventController extends AccountServerBaseEventController {
             sendEvent(result);
 
             ServerRedirectEvent sre = new ServerRedirectEvent(((ServerCommunicationData) result.getPlayer()).getHostInfo());
-            sre.setEventType(EventTypes.REDIRECT_TO_WORLDSERVER);
+            sre.setEventType(EventTypes.S2C_REDIRECT_TO_WORLDSERVER);
             sre.setPlayer(event.getPlayer());
             sendEvent(sre);
-        } else if (event.getEventType() == EventTypes.CHARACTER_LIST_RECEIVE_REQUEST) {
+        } else if (event.getEventType() == EventTypes.C2S_CHARACTER_LIST_RECEIVE_REQUEST) {
             List chars = CharacterPersistenceManager.getInstance().getAllCharacters(ce.getPlayer().getAccount().getUsername());
             LinkedList<CharacterShortDescription> charsToSend = new LinkedList<CharacterShortDescription>();
             for (Iterator iter = chars.iterator(); iter.hasNext();) {
@@ -82,7 +82,7 @@ public class CharacterEventController extends AccountServerBaseEventController {
             CharactersOfPlayer cop = new CharactersOfPlayer();
             cop.setDescriptions(charsToSend);
             CharacterEvent result = new CharacterEvent(cop);
-            result.setEventType(EventTypes.CHARACTER_LIST_RECEIVE);
+            result.setEventType(EventTypes.S2C_CHARACTER_LIST_RECEIVE);
             result.setPlayer(ce.getPlayer());
             sendEvent(result);
         }

@@ -27,14 +27,14 @@ public class LoginEventController extends AccountServerBaseEventController {
 	public void handleEvent(AbstractGameEvent event) {
 
         LoginEvent l = (LoginEvent) event;
-		if (event.getEventType() == EventTypes.LOGIN) {
+		if (event.getEventType() == EventTypes.C2S_LOGIN) {
 			Account account = AccountPersistenceManager.getInstance()
 					.getAccount(l.getLoginData().getUserName(),
 							l.getLoginData().getPassword());
 			if (account == null) {
 				LoginEvent lr = new LoginEvent();
 				lr.setPlayer(event.getPlayer());
-				lr.setEventType(EventTypes.LOGIN_FAILED);
+				lr.setEventType(EventTypes.S2C_LOGIN_FAILED);
 				sendEvent(lr);
 			} else {
                 AbstractPlayerData p = new ServerPlayerData();
@@ -49,13 +49,13 @@ public class LoginEventController extends AccountServerBaseEventController {
                 getAccountServer().addPlayer(sessionId, p);
 				LoginEvent lr = new LoginEvent();
 				lr.setPlayer(p);
-				lr.setEventType(EventTypes.LOGIN_OK);
+				lr.setEventType(EventTypes.S2C_LOGIN_OK);
 				sendEvent(lr);
 			}
-		} else if (event.getEventType() == EventTypes.LOGOUT) {
+		} else if (event.getEventType() == EventTypes.C2S_LOGOUT) {
 			LoginEvent lr = new LoginEvent();
 			lr.setPlayer(event.getPlayer());
-			lr.setEventType(EventTypes.LOGOUT_OK);
+			lr.setEventType(EventTypes.S2C_LOGOUT_OK);
 			sendEvent(lr);
             getAccountServer().removePlayer(event.getPlayer());
 		} else if (event.getEventType() == EventTypes.LOGIN_S2S) {

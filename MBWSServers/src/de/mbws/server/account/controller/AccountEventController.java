@@ -33,7 +33,7 @@ public class AccountEventController extends AccountServerBaseEventController {
     @Override
     public void handleEvent(AbstractGameEvent event) {
         AccountEvent l = (AccountEvent) event;
-        if (event.getEventType() == EventTypes.ACCOUNT_CREATE) {
+        if (event.getEventType() == EventTypes.C2S_ACCOUNT_CREATE) {
             Account account = new Account();
             account.setPassword(l.getAccountData().getPassword());
             account.setEmailaddress(l.getAccountData().getEmailAddress());
@@ -48,14 +48,14 @@ public class AccountEventController extends AccountServerBaseEventController {
                 getAccountServer().addPlayer(sessionId, p);
                 AccountEvent ae = new AccountEvent();
                 ae.setPlayer(p);
-                ae.setEventType(EventTypes.ACCOUNT_CREATE_OK);
+                ae.setEventType(EventTypes.S2C_ACCOUNT_CREATE_OK);
                 sendEvent(ae);                
             } catch (DuplicateKeyException e) {
                 AccountErrorData aed = new AccountErrorData();
                 aed.setReason(MessageKeys.ACCOUNT_DUPLICATE);
                 AccountEvent ae = new AccountEvent(aed);
                 ae.setPlayer(event.getPlayer());
-                ae.setEventType(EventTypes.ACCOUNT_CREATE_FAIL);
+                ae.setEventType(EventTypes.S2C_ACCOUNT_CREATE_FAIL);
                 sendEvent(ae);
             } catch (Exception e) {
                 //ignore for now
