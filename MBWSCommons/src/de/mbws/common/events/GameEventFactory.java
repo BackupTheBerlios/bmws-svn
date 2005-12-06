@@ -20,38 +20,38 @@ public class GameEventFactory {
 		logger.info("got event " + eventKey + " at Time: "
 				+ System.currentTimeMillis());
 		AbstractGameEvent event = null;
-		if (eventKey == EventTypes.LOGIN) {
+		if (eventKey == EventTypes.C2S_LOGIN) {
 			event = new LoginEvent(payload);
-		} else if (eventKey == EventTypes.LOGIN_FAILED) {
+		} else if (eventKey == EventTypes.S2C_LOGIN_FAILED) {
 			event = new LoginEvent(payload);
-		} else if (eventKey == EventTypes.LOGIN_OK) {
+		} else if (eventKey == EventTypes.S2C_LOGIN_OK) {
 			event = new LoginEvent(payload);
-		} else if (eventKey == EventTypes.LOGOUT) {
+		} else if (eventKey == EventTypes.C2S_LOGOUT) {
 			event = new LoginEvent(payload);
-		} else if (eventKey == EventTypes.LOGOUT_OK) {
+		} else if (eventKey == EventTypes.S2C_LOGOUT_OK) {
 			event = new LoginEvent(payload);
-		} else if (eventKey == EventTypes.ACCOUNT_CREATE) {
+		} else if (eventKey == EventTypes.C2S_ACCOUNT_CREATE) {
 			event = new AccountEvent(payload);
-		} else if (eventKey == EventTypes.ACCOUNT_CREATE_FAIL) {
+		} else if (eventKey == EventTypes.S2C_ACCOUNT_CREATE_FAIL) {
 			event = new AccountEvent(payload, new AccountErrorData());
-		} else if (eventKey == EventTypes.ACCOUNT_CREATE_OK) {
+		} else if (eventKey == EventTypes.S2C_ACCOUNT_CREATE_OK) {
 			event = new AccountEvent(payload);
-		} else if (eventKey == EventTypes.CHARACTER_RECEIVE
-				|| eventKey == EventTypes.CHARACTER_RECEIVE_REQUEST) {
+		} else if (eventKey == EventTypes.S2C_CHARACTER_RECEIVE
+				|| eventKey == EventTypes.C2S_CHARACTER_RECEIVE_REQUEST) {
 			event = new CharacterEvent(payload, new CharacterSelection());
-        } else if (eventKey == EventTypes.CHARACTER_START_PLAYING_REQUEST) {
+        } else if (eventKey == EventTypes.C2S_CHARACTER_START_PLAYING_REQUEST) {
             event = new CharacterEvent(payload, new CharacterSelection());
-        } else if (eventKey == EventTypes.CHARACTER_START_PLAYING) {
+        } else if (eventKey == EventTypes.S2C_CHARACTER_START_PLAYING) {
             event = new CharacterEvent(payload, new CharacterSelection());
-        } else if (eventKey == EventTypes.CHARACTER_LIST_RECEIVE_REQUEST) {
+        } else if (eventKey == EventTypes.C2S_CHARACTER_LIST_RECEIVE_REQUEST) {
             event = new CharacterEvent(payload);
-        } else if (eventKey == EventTypes.CHARACTER_ENTERS_WORLD_REQUEST) {
+        } else if (eventKey == EventTypes.C2S_CHARACTER_ENTERS_WORLD_REQUEST) {
             event = new CharacterEvent(payload, new CharacterSelection());
-        } else if (eventKey == EventTypes.CHARACTER_ENTERS_WORLD) {
+        } else if (eventKey == EventTypes.S2C_CHARACTER_ENTERS_WORLD) {
             event = new CharacterEvent(payload, new CharacterSelection());
         } else if (eventKey == EventTypes.CHARACTER_NEW_CHARACTER_ENTERS_WORLD_S2S) {
             event = new CharacterEvent(payload, new CharacterWorldServerInformation());
-        } else if (eventKey == EventTypes.CHARACTER_LIST_RECEIVE) {
+        } else if (eventKey == EventTypes.S2C_CHARACTER_LIST_RECEIVE) {
             event = new CharacterEvent(payload, new CharactersOfPlayer());
 			// TODO take below check out ?
 		} else if (eventKey == EventTypes.MOVEMENT_START_WALK
@@ -65,12 +65,12 @@ public class GameEventFactory {
 			event = new MoveEvent(payload);
 		} else if (eventKey == EventTypes.OBJECT_CREATE) {
 			event = new ObjectEvent(payload);
-        } else if (eventKey == EventTypes.REDIRECT_TO_WORLDSERVER) {
+        } else if (eventKey == EventTypes.S2C_REDIRECT_TO_WORLDSERVER) {
             event = new ServerRedirectEvent(payload);
             //down here just S2S Events; maybe we should move em to a own Factory
-        } else if (eventKey == EventTypes.LOGIN || eventKey == EventTypes.LOGIN_S2S) {
+        } else if (eventKey == EventTypes.C2S_LOGIN || eventKey == EventTypes.LOGIN_S2S) {
             event = new LoginEvent(payload, new ServerLoginData());
-        } else if (eventKey == EventTypes.LOGIN_OK || eventKey == EventTypes.LOGIN_S2S_OK) {
+        } else if (eventKey == EventTypes.S2C_LOGIN_OK || eventKey == EventTypes.LOGIN_S2S_OK) {
             event = new LoginEvent(payload);
         }
 
