@@ -3,9 +3,12 @@ package de.mbws.client.controller;
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.common.eventdata.generated.AccountData;
 import de.mbws.common.eventdata.generated.LoginData;
+import de.mbws.common.eventdata.generated.ServerRedirectData;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.EventTypes;
 import de.mbws.common.events.LoginEvent;
+import de.mbws.common.events.ServerRedirectEvent;
+import de.mbws.common.exceptions.InitializationException;
 
 /**
  * Description:
@@ -41,7 +44,8 @@ public class LoginController {
 					loginEvent.getPlayer().getSessionId());
 			ClientPlayerData.getInstance().setAccount(
 					loginEvent.getPlayer().getAccount());
-			System.out.println("Session id ="+loginEvent.getPlayer().getSessionId());
+			System.out.println("Session id ="
+					+ loginEvent.getPlayer().getSessionId());
 			System.out.println("Login ok, trying to receive character data");
 			ClientNetworkController.getInstance().handleOutgoingEvent(
 					CharacterController.getInstance()
@@ -71,6 +75,22 @@ public class LoginController {
 		event.setPlayer(player);
 		event.setEventType(EventTypes.C2S_LOGOUT);
 		return event;
+	}
+
+	public void handleEvent(ServerRedirectEvent event) {
+		if (event.getEventType() == EventTypes.S2C_REDIRECT_TO_WORLDSERVER) {
+			// Connecting to new Server, closing this connection here
+			ClientNetworkController.getInstance().disconnect();
+			ServerRedirectData data = (ServerRedirectData) event.getEventData();
+			try {
+				ClientNetworkController.getInstance().connect(data.getHost(),
+						data.getPort());
+			} catch (InitializationException e) {
+				System.out.println("connection to ws failed");
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 }

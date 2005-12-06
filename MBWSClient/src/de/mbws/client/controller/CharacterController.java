@@ -152,7 +152,7 @@ public class CharacterController {
 		CharacterSelection cs = new CharacterSelection();
 		cs.setCharacterID(characterID);
 		CharacterEvent event = new CharacterEvent(cs);
-		event.setEventType(EventTypes.C2S_CHARACTER_START_PLAYING_REQUEST);
+		event.setEventType(EventTypes.S2C_CHARACTER_ENTERS_WORLD);
 
 		return event;
 	}

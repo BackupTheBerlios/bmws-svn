@@ -1,5 +1,6 @@
 package de.mbws.client.controller;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
@@ -16,6 +17,7 @@ import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.AccountEvent;
 import de.mbws.common.events.CharacterEvent;
 import de.mbws.common.events.LoginEvent;
+import de.mbws.common.events.ServerRedirectEvent;
 import de.mbws.common.exceptions.InitializationException;
 
 public class ClientNetworkController extends Thread {
@@ -33,6 +35,7 @@ public class ClientNetworkController extends Thread {
 	protected EventQueue outQueue;
 
 	private static ClientNetworkController instance;
+	private NIOEventReader eventReader;
 
 	private ClientNetworkController() {
 		inQueue = new EventQueue("GameClient-in");
@@ -52,34 +55,57 @@ public class ClientNetworkController extends Thread {
 			while (running) {
 				processIncomingEvents();
 				writeOutgoingEvents();
-				//Thread.yield();
+				// Thread.yield();
 				Thread.sleep(10);
-			//TODO: use two threads and wait !
-//				synchronized (inQueue) {
-//					inQueue.wait();
-//				}
+				// TODO: use two threads and wait !
+				// synchronized (inQueue) {
+				// inQueue.wait();
+				// }
 			}
 		} catch (Exception e) {
 			logger.error("Error in main loop", e);
 		}
 	}
 
-	public void connect() throws InitializationException {
+	public void connect(String ip, int port) throws InitializationException {
 		try {
+			if (inQueue == null) {
+				inQueue = new EventQueue("GameClient-in");
+			}
+			if (outQueue == null) {
+				outQueue = new EventQueue("GameClient-out");
+			}
 			if (channel == null || !channel.isConnected()) {
-				// TODO: Kerim: FIX THAT ADRESS (localhost)212.202.184.164
-				channel = SocketChannel.open(new InetSocketAddress("localhost",//62.75.214.103",
-						5000));
+				channel = SocketChannel.open(new InetSocketAddress(ip, port));
 				channel.configureBlocking(false);
 				// we don't like Nagle's algorithm
 				channel.socket().setTcpNoDelay(true);
-				NIOEventReader n = new NIOEventReader(channel, inQueue, MBWSClient.actionQueue);
-				n.start();
+				eventReader = new NIOEventReader(channel, inQueue,
+						MBWSClient.actionQueue);
+				eventReader.start();
 			}
 		} catch (Exception e) {
 			logger.error("Error during server connection", e);
 			throw new InitializationException(
 					"Error during server connection. see log file for more information");
+		}
+
+	}
+
+	public void disconnect() {
+
+		if (channel != null && channel.isConnected()) {
+			eventReader.setRunning(false);
+			try {
+				channel.close();
+			} catch (IOException e) {
+				logger.error("Error closing connection", e);
+			}
+			eventReader = null;
+			channel = null;
+			inQueue = null;
+			outQueue = null;
+
 		}
 
 	}
@@ -98,12 +124,14 @@ public class ClientNetworkController extends Thread {
 
 	// TODO: Kerim what is done with the "player" ?
 	protected void writeEvent(AbstractGameEvent ge) {
-		logger.debug("writing event: "+ge.getEventType()+" at: "+System.currentTimeMillis());
+		logger.debug("writing event: " + ge.getEventType() + " at: "
+				+ System.currentTimeMillis());
 		ge.setPlayer(ClientPlayerData.getInstance());
 		ByteBuffer writeBuffer = ByteBuffer.allocate(Globals.MAX_EVENT_SIZE);
 		NIOUtils.prepBuffer(ge, writeBuffer, ge.getPlayer().getSessionId());
 		NIOUtils.channelWrite(channel, writeBuffer);
-		logger.debug("wrote event: "+ge.getEventType()+" at: "+System.currentTimeMillis());
+		logger.debug("wrote event: " + ge.getEventType() + " at: "
+				+ System.currentTimeMillis());
 	}
 
 	protected void processIncomingEvents() {
@@ -111,7 +139,8 @@ public class ClientNetworkController extends Thread {
 		while (inQueue.size() > 0) {
 			try {
 				event = inQueue.deQueue();
-				logger.info("Event +"+event.getEventType()+" dequeued at: "+System.currentTimeMillis());
+				logger.info("Event +" + event.getEventType() + " dequeued at: "
+						+ System.currentTimeMillis());
 				if (event instanceof LoginEvent) {
 					LoginController.getInstance().handleEvent(
 							(LoginEvent) event);
@@ -121,7 +150,10 @@ public class ClientNetworkController extends Thread {
 				} else if (event instanceof CharacterEvent) {
 					CharacterEvent e = (CharacterEvent) event;
 					CharacterController.getInstance().handleEvent(e);
-				} 
+				} else if (event instanceof ServerRedirectEvent) {
+					ServerRedirectEvent e = (ServerRedirectEvent) event;
+					LoginController.getInstance().handleEvent(e);
+				}
 			} catch (InterruptedException ie) {
 				logger.info("InterruptedException in readin in-queue", ie);
 			}
@@ -132,5 +164,4 @@ public class ClientNetworkController extends Thread {
 		outQueue.enQueue(event);
 	}
 
-	
 }

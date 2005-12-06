@@ -19,6 +19,7 @@ import de.mbws.common.events.AccountEvent;
 import de.mbws.common.events.CharacterEvent;
 import de.mbws.common.events.EventTypes;
 import de.mbws.common.events.LoginEvent;
+import de.mbws.common.events.ServerRedirectEvent;
 
 public class ClientGameEventActionFactory {
 
@@ -71,46 +72,36 @@ public class ClientGameEventActionFactory {
 		AbstractGameEvent event = null;
 		if (eventKey == EventTypes.C2S_LOGIN) {
 			event = new LoginEvent(payload);
-			event.setEventType(eventKey);
 		} else if (eventKey == EventTypes.S2C_LOGIN_FAILED) {
 			event = new LoginEvent(payload);
-			event.setEventType(eventKey);
 		} else if (eventKey == EventTypes.S2C_LOGIN_OK) {
 			event = new LoginEvent(payload);
-			event.setEventType(eventKey);
 		} else if (eventKey == EventTypes.C2S_LOGOUT) {
 			event = new LoginEvent(payload);
-			event.setEventType(eventKey);
 		} else if (eventKey == EventTypes.S2C_LOGOUT_OK) {
 			event = new LoginEvent(payload);
-			event.setEventType(eventKey);
 		} else if (eventKey == EventTypes.C2S_ACCOUNT_CREATE) {
 			event = new AccountEvent(payload);
-			event.setEventType(eventKey);
 		} else if (eventKey == EventTypes.S2C_ACCOUNT_CREATE_FAIL) {
 			event = new AccountEvent(payload, new AccountErrorData());
-			event.setEventType(eventKey);
 		} else if (eventKey == EventTypes.S2C_ACCOUNT_CREATE_OK) {
 			event = new AccountEvent(payload);
-			event.setEventType(eventKey);
 		} else if (eventKey == EventTypes.S2C_CHARACTER_RECEIVE
 				|| eventKey == EventTypes.C2S_CHARACTER_RECEIVE_REQUEST) {
 			event = new CharacterEvent(payload);
-			event.setEventType(eventKey);
 		} else if (eventKey == EventTypes.S2C_CHARACTER_LIST_RECEIVE
 				|| eventKey == EventTypes.C2S_CHARACTER_LIST_RECEIVE_REQUEST) {
 			event = new CharacterEvent(payload, new CharactersOfPlayer());
-			event.setEventType(eventKey);
-			
 		} else if (eventKey == EventTypes.S2C_CHARACTER_START_PLAYING) {
-			event = new CharacterEvent(payload);
-			event.setEventType(eventKey);
-			
+			event = new CharacterEvent(payload);		
+		} else if (eventKey == (EventTypes.S2C_REDIRECT_TO_WORLDSERVER)){
+			event = new ServerRedirectEvent(payload);
 		}
 		
 		
 		if (event != null) {
 			event.setPlayer(p);
+			event.setEventType(eventKey);
 		}
 		return event;
 	}

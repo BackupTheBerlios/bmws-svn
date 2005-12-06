@@ -132,4 +132,8 @@ public class NIOEventReader extends Thread {
     private AbstractEventAction getEventAction(Attachment attachment) {
         return ClientGameEventActionFactory.getGameEventAction(attachment.getPayload(), ClientPlayerData.getInstance());
     }
+
+	public void setRunning(boolean running) {
+		this.running = running;
+	}
 }

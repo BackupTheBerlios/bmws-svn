@@ -68,7 +68,7 @@ public class MainMenuHandler extends InputHandler implements ComponentListener {
 		AbstractGameEvent event = LoginController.getInstance()
 				.createLoginEvent(accountData, ClientPlayerData.getInstance());
 		try {
-			ClientNetworkController.getInstance().connect();
+			ClientNetworkController.getInstance().connect("localhost",5000);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
