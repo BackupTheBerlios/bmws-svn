@@ -55,7 +55,7 @@ public class CharacterController {
 
 	// TODO Kerim: correct error handling and next stages here !
 	public void handleEvent(CharacterEvent event) {
-		if (event.getEventType() == EventTypes.CHARACTER_RECEIVE) {
+		if (event.getEventType() == EventTypes.S2C_CHARACTER_RECEIVE) {
 			logger.info("Receiving Details of Character!");
 			Player player = new Player(event.getCharacterDetails().getDescription().getCharacterID());
 			Characterdata characterData = new Characterdata();
@@ -70,7 +70,7 @@ public class CharacterController {
 			logger.info("setting flag to start next state");
 			((MainMenuState) GameStateManager.getInstance().getChild("menu"))
 					.getInput().setStartNextState(true);
-		} else if (event.getEventType() == EventTypes.CHARACTER_LIST_RECEIVE) {
+		} else if (event.getEventType() == EventTypes.S2C_CHARACTER_LIST_RECEIVE) {
 			logger.info("Receiving all Characters of Player!");
 
 			List<CharacterShortDescription> allCharacters = ((CharactersOfPlayer) event
@@ -85,7 +85,7 @@ public class CharacterController {
 					.info("retrieved all existing characters, going into selectionstate");
 			((MainMenuState) GameStateManager.getInstance().getChild("menu"))
 					.getInput().setStartNextState(true);
-		} else if (event.getEventType() == EventTypes.CHARACTER_START_PLAYING) {
+		} else if (event.getEventType() == EventTypes.S2C_CHARACTER_START_PLAYING) {
 			logger.info("Start gameplay!");
 			Player player = new Player(event.getCharacterDetails().getDescription().getCharacterID());
 			Characterdata characterData = new Characterdata();
@@ -105,13 +105,13 @@ public class CharacterController {
 
 	public AbstractGameEvent createCharacterReceiveEvent() {
 		CharacterEvent event = new CharacterEvent();
-		event.setEventType(EventTypes.CHARACTER_RECEIVE_REQUEST);
+		event.setEventType(EventTypes.C2S_CHARACTER_RECEIVE_REQUEST);
 		return event;
 	}
 
 	public AbstractGameEvent createCharacterListReceiveEvent() {
 		CharacterEvent event = new CharacterEvent();
-		event.setEventType(EventTypes.CHARACTER_LIST_RECEIVE_REQUEST);
+		event.setEventType(EventTypes.C2S_CHARACTER_LIST_RECEIVE_REQUEST);
 		return event;
 	}
 
@@ -152,7 +152,7 @@ public class CharacterController {
 		CharacterSelection cs = new CharacterSelection();
 		cs.setCharacterID(characterID);
 		CharacterEvent event = new CharacterEvent(cs);
-		event.setEventType(EventTypes.CHARACTER_START_PLAYING_REQUEST);
+		event.setEventType(EventTypes.C2S_CHARACTER_START_PLAYING_REQUEST);
 
 		return event;
 	}
@@ -160,7 +160,7 @@ public class CharacterController {
 		CharacterSelection cs = new CharacterSelection();
 		cs.setCharacterID(characterID);
 		CharacterEvent event = new CharacterEvent(cs);
-		event.setEventType(EventTypes.CHARACTER_DELETE_REQUEST);
+		event.setEventType(EventTypes.C2S_CHARACTER_DELETE_REQUEST);
 
 		return event;
 	}
@@ -171,7 +171,7 @@ public class CharacterController {
 		cc.setRace(race);
 		cc.setName(name);
 		CharacterEvent event = new CharacterEvent(cc);
-		event.setEventType(EventTypes.CHARACTER_CREATE_REQUEST);
+		event.setEventType(EventTypes.C2S_CHARACTER_CREATE_REQUEST);
 
 		return event;
 	}

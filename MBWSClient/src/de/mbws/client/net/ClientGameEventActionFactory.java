@@ -48,7 +48,7 @@ public class ClientGameEventActionFactory {
 		} else if (eventKey == EventTypes.OBJECT_DESTROY) {
 			action = new DestroyObjectAction(payload, new WorldObject());
 			action.setEventType(eventKey);
-		} else if (eventKey == EventTypes.MOVABLE_OBJECT_CREATE) {
+		} else if (eventKey == EventTypes.S2C_MOVABLE_OBJECT_CREATE) {
 			// TODO: Kerim Change action !
 			action = new CreateObjectAction(payload, new WorldObject());
 			action.setEventType(eventKey);
@@ -69,40 +69,40 @@ public class ClientGameEventActionFactory {
 		logger.info("got event " + eventKey + " at Time: "
 				+ System.currentTimeMillis());
 		AbstractGameEvent event = null;
-		if (eventKey == EventTypes.LOGIN) {
+		if (eventKey == EventTypes.C2S_LOGIN) {
 			event = new LoginEvent(payload);
 			event.setEventType(eventKey);
-		} else if (eventKey == EventTypes.LOGIN_FAILED) {
+		} else if (eventKey == EventTypes.S2C_LOGIN_FAILED) {
 			event = new LoginEvent(payload);
 			event.setEventType(eventKey);
-		} else if (eventKey == EventTypes.LOGIN_OK) {
+		} else if (eventKey == EventTypes.S2C_LOGIN_OK) {
 			event = new LoginEvent(payload);
 			event.setEventType(eventKey);
-		} else if (eventKey == EventTypes.LOGOUT) {
+		} else if (eventKey == EventTypes.C2S_LOGOUT) {
 			event = new LoginEvent(payload);
 			event.setEventType(eventKey);
-		} else if (eventKey == EventTypes.LOGOUT_OK) {
+		} else if (eventKey == EventTypes.S2C_LOGOUT_OK) {
 			event = new LoginEvent(payload);
 			event.setEventType(eventKey);
-		} else if (eventKey == EventTypes.ACCOUNT_CREATE) {
+		} else if (eventKey == EventTypes.C2S_ACCOUNT_CREATE) {
 			event = new AccountEvent(payload);
 			event.setEventType(eventKey);
-		} else if (eventKey == EventTypes.ACCOUNT_CREATE_FAIL) {
+		} else if (eventKey == EventTypes.S2C_ACCOUNT_CREATE_FAIL) {
 			event = new AccountEvent(payload, new AccountErrorData());
 			event.setEventType(eventKey);
-		} else if (eventKey == EventTypes.ACCOUNT_CREATE_OK) {
+		} else if (eventKey == EventTypes.S2C_ACCOUNT_CREATE_OK) {
 			event = new AccountEvent(payload);
 			event.setEventType(eventKey);
-		} else if (eventKey == EventTypes.CHARACTER_RECEIVE
-				|| eventKey == EventTypes.CHARACTER_RECEIVE_REQUEST) {
+		} else if (eventKey == EventTypes.S2C_CHARACTER_RECEIVE
+				|| eventKey == EventTypes.C2S_CHARACTER_RECEIVE_REQUEST) {
 			event = new CharacterEvent(payload);
 			event.setEventType(eventKey);
-		} else if (eventKey == EventTypes.CHARACTER_LIST_RECEIVE
-				|| eventKey == EventTypes.CHARACTER_LIST_RECEIVE_REQUEST) {
+		} else if (eventKey == EventTypes.S2C_CHARACTER_LIST_RECEIVE
+				|| eventKey == EventTypes.C2S_CHARACTER_LIST_RECEIVE_REQUEST) {
 			event = new CharacterEvent(payload, new CharactersOfPlayer());
 			event.setEventType(eventKey);
 			
-		} else if (eventKey == EventTypes.CHARACTER_START_PLAYING) {
+		} else if (eventKey == EventTypes.S2C_CHARACTER_START_PLAYING) {
 			event = new CharacterEvent(payload);
 			event.setEventType(eventKey);
 			

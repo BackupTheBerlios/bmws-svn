@@ -34,11 +34,11 @@ public class AccountController {
     	return instance;
     }
     public void handleEvent(AccountEvent accountEvent) {
-        if (accountEvent.getEventType() == EventTypes.ACCOUNT_CREATE_FAIL) {
+        if (accountEvent.getEventType() == EventTypes.S2C_ACCOUNT_CREATE_FAIL) {
         	//TODO: Kerim Correct error Handling here
         	logger.info("Cant Register: " + accountEvent.getAccountErrorData().getReason());
         	((MainMenuState)GameStateManager.getInstance().getChild("menu")).displayInfo("Account creation failed");
-        } else if (accountEvent.getEventType() == EventTypes.ACCOUNT_CREATE_OK) {
+        } else if (accountEvent.getEventType() == EventTypes.S2C_ACCOUNT_CREATE_OK) {
             // TODO: Kerim enter next stage !
         	logger.info("Registration ok");
         	((MainMenuState)GameStateManager.getInstance().getChild("menu")).displayInfo("Account created");
@@ -54,7 +54,7 @@ public class AccountController {
         accountData.setPassword(account.getPassword());
         accountData.setEmailAddress(account.getEmailaddress());
         AccountEvent event = new AccountEvent(accountData);
-        event.setEventType(EventTypes.ACCOUNT_CREATE);
+        event.setEventType(EventTypes.C2S_ACCOUNT_CREATE);
         player.setSessionId(new Integer(0));
         event.setPlayer(player);
         return event;

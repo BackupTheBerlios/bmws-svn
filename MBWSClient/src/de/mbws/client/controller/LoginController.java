@@ -33,9 +33,9 @@ public class LoginController {
 
 	// TODO Kerim: correct error handling and next stages here !
 	public void handleEvent(LoginEvent loginEvent) {
-		if (loginEvent.getEventType() == EventTypes.LOGIN_FAILED) {
+		if (loginEvent.getEventType() == EventTypes.S2C_LOGIN_FAILED) {
 			System.out.println("Login failed!");
-		} else if (loginEvent.getEventType() == EventTypes.LOGIN_OK) {
+		} else if (loginEvent.getEventType() == EventTypes.S2C_LOGIN_OK) {
 			// Updating the local client data:
 			ClientPlayerData.getInstance().setSessionId(
 					loginEvent.getPlayer().getSessionId());
@@ -47,7 +47,7 @@ public class LoginController {
 					CharacterController.getInstance()
 							.createCharacterListReceiveEvent());
 
-		} else if (loginEvent.getEventType() == EventTypes.LOGOUT_OK) {
+		} else if (loginEvent.getEventType() == EventTypes.S2C_LOGOUT_OK) {
 			System.out.println("Logout Successfull!");
 		}
 
@@ -62,14 +62,14 @@ public class LoginController {
 		player.setSessionId(new Integer(0));
 		event.setPlayer(player);
 
-		event.setEventType(EventTypes.LOGIN);
+		event.setEventType(EventTypes.C2S_LOGIN);
 		return event;
 	}
 
 	public AbstractGameEvent createLogoutEvent(ClientPlayerData player) {
 		LoginEvent event = new LoginEvent();
 		event.setPlayer(player);
-		event.setEventType(EventTypes.LOGOUT);
+		event.setEventType(EventTypes.C2S_LOGOUT);
 		return event;
 	}
 
