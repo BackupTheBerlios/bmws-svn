@@ -1,7 +1,6 @@
 package de.mbws.server.world.controller;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.MoveEvent;
@@ -16,10 +15,6 @@ import de.mbws.server.world.WorldServer;
  */
 public class MovementEventController extends WorldServerBaseEventController {
 
-    /**
-     * @param accountServer
-     * @param eventType
-     */
     public MovementEventController(WorldServer worldServer) {
         super(worldServer);
         // TODO Auto-generated constructor stub
@@ -37,7 +32,6 @@ public class MovementEventController extends WorldServerBaseEventController {
             ServerPlayerData spd = (ServerPlayerData) me.getPlayer();
             spd.getMovementInformation().setHeading(me.getMoveData().getHeading());
             spd.getMovementInformation().setLocation(me.getMoveData().getLocation());
-            Map m = getWorldServer().getAllPlayers();
             ArrayList<Integer> receivers = (ArrayList<Integer>) getWorldServer().getSessionIDOfAllPlayers().clone();
             if (receivers.size() > 1) {
                 receivers.remove(me.getPlayer().getSessionId());

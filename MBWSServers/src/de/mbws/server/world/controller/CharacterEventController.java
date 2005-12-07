@@ -3,7 +3,6 @@ package de.mbws.server.world.controller;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.beanutils.BeanUtils;
 
@@ -35,9 +34,7 @@ import de.mbws.server.world.WorldServer;
  */
 public class CharacterEventController extends WorldServerBaseEventController {
 
-    /**
-     * @param accountServer
-     */
+
     public CharacterEventController(WorldServer worldServer) {
         super(worldServer);
         // TODO Auto-generated constructor stub
@@ -98,7 +95,6 @@ public class CharacterEventController extends WorldServerBaseEventController {
             }
 
             Map players = getWorldServer().getAllPlayers();
-            Set keys = players.keySet();
             for (Iterator iter = receivers.iterator(); iter.hasNext();) {
                 Integer element = (Integer) iter.next();
                 if (!element.equals(ce.getPlayer().getSessionId())) {
