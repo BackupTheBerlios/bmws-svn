@@ -38,6 +38,7 @@ public class CharacterController {
 	private Logger logger = Logger.getLogger(CharacterController.class);
 
 	private static CharacterController instance;
+	private static String currentCharacterID;
 
 	/**
 	 * 
@@ -85,7 +86,7 @@ public class CharacterController {
 					.info("retrieved all existing characters, going into selectionstate");
 			((MainMenuState) GameStateManager.getInstance().getChild("menu"))
 					.getInput().setStartNextState(true);
-		} else if (event.getEventType() == EventTypes.S2C_CHARACTER_START_PLAYING) {
+		} else if (event.getEventType() == EventTypes.S2C_CHARACTER_ENTERS_WORLD){ //) {
 			logger.info("Start gameplay!");
 			Player player = new Player(event.getCharacterDetails().getDescription().getCharacterID());
 			Characterdata characterData = new Characterdata();
@@ -152,10 +153,22 @@ public class CharacterController {
 		CharacterSelection cs = new CharacterSelection();
 		cs.setCharacterID(characterID);
 		CharacterEvent event = new CharacterEvent(cs);
-		event.setEventType(EventTypes.S2C_CHARACTER_ENTERS_WORLD);
+		event.setEventType(EventTypes.C2S_CHARACTER_START_PLAYING_REQUEST);
+		currentCharacterID = characterID;
 
 		return event;
 	}
+	
+	public AbstractGameEvent createEnterWorldServerEvent() {
+		CharacterSelection cs = new CharacterSelection();
+		cs.setCharacterID(currentCharacterID);
+		CharacterEvent event = new CharacterEvent(cs);
+		event.setEventType(EventTypes.C2S_CHARACTER_ENTERS_WORLD_REQUEST);
+		
+
+		return event;
+	}
+	
 	public AbstractGameEvent createDeleteCharacterEvent(String characterID) {
 		CharacterSelection cs = new CharacterSelection();
 		cs.setCharacterID(characterID);

@@ -85,6 +85,9 @@ public class LoginController {
 			try {
 				ClientNetworkController.getInstance().connect(data.getHost(),
 						data.getPort());
+				ClientNetworkController.getInstance().handleOutgoingEvent(
+						CharacterController.getInstance()
+								.createEnterWorldServerEvent());
 			} catch (InitializationException e) {
 				System.out.println("connection to ws failed");
 				e.printStackTrace();
