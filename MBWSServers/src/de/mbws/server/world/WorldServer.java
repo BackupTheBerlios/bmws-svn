@@ -24,7 +24,6 @@ import de.mbws.server.ServerConfig;
 import de.mbws.server.configuration.EventController;
 import de.mbws.server.controller.AbstractEventController;
 import de.mbws.server.data.ServerCommunicationData;
-import de.mbws.server.data.ServerPlayerData;
 import de.mbws.server.management.MBeanHelper;
 import de.mbws.server.management.statistic.Statatistic;
 
@@ -107,7 +106,7 @@ public class WorldServer extends AbstractTcpServer {
         ArrayList<Integer> allPlayer = new ArrayList<Integer>();
         for (Iterator iter = keys.iterator(); iter.hasNext();) {
             Integer key = (Integer) iter.next();
-            ServerPlayerData element = (ServerPlayerData) m.get(key);
+            AbstractPlayerData element = (AbstractPlayerData) m.get(key);
             allPlayer.add(element.getSessionId());
         }
         return allPlayer;
@@ -134,7 +133,7 @@ public class WorldServer extends AbstractTcpServer {
         Integer sessionId = null;
         for (Iterator iter = sessiosnIdKeys.iterator(); iter.hasNext();) {
             Integer element = (Integer) iter.next();
-            ServerPlayerData spd = (ServerPlayerData) players.get(element);
+            AbstractPlayerData spd = (AbstractPlayerData) players.get(element);
             if (channel.equals(spd.getChannel())) {
                 sessionId = element;
                 break;

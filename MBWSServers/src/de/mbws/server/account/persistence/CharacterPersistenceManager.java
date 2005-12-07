@@ -43,7 +43,29 @@ public class CharacterPersistenceManager extends BasePersistenceManager {
 
         return cdata;
     }
+    public Characterdata getCharacterByID(long charId) {
+        org.hibernate.Session session = null;
+        Characterdata cdata = null;
+        try {
+            session = getSessionFactory().openSession();
+            cdata = (Characterdata) session.createQuery("from Characterdata as cd where cd.id = ?")
+                    .setLong(0, charId).uniqueResult();
 
+        } catch (Exception e) {
+            logger.error("Error during Character retrieving", e);
+        } finally {
+            try {
+                if (session != null) {
+                    session.close();
+                }
+            } catch (Exception e) {
+                logger.error("Error during session closing", e);
+            }
+        }
+
+        return cdata;
+    }
+    
     public List getAllCharacters(String userName) {
         org.hibernate.Session session = null;
         try {

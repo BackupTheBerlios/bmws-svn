@@ -59,7 +59,7 @@ public class CharacterEventController extends WorldServerBaseEventController {
             getWorldServer().addPlayer(cwsi.getSessionId(),spd);
         } else if (event.getEventType() == EventTypes.C2S_CHARACTER_ENTERS_WORLD_REQUEST) {
             CharacterSelection csel = (CharacterSelection) event.getEventData();
-            Characterdata cdata = CharacterPersistenceManager.getInstance().getCharacter(ce.getPlayer().getAccount().getUsername(),
+            Characterdata cdata = CharacterPersistenceManager.getInstance().getCharacterByID(
                     IdHelper.removePrefix(csel.getCharacterID()));            
             CharacterStatus cs = cdata.getCharacterStatus();
             CharacterDetails charDetails = new CharacterDetails();
