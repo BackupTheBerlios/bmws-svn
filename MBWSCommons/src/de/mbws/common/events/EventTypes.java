@@ -15,8 +15,8 @@ public class EventTypes {
     public static final int S2C_LOGIN_FAILED = 3;
     public static final int S2C_LOGIN_OK = 4;
     public static final int S2C_LOGOUT_OK = 5;
-    public static final int LOGIN_S2S = 6;
-    public static final int LOGIN_S2S_OK = 7;
+    public static final int S2S_LOGIN = 6;
+    public static final int S2S_LOGIN_OK = 7;
 
     // Numbers 10 to 20 are reserved for Account related Events
     public static final int GROUPID_EVENT_ACCOUNT = 1;
@@ -35,7 +35,7 @@ public class EventTypes {
     public static final int C2S_CHARACTER_CREATE_REQUEST = 28;
     public static final int C2S_CHARACTER_ENTERS_WORLD_REQUEST = 29;
     public static final int S2C_CHARACTER_ENTERS_WORLD = 30;
-    public static final int CHARACTER_NEW_CHARACTER_ENTERS_WORLD_S2S = 31;
+    public static final int S2S_CHARACTER_NEW_CHARACTER_ENTERS_WORLD = 31;
     
     public static final int GROUPID_EVENT_REDIRECT = 4;
     public static final int S2C_REDIRECT_TO_WORLDSERVER = 41;

@@ -49,7 +49,7 @@ public class GameEventFactory {
             event = new CharacterEvent(payload, new CharacterSelection());
         } else if (eventKey == EventTypes.S2C_CHARACTER_ENTERS_WORLD) {
             event = new CharacterEvent(payload, new CharacterSelection());
-        } else if (eventKey == EventTypes.CHARACTER_NEW_CHARACTER_ENTERS_WORLD_S2S) {
+        } else if (eventKey == EventTypes.S2S_CHARACTER_NEW_CHARACTER_ENTERS_WORLD) {
             event = new CharacterEvent(payload, new CharacterWorldServerInformation());
         } else if (eventKey == EventTypes.S2C_CHARACTER_LIST_RECEIVE) {
             event = new CharacterEvent(payload, new CharactersOfPlayer());
@@ -68,9 +68,9 @@ public class GameEventFactory {
         } else if (eventKey == EventTypes.S2C_REDIRECT_TO_WORLDSERVER) {
             event = new ServerRedirectEvent(payload);
             //down here just S2S Events; maybe we should move em to a own Factory
-        } else if (eventKey == EventTypes.C2S_LOGIN || eventKey == EventTypes.LOGIN_S2S) {
+        } else if (eventKey == EventTypes.C2S_LOGIN || eventKey == EventTypes.S2S_LOGIN) {
             event = new LoginEvent(payload, new ServerLoginData());
-        } else if (eventKey == EventTypes.S2C_LOGIN_OK || eventKey == EventTypes.LOGIN_S2S_OK) {
+        } else if (eventKey == EventTypes.S2C_LOGIN_OK || eventKey == EventTypes.S2S_LOGIN_OK) {
             event = new LoginEvent(payload);
         }
 
