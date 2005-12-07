@@ -80,22 +80,7 @@ public class AccountServer extends AbstractTcpServer {
         }
         return allPlayer;
     }
-    
-    public void addPlayer(Integer sessionId, AbstractPlayerData p) {
-        clients.put(sessionId, p);
-    }
-
-    public void removePlayer(AbstractPlayerData p) {
-        removePlayer(p.getSessionId());
-    }
-    
-    public void removePlayer(Integer sessionId) {
-        clients.remove(sessionId);
-        if (logger.isDebugEnabled()) {
-            logger.debug("Session removed id=" + sessionId);
-        }
-    }
-    
+     
     /**
      * Return the next available sessionId
      */

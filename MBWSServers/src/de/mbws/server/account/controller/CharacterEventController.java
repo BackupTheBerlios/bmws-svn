@@ -64,7 +64,7 @@ public class CharacterEventController extends AccountServerBaseEventController {
             cwsi.setCharacter(csel);
             cwsi.setSessionId(event.getPlayer().getSessionId());
             CharacterEvent result = new CharacterEvent(cwsi);
-            result.setEventType(EventTypes.CHARACTER_NEW_CHARACTER_ENTERS_WORLD_S2S);
+            result.setEventType(EventTypes.S2S_CHARACTER_NEW_CHARACTER_ENTERS_WORLD);
             result.setPlayer(getAccountServer().getPlayerBySessionId(getAccountServer().getWorldServerSessionId()));
             sendEvent(result);
 

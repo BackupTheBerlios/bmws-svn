@@ -58,7 +58,7 @@ public class LoginEventController extends AccountServerBaseEventController {
 			lr.setEventType(EventTypes.S2C_LOGOUT_OK);
 			sendEvent(lr);
             getAccountServer().removePlayer(event.getPlayer());
-		} else if (event.getEventType() == EventTypes.LOGIN_S2S) {
+		} else if (event.getEventType() == EventTypes.S2S_LOGIN) {
             ServerCommunicationData scd = new ServerCommunicationData();
             ServerLoginData sld = (ServerLoginData) event.getEventData();
             scd.setHostInfo(sld.getHostData());
@@ -74,7 +74,7 @@ public class LoginEventController extends AccountServerBaseEventController {
             getAccountServer().setWorldServerSessionId(sessionId);
             LoginEvent lr = new LoginEvent();
             lr.setPlayer(scd);
-            lr.setEventType(EventTypes.LOGIN_S2S_OK);
+            lr.setEventType(EventTypes.S2S_LOGIN_OK);
             sendEvent(lr);
         }
 	}

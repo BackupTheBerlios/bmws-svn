@@ -152,6 +152,10 @@ public class RequestDispatcher extends Thread {
                                         if (player.getChannel() == null) {
                                             player.setChannel(channel);
                                         }
+                                        if (player.getSessionId() == null || player.getSessionId() == 0) {
+                                            player.setSessionId(attachment.sessionId);
+                                        }
+                                        
                                     }
                                 }
                                 AbstractGameEvent event = GameEventFactory.getGameEvent(attachment.getPayload(), player);

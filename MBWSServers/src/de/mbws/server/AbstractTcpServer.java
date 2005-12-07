@@ -34,7 +34,7 @@ public abstract class AbstractTcpServer extends Thread {
     protected Selector selector;
     protected HashMap<Integer, AbstractEventController> eventReader = new HashMap<Integer, AbstractEventController>();
     private EventQueue outgoingEventQueue = new EventQueue("GameEvents-out");
-    protected HashMap<Integer, AbstractPlayerData> clients = new HashMap<Integer, AbstractPlayerData>();
+    private HashMap<Integer, AbstractPlayerData> clients = new HashMap<Integer, AbstractPlayerData>();
     private EventQueue incomingEventQueue = new EventQueue("GameEvents-in");
     private EventDispatcher eventController = null;
     private EventWriter eventWriter = null;
@@ -116,6 +116,21 @@ public abstract class AbstractTcpServer extends Thread {
         return clients;
     }
     
+    public void addPlayer(Integer sessionId, AbstractPlayerData p) {
+        clients.put(sessionId, p);
+    }
+
+    public void removePlayer(AbstractPlayerData p) {
+        removePlayer(p.getSessionId());
+    }
+    
+    public void removePlayer(Integer sessionId) {
+        clients.remove(sessionId);
+        if (getLogger().isDebugEnabled()) {
+            getLogger().debug("Session removed id=" + sessionId);
+        }
+    }
+
     protected abstract Logger getLogger();
     /**
      * fetches the Player for a given sessionId

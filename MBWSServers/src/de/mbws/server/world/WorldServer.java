@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.net.InetSocketAddress;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -24,13 +25,17 @@ import de.mbws.server.ServerConfig;
 import de.mbws.server.configuration.EventController;
 import de.mbws.server.controller.AbstractEventController;
 import de.mbws.server.data.ServerCommunicationData;
+import de.mbws.server.data.ServerPlayerData;
 import de.mbws.server.management.MBeanHelper;
 import de.mbws.server.management.statistic.Statatistic;
 
 public class WorldServer extends AbstractTcpServer {
 
     private static Logger logger = Logger.getLogger(WorldServer.class);
+
     SocketChannel accountServerChannel;
+
+    protected HashMap<Integer, AbstractPlayerData> servers = new HashMap<Integer, AbstractPlayerData>();
 
     /**
      * @param config
@@ -39,7 +44,7 @@ public class WorldServer extends AbstractTcpServer {
         super(config);
         try {
             MBeanServer mbs = MBeanHelper.getMBeanServer();
-            ObjectName name = new ObjectName(this.getClass().getCanonicalName()+ ":type=Statistics");
+            ObjectName name = new ObjectName(this.getClass().getCanonicalName() + ":type=Statistics");
             Statatistic smb = new Statatistic(this);
             mbs.registerMBean(smb, name);
         } catch (Exception e) {
@@ -49,16 +54,16 @@ public class WorldServer extends AbstractTcpServer {
     }
 
     public void connect() throws InitializationException {
-        try {          
+        try {
             if (accountServerChannel == null || !accountServerChannel.isConnected()) {
-                accountServerChannel = SocketChannel.open(new InetSocketAddress(config.getAccountServerIp(),
-                        config.getAccountServerPort()));
+                accountServerChannel = SocketChannel.open(new InetSocketAddress(config.getAccountServerIp(), config.getAccountServerPort()));
                 accountServerChannel.configureBlocking(false);
                 accountServerChannel.socket().setTcpNoDelay(true);
                 sleep(50);
                 dispatcher.addNewClient(accountServerChannel);
-                //accountServerChannel.register(selector, SelectionKey.OP_READ, new Attachment());
-                
+                // accountServerChannel.register(selector, SelectionKey.OP_READ,
+                // new Attachment());
+
                 ServerCommunicationData scd = new ServerCommunicationData();
                 scd.setChannel(accountServerChannel);
                 scd.setSessionId(0);
@@ -71,21 +76,20 @@ public class WorldServer extends AbstractTcpServer {
                 sld.setHostData(srd);
                 LoginEvent lv = new LoginEvent(sld);
                 lv.setPlayer(scd);
-                lv.setEventType(EventTypes.LOGIN_S2S);
+                lv.setEventType(EventTypes.S2S_LOGIN);
                 handleOutgoingEvent(lv);
             }
         } catch (Exception e) {
             logger.error("Error during server connection", e);
-            throw new InitializationException(
-                    "Error during server connection. see log file for more information");
+            throw new InitializationException("Error during server connection. see log file for more information");
         }
-    }    
-    
+    }
+
     protected void registerEventController() {
         EventController[] ecs = config.getEventControllers().getEventController();
         Object arglist[] = new Object[1];
         arglist[0] = this;
-        try {            
+        try {
             for (int i = 0; i < ecs.length; i++) {
                 Class cls = Class.forName(ecs[i].getClazz());
                 Class partypes[] = new Class[1];
@@ -99,32 +103,17 @@ public class WorldServer extends AbstractTcpServer {
             System.exit(1);
         }
     }
-    
+
     public ArrayList<Integer> getSessionIDOfAllPlayers() {
         Map m = getAllPlayers();
         Set keys = m.keySet();
         ArrayList<Integer> allPlayer = new ArrayList<Integer>();
         for (Iterator iter = keys.iterator(); iter.hasNext();) {
             Integer key = (Integer) iter.next();
-            AbstractPlayerData element = (AbstractPlayerData) m.get(key);
+            ServerPlayerData element = (ServerPlayerData) m.get(key);
             allPlayer.add(element.getSessionId());
         }
         return allPlayer;
-    }
-    
-    public void addPlayer(Integer sessionId, AbstractPlayerData p) {
-        clients.put(sessionId, p);
-    }
-
-    public void removePlayer(AbstractPlayerData p) {
-        removePlayer(p.getSessionId());
-    }
-    
-    public void removePlayer(Integer sessionId) {
-        clients.remove(sessionId);
-        if (logger.isDebugEnabled()) {
-            logger.debug("Session removed id=" + sessionId);
-        }
     }
 
     public void handleClientConnectionLost(SocketChannel channel) {
@@ -144,8 +133,26 @@ public class WorldServer extends AbstractTcpServer {
         }
     }
 
+    public void addServer(Integer sessionId, ServerCommunicationData scd) {
+        servers.put(sessionId, scd);
+    }
+
     @Override
     protected Logger getLogger() {
         return logger;
+    }
+
+    public AbstractPlayerData getServerBySessionId(Integer id) {
+        return servers.get(id);
+    }
+
+    public AbstractPlayerData getPlayerBySessionId(Integer id) {
+        AbstractPlayerData apd = super.getPlayerBySessionId(id);
+        if (apd == null) {
+            apd = getServerBySessionId(id);
+        }
+        
+        
+        return apd;
     }
 }

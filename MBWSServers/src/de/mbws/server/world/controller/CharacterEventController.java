@@ -52,7 +52,7 @@ public class CharacterEventController extends WorldServerBaseEventController {
     public void handleEvent(AbstractGameEvent event) {
         CharacterEvent ce = (CharacterEvent) event;
         
-        if (event.getEventType() == EventTypes.CHARACTER_NEW_CHARACTER_ENTERS_WORLD_S2S) {
+        if (event.getEventType() == EventTypes.S2S_CHARACTER_NEW_CHARACTER_ENTERS_WORLD) {
             CharacterWorldServerInformation cwsi = (CharacterWorldServerInformation) event.getEventData();
             ServerPlayerData spd = new ServerPlayerData();
             spd.setActiveCharacter(IdHelper.removePrefix(cwsi.getCharacter().getCharacterID()));

@@ -10,20 +10,16 @@ import de.mbws.server.world.WorldServer;
 public class LoginEventController extends WorldServerBaseEventController {
 	private static Logger logger = Logger.getLogger(LoginEventController.class);
 
-	/**
-	 * @param accountServer
-	 * @param eventType
-	 */
 	public LoginEventController(WorldServer worldServer) {
 		super(worldServer);
 	}
 
 	public void handleEvent(AbstractGameEvent event) {
 
-        if (EventTypes.LOGIN_S2S_OK == event.getEventType()) {
+        if (EventTypes.S2S_LOGIN_OK == event.getEventType()) {
             if (event.getPlayer() instanceof ServerCommunicationData) {
                 Integer session = event.getPlayer().getSessionId();
-                getWorldServer().addPlayer(session, event.getPlayer());
+                getWorldServer().addServer(session, (ServerCommunicationData) event.getPlayer());
             }
             logger.debug(event);
         }
