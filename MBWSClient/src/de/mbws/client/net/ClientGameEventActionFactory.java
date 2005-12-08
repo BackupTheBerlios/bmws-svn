@@ -92,7 +92,7 @@ public class ClientGameEventActionFactory {
 		} else if (eventKey == EventTypes.S2C_CHARACTER_LIST_RECEIVE
 				|| eventKey == EventTypes.C2S_CHARACTER_LIST_RECEIVE_REQUEST) {
 			event = new CharacterEvent(payload, new CharactersOfPlayer());
-		} else if (eventKey == EventTypes.S2C_CHARACTER_START_PLAYING) {
+		} else if (eventKey == EventTypes.S2C_CHARACTER_ENTERS_WORLD) {
 			event = new CharacterEvent(payload);		
 		} else if (eventKey == (EventTypes.S2C_REDIRECT_TO_WORLDSERVER)){
 			event = new ServerRedirectEvent(payload);
