@@ -41,7 +41,6 @@ import de.mbws.client.MBWSClient;
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.data.ObjectManager;
 import de.mbws.client.eventactions.AbstractEventAction;
-import de.mbws.client.experimental.Terrainloader;
 import de.mbws.client.net.ActionQueue;
 import de.mbws.client.state.handler.TestGameHandler;
 
@@ -117,7 +116,7 @@ public class TestGameState extends StandardGameState {
 		TerrainBlock tb = new TerrainBlock("block", 256, new Vector3f(1, 1, 1),
 				rhm.getHeightMap(), new Vector3f(0, 0, 0), false);
 
-		URL grass = Terrainloader.class.getClassLoader().getResource(
+		URL grass = TestGameState.class.getClassLoader().getResource(
 				"resources/textures/grassb.png");
 		 ProceduralTextureGenerator pg=new ProceduralTextureGenerator(rhm);
 		 pg.addTexture(new ImageIcon(grass),0,0,1);
@@ -181,7 +180,7 @@ public class TestGameState extends StandardGameState {
 		try {
 			MaxToJme C1 = new MaxToJme();
 			ByteArrayOutputStream BO = new ByteArrayOutputStream();
-			URL maxFile = Terrainloader.class.getClassLoader().getResource(
+			URL maxFile = TestGameState.class.getClassLoader().getResource(
 					"resources/models/crypt3.3ds");
 			C1.convert(new BufferedInputStream(maxFile.openStream()), BO);
 			JmeBinaryReader jbr = new JmeBinaryReader();
@@ -204,7 +203,7 @@ public class TestGameState extends StandardGameState {
 		try {
 			MaxToJme C1 = new MaxToJme();
 			ByteArrayOutputStream BO = new ByteArrayOutputStream();
-			URL maxFile = Terrainloader.class.getClassLoader().getResource(
+			URL maxFile = TestGameState.class.getClassLoader().getResource(
 					"resources/models/dec_autumn01.3ds");
 			C1.convert(new BufferedInputStream(maxFile.openStream()), BO);
 			JmeBinaryReader jbr = new JmeBinaryReader();
