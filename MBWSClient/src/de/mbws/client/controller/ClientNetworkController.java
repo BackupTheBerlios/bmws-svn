@@ -142,7 +142,7 @@ public class ClientNetworkController extends Thread {
 				logger.info("Event +" + event.getEventType() + " dequeued at: "
 						+ System.currentTimeMillis());
 				if (event instanceof LoginEvent) {
-					LoginController.getInstance().handleEvent(
+					AccountController.getInstance().handleLoginEvent(
 							(LoginEvent) event);
 				} else if (event instanceof AccountEvent) {
 					AccountController.getInstance().handleEvent(
@@ -152,7 +152,7 @@ public class ClientNetworkController extends Thread {
 					CharacterController.getInstance().handleEvent(e);
 				} else if (event instanceof ServerRedirectEvent) {
 					ServerRedirectEvent e = (ServerRedirectEvent) event;
-					LoginController.getInstance().handleEvent(e);
+					AccountController.getInstance().handleServerRedirectionEvent(e);
 				}
 			} catch (InterruptedException ie) {
 				logger.info("InterruptedException in readin in-queue", ie);

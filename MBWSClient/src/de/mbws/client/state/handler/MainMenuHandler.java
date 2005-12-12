@@ -19,8 +19,8 @@ import com.jme.util.LoggingSystem;
 import com.jmex.bui.event.ComponentListener;
 
 import de.mbws.client.MBWSClient;
+import de.mbws.client.controller.AccountController;
 import de.mbws.client.controller.ClientNetworkController;
-import de.mbws.client.controller.LoginController;
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.state.CharacterSelectionState;
 import de.mbws.common.eventdata.generated.AccountData;
@@ -65,7 +65,7 @@ public class MainMenuHandler extends InputHandler implements ComponentListener {
 		AccountData accountData = new AccountData();
 		accountData.setUserName(login);
 		accountData.setPassword(pass);
-		AbstractGameEvent event = LoginController.getInstance()
+		AbstractGameEvent event = AccountController.getInstance()
 				.createLoginEvent(accountData, ClientPlayerData.getInstance());
 		try {
 			ClientNetworkController.getInstance().connect("62.75.214.103",5000);
