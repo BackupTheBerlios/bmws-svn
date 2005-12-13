@@ -55,15 +55,15 @@ INSERT INTO character_visualappearance VALUES("3","3","0","0","0","0","0","0","0
 
 
 #
-# Dumping data for table 'item'
-#
-
-
-#
 # Dumping data for table 'item_type'
 #
+INSERT INTO item_type values("1","sword","0","0");
 
 
+#
+# Dumping data for table 'item'
+#
+INSERT INTO item values("1","1","Runesword","100","3","1","My Runesword is the best","/models/weapons/rune_sword.3ds","/icons/weapons/rune_sword.png");
 #
 # Dumping data for table 'map'
 #
@@ -150,7 +150,7 @@ insert into language_text_mapping (id,text_key,languages_id,text) values (13,'cr
 insert into language_text_mapping (id,text_key,languages_id,text) values (14,'create_account',2,'Create Account');
 insert into language_text_mapping (id,text_key,languages_id,text) values (15,'cancel',1,'Abbrechen');
 insert into language_text_mapping (id,text_key,languages_id,text) values (16,'cancel',2,'Cancel');
-insert into language_text_mapping (id,text_key,languages_id,text) values (17,'delete',1,'Löschen');
+insert into language_text_mapping (id,text_key,languages_id,text) values (17,'delete',1,'Lschen');
 insert into language_text_mapping (id,text_key,languages_id,text) values (18,'delete',2,'Delete');
 insert into language_text_mapping (id,text_key,languages_id,text) values (19,'create',1,'Anlegen');
 insert into language_text_mapping (id,text_key,languages_id,text) values (20,'create',2,'Create');

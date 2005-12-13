@@ -94,11 +94,7 @@ CREATE TABLE npc (
   constitution INTEGER UNSIGNED NOT NULL,
   isspecial BOOL NOT NULL,
   PRIMARY KEY(id),
-  INDEX npc_FKIndex1(race_id),
-  FOREIGN KEY(race_id)
-    REFERENCES race(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
+  INDEX npc_FKIndex1(race_id)
 )
 TYPE=InnoDB;
 
@@ -118,11 +114,7 @@ CREATE TABLE skill (
   use_duration INTEGER UNSIGNED NOT NULL,
   use_time INTEGER UNSIGNED NOT NULL,
   PRIMARY KEY(id),
-  INDEX skill_FKIndex1(skill_group_id),
-  FOREIGN KEY(skill_group_id)
-    REFERENCES skill_group(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
+  INDEX skill_FKIndex1(skill_group_id)
 )
 TYPE=InnoDB;
 
@@ -132,11 +124,7 @@ CREATE TABLE language_text_mapping (
   languages_id INTEGER UNSIGNED NOT NULL,
   text VARCHAR(255) NOT NULL,
   PRIMARY KEY(id),
-  UNIQUE INDEX language_text_mapping_index1659(languages_id, text_key),
-  FOREIGN KEY(languages_id)
-    REFERENCES languages(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
+  UNIQUE INDEX language_text_mapping_index1659(languages_id, text_key)
 )
 TYPE=InnoDB;
 
@@ -148,12 +136,10 @@ CREATE TABLE item (
   weight DECIMAL NOT NULL,
   size DECIMAL NOT NULL,
   description TEXT NOT NULL,
+  model_name TEXT NULL,
+  icon_name TEXT NULL,
   PRIMARY KEY(id),
-  INDEX Item_FKIndex1(item_type_id),
-  FOREIGN KEY(item_type_id)
-    REFERENCES item_type(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
+  INDEX Item_FKIndex1(item_type_id)
 )
 TYPE=InnoDB;
 
@@ -163,15 +149,7 @@ CREATE TABLE skill_race_mapping (
   hasonstartup BOOL NOT NULL,
   PRIMARY KEY(race_id, skill_id),
   INDEX skill_race_mapping_FKIndex1(skill_id),
-  INDEX skill_race_mapping_FKIndex2(race_id),
-  FOREIGN KEY(skill_id)
-    REFERENCES skill(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION,
-  FOREIGN KEY(race_id)
-    REFERENCES race(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
+  INDEX skill_race_mapping_FKIndex2(race_id)
 )
 TYPE=InnoDB;
 
@@ -181,15 +159,7 @@ CREATE TABLE zoneserver_map_mapping (
   active BOOL NOT NULL,
   PRIMARY KEY(map_id, zoneserver_id),
   INDEX ZoneServer_Map_Mapping_FKIndex1(zoneserver_id),
-  INDEX ZoneServer_Map_Mapping_FKIndex2(map_id),
-  FOREIGN KEY(zoneserver_id)
-    REFERENCES zoneserver(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION,
-  FOREIGN KEY(map_id)
-    REFERENCES map(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
+  INDEX ZoneServer_Map_Mapping_FKIndex2(map_id)
 )
 TYPE=InnoDB;
 
@@ -209,15 +179,7 @@ CREATE TABLE characterdata (
   constitution INTEGER UNSIGNED NOT NULL,
   PRIMARY KEY(id),
   INDEX Character_FKIndex1(account_username),
-  INDEX Character_FKIndex2(race_id),
-  FOREIGN KEY(account_username)
-    REFERENCES account(username)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION,
-  FOREIGN KEY(race_id)
-    REFERENCES race(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
+  INDEX Character_FKIndex2(race_id)
 )
 TYPE=InnoDB;
 
@@ -232,15 +194,7 @@ CREATE TABLE worldobject (
   coordinate_z INTEGER UNSIGNED NOT NULL,
   PRIMARY KEY(id),
   INDEX worldobject_FKIndex1(worldobject_type_id),
-  INDEX worldobject_FKIndex2(map_id),
-  FOREIGN KEY(worldobject_type_id)
-    REFERENCES worldobject_type(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION,
-  FOREIGN KEY(map_id)
-    REFERENCES map(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
+  INDEX worldobject_FKIndex2(map_id)
 )
 TYPE=InnoDB;
 
@@ -250,15 +204,7 @@ CREATE TABLE npc_skill_mapping (
   value INTEGER UNSIGNED NOT NULL,
   PRIMARY KEY(npc_id, skill_id),
   INDEX npc_skill_mapping_FKIndex1(skill_id),
-  INDEX npc_skill_mapping_FKIndex2(npc_id),
-  FOREIGN KEY(skill_id)
-    REFERENCES skill(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION,
-  FOREIGN KEY(npc_id)
-    REFERENCES npc(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
+  INDEX npc_skill_mapping_FKIndex2(npc_id)
 )
 TYPE=InnoDB;
 
@@ -281,15 +227,7 @@ CREATE TABLE character_status (
   freexp INTEGER UNSIGNED NOT NULL,
   PRIMARY KEY(id),
   INDEX Character_Status_FKIndex1(map_id),
-  UNIQUE INDEX character_status_FKIndex2(id),
-  FOREIGN KEY(map_id)
-    REFERENCES map(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION,
-  FOREIGN KEY(id)
-    REFERENCES characterdata(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
+  UNIQUE INDEX character_status_FKIndex2(id)
 )
 TYPE=InnoDB;
 
@@ -298,15 +236,7 @@ CREATE TABLE character_worldobject_mapping (
   characterdata_id BIGINT UNSIGNED NOT NULL,
   PRIMARY KEY(worldobject_id, characterdata_id),
   INDEX character_worldobject_mapping_FKIndex1(worldobject_id),
-  INDEX character_worldobject_mapping_FKIndex2(characterdata_id),
-  FOREIGN KEY(worldobject_id)
-    REFERENCES worldobject(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION,
-  FOREIGN KEY(characterdata_id)
-    REFERENCES characterdata(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
+  INDEX character_worldobject_mapping_FKIndex2(characterdata_id)
 )
 TYPE=InnoDB;
 
@@ -317,15 +247,7 @@ CREATE TABLE character_skill_mapping (
   basevalue INTEGER UNSIGNED NOT NULL,
   PRIMARY KEY(characterdata_id, skill_id),
   INDEX character_skill_mapping_FKIndex1(characterdata_id),
-  INDEX character_skill_mapping_FKIndex2(skill_id),
-  FOREIGN KEY(characterdata_id)
-    REFERENCES characterdata(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION,
-  FOREIGN KEY(skill_id)
-    REFERENCES skill(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
+  INDEX character_skill_mapping_FKIndex2(skill_id)
 )
 TYPE=InnoDB;
 
@@ -334,15 +256,7 @@ CREATE TABLE npc_worldobject_mapping (
   npc_id BIGINT NOT NULL,
   PRIMARY KEY(worldobject_id, npc_id),
   INDEX npc_worldobject_mapping_FKIndex1(npc_id),
-  INDEX npc_worldobject_mapping_FKIndex2(worldobject_id),
-  FOREIGN KEY(npc_id)
-    REFERENCES npc(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION,
-  FOREIGN KEY(worldobject_id)
-    REFERENCES worldobject(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
+  INDEX npc_worldobject_mapping_FKIndex2(worldobject_id)
 )
 TYPE=InnoDB;
 
@@ -362,15 +276,7 @@ CREATE TABLE npc_status (
   currentconstitution INTEGER UNSIGNED NULL,
   PRIMARY KEY(npc_id),
   INDEX npc_status_FKIndex1(npc_id),
-  INDEX npc_status_FKIndex2(map_id),
-  FOREIGN KEY(npc_id)
-    REFERENCES npc(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION,
-  FOREIGN KEY(map_id)
-    REFERENCES map(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
+  INDEX npc_status_FKIndex2(map_id)
 )
 TYPE=InnoDB;
 
@@ -394,11 +300,7 @@ CREATE TABLE character_visualappearance (
   item_cape INTEGER UNSIGNED NOT NULL,
   item_hand_left INTEGER UNSIGNED NOT NULL,
   item_hand_right INTEGER UNSIGNED NOT NULL,
-  PRIMARY KEY(id),
-  FOREIGN KEY(id)
-    REFERENCES characterdata(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
+  PRIMARY KEY(id)
 )
 TYPE=InnoDB;
 
@@ -411,15 +313,7 @@ CREATE TABLE character_item_mapping (
   deposit_item INTEGER UNSIGNED NOT NULL,
   PRIMARY KEY(id),
   INDEX character_item_mapping_FKIndex1(item_id),
-  INDEX character_item_mapping_FKIndex2(characterdata_id),
-  FOREIGN KEY(item_id)
-    REFERENCES item(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION,
-  FOREIGN KEY(characterdata_id)
-    REFERENCES characterdata(id)
-      ON DELETE NO ACTION
-      ON UPDATE NO ACTION
+  INDEX character_item_mapping_FKIndex2(characterdata_id)
 )
 TYPE=InnoDB;
 
