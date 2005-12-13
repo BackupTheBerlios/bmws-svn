@@ -26,6 +26,12 @@ public class Item implements Serializable {
     /** persistent field */
     private String description;
 
+    /** nullable persistent field */
+    private String modelName;
+
+    /** nullable persistent field */
+    private String iconName;
+
     /** persistent field */
     private de.mbws.common.data.generated.ItemType itemType;
 
@@ -33,6 +39,24 @@ public class Item implements Serializable {
     private Set characterItemMappings;
 
     /** full constructor */
+    public Item(Long id, String name, int maxCondition, long weight, long size, String description, String modelName, String iconName, de.mbws.common.data.generated.ItemType itemType, Set characterItemMappings) {
+        this.id = id;
+        this.name = name;
+        this.maxCondition = maxCondition;
+        this.weight = weight;
+        this.size = size;
+        this.description = description;
+        this.modelName = modelName;
+        this.iconName = iconName;
+        this.itemType = itemType;
+        this.characterItemMappings = characterItemMappings;
+    }
+
+    /** default constructor */
+    public Item() {
+    }
+
+    /** minimal constructor */
     public Item(Long id, String name, int maxCondition, long weight, long size, String description, de.mbws.common.data.generated.ItemType itemType, Set characterItemMappings) {
         this.id = id;
         this.name = name;
@@ -42,10 +66,6 @@ public class Item implements Serializable {
         this.description = description;
         this.itemType = itemType;
         this.characterItemMappings = characterItemMappings;
-    }
-
-    /** default constructor */
-    public Item() {
     }
 
     public Long getId() {
@@ -94,6 +114,22 @@ public class Item implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getModelName() {
+        return this.modelName;
+    }
+
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
+    }
+
+    public String getIconName() {
+        return this.iconName;
+    }
+
+    public void setIconName(String iconName) {
+        this.iconName = iconName;
     }
 
     public de.mbws.common.data.generated.ItemType getItemType() {
