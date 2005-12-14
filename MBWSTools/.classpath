@@ -34,5 +34,17 @@
 	<classpathentry kind="lib" path="/MBWSCommons/lib/xerces-2.4.0.jar"/>
 	<classpathentry kind="lib" path="/MBWSCommons/lib/xerces-2.6.2.jar"/>
 	<classpathentry kind="lib" path="/MBWSCommons/lib/xml-apis.jar"/>
+	<classpathentry kind="lib" path="/MBWSClient/lib/jinput.jar"/>
+	<classpathentry sourcepath="C:/Programmierung/projekte/jmecvs/src" kind="lib" path="/MBWSClient/lib/jme.jar"/>
+	<classpathentry sourcepath="C:/Programmierung/projekte/jmecvs/src" kind="lib" path="/MBWSClient/lib/jme-awt.jar"/>
+	<classpathentry sourcepath="C:/Programmierung/projekte/bui/src/java" kind="lib" path="/MBWSClient/lib/jme-bui.jar"/>
+	<classpathentry kind="lib" path="/MBWSClient/lib/jme-effects.jar"/>
+	<classpathentry kind="lib" path="/MBWSClient/lib/jme-model.jar"/>
+	<classpathentry sourcepath="C:/Programmierung/projekte/jmecvs/src" kind="lib" path="/MBWSClient/lib/jme-sound.jar"/>
+	<classpathentry sourcepath="C:/Programmierung/projekte/jmecvs/src" kind="lib" path="/MBWSClient/lib/jme-terrain.jar"/>
+	<classpathentry kind="lib" path="/MBWSClient/lib/jogg-0.0.5.jar"/>
+	<classpathentry kind="lib" path="/MBWSClient/lib/jorbis-0.0.12.jar"/>
+	<classpathentry kind="lib" path="/MBWSClient/lib/lwjgl_fmod3.jar"/>
+	<classpathentry kind="lib" path="/MBWSClient/lib/lwjgl.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
