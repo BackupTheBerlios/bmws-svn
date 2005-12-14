@@ -1,6 +1,7 @@
 package de.terrainer;
 
 import java.awt.BorderLayout;
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +19,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+
+import com.jmex.awt.SimpleCanvasImpl;
 
 import de.terrainer.generators.RandomMidpointDisplacement;
 
@@ -117,6 +120,10 @@ public class TerrainerGUI extends JFrame {
 		button.setIcon(icon);
 		button.setToolTipText(generator.getName());
 		return button;
+	}
+	
+	private SimpleCanvasImpl create3DCanvas() {
+		return new SimpleCanvasImpl(400,650);
 	}
 
 	protected void close() {

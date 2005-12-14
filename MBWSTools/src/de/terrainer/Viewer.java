@@ -29,16 +29,28 @@ public class Viewer extends SimpleGame {
 	protected void simpleInitGame() {
 		// First a hand made terrain
 		createTerrainFromMap();
-		//generatedHeightMap();
-		
+		// generatedHeightMap();
+
+	}
+
+	@Override
+	protected void initSystem() {
+		properties.set("FULLSCREEN", "false");
+		super.initSystem();
 	}
 
 	public void showViewer() {
 		setDialogBehaviour(SimpleGame.NEVER_SHOW_PROPS_DIALOG);
-		
 		start();
 	}
 
+	@Override
+	protected void quit() {
+		if (display!=null) {
+			display.close();
+		}
+	}
+	
 	private void createTerrainFromMap() {
 		// The map for our terrain. Each value is a height on the terrain
 		// Create a terrain block. Our integer height values will
@@ -50,8 +62,8 @@ public class Viewer extends SimpleGame {
 				2), map, new Vector3f(0, 0, 0), false);
 		// Add the texture
 		// This will be the texture for the terrain.
-		URL grass = ClassLoader.getSystemResource(
-				"jmetest/data/texture/grassb.png");
+		URL grass = ClassLoader
+				.getSystemResource("jmetest/data/texture/grassb.png");
 		TextureState ts = display.getRenderer().createTextureState();
 		ts.setTexture(TextureManager.loadTexture(grass, Texture.MM_LINEAR,
 				Texture.FM_LINEAR));
@@ -66,8 +78,8 @@ public class Viewer extends SimpleGame {
 
 	private void generatedHeightMap() {
 		// This will be the texture for the terrain.
-		URL grass = ClassLoader.getSystemResource(
-				"jmetest/data/texture/grassb.png");
+		URL grass = ClassLoader
+				.getSystemResource("jmetest/data/texture/grassb.png");
 		// Use the helper class to create a terrain for us. The
 		// terrain will be 64x64
 		MidPointHeightMap mph = new MidPointHeightMap(64, 1.5f);
@@ -90,15 +102,15 @@ public class Viewer extends SimpleGame {
 
 	private void complexTerrain() {
 		// This grayscale image will be our terrain
-		URL grayscale =ClassLoader.getSystemResource(
-				"jmetest/data/texture/bubble.jpg");
+		URL grayscale = ClassLoader
+				.getSystemResource("jmetest/data/texture/bubble.jpg");
 		// These will be the textures of our terrain.
-		URL waterImage = ClassLoader.getSystemResource(
-				"jmetest/data/texture/water.png");
-		URL dirtImage = ClassLoader.getSystemResource(
-				"jmetest/data/texture/dirt.jpg");
-		URL highest = ClassLoader.getSystemResource(
-				"jmetest/data/texture/highest.jpg");
+		URL waterImage = ClassLoader
+				.getSystemResource("jmetest/data/texture/water.png");
+		URL dirtImage = ClassLoader
+				.getSystemResource("jmetest/data/texture/dirt.jpg");
+		URL highest = ClassLoader
+				.getSystemResource("jmetest/data/texture/highest.jpg");
 		// Create an image height map based on the gray scale of our image.
 		ImageBasedHeightMap ib = new ImageBasedHeightMap(new ImageIcon(
 				grayscale).getImage());
