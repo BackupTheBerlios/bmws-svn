@@ -46,11 +46,11 @@ public class Viewer extends SimpleGame {
 
 	@Override
 	protected void quit() {
-		if (display!=null) {
+		if (display != null) {
 			display.close();
 		}
 	}
-	
+
 	private void createTerrainFromMap() {
 		// The map for our terrain. Each value is a height on the terrain
 		// Create a terrain block. Our integer height values will
@@ -58,16 +58,17 @@ public class Viewer extends SimpleGame {
 		// and 2x larger z. Our map's origin will be the regular
 		// origin, and it won't create an
 		// AreaClodMesh from it.
-		TerrainBlock tb = new TerrainBlock("block", length, new Vector3f(2, 1,
-				2), map, new Vector3f(0, 0, 0), false);
+		Vector3f terrainScale = new Vector3f(5, 1, 5);
+		TerrainBlock tb = new TerrainBlock("block", length, terrainScale, map,
+				new Vector3f(0, 0, 0), false);
 		// Add the texture
 		// This will be the texture for the terrain.
-		URL grass = ClassLoader
-				.getSystemResource("jmetest/data/texture/grassb.png");
-		TextureState ts = display.getRenderer().createTextureState();
-		ts.setTexture(TextureManager.loadTexture(grass, Texture.MM_LINEAR,
-				Texture.FM_LINEAR));
-		tb.setRenderState(ts);
+//		URL grass = ClassLoader
+//				.getSystemResource("jmetest/data/texture/grassb.png");
+//		TextureState ts = display.getRenderer().createTextureState();
+//		ts.setTexture(TextureManager.loadTexture(grass, Texture.MM_LINEAR,
+//				Texture.FM_LINEAR));
+//		tb.setRenderState(ts);
 
 		// Give the terrain a bounding box.
 		tb.setModelBound(new BoundingBox());

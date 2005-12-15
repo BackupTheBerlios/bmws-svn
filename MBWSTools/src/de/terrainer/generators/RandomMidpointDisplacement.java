@@ -24,7 +24,7 @@ public class RandomMidpointDisplacement extends AbstractGenerator {
 		}
 		
 		generate1(0, 0, heightMap.getWidth() - 1, 300, 1);
-		//average(3);
+		average(5);
 		heightMap.init();
 	}
 
@@ -73,6 +73,22 @@ public class RandomMidpointDisplacement extends AbstractGenerator {
 		heightMap.setHeight(pt,height);
 	}
 
+	private void average(int rad) {
+		// TODO better with FFT and gaussian shape
+		for (int x = 0; x < heightMap.getWidth(); x++) {
+			for (int y = 0; y < heightMap.getWidth(); y++) {
+				int count =0;
+				int val = 0;
+				for (int x1 =x-rad; x1<=x+rad; x1++) {
+					for (int y1 =y-rad; y1<=y+rad; y1++) {
+						count++;
+						val += heightMap.getHeightAt(x1,y1);						
+					}					
+				}
+				heightMap.setHeight(x,y,val/count);
+			}
+		}
+	}
 
 	public void setMask(int[][] mask) {
 		// TODO Auto-generated method stub

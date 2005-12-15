@@ -58,25 +58,7 @@ public class HeightMap {
 		}
 	}
 
-	private void average(int rad) {
-		// TODO better with FFT and gaussian shape
-		for (int x = 0; x < heightMap.length; x++) {
-			for (int y = 0; y < heightMap[0].length; y++) {
-				if (heightMap[x][y]>75)
-					continue;
-				int count =0;
-				int val = 0;
-				for (int x1 =x-rad; x1<=x+rad; x1++) {
-					for (int y1 =y-rad; y1<=y+rad; y1++) {
-						count++;
-						val += getHeightAt(x1,y1);						
-					}					
-				}
-				heightMap[x][y] = val/count;
-			}
-		}
 		
-	}
 
 	public int[] getLinearMap() {
 		int[] ret = new int[getWidth()*getWidth()];

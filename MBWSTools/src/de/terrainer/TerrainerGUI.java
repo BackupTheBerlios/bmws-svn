@@ -1,7 +1,6 @@
 package de.terrainer;
 
 import java.awt.BorderLayout;
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,7 +32,7 @@ public class TerrainerGUI extends JFrame {
 
 	TerrainerGUI() {
 		super("Terrainer");
-		currentHeightMap = new HeightMap(257, 257);
+		currentHeightMap = new HeightMap(129, 129);
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
