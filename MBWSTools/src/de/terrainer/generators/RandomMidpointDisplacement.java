@@ -4,17 +4,18 @@ import java.awt.Point;
 
 import de.terrainer.AbstractGenerator;
 import de.terrainer.HeightMap;
+import de.terrainer.MetaInfo;
 import de.terrainer.TerrainerGUI;
 
 public class RandomMidpointDisplacement extends AbstractGenerator {
-	private int steepfactor;
+	private int steepnes = 50;
+	private int radius = 3;
 	
 	public RandomMidpointDisplacement(HeightMap heightMap) {
 		super(heightMap);
 	}
 
 	public void generate() {
-		steepfactor = 50;
 		for (int x = 0; x < heightMap.getWidth(); x++) {
 			for (int y = 0; y < heightMap.getWidth(); y++) {
 				heightMap.setHeight(x, y, Integer.MIN_VALUE);
@@ -24,14 +25,14 @@ public class RandomMidpointDisplacement extends AbstractGenerator {
 		}
 		
 		generate1(0, 0, heightMap.getWidth() - 1, 300, 1);
-		average(5);
+		average();
 		heightMap.init();
 	}
 
 	public void generate1(int x, int y, int width, int steepness, int depth) {
 		if (width <= 1)
 			return;
-		steepness = width*steepfactor/100;
+		steepness = width*steepnes/100;
 //		steepness = steepfactor/(depth);
 //		if (depth>6)
 //			steepness = 1;
@@ -73,14 +74,14 @@ public class RandomMidpointDisplacement extends AbstractGenerator {
 		heightMap.setHeight(pt,height);
 	}
 
-	private void average(int rad) {
+	private void average() {
 		// TODO better with FFT and gaussian shape
 		for (int x = 0; x < heightMap.getWidth(); x++) {
 			for (int y = 0; y < heightMap.getWidth(); y++) {
 				int count =0;
 				int val = 0;
-				for (int x1 =x-rad; x1<=x+rad; x1++) {
-					for (int y1 =y-rad; y1<=y+rad; y1++) {
+				for (int x1 =x-radius; x1<=x+radius; x1++) {
+					for (int y1 =y-radius; y1<=y+radius; y1++) {
 						count++;
 						val += heightMap.getHeightAt(x1,y1);						
 					}					
@@ -95,13 +96,35 @@ public class RandomMidpointDisplacement extends AbstractGenerator {
 		
 	}
 
-	public GeneratorProperty[] getProperties() {
-		// TODO Auto-generated method stub
-		return null;
+	public MetaInfo[] getMetaInfo() {
+		MetaInfo[] mi = new MetaInfo[2];
+		mi[0] = new MetaInfo();
+		mi[0].displayName = "Steepness";
+		mi[0].codeName = "Steepness";
+		mi[1] = new MetaInfo();
+		mi[1].displayName = "Radius";
+		mi[1].codeName = "Radius";
+		return mi;
 	}
 
 	public String getName() {
 		return "RandomMidpointDisplacement";
+	}
+
+	public int getSteepness() {
+		return steepnes;
+	}
+
+	public void setSteepness(int steepness) {
+		this.steepnes = steepness;
+	}
+
+	public int getRadius() {
+		return radius;
+	}
+
+	public void setRadius(int radius) {
+		this.radius = radius;
 	}
 
 }

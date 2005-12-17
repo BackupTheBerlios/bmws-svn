@@ -8,6 +8,8 @@ import com.jme.app.SimpleGame;
 import com.jme.bounding.BoundingBox;
 import com.jme.image.Texture;
 import com.jme.math.Vector3f;
+import com.jme.renderer.ColorRGBA;
+import com.jme.scene.state.FogState;
 import com.jme.scene.state.TextureState;
 import com.jme.util.TextureManager;
 import com.jmex.terrain.TerrainBlock;
@@ -75,6 +77,15 @@ public class Viewer extends SimpleGame {
 		tb.updateModelBound();
 		// Attach the terrain TriMesh to our rootNode
 		rootNode.attachChild(tb);
+		
+		FogState fs = display.getRenderer().createFogState();
+		fs.setDensity(0.5f);
+		fs.setColor(new ColorRGBA(0.5f,0.5f,0.5f,0.5f));
+		fs.setEnd(60);
+		fs.setStart(40);
+		fs.setDensityFunction(FogState.DF_LINEAR);
+		fs.setApplyFunction(FogState.AF_PER_VERTEX);
+		rootNode.setRenderState(fs);
 	}
 
 	private void generatedHeightMap() {

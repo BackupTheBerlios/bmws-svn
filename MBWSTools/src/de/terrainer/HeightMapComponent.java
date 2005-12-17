@@ -1,6 +1,7 @@
 package de.terrainer;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 
 import javax.swing.JComponent;
@@ -36,5 +37,10 @@ public class HeightMapComponent extends JComponent {
 						(int) cellHeight + 1);
 			}
 		}
+	}
+	
+	@Override
+	public Dimension getPreferredSize() {
+		return new Dimension(620, 620);
 	}
 }

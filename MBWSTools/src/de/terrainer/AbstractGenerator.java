@@ -8,15 +8,9 @@ import java.io.InputStream;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 
-public abstract class AbstractGenerator {
+public abstract class AbstractGenerator implements GuiActionDescriptor {
 	public static final ImageIcon defaultIcon;
 	protected HeightMap heightMap;
-	public static class GeneratorProperty {
-		public String displayName;
-		public String setterName;
-		// type ???
-		// value range
-	}
 	public class DefaultAction implements Action {
 		boolean enabled = true;
 		public Object getValue(String key) {
@@ -67,8 +61,6 @@ public abstract class AbstractGenerator {
 	}
 
 	public abstract void setMask(int[][] mask);
-
-	public abstract GeneratorProperty[] getProperties();
 
 	public abstract String getName();
 

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Random;
@@ -28,7 +29,8 @@ public class TerrainerGUI extends JFrame {
 
 	protected HeightMapComponent heightMapComp = new HeightMapComponent();
 
-	private HeightMap currentHeightMap;
+	protected HeightMap currentHeightMap;
+	protected PropertyPanel propPanel;
 
 	TerrainerGUI() {
 		super("Terrainer");
@@ -39,14 +41,17 @@ public class TerrainerGUI extends JFrame {
 				close();
 			}
 		});
-		setBackground(Color.GRAY);
+		propPanel = new PropertyPanel();
+		getContentPane().setBackground(Color.GRAY);
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(createHeightMapPanel(), BorderLayout.CENTER);
 		getContentPane().add(createButtonPanel(), BorderLayout.NORTH);
+		getContentPane().add(propPanel, BorderLayout.EAST);
+
 		setJMenuBar(createMenu());
 
 		setResizable(false);
-		setSize(700, 700);
+		pack();
 
 		heightMapComp.setHeightMap(currentHeightMap);
 	}
@@ -80,8 +85,8 @@ public class TerrainerGUI extends JFrame {
 
 	private JPanel createHeightMapPanel() {
 		JPanel pan = new JPanel(new BorderLayout());
-		pan.setBorder(BorderFactory.createTitledBorder(BorderFactory
-				.createLoweredBevelBorder(), "Work"));
+		pan.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLoweredBevelBorder(),
+				"Work"));
 		pan.add(heightMapComp, BorderLayout.CENTER);
 		return pan;
 	}
@@ -99,19 +104,25 @@ public class TerrainerGUI extends JFrame {
 		viewButton.setToolTipText("view in 3D window");
 		viewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				(new Viewer(currentHeightMap.getLinearMap(), currentHeightMap
-						.getWidth())).showViewer();
+				(new Viewer(currentHeightMap.getLinearMap(), currentHeightMap.getWidth()))
+						.showViewer();
 			}
 		});
 		toolbar.add(viewButton);
 		return toolbar;
 	}
 
-	private JButton createGeneratorButton(AbstractGenerator generator) {
+	private JButton createGeneratorButton(final AbstractGenerator generator) {
 		JButton button = new JButton();
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				heightMapComp.repaint();
+			}
+		});
+		button.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(java.awt.event.MouseEvent e) {
+				propPanel.update(generator);
+				pack();
 			}
 		});
 		button.setAction(generator.getAction());
@@ -120,9 +131,9 @@ public class TerrainerGUI extends JFrame {
 		button.setToolTipText(generator.getName());
 		return button;
 	}
-	
+
 	private SimpleCanvasImpl create3DCanvas() {
-		return new SimpleCanvasImpl(400,650);
+		return new SimpleCanvasImpl(400, 650);
 	}
 
 	protected void close() {
