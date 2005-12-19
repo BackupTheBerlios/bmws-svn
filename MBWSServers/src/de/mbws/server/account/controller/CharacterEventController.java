@@ -67,11 +67,6 @@ public class CharacterEventController extends AccountServerBaseEventController {
             result.setEventType(EventTypes.S2S_CHARACTER_NEW_CHARACTER_ENTERS_WORLD);
             result.setPlayer(getAccountServer().getPlayerBySessionId(getAccountServer().getWorldServerSessionId()));
             sendEvent(result);
-
-            ServerRedirectEvent sre = new ServerRedirectEvent(((ServerCommunicationData) result.getPlayer()).getHostInfo());
-            sre.setEventType(EventTypes.S2C_REDIRECT_TO_WORLDSERVER);
-            sre.setPlayer(event.getPlayer());
-            sendEvent(sre);
         } else if (event.getEventType() == EventTypes.C2S_CHARACTER_LIST_RECEIVE_REQUEST) {
             List chars = CharacterPersistenceManager.getInstance().getAllCharacters(ce.getPlayer().getAccount().getUsername());
             LinkedList<CharacterShortDescription> charsToSend = new LinkedList<CharacterShortDescription>();
@@ -85,6 +80,12 @@ public class CharacterEventController extends AccountServerBaseEventController {
             result.setEventType(EventTypes.S2C_CHARACTER_LIST_RECEIVE);
             result.setPlayer(ce.getPlayer());
             sendEvent(result);
+        } else if (event.getEventType() == EventTypes.S2S_CHARACTER_NEW_CHARACTER_ENTERS_WORLD_OK) {
+            CharacterWorldServerInformation cwsi =  (CharacterWorldServerInformation) event.getEventData();
+            ServerRedirectEvent sre = new ServerRedirectEvent(((ServerCommunicationData) event.getPlayer()).getHostInfo());
+            sre.setEventType(EventTypes.S2C_REDIRECT_TO_WORLDSERVER);
+            sre.setPlayer(getAccountServer().getPlayerBySessionId(cwsi.getSessionId()));
+            sendEvent(sre);
         }
     }
     
