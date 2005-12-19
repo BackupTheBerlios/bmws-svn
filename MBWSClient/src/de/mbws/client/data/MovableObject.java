@@ -1,18 +1,29 @@
 package de.mbws.client.data;
 
+import org.apache.log4j.Logger;
+
 import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
+import com.jmex.model.animation.KeyframeController;
 
 import de.mbws.common.Globals;
 
 public class MovableObject extends GameObject {
-	
+
 	public MovableObject(String id) {
 		super(id);
 		moveStatus = Globals.STANDING;
 		turnStatus = Globals.NO_TURN;
 	}
 
+	public MovableObject(String id, KeyframeController kc) {
+		super(id);
+		moveStatus = Globals.STANDING;
+		turnStatus = Globals.NO_TURN;
+		keyframeController = kc;
+	}
+
+	private KeyframeController keyframeController;
 	protected byte moveStatus;
 	protected byte turnStatus;
 	protected int movespeed;
@@ -20,6 +31,16 @@ public class MovableObject extends GameObject {
 	protected boolean alive;
 	protected long timeOfDeath;
 	protected boolean isPlayer = false;
+	
+	private static Logger logger = Logger.getLogger("MovableObject");
+
+	public KeyframeController getKeyframeController() {
+		return keyframeController;
+	}
+
+	public void setKeyframeController(KeyframeController kc) {
+		this.keyframeController = kc;
+	}
 
 	public boolean isAlive() {
 		return alive;
@@ -53,7 +74,8 @@ public class MovableObject extends GameObject {
 		} else {
 			if (!isPlayer) {
 				synchronized (model) {
-					if (moveStatus == Globals.WALKING || moveStatus == Globals.RUNNING) {
+					if (moveStatus == Globals.WALKING
+							|| moveStatus == Globals.RUNNING) {
 						Vector3f tempVa = new Vector3f();
 						Vector3f loc = model.getLocalTranslation();
 						loc.addLocal(model.getLocalRotation()
@@ -68,7 +90,8 @@ public class MovableObject extends GameObject {
 										movespeed * f));
 						model.setLocalTranslation(loc);
 					}
-					if (turnStatus == Globals.TURN_RIGHT || turnStatus == Globals.TURN_LEFT) {
+					if (turnStatus == Globals.TURN_RIGHT
+							|| turnStatus == Globals.TURN_LEFT) {
 						Vector3f tempVa = new Vector3f();
 						Matrix3f incr = new Matrix3f();
 						Matrix3f tempMa = new Matrix3f();
@@ -109,6 +132,7 @@ public class MovableObject extends GameObject {
 
 	public void setMoveStatus(byte moveStatus) {
 		this.moveStatus = moveStatus;
+		setNewControllerSequence();
 	}
 
 	public int getTurnspeed() {
@@ -125,6 +149,46 @@ public class MovableObject extends GameObject {
 
 	public void setTurnStatus(byte turnStatus) {
 		this.turnStatus = turnStatus;
+	}
+
+	//TODO: should we take that into the object itself ?
+	public void setNewControllerSequence() {
+		if (keyframeController == null) {
+			logger.error("keyFrameController for MovableObject: "+objectID+"is null. No animation possible !!");
+			return;
+		}
+		if (moveStatus == Globals.WALKING) {
+			keyframeController.setNewAnimationTimes(39, 44);
+		} else if (moveStatus == Globals.STANDING) {
+			keyframeController.setNewAnimationTimes(0, 0);//196);
+		}
+		// .getKeyBindingManager()
+		// .isValidCommand("start_hit", false)) {
+		// kc.setNewAnimationTimes(45,52);
+		// }
+		// if (KeyBindingManager
+		// .getKeyBindingManager()
+		// .isValidCommand("start_end", false)) {
+		//		            
+		// }
+		// if (KeyBindingManager
+		// .getKeyBindingManager()
+		// .isValidCommand("start_smoothbegin", false)) {
+		// kc.setSmoothTranslation(0,25,0,196);
+		// }
+		// if (KeyBindingManager
+		// .getKeyBindingManager()
+		// .isValidCommand("start_smoothdeath", false)) {
+		// kc.setSmoothTranslation(175,25,175,182);
+		// }
+		// if (KeyBindingManager
+		// .getKeyBindingManager()
+		// .isValidCommand("toggle_wrap", false)) {
+		// if (kc.getRepeatType()==KeyframeController.RT_CYCLE)
+		// kc.setRepeatType(KeyframeController.RT_WRAP);
+		// else
+		// kc.setRepeatType(KeyframeController.RT_CYCLE);
+		// }
 	}
 
 }

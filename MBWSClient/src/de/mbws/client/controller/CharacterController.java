@@ -80,7 +80,7 @@ public class CharacterController {
 			ClientPlayerData.getInstance().setAllCharactersOfPlayer(
 					allCharacters);
 			if (allCharacters != null) {
-
+//TODO DA KOMMT DIE VISUAL APPEARANCE REIN !
 			}
 			logger
 					.info("retrieved all existing characters, going into selectionstate");

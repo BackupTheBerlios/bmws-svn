@@ -20,7 +20,6 @@ public class ClientPlayerData extends AbstractPlayerData {
 	private List<CharacterShortDescription> allCharactersOfPlayer;
 	
 	
-	
 	public List<CharacterShortDescription> getAllCharactersOfPlayer() {
 		return allCharactersOfPlayer;
 	}

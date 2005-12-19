@@ -16,6 +16,8 @@ import org.apache.log4j.Logger;
 
 import com.jme.app.StandardGameState;
 import com.jme.bounding.BoundingBox;
+import com.jme.bounding.BoundingSphere;
+import com.jme.bounding.BoundingVolume;
 import com.jme.image.Texture;
 import com.jme.input.ChaseCamera;
 import com.jme.input.InputHandler;
@@ -255,7 +257,14 @@ public class TestGameState extends StandardGameState {
 	 */
 	private void buildChaseCamera() {
 		Vector3f targetOffset = new Vector3f();
-		targetOffset.y = ((BoundingBox) player.getWorldBound()).yExtent * 1.5f;
+		BoundingVolume bv = player.getWorldBound();
+		if (bv instanceof BoundingBox) {
+			targetOffset.y = ((BoundingBox) player.getWorldBound()).yExtent * 1.5f;	
+		} else {
+			targetOffset.y = ((BoundingSphere) player.getWorldBound()).radius  * 1f;
+			//targetOffset.x = ((BoundingSphere) player.getWorldBound()).radius  * 1.5f;
+		}
+		
 		HashMap props = new HashMap();
 		props.put(ThirdPersonMouseLook.PROP_MAXROLLOUT, "40");
 		props.put(ThirdPersonMouseLook.PROP_MINROLLOUT, "3");
@@ -284,7 +293,8 @@ public class TestGameState extends StandardGameState {
 		// update the chase camera to handle the player moving around.
 		chaser.update(tpf);
 
-		float camMinHeightPlayer = player.getWorldTranslation().y + 2f;
+		//TODO Fix the height and set it somewhere else !!
+		float camMinHeightPlayer = player.getWorldTranslation().y + 20f;
 		cam.getLocation().y = camMinHeightPlayer;
 		cam.update();
 

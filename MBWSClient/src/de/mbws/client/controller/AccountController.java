@@ -108,6 +108,13 @@ public class AccountController {
 	}
 	public void handleServerRedirectionEvent(ServerRedirectEvent event) {
 		if (event.getEventType() == EventTypes.S2C_REDIRECT_TO_WORLDSERVER) {
+			//TODO: we do this because of sync problems. should be solved by server however !
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			// Connecting to new Server, closing this connection here
 			ClientNetworkController.getInstance().disconnect();
 			ServerRedirectData data = (ServerRedirectData) event.getEventData();

@@ -1,17 +1,30 @@
 package de.mbws.client.data;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 import com.jme.bounding.BoundingBox;
+import com.jme.bounding.BoundingSphere;
+import com.jme.image.Texture;
+import com.jme.input.KeyBindingManager;
+import com.jme.input.KeyInput;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import com.jme.scene.shape.Box;
+import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
+import com.jme.util.TextureManager;
+import com.jmex.model.XMLparser.JmeBinaryReader;
+import com.jmex.model.XMLparser.Converters.Md2ToJme;
+import com.jmex.model.animation.KeyframeController;
 
 import de.mbws.common.eventdata.generated.WorldObject;
 
@@ -143,15 +156,61 @@ public class ObjectManager {
 	}
 
 	public static Node createPlayer() {
-		Player object = new Player(ClientPlayerData.getInstance().getPlayer()
-				.getObjectID());
+		Player object = ClientPlayerData.getInstance().getPlayer();//new Player(ClientPlayerData.getInstance().getPlayer().getObjectID());
 		object.setAlive(true);
 		object.setMovespeed(30);
 		object.setTurnspeed(5);
+		
+		//trying a md2 model now
+		Md2ToJme converter=new Md2ToJme();
+        ByteArrayOutputStream BO=new ByteArrayOutputStream();
 
-		Box b = new Box("box2", new Vector3f(), 0.35f, 0.25f, 0.5f);
-		b.setModelBound(new BoundingBox());
-		b.updateModelBound();
+        URL textu=ObjectManager.class.getClassLoader().getResource("resources/textures/characters/generic/0/drfreak.jpg");
+        URL freak=ObjectManager.class.getClassLoader().getResource("resources/models/characters/generic/0/drfreak.md2");
+        Node freakmd2=null;
+
+        try {
+            long time = System.currentTimeMillis();
+            converter.convert(freak.openStream(),BO);
+            System.out.println("Time to convert from md2 to .jme:"+ ( System.currentTimeMillis()-time));
+        } catch (IOException e) {
+            System.out.println("damn exceptions:" + e.getMessage());
+        }
+        JmeBinaryReader jbr=new JmeBinaryReader();
+        try {
+            long time=System.currentTimeMillis();
+            freakmd2=jbr.loadBinaryFormat(new ByteArrayInputStream(BO.toByteArray()));
+            System.out.println("Time to convert from .jme to SceneGraph:"+ ( System.currentTimeMillis()-time));
+        } catch (IOException e) {
+            System.out.println("damn exceptions:" + e.getMessage());
+        }
+
+        TextureState ts = display.getRenderer().createTextureState();
+        ts.setEnabled(true);
+        ts.setTexture(
+        TextureManager.loadTexture(
+            textu,
+            Texture.MM_LINEAR,
+            Texture.FM_LINEAR));
+        freakmd2.setRenderState(ts);
+       // freakmd2.setLocalTranslation(new Vector3f(0,0,-20));
+        freakmd2.setLocalScale(.2f);
+        
+        object.setKeyframeController((KeyframeController) freakmd2.getChild(0).getController(0));
+        object.getKeyframeController().setSpeed(10);
+        // Note: W S A D Left Down Up Right F12 ESC T L B C Already used
+        //TODO: replace these with wsad ;)
+        KeyBindingManager.getKeyBindingManager().set("start_run",KeyInput.KEY_R);
+        KeyBindingManager.getKeyBindingManager().set("start_hit",KeyInput.KEY_H);
+        KeyBindingManager.getKeyBindingManager().set("toggle_wrap",KeyInput.KEY_Z);
+        KeyBindingManager.getKeyBindingManager().set("start_end",KeyInput.KEY_E);
+        KeyBindingManager.getKeyBindingManager().set("start_smoothbegin",KeyInput.KEY_B);
+        KeyBindingManager.getKeyBindingManager().set("start_smoothdeath",KeyInput.KEY_Q);
+        //rootNode.attachChild(freakmd2);
+
+//		Box b = new Box("box2", new Vector3f(), 0.35f, 0.25f, 0.5f);
+//		b.setModelBound(new BoundingBox());
+//		b.updateModelBound();
 		Node player = new Node(ClientPlayerData.getInstance().getPlayer()
 				.getObjectID());
 		Vector3f location = new Vector3f(ClientPlayerData.getInstance()
@@ -160,10 +219,14 @@ public class ObjectManager {
 						.getCharacterStatus().getCoordinateY(),
 				ClientPlayerData.getInstance().getCharacterData()
 						.getCharacterStatus().getCoordinateZ());
-		player.setLocalTranslation(location);
-
+		freakmd2.setLocalTranslation(location); //player
+		BoundingSphere bs = new BoundingSphere();
+		bs.setCenter(new Vector3f (0,0,0));
+		bs.setRadius(2);
+		freakmd2.setWorldBound(bs);
+		freakmd2.updateWorldBound();
 		rootNode.attachChild(player);
-		player.attachChild(b);
+		player.attachChild(freakmd2);
 		player.updateWorldBound();
 		object.setModel(player);
 
