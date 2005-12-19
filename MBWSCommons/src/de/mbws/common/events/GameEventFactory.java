@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 
 import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.eventdata.generated.AccountErrorData;
+import de.mbws.common.eventdata.generated.CharacterDetails;
 import de.mbws.common.eventdata.generated.CharacterSelection;
 import de.mbws.common.eventdata.generated.CharacterWorldServerInformation;
 import de.mbws.common.eventdata.generated.CharactersOfPlayer;
@@ -36,8 +37,9 @@ public class GameEventFactory {
 			event = new AccountEvent(payload, new AccountErrorData());
 		} else if (eventKey == EventTypes.S2C_ACCOUNT_CREATE_OK) {
 			event = new AccountEvent(payload);
-		} else if (eventKey == EventTypes.S2C_CHARACTER_RECEIVE
-				|| eventKey == EventTypes.C2S_CHARACTER_RECEIVE_REQUEST) {
+        } else if (eventKey == EventTypes.S2C_CHARACTER_RECEIVE) {
+            event = new CharacterEvent(payload, new CharacterDetails());
+		} else if (eventKey == EventTypes.C2S_CHARACTER_RECEIVE_REQUEST) {
 			event = new CharacterEvent(payload, new CharacterSelection());
         } else if (eventKey == EventTypes.C2S_CHARACTER_START_PLAYING_REQUEST) {
             event = new CharacterEvent(payload, new CharacterSelection());
@@ -49,7 +51,8 @@ public class GameEventFactory {
             event = new CharacterEvent(payload, new CharacterSelection());
         } else if (eventKey == EventTypes.S2C_CHARACTER_ENTERS_WORLD) {
             event = new CharacterEvent(payload, new CharacterSelection());
-        } else if (eventKey == EventTypes.S2S_CHARACTER_NEW_CHARACTER_ENTERS_WORLD) {
+        } else if (eventKey == EventTypes.S2S_CHARACTER_NEW_CHARACTER_ENTERS_WORLD 
+                || eventKey == EventTypes.S2S_CHARACTER_NEW_CHARACTER_ENTERS_WORLD_OK) {
             event = new CharacterEvent(payload, new CharacterWorldServerInformation());
         } else if (eventKey == EventTypes.S2C_CHARACTER_LIST_RECEIVE) {
             event = new CharacterEvent(payload, new CharactersOfPlayer());
