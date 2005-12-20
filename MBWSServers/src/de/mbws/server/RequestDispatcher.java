@@ -16,7 +16,6 @@ import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.GameEventFactory;
 import de.mbws.common.utils.StringUtils;
-import de.mbws.server.data.ServerCommunicationData;
 import de.mbws.server.data.ServerPlayerData;
 
 /**
@@ -140,22 +139,13 @@ public class RequestDispatcher extends Thread {
                                     player.setSessionId(attachment.sessionId);
                                 } else {
                                     player = server.getPlayerBySessionId(attachment.sessionId);
-                                    if (player == null) {
-                                        // assume we are talking with the
-                                        // accountserver; its damn bad and needs
-                                        // to be changed later
-                                        player = new ServerCommunicationData();
-                                        player.setChannel(channel);
-                                        player.setSessionId(attachment.sessionId);
-                                        
-                                    } else {
+                                    if (player != null) {
                                         if (player.getChannel() == null) {
                                             player.setChannel(channel);
                                         }
                                         if (player.getSessionId() == null || player.getSessionId() == 0) {
                                             player.setSessionId(attachment.sessionId);
-                                        }
-                                        
+                                        }   
                                     }
                                 }
                                 AbstractGameEvent event = GameEventFactory.getGameEvent(attachment.getPayload(), player);

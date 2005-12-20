@@ -150,9 +150,13 @@ public class WorldServer extends AbstractTcpServer {
         AbstractPlayerData apd = super.getPlayerBySessionId(id);
         if (apd == null) {
             apd = getServerBySessionId(id);
+            if (apd == null) {
+                // assume we are talking with the
+                // accountserver; its damn bad and needs
+                // to be changed later
+                apd = new ServerCommunicationData();
+            }
         }
-        
-        
         return apd;
     }
 }
