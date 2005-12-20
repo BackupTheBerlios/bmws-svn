@@ -81,7 +81,6 @@ public class TestGameState extends StandardGameState {
 		// build the player input
 		buildInput();
 		// build trees
-		
 
 		// update the scene graph for rendering
 		rootNode.updateGeometricState(0.0f, true);
@@ -106,8 +105,8 @@ public class TestGameState extends StandardGameState {
 	}
 
 	private void buildTerrain() {
-		RawHeightMap rhm = new RawHeightMap(
-				"c:/programmierung/projekte/mbwsclient/src/resources/00000_00000_000.raw",
+		RawHeightMap rhm = new RawHeightMap(TestGameState.class
+				.getClassLoader().getResource("resources/00000_00000_000.raw").getFile(),
 				256);
 
 		// Create a terrain block. Our integer height values will scale on the
@@ -120,61 +119,53 @@ public class TestGameState extends StandardGameState {
 
 		URL grass = TestGameState.class.getClassLoader().getResource(
 				"resources/textures/grassb.png");
-		 ProceduralTextureGenerator pg=new ProceduralTextureGenerator(rhm);
-		 pg.addTexture(new ImageIcon(grass),0,0,1);
-		 
-		 // pg.addTexture(new ImageIcon(waterImage),0,30,60);
-		 pg.createTexture(1024);
-		 TextureState ts=display.getRenderer().createTextureState();
-		 // // Load the texture and assign it.
-		 ts.setTexture(
-		 TextureManager.loadTexture(
-		 pg.getImageIcon().getImage(),
-		 Texture.MM_LINEAR_LINEAR,
-		 Texture.FM_LINEAR,
-		 true
-		 )
-		 );
-		 tb.setRenderState(ts);
-		        
+		ProceduralTextureGenerator pg = new ProceduralTextureGenerator(rhm);
+		pg.addTexture(new ImageIcon(grass), 0, 0, 1);
 
-//		TextureState ts = display.getRenderer().createTextureState();
-//		ts.setTexture(TextureManager.loadTexture(grass, Texture.MM_LINEAR,
-//				Texture.FM_LINEAR));
-//
-//		tb.setRenderState(ts);
+		// pg.addTexture(new ImageIcon(waterImage),0,30,60);
+		pg.createTexture(1024);
+		TextureState ts = display.getRenderer().createTextureState();
+		// // Load the texture and assign it.
+		ts.setTexture(TextureManager.loadTexture(pg.getImageIcon().getImage(),
+				Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR, true));
+		tb.setRenderState(ts);
+
+		// TextureState ts = display.getRenderer().createTextureState();
+		// ts.setTexture(TextureManager.loadTexture(grass, Texture.MM_LINEAR,
+		// Texture.FM_LINEAR));
+		//
+		// tb.setRenderState(ts);
 		// Give the terrain a bounding box.
 		tb.setModelBound(new BoundingBox());
 		tb.updateModelBound();
 		Vector3f location = new Vector3f(ClientPlayerData.getInstance()
-				.getCharacterData().getCharacterStatus().getCoordinateX(),
-				-0,
+				.getCharacterData().getCharacterStatus().getCoordinateX(), -0,
 				ClientPlayerData.getInstance().getCharacterData()
 						.getCharacterStatus().getCoordinateZ());
 		tb.setLocalTranslation(location);
 		// Attach the terrain TriMesh to our rootNode
 		rootNode.attachChild(tb);
 
-//		Box b = new Box("terrainbox", new Vector3f(), 200f, 0.1f, 200f);
-//		b.setModelBound(new BoundingBox());
-//		b.updateModelBound();
-//		Node player = new Node("terrainnode");
-//		Vector3f location = new Vector3f(0, 0, 0);
-//		player.setLocalTranslation(location);
-//		//		
-//
-//		// assign the texture to the terrain
-//		TextureState ts = display.getRenderer().createTextureState();
-//		Texture t1 = TextureManager.loadTexture(new ImageIcon(
-//				TestGameState.class.getClassLoader().getResource(
-//						"resources/textures/water.png")).getImage(),
-//				Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR, true);
-//		ts.setTexture(t1, 0);
-//		b.setRenderState(ts);
-//
-//		rootNode.attachChild(player);
-//		player.attachChild(b);
-		//player.updateWorldBound();
+		// Box b = new Box("terrainbox", new Vector3f(), 200f, 0.1f, 200f);
+		// b.setModelBound(new BoundingBox());
+		// b.updateModelBound();
+		// Node player = new Node("terrainnode");
+		// Vector3f location = new Vector3f(0, 0, 0);
+		// player.setLocalTranslation(location);
+		// //
+		//
+		// // assign the texture to the terrain
+		// TextureState ts = display.getRenderer().createTextureState();
+		// Texture t1 = TextureManager.loadTexture(new ImageIcon(
+		// TestGameState.class.getClassLoader().getResource(
+		// "resources/textures/water.png")).getImage(),
+		// Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR, true);
+		// ts.setTexture(t1, 0);
+		// b.setRenderState(ts);
+		//
+		// rootNode.attachChild(player);
+		// player.attachChild(b);
+		// player.updateWorldBound();
 
 	}
 
@@ -189,12 +180,12 @@ public class TestGameState extends StandardGameState {
 			jbr.setProperty("bound", "box");
 			Node r = jbr.loadBinaryFormat(new ByteArrayInputStream(BO
 					.toByteArray()));
-			//TODO: Skaling is not used correctly here
+			// TODO: Skaling is not used correctly here
 			r.setLocalScale(.01f);
-			//TODO: Tree says it needs no rotationchange
+			// TODO: Tree says it needs no rotationchange
 			Quaternion temp = new Quaternion();
-			temp.fromAngleAxis(FastMath.PI/2,new Vector3f(-1,0,0));
-//			// <POSITION X="9.301813" Y="2.130375" HEIGHT="-0.393879"/>
+			temp.fromAngleAxis(FastMath.PI / 2, new Vector3f(-1, 0, 0));
+			// // <POSITION X="9.301813" Y="2.130375" HEIGHT="-0.393879"/>
 			r.setLocalTranslation(new Vector3f(20f, 0f, 20f));
 			r.setLocalRotation(temp);
 			rootNode.attachChild(r);
@@ -212,11 +203,11 @@ public class TestGameState extends StandardGameState {
 			jbr.setProperty("bound", "box");
 			Node r = jbr.loadBinaryFormat(new ByteArrayInputStream(BO
 					.toByteArray()));
-			//TODO: Skaling is not used correctly here
+			// TODO: Skaling is not used correctly here
 			r.setLocalScale(.1f);
-			//TODO: Tree says it needs no rotationchange
+			// TODO: Tree says it needs no rotationchange
 			Quaternion temp = new Quaternion();
-			 temp.fromAngleAxis(FastMath.PI/2,new Vector3f(-1,0,0));
+			temp.fromAngleAxis(FastMath.PI / 2, new Vector3f(-1, 0, 0));
 			// <POSITION X="9.301813" Y="2.130375" HEIGHT="-0.393879"/>
 			r.setLocalTranslation(new Vector3f(9.3f, 2.13f, -0.4f));
 			r.setLocalRotation(temp);
@@ -226,8 +217,8 @@ public class TestGameState extends StandardGameState {
 			e.printStackTrace();
 		}
 
-		
 	}
+
 	/**
 	 * creates a light for the terrain.
 	 */
@@ -259,12 +250,13 @@ public class TestGameState extends StandardGameState {
 		Vector3f targetOffset = new Vector3f();
 		BoundingVolume bv = player.getWorldBound();
 		if (bv instanceof BoundingBox) {
-			targetOffset.y = ((BoundingBox) player.getWorldBound()).yExtent * 1.5f;	
+			targetOffset.y = ((BoundingBox) player.getWorldBound()).yExtent * 1.5f;
 		} else {
-			targetOffset.y = ((BoundingSphere) player.getWorldBound()).radius  * 1f;
-			//targetOffset.x = ((BoundingSphere) player.getWorldBound()).radius  * 1.5f;
+			targetOffset.y = ((BoundingSphere) player.getWorldBound()).radius * 1f;
+			// targetOffset.x = ((BoundingSphere) player.getWorldBound()).radius
+			// * 1.5f;
 		}
-		
+
 		HashMap props = new HashMap();
 		props.put(ThirdPersonMouseLook.PROP_MAXROLLOUT, "40");
 		props.put(ThirdPersonMouseLook.PROP_MINROLLOUT, "3");
@@ -293,7 +285,7 @@ public class TestGameState extends StandardGameState {
 		// update the chase camera to handle the player moving around.
 		chaser.update(tpf);
 
-		//TODO Fix the height and set it somewhere else !!
+		// TODO Fix the height and set it somewhere else !!
 		float camMinHeightPlayer = player.getWorldTranslation().y + 20f;
 		cam.getLocation().y = camMinHeightPlayer;
 		cam.update();
