@@ -14,6 +14,8 @@ import com.jme.bounding.BoundingSphere;
 import com.jme.image.Texture;
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
+import com.jme.math.FastMath;
+import com.jme.math.Matrix3f;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
@@ -23,7 +25,7 @@ import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 import com.jmex.model.XMLparser.JmeBinaryReader;
-import com.jmex.model.XMLparser.Converters.ObjToJme;
+import com.jmex.model.XMLparser.Converters.Md2ToJme;
 
 import de.mbws.common.eventdata.generated.WorldObject;
 
@@ -162,8 +164,8 @@ public class ObjectManager {
 		object.setTurnspeed(5);
 
 		// trying a md2 model now
-		// Md2ToJme converter=new Md2ToJme();
-		ObjToJme converter = new ObjToJme();
+		Md2ToJme converter=new Md2ToJme();
+		//ObjToJme converter = new ObjToJme();
 		ByteArrayOutputStream BO = new ByteArrayOutputStream();
 
 		URL textu = ObjectManager.class.getClassLoader().getResource(
@@ -171,7 +173,7 @@ public class ObjectManager {
 		// URL
 		// freak=ObjectManager.class.getClassLoader().getResource("resources/models/characters/generic/0/drfreak.md2");
 		URL freak = ObjectManager.class.getClassLoader().getResource(
-				"resources/models/characters/generic/0/drfreak.obj");
+				"resources/models/characters/generic/0/drfreak.md2");
 		Node freakmd2 = null;
 
 		try {
@@ -200,7 +202,9 @@ public class ObjectManager {
 		freakmd2.setRenderState(ts);
 		// freakmd2.setLocalTranslation(new Vector3f(0,0,-20));
 		freakmd2.setLocalScale(.2f);
-
+        Matrix3f localRotate = new Matrix3f();
+        localRotate.fromAxisAngle(new Vector3f(0.0F, 1.0F, 0.0F), -(0.5F * FastMath.PI));
+        freakmd2.setLocalRotation(localRotate);
 //		object.setKeyframeController((KeyframeController) freakmd2.getChild(0)
 //				.getController(0));
 //		object.getKeyframeController().setSpeed(10);
