@@ -250,9 +250,9 @@ public class TestGameState extends StandardGameState {
 		Vector3f targetOffset = new Vector3f();
 		BoundingVolume bv = player.getWorldBound();
 		if (bv instanceof BoundingBox) {
-			targetOffset.y = ((BoundingBox) player.getWorldBound()).yExtent * 1.5f;
+			targetOffset.y = ((BoundingBox) player.getWorldBound()).yExtent * 0.5f;
 		} else {
-			targetOffset.y = ((BoundingSphere) player.getWorldBound()).radius * 1f;
+			targetOffset.y = ((BoundingSphere) player.getWorldBound()).radius * 0.1f;
 			// targetOffset.x = ((BoundingSphere) player.getWorldBound()).radius
 			// * 1.5f;
 		}
