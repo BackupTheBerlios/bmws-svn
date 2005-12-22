@@ -70,7 +70,7 @@ public class CharacterController {
 			ClientPlayerData.getInstance().setPlayer(player);
 			logger.info("setting flag to start next state");
 			((MainMenuState) GameStateManager.getInstance().getChild("menu"))
-					.getInput().setStartNextState(true);
+					.getInputHandler().setStartNextState(true);
 		} else if (event.getEventType() == EventTypes.S2C_CHARACTER_LIST_RECEIVE) {
 			logger.info("Receiving all Characters of Player!");
 
@@ -85,7 +85,7 @@ public class CharacterController {
 			logger
 					.info("retrieved all existing characters, going into selectionstate");
 			((MainMenuState) GameStateManager.getInstance().getChild("menu"))
-					.getInput().setStartNextState(true);
+					.getInputHandler().setStartNextState(true);
 		} else if (event.getEventType() == EventTypes.S2C_CHARACTER_ENTERS_WORLD){ //) {
 			logger.info("Start gameplay!");
 			Player player = new Player(event.getCharacterDetails().getDescription().getCharacterID());
