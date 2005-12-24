@@ -29,6 +29,7 @@ import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
+import com.jme.scene.state.AlphaState;
 import com.jme.scene.state.LightState;
 import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
@@ -68,6 +69,7 @@ public class TestGameState extends StandardGameState {
 	public TestGameState(String name) {
 		super(name);
 		this.display = DisplaySystem.getDisplaySystem();
+        display.getRenderer().setBackgroundColor(ColorRGBA.blue);
 		ObjectManager.initialize(rootNode, display);
 		// build the world around the player
 		buildEnvironment();
@@ -82,7 +84,7 @@ public class TestGameState extends StandardGameState {
 		buildInput();
 		// build trees
 
-		// update the scene graph for rendering
+        // update the scene graph for rendering
 		rootNode.updateGeometricState(0.0f, true);
 		rootNode.updateRenderState();
 
@@ -192,7 +194,8 @@ public class TestGameState extends StandardGameState {
 		} catch (IOException e) {
 			System.out.println("Damn exceptions:" + e);
 			e.printStackTrace();
-		}
+		}    
+
 		try {
 			MaxToJme C1 = new MaxToJme();
 			ByteArrayOutputStream BO = new ByteArrayOutputStream();
@@ -201,16 +204,24 @@ public class TestGameState extends StandardGameState {
 			C1.convert(new BufferedInputStream(maxFile.openStream()), BO);
 			JmeBinaryReader jbr = new JmeBinaryReader();
 			jbr.setProperty("bound", "box");
+            
 			Node r = jbr.loadBinaryFormat(new ByteArrayInputStream(BO
 					.toByteArray()));
 			// TODO: Skaling is not used correctly here
-			r.setLocalScale(.1f);
+			r.setLocalScale(.05f);
 			// TODO: Tree says it needs no rotationchange
 			Quaternion temp = new Quaternion();
 			temp.fromAngleAxis(FastMath.PI / 2, new Vector3f(-1, 0, 0));
 			// <POSITION X="9.301813" Y="2.130375" HEIGHT="-0.393879"/>
 			r.setLocalTranslation(new Vector3f(9.3f, 2.13f, -0.4f));
 			r.setLocalRotation(temp);
+            AlphaState as = DisplaySystem.getDisplaySystem().getRenderer().createAlphaState();
+            as.setBlendEnabled(true);
+            as.setSrcFunction(AlphaState.SB_SRC_ALPHA);
+            as.setDstFunction(AlphaState.DB_ONE_MINUS_SRC_ALPHA);
+            as.setTestEnabled(true);
+            as.setTestFunction(AlphaState.TF_GREATER);
+            r.setRenderState(as);
 			rootNode.attachChild(r);
 		} catch (IOException e) {
 			System.out.println("Damn exceptions:" + e);
