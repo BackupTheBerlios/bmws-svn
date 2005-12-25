@@ -33,6 +33,8 @@ public class MovableObject extends GameObject {
 	protected boolean alive;
 	protected long timeOfDeath;
 	protected boolean isPlayer = false;
+	// Animations
+	protected AnimationData animationData = new AnimationData();
 
 	private static Logger logger = Logger.getLogger("MovableObject");
 
@@ -158,15 +160,22 @@ public class MovableObject extends GameObject {
 
 		if (keyframeController != null) {
 			if (moveStatus == Globals.WALKING) {
-				keyframeController.setNewAnimationTimes(39, 44);
+				keyframeController.setNewAnimationTimes(getAnimationData()
+						.getWalkStartTime(), getAnimationData()
+						.getWalkEndTime());
 			} else if (moveStatus == Globals.STANDING) {
-				keyframeController.setNewAnimationTimes(0, 0);// 196);
+				keyframeController.setNewAnimationTimes(getAnimationData()
+						.getStandStartTime(), getAnimationData()
+						.getStandEndTime());
 			}
 		} else if (jointController != null) {
 			if (moveStatus == Globals.WALKING) {
-				jointController.setTimes(2, 14);
+				jointController.setTimes(getAnimationData().getWalkStartTime(),
+						getAnimationData().getWalkEndTime());
 			} else if (moveStatus == Globals.STANDING) {
-				jointController.setTimes(292, 325);
+				jointController.setTimes(
+						getAnimationData().getStandStartTime(),
+						getAnimationData().getStandEndTime());
 			}
 		} else {
 			logger.error("keyFrameController for MovableObject: " + objectID
@@ -208,6 +217,14 @@ public class MovableObject extends GameObject {
 
 	public void setJointController(JointController jointController) {
 		this.jointController = jointController;
+	}
+
+	public AnimationData getAnimationData() {
+		return animationData;
+	}
+
+	public void setAnimationData(AnimationData animationData) {
+		this.animationData = animationData;
 	}
 
 }

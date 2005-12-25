@@ -11,7 +11,6 @@ public class Player extends MovableObject {
 	
 	public Player(String id, KeyframeController kc) {
 		super(id,kc);
-		
 	}
 	
 
