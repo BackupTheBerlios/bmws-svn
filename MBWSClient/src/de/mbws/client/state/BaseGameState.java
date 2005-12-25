@@ -53,11 +53,12 @@ public abstract class BaseGameState extends BasicGameState {
     @Override
     public void update(float tpf) {
         super.update(tpf);
-        if (jmeDesktop.getFocusOwner() == null || jmeDesktop.getFocusOwner() == jmeDesktop.getJDesktop()) {
-            input.setEnabled(true);
-        } else {
-            input.setEnabled(false);
-        }
+//        if (jmeDesktop.getFocusOwner() == null || jmeDesktop.getFocusOwner() == jmeDesktop.getJDesktop()) {
+//            input.setEnabled(true);
+//        } else {
+//            input.setEnabled(false);
+//        }
+        input.update(tpf);
         guiRootNode.updateGeometricState(tpf, true);
     }
 

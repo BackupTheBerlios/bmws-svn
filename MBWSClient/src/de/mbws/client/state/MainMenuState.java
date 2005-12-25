@@ -4,14 +4,12 @@
 package de.mbws.client.state;
 
 import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.util.logging.Level;
 
-import javax.swing.JButton;
 import javax.swing.JDesktopPane;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import com.jme.image.Texture;
 import com.jme.input.MouseInput;
@@ -23,28 +21,9 @@ import com.jme.scene.state.LightState;
 import com.jme.scene.state.TextureState;
 import com.jme.util.LoggingSystem;
 import com.jme.util.TextureManager;
-import com.jmex.bui.BButton;
-import com.jmex.bui.BContainer;
-import com.jmex.bui.BDecoratedWindow;
-import com.jmex.bui.BLabel;
-import com.jmex.bui.BLookAndFeel;
-import com.jmex.bui.BPopupWindow;
-import com.jmex.bui.BRootNode;
-import com.jmex.bui.BTextField;
-import com.jmex.bui.BWindow;
-import com.jmex.bui.PolledRootNode;
-import com.jmex.bui.event.ActionEvent;
-import com.jmex.bui.event.ActionListener;
-import com.jmex.bui.layout.BorderLayout;
-import com.jmex.bui.layout.GroupLayout;
-import com.jmex.bui.util.Dimension;
 
-import de.mbws.client.MBWSClient;
-import de.mbws.client.controller.AccountController;
-import de.mbws.client.controller.ClientNetworkController;
-import de.mbws.client.gui.MenuLookAndFeel;
+import de.mbws.client.gui.mainmenu.LoginPanel;
 import de.mbws.client.state.handler.MainMenuHandler;
-import de.mbws.common.data.AccountData;
 
 /**
  * @author Kerim
@@ -57,18 +36,6 @@ public class MainMenuState extends BaseGameState {
     private Text text;
 
     // private int musicID;
-
-    BTextField loginTF;
-
-    BTextField passwordTF;
-
-    BRootNode _root;
-
-    BWindow window;
-
-    BLookAndFeel lnf;
-
-    BPopupWindow infoWindow;
 
     public MainMenuState(String name) {
         super(name);
@@ -84,7 +51,6 @@ public class MainMenuState extends BaseGameState {
         // }
         initGUI();
         initText();
-        setupButtons();
         // initCursor();
         MouseInput.get().setCursorVisible(true);
         setupMenu();
@@ -96,123 +62,21 @@ public class MainMenuState extends BaseGameState {
     }
 
     private void setupMenu() {
+        try {
+            UIManager.setLookAndFeel(new MetalLookAndFeel());    
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        
         jmeDesktop.getJDesktop().setBackground(new Color(1, 1, 1, 0.2f));
-        final JDesktopPane desktopPane = jmeDesktop.getJDesktop();
-//        final JPanel p = new JPanel(new GridBagLayout());
-//        //GridBagLayout gb = new GridBagLayout();
-//        GridBagConstraints gbc = new GridBagConstraints();
-//        p.setLocation(0,100);//display.getWidth() / 2 - window.getWidth() / 2, display.getHeight() / 2 - window.getHeight() / 2);
-        //desktopPane.add(p,);
-        desktopPane.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        final JLabel loginLabel = new JLabel ("Login");
-        final JTextField loginTF = new JTextField("sack");
-        final JLabel passwordLabel = new JLabel ("Password");
-        final JTextField passwordTF = new JTextField("sack");
-       
-        
-        gbc.gridx=0;
-        desktopPane.add(loginLabel,gbc);
-        gbc.gridx=1;
-        desktopPane.add(loginTF,gbc);
-        gbc.gridy+=1;
-        gbc.gridx=0;
-        desktopPane.add(passwordLabel,gbc);
-        gbc.gridx=1;
-        desktopPane.add(passwordTF,gbc);
-        gbc.gridy+=1;
-        gbc.gridx=0;
-        final JButton loginButton = new JButton("Login");
-        desktopPane.add(loginButton,gbc);
-       // loginButton.setLocation(0, 100);
-        loginButton.setSize(loginButton.getPreferredSize());
-//        button3.addActionListener(new java.awt.event.ActionListener() {
-//
-//            public void actionPerformed(java.awt.event.ActionEvent e) {
-//                System.out.println("Suck my dick!!! Dreck 3D");
-//            }
-//        });
-        
-//        final JButton button3 = new JButton("S.M.D");
-//        button3.setLocation(0, 100);
-//        button3.setSize(button3.getPreferredSize());
-//        button3.addActionListener(new java.awt.event.ActionListener() {
-//
-//            public void actionPerformed(java.awt.event.ActionEvent e) {
-//                System.out.println("Suck my dick!!! Dreck 3D");
-//            }
-//        });
-
-     //   desktopPane.add(loginButton,gbc);
+        JDesktopPane desktopPane = jmeDesktop.getJDesktop();
+        LoginPanel loginPanel = new LoginPanel(getInputHandler());
+        int x = (desktopPane.getWidth() /2) - (loginPanel.getWidth()/2);
+        int y = (desktopPane.getHeight() /2) - (loginPanel.getHeight()/2);
+        loginPanel.setLocation(x,y);
+        desktopPane.add(loginPanel);
         desktopPane.repaint();
         desktopPane.revalidate();
-    }
-
-    private void setupButtons() {
-        _root = new PolledRootNode(MBWSClient.timer, input);// FixedLogicalRateClient.timer,
-        // input);
-        rootNode.attachChild(_root);
-        lnf = MenuLookAndFeel.getDefaultLookAndFeel();
-        window = new BDecoratedWindow(lnf, null);
-
-        BContainer cont = new BContainer(GroupLayout.makeVert(GroupLayout.CENTER));
-        BContainer loginContainer = new BContainer(GroupLayout.makeHoriz(GroupLayout.LEFT));
-        BContainer passwordContainer = new BContainer(GroupLayout.makeHoriz(GroupLayout.LEFT));
-        BLabel loginLabel = new BLabel("Login");
-        BLabel passwordLabel = new BLabel("Pass");
-        loginTF = new BTextField("sack");// Settings.getInstance().getLogin());
-        loginTF.setPreferredSize(new Dimension(100, 30));
-        passwordTF = new BTextField("sack");// Settings.getInstance().getPassword());
-        passwordTF.setPreferredSize(new Dimension(100, 30));
-        BButton login = new BButton("Login");
-        BButton account = new BButton("Create Account");
-        BButton options = new BButton("Options");
-        login.setPreferredSize(new Dimension(200, 25));
-        account.setPreferredSize(new Dimension(200, 25));
-        options.setPreferredSize(new Dimension(200, 25));
-
-        loginContainer.add(loginLabel);
-        loginContainer.add(loginTF);
-        passwordContainer.add(passwordLabel);
-        passwordContainer.add(passwordTF);
-        cont.add(loginContainer);
-        cont.add(passwordContainer);
-        cont.add(login);
-        cont.add(account);
-        cont.add(options);
-
-        window.add(cont, BorderLayout.CENTER);
-
-        window.setSize(200, 250);
-        window.setLocation(display.getWidth() / 2 - window.getWidth() / 2, display.getHeight() / 2 - window.getHeight() / 2);
-        _root.addWindow(window);
-        loginTF.requestFocus();
-        login.addListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                String password = passwordTF.getText();
-                String login = loginTF.getText();
-                if (login != null && password != null) {
-                    getInputHandler().login(login, password);
-                    // SoundSystem.stopStream(musicID);
-                }
-            }
-        });
-        account.addListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                String password = passwordTF.getText();
-                String login = loginTF.getText();
-                if (login != null && password != null) {
-                    AccountData account = new AccountData();
-                    account.setUsername(login);
-                    account.setPassword(password);
-                    account.setPasswordConfirmation(password);
-                    // TODO correct that
-                    ClientNetworkController.getInstance().handleOutgoingEvent(AccountController.getInstance().createRegisterEvent(account, null));
-                    getInputHandler().login(login, password);
-                }
-            }
-        });
-
     }
 
     /**
@@ -287,19 +151,7 @@ public class MainMenuState extends BaseGameState {
     }
 
     public void displayInfo(String info) {
-        infoWindow = new BPopupWindow(window, new BorderLayout());
-        infoWindow.add(new BLabel(info), BorderLayout.CENTER);
-        BButton button = new BButton("OK");
-        button.addListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                infoWindow.dismiss();
-            }
-
-        });
-        infoWindow.add(button, BorderLayout.SOUTH);
-        infoWindow.setLocation(display.getWidth() / 2 - window.getWidth() / 2, display.getHeight() / 2 - window.getHeight() / 2);
-        _root.addWindow(infoWindow);
-
+        JOptionPane.showMessageDialog(jmeDesktop.getJDesktop(), info);
     }
 
     public MainMenuHandler getInputHandler() {

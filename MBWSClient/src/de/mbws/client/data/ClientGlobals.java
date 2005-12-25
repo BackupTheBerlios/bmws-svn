@@ -12,5 +12,10 @@ public class ClientGlobals {
 	public static final String CREATE_ACCOUNT = "create_account";
 	public static final String START = "start";
 	
-
+    public static final String MENU_BUTTON_EXIT = "menu.button.exit";
+    public static final String MENU_BUTTON_LOGIN = "menu.button.login";
+    public static final String MENU_BUTTON_OPTIONS = "menu.button.options";
+    public static final String MENU_BUTTON_CREATE_ACCOUNT = "menu.button.create.account";
+    public static final String MENU_LABEL_USERNAME = "menu.label.username";
+    public static final String MENU_LABEL_PASSWORD = "menu.label.password";
 }

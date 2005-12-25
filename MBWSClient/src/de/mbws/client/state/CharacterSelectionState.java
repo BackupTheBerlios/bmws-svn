@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.logging.Level;
 
 import com.jme.app.GameState;
-import com.jme.app.StandardGameState;
 import com.jme.image.Texture;
 import com.jme.input.MouseInput;
 import com.jme.math.Vector3f;
@@ -42,7 +41,7 @@ import de.mbws.common.eventdata.generated.CharacterData;
 /**
  * @author Kerim
  */
-public class CharacterSelectionState extends StandardGameState {
+public class CharacterSelectionState extends BaseGameState {
 
 	// /** THE CURSOR NODE WHICH HOLDS THE MOUSE GOTTEN FROM INPUT. */
 	// private Node cursor;
@@ -51,14 +50,9 @@ public class CharacterSelectionState extends StandardGameState {
 	public static final String DELETE_CHARACTER = "DELETECHARACTER";
 	public static final String STARTGAME = "STARTGAME";
 
-	/** Our display system. */
-	private DisplaySystem display;
+    //private Text text;
 
-	//private Text text;
-
-	private CharacterSelectionStateHandler input;
-
-	BRootNode _root;
+    BRootNode _root;
 	public BWindow characterWindow;
 	BContainer cont;
 
@@ -101,7 +95,7 @@ public class CharacterSelectionState extends StandardGameState {
 				BButton characterButton = new BButton(aCharacter.getName()
 						+ " (" + ValueMapper.getRaceName(aCharacter.getRace()) + "/"
 						+ aCharacter.getGender() + "/"
-						+ aCharacter.getLocation() + ")", input, aCharacter
+						+ aCharacter.getLocation() + ")", getInputHandler(), aCharacter
 						.getCharacterID());
 				cont.add(characterButton);
 
@@ -131,20 +125,20 @@ public class CharacterSelectionState extends StandardGameState {
 		controllWindow.setSize(250, 50);
 		controllWindow.setLocation(display.getWidth() - 250, 0);
 
-		startGameBtn = new BButton(ValueMapper.getText(ClientGlobals.START), input, STARTGAME);
+		startGameBtn = new BButton(ValueMapper.getText(ClientGlobals.START), getInputHandler(), STARTGAME);
 		startGameBtn.setPreferredSize(new Dimension(70, 30));
 		startGameBtn.setEnabled(false);
 		controllContainer.add(startGameBtn);
 		
 		
 
-		deleteBtn = new BButton(ValueMapper.getText(ClientGlobals.DELETE), input, DELETE_CHARACTER);
+		deleteBtn = new BButton(ValueMapper.getText(ClientGlobals.DELETE), getInputHandler(), DELETE_CHARACTER);
 		deleteBtn.setEnabled(false);
 		deleteBtn.setPreferredSize(new Dimension(70, 30));
 		controllContainer.add(deleteBtn);
 		
 
-		createBtn = new BButton(ValueMapper.getText(ClientGlobals.CREATE_ACCOUNT), input, CREATE_CHARACTER);
+		createBtn = new BButton(ValueMapper.getText(ClientGlobals.CREATE_ACCOUNT), getInputHandler(), CREATE_CHARACTER);
 		//createBtn.setEnabled(false);
 		createBtn.setPreferredSize(new Dimension(70, 30));
 		controllContainer.add(createBtn);
@@ -210,8 +204,8 @@ public class CharacterSelectionState extends StandardGameState {
 		rootNode.updateGeometricState(tpf, true);
 	}
 
-	public CharacterSelectionStateHandler getInput() {
-		return input;
+	public CharacterSelectionStateHandler getInputHandler() {
+		return (CharacterSelectionStateHandler) input;
 	}
 
 	public BTextArea getCharacterDescription() {
@@ -221,4 +215,10 @@ public class CharacterSelectionState extends StandardGameState {
 	public void setCharacterDescription(BTextArea characterDescription) {
 		this.characterDescription = characterDescription;
 	}
+
+    @Override
+    protected void initInputHandler() {
+        input = new CharacterSelectionStateHandler(this);
+        
+    }
 }

@@ -52,7 +52,7 @@ public class AccountController {
 
     public AbstractGameEvent createRegisterEvent(AccountData account, ClientPlayerData player) {
         de.mbws.common.eventdata.generated.AccountData accountData = new de.mbws.common.eventdata.generated.AccountData();
-        
+
         accountData.setUserName(account.getUsername());
         accountData.setNewPassword(account.getPassword());
         //event.setPasswordConfirmation(account.getPasswordConfirmation());

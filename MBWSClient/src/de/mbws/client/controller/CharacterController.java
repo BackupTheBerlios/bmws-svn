@@ -105,7 +105,7 @@ public class CharacterController {
 			ClientPlayerData.getInstance().setPlayer(player);
 			logger.info("setting flag to start next state");
 			((CharacterSelectionState) GameStateManager.getInstance().getChild(
-					"characterSelection")).getInput().setStartGame(true);
+					"characterSelection")).getInputHandler().setStartGame(true);
 		}
 	}
 

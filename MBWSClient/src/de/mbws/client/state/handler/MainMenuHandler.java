@@ -77,11 +77,15 @@ public class MainMenuHandler extends InputHandler implements ComponentListener {
 	}
 
 	public void startCharacterSelectionState() {
-		 GameState characterSelection = new CharacterSelectionState("characterSelection");
-		 characterSelection.setActive(true);
-		 GameStateManager.getInstance().attachChild(characterSelection);
-		 GameStateManager.getInstance().deactivateChildNamed("menu");
-		 GameStateManager.getInstance().detachChild("intro");
+//		 GameState characterSelection = new CharacterSelectionState("characterSelection");
+//		 characterSelection.setActive(true);
+//		 GameStateManager.getInstance().attachChild(characterSelection);
+//		 GameStateManager.getInstance().deactivateChildNamed("menu");
+//		 GameStateManager.getInstance().detachChild("intro");
+         GameState ingame = new CharacterSelectionState("characterselection");
+         ingame.setActive(true);
+         GameStateManager.getInstance().attachChild(ingame);
+         myState.setActive(false); 
 	}
 
 	private static class ExitAction extends InputAction {
@@ -104,6 +108,10 @@ public class MainMenuHandler extends InputHandler implements ComponentListener {
 	public void setStartNextState(boolean b) {
 		startNextState = b;
 	}
+
+    public GameState getMyState() {
+        return myState;
+    }
 	
 
 }
