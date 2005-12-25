@@ -63,6 +63,7 @@ public class PayloadCreator {
 		classes.put("float", null);
 		classes.put("byte", null);
 		classes.put("long", null);
+		classes.put("short", null);
 	}
 
 	private static class ClassDeclaration {
@@ -127,7 +128,7 @@ public class PayloadCreator {
 			String key = it.next();
 			if (key.equals("String") || key.startsWith("int")
 					|| key.startsWith("float") || key.startsWith("byte")
-					|| key.startsWith("long"))
+					|| key.startsWith("long") || key.startsWith("short"))
 				continue;
 			ClassDeclaration classDecl = classes.get(key);
 			System.out.println("INFO: generating " + classDecl.name);
@@ -207,6 +208,8 @@ public class PayloadCreator {
 				code += "\t\tpayload.putFloat(" + field.name + ");\n";
 			} else if (field.type.equals("long")) {
 				code += "\t\tpayload.putLong(" + field.name + ");\n";
+			} else if (field.type.equals("short")) {
+				code += "\t\tpayload.putShort(" + field.name + ");\n";
 			} else if (classes.containsKey(field.type)) {
 				if (!field.isList) {
 					code += "\t\t" + field.name + getProp("classSep")
@@ -237,6 +240,8 @@ public class PayloadCreator {
 				code += "\t\t" + field.name + " = payload.getFloat();\n";
 			} else if (field.type.equals("long")) {
 				code += "\t\t" + field.name + " = payload.getLong();\n";
+			} else if (field.type.equals("short")) {
+				code += "\t\t" + field.name + " = payload.getShort();\n";
 			} else if (classes.containsKey(field.type)) {
 				if (!field.isList) {
 					code += "\t\t" + field.name + " = "
