@@ -229,9 +229,15 @@ public class ObjectManager {
 			if (c instanceof KeyframeController) {
 				object.setKeyframeController((KeyframeController) c);
 				object.getKeyframeController().setSpeed(animationSpeed);
+				object.getKeyframeController().setNewAnimationTimes(
+						object.getAnimationData().getStandStartTime(),
+						object.getAnimationData().getStandEndTime());
 			} else {
 				object.setJointController((JointController) c);
 				object.getJointController().setSpeed(animationSpeed);
+				object.getJointController().setTimes(
+						object.getAnimationData().getStandStartTime(),
+						object.getAnimationData().getStandEndTime());
 			}
 			Node player = new Node(ClientPlayerData.getInstance().getPlayer()
 					.getObjectID());
