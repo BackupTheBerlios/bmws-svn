@@ -285,13 +285,7 @@ public class ObjectManager {
 				System.out.println("damn exceptions:" + e.getMessage());
 			}
 
-			// TextureState ts = display.getRenderer().createTextureState();
-			// ts.setEnabled(true);
-			// ts.setTexture(TextureManager.loadTexture(textu,
-			// Texture.MM_LINEAR,
-			// Texture.FM_LINEAR));
-			// freakmd2.setRenderState(ts);
-			// freakmd2.setLocalTranslation(new Vector3f(0,0,-20));
+			
 			freakmd2.setLocalScale(.2f);
 			Matrix3f localRotate = new Matrix3f();
 			localRotate.fromAxisAngle(new Vector3f(0.0F, 1.0F, 0.0F),
@@ -300,7 +294,7 @@ public class ObjectManager {
 			object.setJointController((JointController) freakmd2.getChild(0)
 					.getController(0));
 			// object.getKeyframeController().setSpeed(10);
-
+			object.getJointController().setSpeed(0.3f);
 			Node player = new Node(ClientPlayerData.getInstance().getPlayer()
 					.getObjectID());
 			Vector3f location = new Vector3f(ClientPlayerData.getInstance()
