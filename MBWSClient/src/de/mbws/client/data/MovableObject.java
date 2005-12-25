@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 
 import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
+import com.jmex.model.animation.JointController;
 import com.jmex.model.animation.KeyframeController;
 
 import de.mbws.common.Globals;
@@ -24,6 +25,7 @@ public class MovableObject extends GameObject {
 	}
 
 	private KeyframeController keyframeController;
+	private JointController jointController;
 	protected byte moveStatus;
 	protected byte turnStatus;
 	protected int movespeed;
@@ -31,7 +33,7 @@ public class MovableObject extends GameObject {
 	protected boolean alive;
 	protected long timeOfDeath;
 	protected boolean isPlayer = false;
-	
+
 	private static Logger logger = Logger.getLogger("MovableObject");
 
 	public KeyframeController getKeyframeController() {
@@ -151,16 +153,25 @@ public class MovableObject extends GameObject {
 		this.turnStatus = turnStatus;
 	}
 
-	//TODO: should we take that into the object itself ?
+	// TODO: should we take that into the object itself ?
 	public void setNewControllerSequence() {
-		if (keyframeController == null) {
-			logger.error("keyFrameController for MovableObject: "+objectID+"is null. No animation possible !!");
+
+		if (keyframeController != null) {
+			if (moveStatus == Globals.WALKING) {
+				keyframeController.setNewAnimationTimes(39, 44);
+			} else if (moveStatus == Globals.STANDING) {
+				keyframeController.setNewAnimationTimes(0, 0);// 196);
+			}
+		} else if (jointController != null) {
+			if (moveStatus == Globals.WALKING) {
+				jointController.setTimes(2, 14);
+			} else if (moveStatus == Globals.STANDING) {
+				jointController.setTimes(292, 325);
+			}
+		} else {
+			logger.error("keyFrameController for MovableObject: " + objectID
+					+ "is null. No animation possible !!");
 			return;
-		}
-		if (moveStatus == Globals.WALKING) {
-			keyframeController.setNewAnimationTimes(39, 44);
-		} else if (moveStatus == Globals.STANDING) {
-			keyframeController.setNewAnimationTimes(0, 0);//196);
 		}
 		// .getKeyBindingManager()
 		// .isValidCommand("start_hit", false)) {
@@ -189,6 +200,14 @@ public class MovableObject extends GameObject {
 		// else
 		// kc.setRepeatType(KeyframeController.RT_CYCLE);
 		// }
+	}
+
+	public JointController getJointController() {
+		return jointController;
+	}
+
+	public void setJointController(JointController jointController) {
+		this.jointController = jointController;
 	}
 
 }
