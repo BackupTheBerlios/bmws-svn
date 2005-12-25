@@ -142,12 +142,12 @@ insert into language_text_mapping (id,text_key,languages_id,text) values (5,'no'
 insert into language_text_mapping (id,text_key,languages_id,text) values (6,'no',2,'no');
 insert into language_text_mapping (id,text_key,languages_id,text) values (7,'confirm_delete',1,'Wirklich lschen ?');
 insert into language_text_mapping (id,text_key,languages_id,text) values (8,'confirm_delete',2,'Really delete ?');
-insert into language_text_mapping (id,text_key,languages_id,text) values (9,'login',1,'Login');
-insert into language_text_mapping (id,text_key,languages_id,text) values (10,'login',2,'Login');
-insert into language_text_mapping (id,text_key,languages_id,text) values (11,'password',1,'Passwort');
-insert into language_text_mapping (id,text_key,languages_id,text) values (12,'password',2,'Password');
-insert into language_text_mapping (id,text_key,languages_id,text) values (13,'create_account',1,'Konto anlegen');
-insert into language_text_mapping (id,text_key,languages_id,text) values (14,'create_account',2,'Create Account');
+insert into language_text_mapping (id,text_key,languages_id,text) values (9,'menu.button.login',1,'Anmelden');
+insert into language_text_mapping (id,text_key,languages_id,text) values (10,'menu.button.login',2,'Login');
+insert into language_text_mapping (id,text_key,languages_id,text) values (11,'menu.label.password',1,'Passwort');
+insert into language_text_mapping (id,text_key,languages_id,text) values (12,'menu.label.password',2,'Password');
+insert into language_text_mapping (id,text_key,languages_id,text) values (13,'menu.button.create.account',1,'Konto anlegen');
+insert into language_text_mapping (id,text_key,languages_id,text) values (14,'menu.button.create.account',2,'Create Account');
 insert into language_text_mapping (id,text_key,languages_id,text) values (15,'cancel',1,'Abbrechen');
 insert into language_text_mapping (id,text_key,languages_id,text) values (16,'cancel',2,'Cancel');
 insert into language_text_mapping (id,text_key,languages_id,text) values (17,'delete',1,'Lschen');
@@ -156,8 +156,12 @@ insert into language_text_mapping (id,text_key,languages_id,text) values (19,'cr
 insert into language_text_mapping (id,text_key,languages_id,text) values (20,'create',2,'Create');
 insert into language_text_mapping (id,text_key,languages_id,text) values (21,'start',1,'Start');
 insert into language_text_mapping (id,text_key,languages_id,text) values (22,'start',2,'Start');
-
-
+insert into language_text_mapping (id,text_key,languages_id,text) values (23,'menu.button.exit',1,'Beenden');
+insert into language_text_mapping (id,text_key,languages_id,text) values (24,'menu.button.exit',2,'Exit');
+insert into language_text_mapping (id,text_key,languages_id,text) values (25,'menu.button.options',1,'Einstellungen');
+insert into language_text_mapping (id,text_key,languages_id,text) values (26,'menu.button.options',2,'Options');
+insert into language_text_mapping (id,text_key,languages_id,text) values (27,'menu.label.username',1,'Benutzername');
+insert into language_text_mapping (id,text_key,languages_id,text) values (28,'menu.label.username',2,'Username');
 
 #
 # Dumping data for table 'languages'
