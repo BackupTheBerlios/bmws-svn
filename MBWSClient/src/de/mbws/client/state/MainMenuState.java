@@ -4,11 +4,14 @@
 package de.mbws.client.state;
 
 import java.awt.Color;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.logging.Level;
 
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 import com.jme.image.Texture;
 import com.jme.input.MouseInput;
@@ -95,18 +98,52 @@ public class MainMenuState extends BaseGameState {
     private void setupMenu() {
         jmeDesktop.getJDesktop().setBackground(new Color(1, 1, 1, 0.2f));
         final JDesktopPane desktopPane = jmeDesktop.getJDesktop();
-        desktopPane.setLayout(new GridLayout(2, 2));
-        final JButton button3 = new JButton("S.M.D");
-        button3.setLocation(0, 100);
-        button3.setSize(button3.getPreferredSize());
-        button3.addActionListener(new java.awt.event.ActionListener() {
+//        final JPanel p = new JPanel(new GridBagLayout());
+//        //GridBagLayout gb = new GridBagLayout();
+//        GridBagConstraints gbc = new GridBagConstraints();
+//        p.setLocation(0,100);//display.getWidth() / 2 - window.getWidth() / 2, display.getHeight() / 2 - window.getHeight() / 2);
+        //desktopPane.add(p,);
+        desktopPane.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        final JLabel loginLabel = new JLabel ("Login");
+        final JTextField loginTF = new JTextField("sack");
+        final JLabel passwordLabel = new JLabel ("Password");
+        final JTextField passwordTF = new JTextField("sack");
+       
+        
+        gbc.gridx=0;
+        desktopPane.add(loginLabel,gbc);
+        gbc.gridx=1;
+        desktopPane.add(loginTF,gbc);
+        gbc.gridy+=1;
+        gbc.gridx=0;
+        desktopPane.add(passwordLabel,gbc);
+        gbc.gridx=1;
+        desktopPane.add(passwordTF,gbc);
+        gbc.gridy+=1;
+        gbc.gridx=0;
+        final JButton loginButton = new JButton("Login");
+        desktopPane.add(loginButton,gbc);
+       // loginButton.setLocation(0, 100);
+        loginButton.setSize(loginButton.getPreferredSize());
+//        button3.addActionListener(new java.awt.event.ActionListener() {
+//
+//            public void actionPerformed(java.awt.event.ActionEvent e) {
+//                System.out.println("Suck my dick!!! Dreck 3D");
+//            }
+//        });
+        
+//        final JButton button3 = new JButton("S.M.D");
+//        button3.setLocation(0, 100);
+//        button3.setSize(button3.getPreferredSize());
+//        button3.addActionListener(new java.awt.event.ActionListener() {
+//
+//            public void actionPerformed(java.awt.event.ActionEvent e) {
+//                System.out.println("Suck my dick!!! Dreck 3D");
+//            }
+//        });
 
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                System.out.println("Suck my dick!!! Dreck 3D");
-            }
-        });
-
-        desktopPane.add(button3);
+     //   desktopPane.add(loginButton,gbc);
         desktopPane.repaint();
         desktopPane.revalidate();
     }

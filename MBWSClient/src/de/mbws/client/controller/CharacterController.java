@@ -13,10 +13,12 @@ import de.mbws.client.data.Player;
 import de.mbws.client.state.CharacterSelectionState;
 import de.mbws.client.state.MainMenuState;
 import de.mbws.common.data.generated.CharacterStatus;
+import de.mbws.common.data.generated.CharacterVisualappearance;
 import de.mbws.common.data.generated.Characterdata;
+import de.mbws.common.data.generated.Race;
+import de.mbws.common.eventdata.generated.CharacterData;
 import de.mbws.common.eventdata.generated.CharacterDetails;
 import de.mbws.common.eventdata.generated.CharacterSelection;
-import de.mbws.common.eventdata.generated.CharacterShortDescription;
 import de.mbws.common.eventdata.generated.CharactersOfPlayer;
 import de.mbws.common.eventdata.generated.CreateCharacter;
 import de.mbws.common.eventdata.generated.IntVector3D;
@@ -40,11 +42,7 @@ public class CharacterController {
 	private static CharacterController instance;
 	private static String currentCharacterID;
 
-	/**
-	 * 
-	 */
 	private CharacterController() {
-
 	}
 
 	public static CharacterController getInstance() {
@@ -57,31 +55,31 @@ public class CharacterController {
 	// TODO Kerim: correct error handling and next stages here !
 	public void handleEvent(CharacterEvent event) {
 		if (event.getEventType() == EventTypes.S2C_CHARACTER_RECEIVE) {
-			logger.info("Receiving Details of Character!");
-			Player player = new Player(event.getCharacterDetails().getDescription().getCharacterID());
-			Characterdata characterData = new Characterdata();
-			CharacterDetails eventData = (CharacterDetails) event.getEventData();
-			CharacterStatus status = new CharacterStatus();
-			status.setCoordinateX(eventData.getLocation().getX());
-			status.setCoordinateY(eventData.getLocation().getY());
-			status.setCoordinateZ(eventData.getLocation().getZ());
-			characterData.setCharacterStatus(status);
-			ClientPlayerData.getInstance().setCharacterData(characterData);
-			ClientPlayerData.getInstance().setPlayer(player);
-			logger.info("setting flag to start next state");
-			((MainMenuState) GameStateManager.getInstance().getChild("menu"))
-					.getInputHandler().setStartNextState(true);
+			//TODO this wont bring us to the characterselectionstate !!!
+			//TODO See what we do here since its not used at the moment!
+//			logger.info("Receiving Details of Character!");
+//			Player player = new Player(event.getCharacterDetails().getDescription().getCharacterID());
+//			Characterdata characterData = new Characterdata();
+//			CharacterDetails eventData = (CharacterDetails) event.getEventData();
+//			CharacterStatus status = new CharacterStatus();
+//			status.setCoordinateX(eventData.getLocation().getX());
+//			status.setCoordinateY(eventData.getLocation().getY());
+//			status.setCoordinateZ(eventData.getLocation().getZ());
+//			characterData.setCharacterStatus(status);
+//			ClientPlayerData.getInstance().setCharacterData(characterData);
+//			ClientPlayerData.getInstance().setPlayer(player);
+//			logger.info("setting flag to start next state");
+//			((MainMenuState) GameStateManager.getInstance().getChild("menu"))
+//					.getInputHandler().setStartNextState(true);
 		} else if (event.getEventType() == EventTypes.S2C_CHARACTER_LIST_RECEIVE) {
-			logger.info("Receiving all Characters of Player!");
+			logger.info("Receiving Shortdescriptions of all Characters of Player!");
 
-			List<CharacterShortDescription> allCharacters = ((CharactersOfPlayer) event
-					.getEventData()).getDescriptions();
+			List<CharacterData> allCharacters = ((CharactersOfPlayer) event
+					.getEventData()).getCharactersOfPlayer();
 
 			ClientPlayerData.getInstance().setAllCharactersOfPlayer(
 					allCharacters);
-			if (allCharacters != null) {
-//TODO DA KOMMT DIE VISUAL APPEARANCE REIN !
-			}
+			
 			logger
 					.info("retrieved all existing characters, going into selectionstate");
 			((MainMenuState) GameStateManager.getInstance().getChild("menu"))
@@ -89,13 +87,20 @@ public class CharacterController {
 		} else if (event.getEventType() == EventTypes.S2C_CHARACTER_ENTERS_WORLD){ //) {
 			logger.info("Start gameplay!");
 			Player player = new Player(event.getCharacterDetails().getDescription().getCharacterID());
-			Characterdata characterData = new Characterdata();
-            CharacterDetails eventData = (CharacterDetails) event.getEventData();
-			CharacterStatus status = new CharacterStatus();
+			CharacterDetails eventData = (CharacterDetails) event.getEventData();
+            Characterdata characterData = new Characterdata();
+			CharacterVisualappearance characterVisualAppearance = new CharacterVisualappearance();
+			
+            CharacterStatus status = new CharacterStatus();
 			status.setCoordinateX(eventData.getLocation().getX());
 			status.setCoordinateY(eventData.getLocation().getY());
 			status.setCoordinateZ(eventData.getLocation().getZ());
 			characterData.setCharacterStatus(status);
+		//	eventData.getDescription().get
+			Race r = new Race();
+			r.setId(eventData.getDescription().getRace());
+			characterData.setRace(r);
+			
 			ClientPlayerData.getInstance().setCharacterData(characterData);
 			ClientPlayerData.getInstance().setPlayer(player);
 			logger.info("setting flag to start next state");
@@ -187,5 +192,18 @@ public class CharacterController {
 		event.setEventType(EventTypes.C2S_CHARACTER_CREATE_REQUEST);
 
 		return event;
+	}
+	
+	private static Characterdata mapCharacterDetailsToStatus(CharacterDetails chardetails) {
+		Characterdata cdata = new Characterdata();
+//		CharacterStatus cs = new CharacterStatus();
+//		Race r = new Race();
+//		chardetails.getDescription()
+//		CharacterVisualappearance cva = new CharacterVisualappearance();
+//		CharacterShortDescription csd = cd.getDescription();
+//		csd.se
+//		cdata.setRace()
+//		cdata.setCharacterStatus(cs);
+		return cdata;
 	}
 }

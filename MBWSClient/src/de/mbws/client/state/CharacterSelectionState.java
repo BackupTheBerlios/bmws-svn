@@ -37,7 +37,7 @@ import de.mbws.client.data.ClientGlobals;
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.gui.MenuLookAndFeel;
 import de.mbws.client.state.handler.CharacterSelectionStateHandler;
-import de.mbws.common.eventdata.generated.CharacterShortDescription;
+import de.mbws.common.eventdata.generated.CharacterData;
 
 /**
  * @author Kerim
@@ -92,12 +92,12 @@ public class CharacterSelectionState extends StandardGameState {
 	}
 
 	private void fillData() {
-		List<CharacterShortDescription> allCharacters = ClientPlayerData
+		List<CharacterData> allCharacters = ClientPlayerData
 				.getInstance().getAllCharactersOfPlayer();
 		if (allCharacters != null) {
-			Iterator<CharacterShortDescription> it = allCharacters.iterator();
+			Iterator<CharacterData> it = allCharacters.iterator();
 			while (it.hasNext()) {
-				CharacterShortDescription aCharacter = it.next();
+				CharacterData aCharacter = it.next();
 				BButton characterButton = new BButton(aCharacter.getName()
 						+ " (" + ValueMapper.getRaceName(aCharacter.getRace()) + "/"
 						+ aCharacter.getGender() + "/"

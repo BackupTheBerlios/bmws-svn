@@ -26,10 +26,18 @@ import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 import com.jmex.model.XMLparser.JmeBinaryReader;
 import com.jmex.model.XMLparser.Converters.Md2ToJme;
+import com.jmex.model.animation.KeyframeController;
 
+import de.mbws.common.data.generated.CharacterVisualappearance;
 import de.mbws.common.eventdata.generated.WorldObject;
 
 public class ObjectManager {
+
+	private static final String TEXTURE_BASE_PATH = "resources/textures/";
+	private static final String MODEL_BASE_PATH = "resources/models/";
+	private static final String GENERIC_CHARACTER_PATH = "characters/generic/";
+	private static final String BASE_MODEL = "/basemodel.md2";
+	private static final String BASE_TEXTURE = "/basemodel.jpg";
 
 	protected static Node rootNode;
 
@@ -163,17 +171,29 @@ public class ObjectManager {
 		object.setMovespeed(30);
 		object.setTurnspeed(5);
 
+		
+		String race = ClientPlayerData.getInstance().getCharacterData().getRace().getId().toString();//Name();
+		CharacterVisualappearance appearance = ClientPlayerData.getInstance().getCharacterData().getCharacterVisualappearance();
+		
 		// trying a md2 model now
-		Md2ToJme converter=new Md2ToJme();
+
+		 Md2ToJme converter=new Md2ToJme();
+		 //MaxToJme converter = new MaxToJme();
 		//ObjToJme converter = new ObjToJme();
+
 		ByteArrayOutputStream BO = new ByteArrayOutputStream();
 
-		URL textu = ObjectManager.class.getClassLoader().getResource(
-				"resources/textures/characters/generic/0/drfreak.jpg");
+		URL textu = ObjectManager.class.getClassLoader().getResource(TEXTURE_BASE_PATH+GENERIC_CHARACTER_PATH+race+BASE_TEXTURE);
+		URL freak=ObjectManager.class.getClassLoader().getResource(MODEL_BASE_PATH+GENERIC_CHARACTER_PATH+race+BASE_MODEL);
+		//URL freak=ObjectManager.class.getClassLoader().getResource("resources/models/characters/generic/0/dwarf.obj");
+//		URL freak = ObjectManager.class.getClassLoader().getResource(
+//				"resources/models/characters/generic/0/drfreak.obj");
+
 		// URL
 		// freak=ObjectManager.class.getClassLoader().getResource("resources/models/characters/generic/0/drfreak.md2");
-		URL freak = ObjectManager.class.getClassLoader().getResource(
-				"resources/models/characters/generic/0/drfreak.md2");
+//		URL freak = ObjectManager.class.getClassLoader().getResource(
+//				"resources/models/characters/generic/0/drfreak.md2");
+
 		Node freakmd2 = null;
 
 		try {
@@ -205,9 +225,9 @@ public class ObjectManager {
         Matrix3f localRotate = new Matrix3f();
         localRotate.fromAxisAngle(new Vector3f(0.0F, 1.0F, 0.0F), -(0.5F * FastMath.PI));
         freakmd2.setLocalRotation(localRotate);
-//		object.setKeyframeController((KeyframeController) freakmd2.getChild(0)
-//				.getController(0));
-//		object.getKeyframeController().setSpeed(10);
+		object.setKeyframeController((KeyframeController) freakmd2.getChild(0)
+				.getController(0));
+		object.getKeyframeController().setSpeed(10);
 		// Note: W S A D Left Down Up Right F12 ESC T L B C Already used
 		// TODO: replace these with wsad ;)
 		KeyBindingManager.getKeyBindingManager().set("start_run",
@@ -235,7 +255,8 @@ public class ObjectManager {
 						.getCharacterStatus().getCoordinateY(),
 				ClientPlayerData.getInstance().getCharacterData()
 						.getCharacterStatus().getCoordinateZ());
-		freakmd2.setLocalTranslation(location); // player
+		player.setLocalTranslation(location); // player
+	//	player.setLocalRotation(localRotate);
 		
 //		Quaternion temp=new Quaternion();
 //        temp.fromAngleAxis(FastMath.PI/2,new Vector3f(-1,0,0));
