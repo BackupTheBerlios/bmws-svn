@@ -106,9 +106,12 @@ public class CharacterSelectionStateHandler extends InputHandler implements
 	public void startMainGameState() {
 		GameState testgame = new TestGameState("game");
 		testgame.setActive(true);
-		GameStateManager.getInstance().attachChild(testgame);
-		GameStateManager.getInstance().deactivateChildNamed(
-				"characterSelection");
+        GameStateManager.getInstance().attachChild(testgame);
+        state.setActive(false); 
 	}
+
+    public String getSelectedCharacter() {
+        return selectedCharacter;
+    }
 
 }

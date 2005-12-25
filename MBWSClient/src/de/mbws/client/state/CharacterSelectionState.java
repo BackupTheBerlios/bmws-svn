@@ -3,9 +3,11 @@
  */
 package de.mbws.client.state;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.logging.Level;
+
+import javax.swing.JDesktopPane;
+import javax.swing.UIManager;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import com.jme.app.GameState;
 import com.jme.image.Texture;
@@ -20,23 +22,15 @@ import com.jme.util.LoggingSystem;
 import com.jme.util.TextureManager;
 import com.jmex.bui.BButton;
 import com.jmex.bui.BContainer;
-import com.jmex.bui.BDecoratedWindow;
 import com.jmex.bui.BLookAndFeel;
 import com.jmex.bui.BRootNode;
 import com.jmex.bui.BTextArea;
 import com.jmex.bui.BWindow;
-import com.jmex.bui.PolledRootNode;
-import com.jmex.bui.layout.BorderLayout;
-import com.jmex.bui.layout.GroupLayout;
-import com.jmex.bui.util.Dimension;
 
-import de.mbws.client.MBWSClient;
-import de.mbws.client.ValueMapper;
-import de.mbws.client.data.ClientGlobals;
 import de.mbws.client.data.ClientPlayerData;
-import de.mbws.client.gui.MenuLookAndFeel;
+import de.mbws.client.gui.character.selection.ActionPanel;
+import de.mbws.client.gui.character.selection.CharacterListPanel;
 import de.mbws.client.state.handler.CharacterSelectionStateHandler;
-import de.mbws.common.eventdata.generated.CharacterData;
 
 /**
  * @author Kerim
@@ -73,7 +67,7 @@ public class CharacterSelectionState extends BaseGameState {
 		display = DisplaySystem.getDisplaySystem();
 		initInput();
 		initGUI();
-		initBUIGUI();
+        setupMenu();
 		// initText();
 		// setupButtons();
 		// initCursor();
@@ -85,71 +79,33 @@ public class CharacterSelectionState extends BaseGameState {
 		rootNode.updateGeometricState(0, true);
 	}
 
-	private void fillData() {
-		List<CharacterData> allCharacters = ClientPlayerData
-				.getInstance().getAllCharactersOfPlayer();
-		if (allCharacters != null) {
-			Iterator<CharacterData> it = allCharacters.iterator();
-			while (it.hasNext()) {
-				CharacterData aCharacter = it.next();
-				BButton characterButton = new BButton(aCharacter.getName()
-						+ " (" + ValueMapper.getRaceName(aCharacter.getRace()) + "/"
-						+ aCharacter.getGender() + "/"
-						+ aCharacter.getLocation() + ")", getInputHandler(), aCharacter
-						.getCharacterID());
-				cont.add(characterButton);
-
-			}
-		}
-	}
-
-	private void initBUIGUI() {
-		_root = new PolledRootNode(MBWSClient.timer, input);
-		rootNode.attachChild(_root);
-		lnf = MenuLookAndFeel.getDefaultLookAndFeel();
-		characterWindow = new BDecoratedWindow(lnf, null);
-		cont = new BContainer(GroupLayout.makeVert(GroupLayout.TOP));
-		fillData();
-		characterDescription = new BTextArea();
-
-		// window.add(new BScrollPane(cont), BorderLayout.WEST);
-		characterWindow.add(cont, BorderLayout.WEST);
-		characterWindow.setSize(250, 250);
-		characterWindow.setLocation(display.getWidth() - 250, display
-				.getHeight() - 250);
-
-		controllWindow = new BDecoratedWindow(lnf, null);
-		controllContainer = new BContainer(GroupLayout
-				.makeHoriz(GroupLayout.CENTER));
-
-		controllWindow.setSize(250, 50);
-		controllWindow.setLocation(display.getWidth() - 250, 0);
-
-		startGameBtn = new BButton(ValueMapper.getText(ClientGlobals.START), getInputHandler(), STARTGAME);
-		startGameBtn.setPreferredSize(new Dimension(70, 30));
-		startGameBtn.setEnabled(false);
-		controllContainer.add(startGameBtn);
-		
-		
-
-		deleteBtn = new BButton(ValueMapper.getText(ClientGlobals.DELETE), getInputHandler(), DELETE_CHARACTER);
-		deleteBtn.setEnabled(false);
-		deleteBtn.setPreferredSize(new Dimension(70, 30));
-		controllContainer.add(deleteBtn);
-		
-
-		createBtn = new BButton(ValueMapper.getText(ClientGlobals.CREATE_ACCOUNT), getInputHandler(), CREATE_CHARACTER);
-		//createBtn.setEnabled(false);
-		createBtn.setPreferredSize(new Dimension(70, 30));
-		controllContainer.add(createBtn);
-		
-		
-		controllWindow.add(controllContainer, BorderLayout.CENTER);
-		
-		_root.addWindow(characterWindow);
-		_root.addWindow(controllWindow);
-	}
-
+    private void setupMenu() {
+        try {
+            UIManager.setLookAndFeel(new MetalLookAndFeel());    
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        
+//        jmeDesktop.getJDesktop().setBackground(new Color(1, 1, 1, 0.2f));
+        JDesktopPane desktopPane = jmeDesktop.getJDesktop();
+        ActionPanel actionPanel = new ActionPanel(getInputHandler());
+        int x = (desktopPane.getWidth() /2) - (actionPanel.getWidth()/2);
+        int y = desktopPane.getHeight() - actionPanel.getHeight();
+        actionPanel.setLocation(0,y);
+        actionPanel.setSize(desktopPane.getWidth(), 80);
+        desktopPane.add(actionPanel);
+        
+        CharacterListPanel clp = new CharacterListPanel(ClientPlayerData
+                .getInstance().getAllCharactersOfPlayer());
+        clp.addPropertyChangeListener(CharacterListPanel.CHARACTER_SELECTION_CHANGE, actionPanel);
+        clp.setSize(200, desktopPane.getHeight() - (desktopPane.getHeight()/4));
+        clp.setLocation(desktopPane.getWidth() - clp.getWidth(), 0);
+        desktopPane.add(clp);
+        
+        desktopPane.repaint();
+        desktopPane.revalidate();
+    }
+    
 	/**
 	 * @see com.jme.app.StandardGameState#onActivate()
 	 */

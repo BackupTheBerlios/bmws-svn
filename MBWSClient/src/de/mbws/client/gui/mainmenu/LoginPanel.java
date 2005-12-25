@@ -59,7 +59,7 @@ public class LoginPanel extends JPanel {
         if (usernameInputField == null) {
             usernameInputField = new JTextField();
             usernameInputField.setText("sack");
-            usernameInputField.setBounds(new java.awt.Rectangle(110,20,131,21));
+            usernameInputField.setBounds(new java.awt.Rectangle(110,20,131,20));
         }
         return usernameInputField;
     }
@@ -73,7 +73,7 @@ public class LoginPanel extends JPanel {
         if (passwordField == null) {
             passwordField = new JPasswordField();
             passwordField.setText("sack");
-            passwordField.setBounds(new java.awt.Rectangle(110,50,131,21));
+            passwordField.setBounds(new java.awt.Rectangle(110,50,131,20));
         }
         return passwordField;
     }
@@ -86,7 +86,7 @@ public class LoginPanel extends JPanel {
     private JButton getLoginButton() {
         if (loginButton == null) {
             loginButton = new JButton();
-            loginButton.setBounds(new java.awt.Rectangle(20, 100, 211, 31));
+            loginButton.setBounds(new java.awt.Rectangle(20, 100, 210, 30));
             loginButton.setText(ValueMapper.getText(ClientGlobals.MENU_BUTTON_LOGIN));
             loginButton.setBackground(buttonBackground);
             loginButton.addActionListener(new java.awt.event.ActionListener() {
@@ -107,7 +107,7 @@ public class LoginPanel extends JPanel {
     private JButton getCreateAccountButton() {
         if (createAccountButton == null) {
             createAccountButton = new JButton();
-            createAccountButton.setBounds(new java.awt.Rectangle(20, 150, 211, 31));
+            createAccountButton.setBounds(new java.awt.Rectangle(20, 150, 210, 30));
             createAccountButton.setText(ValueMapper.getText(ClientGlobals.MENU_BUTTON_CREATE_ACCOUNT));
             createAccountButton.setBackground(buttonBackground);
             createAccountButton.addActionListener(new java.awt.event.ActionListener() {
@@ -136,7 +136,7 @@ public class LoginPanel extends JPanel {
     private JButton getShowOptionsButton() {
         if (showOptionsButton == null) {
             showOptionsButton = new JButton();
-            showOptionsButton.setBounds(new java.awt.Rectangle(20, 200, 211, 31));
+            showOptionsButton.setBounds(new java.awt.Rectangle(20, 200, 210, 30));
             showOptionsButton.setText(ValueMapper.getText(ClientGlobals.MENU_BUTTON_OPTIONS));
             showOptionsButton.setBackground(buttonBackground);
         }
@@ -151,7 +151,7 @@ public class LoginPanel extends JPanel {
     private JButton getExitButton() {
         if (exitButton == null) {
             exitButton = new JButton();
-            exitButton.setBounds(new java.awt.Rectangle(20, 250, 211, 31));
+            exitButton.setBounds(new java.awt.Rectangle(20, 250, 210, 30));
             exitButton.setText(ValueMapper.getText(ClientGlobals.MENU_BUTTON_EXIT));
             exitButton.setBackground(buttonBackground);
             exitButton.addActionListener(new java.awt.event.ActionListener() {
@@ -192,11 +192,11 @@ public class LoginPanel extends JPanel {
         this.setBorder(new BevelBorder(BevelBorder.RAISED));
         passwordLabel = new JLabel();
         passwordLabel.setForeground(Color.WHITE);
-        passwordLabel.setBounds(new java.awt.Rectangle(10,50,91,21));
+        passwordLabel.setBounds(new java.awt.Rectangle(10,50,91,20));
         passwordLabel.setText(ValueMapper.getText(ClientGlobals.MENU_LABEL_PASSWORD));
         usernameLabel = new JLabel();
         usernameLabel.setForeground(Color.WHITE);
-        usernameLabel.setBounds(new java.awt.Rectangle(10,20,91,21));
+        usernameLabel.setBounds(new java.awt.Rectangle(10,20,91,20));
         usernameLabel.setText(ValueMapper.getText(ClientGlobals.MENU_LABEL_USERNAME));
         this.add(usernameLabel, null);
         this.add(getUsernameInputField(), null);
