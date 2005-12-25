@@ -275,7 +275,7 @@ public class ObjectManager {
 
 		
 			JmeBinaryReader jbr = new JmeBinaryReader();
-			jbr.setProperty("texturl", textu);
+			jbr.setProperty("texurl", textu);
 			try {
 				long time = System.currentTimeMillis();
 				freakmd2 = jbr.loadBinaryFormat(fi);
