@@ -3,7 +3,6 @@
  */
 package de.mbws.client.state;
 
-import java.awt.Color;
 import java.util.logging.Level;
 
 import javax.swing.JDesktopPane;
@@ -68,7 +67,7 @@ public class MainMenuState extends BaseGameState {
             // TODO: handle exception
         }
         
-        jmeDesktop.getJDesktop().setBackground(new Color(1, 1, 1, 0.2f));
+//        jmeDesktop.getJDesktop().setBackground(new Color(1, 1, 1, 0.2f));
         JDesktopPane desktopPane = jmeDesktop.getJDesktop();
         LoginPanel loginPanel = new LoginPanel(getInputHandler());
         int x = (desktopPane.getWidth() /2) - (loginPanel.getWidth()/2);
