@@ -93,7 +93,7 @@ INSERT INTO map VALUES("1","Testkarte","");
 #
 # Dumping data for table 'race'
 #
-INSERT INTO race VALUES("1","Mensch","0","0","0","0","0","0","0","0","Ganz toll, zerstren alles was ihnen in den Weg kommt.");
+INSERT INTO race VALUES("1","human","0","0","0","0","0","0","0","0","Ganz toll, zerstren alles was ihnen in den Weg kommt.");
 
 
 #
