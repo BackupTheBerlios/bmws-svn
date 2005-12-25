@@ -51,6 +51,7 @@ public class MainMenuState extends BaseGameState {
         initGUI();
         initText();
         // initCursor();
+       
         MouseInput.get().setCursorVisible(true);
         setupMenu();
 

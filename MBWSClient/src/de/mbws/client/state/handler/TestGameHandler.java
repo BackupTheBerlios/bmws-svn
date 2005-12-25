@@ -3,17 +3,22 @@
  */
 package de.mbws.client.state.handler;
 
-import com.jme.input.InputHandler;
+import java.util.HashMap;
+
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
+import com.jme.input.ThirdPersonHandler;
 import com.jme.input.action.InputAction;
 import com.jme.input.action.InputActionEvent;
-import com.jme.input.action.KeyNodeBackwardAction;
-import com.jme.input.action.KeyNodeForwardAction;
-import com.jme.input.action.KeyNodeRotateLeftAction;
-import com.jme.input.action.KeyNodeRotateRightAction;
+import com.jme.input.thirdperson.ThirdPersonBackwardAction;
+import com.jme.input.thirdperson.ThirdPersonForwardAction;
+import com.jme.input.thirdperson.ThirdPersonLeftAction;
+import com.jme.input.thirdperson.ThirdPersonRightAction;
+import com.jme.input.thirdperson.ThirdPersonStrafeLeftAction;
+import com.jme.input.thirdperson.ThirdPersonStrafeRightAction;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
+import com.jme.renderer.Camera;
 import com.jme.scene.Spatial;
 
 import de.mbws.client.MBWSClient;
@@ -23,13 +28,8 @@ import de.mbws.client.data.ClientPlayerData;
 import de.mbws.common.Globals;
 import de.mbws.common.events.EventTypes;
 
-public class TestGameHandler extends InputHandler {
+public class TestGameHandler extends ThirdPersonHandler {
 
-	private static final String STAND = "stand";
-	private static final String TURN_LEFT = "turnLeft";
-	private static final String TURN_RIGHT = "turnRight";
-	private static final String BACKWARD = "backward";
-	private static final String FORWARD = "forward";
 
 	private Spatial player;
 
@@ -41,28 +41,15 @@ public class TestGameHandler extends InputHandler {
 	 * @param api
 	 *            the library that will handle creation of the input.
 	 */
-	public TestGameHandler(Spatial node, String api) {
-
-		setKeyBindings(api);
-		setActions(node);
-		// setStatusRelatedKeys();
-		player = node;
+	public TestGameHandler(Spatial target, Camera cam, HashMap props) {
+		super(target,cam,props);
+		player = target;
+		updateKeyBindings(null);
 
 	}
+	
+	
 
-	// TODO: Kerim: eventually we should extend the existing actions instead of
-	// making a double binding to a key
-	// private void setStatusRelatedKeys() {
-	// KeyBindingManager.getKeyBindingManager().set("walk",
-	// KeyInput.KEY_W);
-	// addAction(new ForwardWalkAction(), "walk", false);
-	// }
-	//
-	// private static class ForwardWalkAction extends InputAction {
-	// public void performAction(InputActionEvent evt) {
-	// CharacterController.getInstance().startWalking();
-	// }
-	// }
 	/**
 	 * creates the keyboard object, allowing us to obtain the values of a
 	 * keyboard as keys are pressed. It then sets the actions to be triggered
@@ -70,44 +57,26 @@ public class TestGameHandler extends InputHandler {
 	 * 
 	 * @param api
 	 */
-	private void setKeyBindings(String api) {
+	public void updateKeyBindings(HashMap props) {
+		super.updateKeyBindings(props);
 		KeyBindingManager keyboard = KeyBindingManager.getKeyBindingManager();
-
-		keyboard.set(FORWARD, KeyInput.KEY_W);
-		keyboard.set(BACKWARD, KeyInput.KEY_S);
-		keyboard.set(TURN_RIGHT, KeyInput.KEY_D);
-		keyboard.set(TURN_LEFT, KeyInput.KEY_A);
 
 		// TODO make this cleaner later
 		keyboard.set("exit", KeyInput.KEY_ESCAPE);
-		addAction(new ExitAction(), "exit", false);
+		
 	}
 
-	/**
-	 * assigns action classes to triggers. These actions handle moving the node
-	 * forward, backward and rotating it.
-	 * 
-	 * @param node
-	 *            the node to control.
-	 */
-	private void setActions(Spatial node) {
-		KeyNodeForwardAction forward = new KeyNodeForwardAction(node, 30f);
-		addAction(forward, FORWARD, true);
-
-		KeyNodeBackwardAction backward = new KeyNodeBackwardAction(node, 15f);
-		addAction(backward, BACKWARD, true);
-
-		KeyNodeRotateRightAction rotateRight = new KeyNodeRotateRightAction(
-				node, 5f);
-		rotateRight.setLockAxis(node.getLocalRotation().getRotationColumn(1));
-		addAction(rotateRight, TURN_RIGHT, true);
-
-		KeyNodeRotateLeftAction rotateLeft = new KeyNodeRotateLeftAction(node,
-				5f);
-		rotateLeft.setLockAxis(node.getLocalRotation().getRotationColumn(1));
-		addAction(rotateLeft, TURN_LEFT, true);
-	}
-
+	protected void setActions() {
+        addAction( new ThirdPersonForwardAction( this, 30f ), PROP_KEY_FORWARD, true );
+        addAction( new ThirdPersonBackwardAction( this, 15f ), PROP_KEY_BACKWARD, true );
+        addAction( new ThirdPersonRightAction( this, 5f ), PROP_KEY_RIGHT, true );
+        addAction( new ThirdPersonLeftAction( this, 5f ), PROP_KEY_LEFT, true );
+        addAction( new ThirdPersonStrafeRightAction( this, 5f ), PROP_KEY_STRAFERIGHT, true );
+        addAction( new ThirdPersonStrafeLeftAction( this, 5f ), PROP_KEY_STRAFELEFT, true );
+        addAction( new ExitAction(), "exit", false);
+    }
+	
+	
 	public void update(float time) {
 		// //TODO: We only take care of walking at the moment
 		// 2 events ?? why ?
@@ -116,9 +85,9 @@ public class TestGameHandler extends InputHandler {
 		Vector3f location = player.getLocalTranslation();
 		Quaternion rotation = player.getLocalRotation();
 		boolean forward = KeyBindingManager.getKeyBindingManager()
-				.isValidCommand(FORWARD);
+				.isValidCommand(PROP_KEY_FORWARD);
 		boolean backward = KeyBindingManager.getKeyBindingManager()
-				.isValidCommand(BACKWARD);
+				.isValidCommand(PROP_KEY_BACKWARD);
 		int moveStatus = ClientPlayerData.getInstance().getPlayer()
 				.getMoveStatus();
 		// TODO: Refactor !
@@ -140,9 +109,9 @@ public class TestGameHandler extends InputHandler {
 			}
 		}
 		boolean turnLeft = KeyBindingManager.getKeyBindingManager()
-				.isValidCommand(TURN_LEFT);
+				.isValidCommand(PROP_KEY_LEFT);
 		boolean turnRight = KeyBindingManager.getKeyBindingManager()
-				.isValidCommand(TURN_RIGHT);
+				.isValidCommand(PROP_KEY_RIGHT);
 		if (!(turnRight && turnLeft)) {
 			int turnStatus = ClientPlayerData.getInstance().getPlayer()
 					.getTurnStatus();
