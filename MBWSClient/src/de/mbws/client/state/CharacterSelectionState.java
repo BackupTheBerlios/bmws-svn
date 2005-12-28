@@ -6,6 +6,7 @@ package de.mbws.client.state;
 import java.util.logging.Level;
 
 import javax.swing.JDesktopPane;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
@@ -106,6 +107,13 @@ public class CharacterSelectionState extends BaseGameState {
         desktopPane.revalidate();
     }
     
+    public void showPanelCentered(JPanel panel) {
+        JDesktopPane desktopPane = jmeDesktop.getJDesktop();
+        int x = (desktopPane.getWidth() /2) - (panel.getWidth()/2);
+        int y = (desktopPane.getHeight() /2) - (panel.getHeight()/2);
+        panel.setLocation(x,y);
+        desktopPane.add(panel);
+    }
 	/**
 	 * @see com.jme.app.StandardGameState#onActivate()
 	 */

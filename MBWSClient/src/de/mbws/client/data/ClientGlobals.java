@@ -18,4 +18,12 @@ public class ClientGlobals {
     public static final String MENU_BUTTON_CREATE_ACCOUNT = "menu.button.create.account";
     public static final String MENU_LABEL_USERNAME = "menu.label.username";
     public static final String MENU_LABEL_PASSWORD = "menu.label.password";
+    
+    public static final String CHARACTER_SELECTION_BUTTON_LOGOUT = "character.selection.button.logout";
+    public static final String CHARACTER_SELECTION_BUTTON_ENTER_WORLD = "character.selection.button.enterworld";
+    public static final String CHARACTER_SELECTION_BUTTON_CREATE_CHARACTER = "character.selection.button.createcharacter";
+    public static final String CHARACTER_SELECTION_BUTTON_DELETE_CHARACTER = "character.selection.button.deletecharacter";
+    public static final String CHARACTER_SELECTION_LABEL_MENUHEADER = "character.selection.label.menuheader";
+    
+    public static final String LOADING_SCREEN_LABEL = "loadingscreen.label";
 }

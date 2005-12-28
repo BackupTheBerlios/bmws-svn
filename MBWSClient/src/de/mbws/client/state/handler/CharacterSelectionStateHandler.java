@@ -114,4 +114,8 @@ public class CharacterSelectionStateHandler extends InputHandler implements
         return selectedCharacter;
     }
 
+    public CharacterSelectionState getState() {
+        return state;
+    }
+
 }
