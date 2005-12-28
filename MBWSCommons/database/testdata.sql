@@ -162,6 +162,19 @@ insert into language_text_mapping (id,text_key,languages_id,text) values (25,'me
 insert into language_text_mapping (id,text_key,languages_id,text) values (26,'menu.button.options',2,'Options');
 insert into language_text_mapping (id,text_key,languages_id,text) values (27,'menu.label.username',1,'Benutzername');
 insert into language_text_mapping (id,text_key,languages_id,text) values (28,'menu.label.username',2,'Username');
+insert into language_text_mapping (id,text_key,languages_id,text) values (29,'character.selection.button.logout',1,'Abmelden');
+insert into language_text_mapping (id,text_key,languages_id,text) values (30,'character.selection.button.logout',2,'Logout');
+insert into language_text_mapping (id,text_key,languages_id,text) values (31,'character.selection.button.enterworld',1,'Welt betreten');
+insert into language_text_mapping (id,text_key,languages_id,text) values (32,'character.selection.button.enterworld',2,'Enter World');
+insert into language_text_mapping (id,text_key,languages_id,text) values (33,'character.selection.button.createcharacter',1,'Erstellen');
+insert into language_text_mapping (id,text_key,languages_id,text) values (34,'character.selection.button.createcharacter',2,'Create');
+insert into language_text_mapping (id,text_key,languages_id,text) values (35,'character.selection.button.deletecharacter',1,'Löschen');
+insert into language_text_mapping (id,text_key,languages_id,text) values (36,'character.selection.button.deletecharacter',2,'Delete');
+insert into language_text_mapping (id,text_key,languages_id,text) values (37,'character.selection.label.menuheader',1,'Charakter Menu');
+insert into language_text_mapping (id,text_key,languages_id,text) values (38,'character.selection.label.menuheader',2,'Character Menu');
+insert into language_text_mapping (id,text_key,languages_id,text) values (39,'loadingscreen.label',1,'laden');
+insert into language_text_mapping (id,text_key,languages_id,text) values (40,'loadingscreen.label',2,'loading');
+
 
 #
 # Dumping data for table 'languages'
