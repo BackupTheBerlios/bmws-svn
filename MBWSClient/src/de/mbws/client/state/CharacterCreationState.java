@@ -7,7 +7,6 @@ import java.util.logging.Level;
 
 import com.jme.app.GameState;
 import com.jme.app.GameStateManager;
-import com.jme.app.StandardGameState;
 import com.jme.image.Texture;
 import com.jme.input.MouseInput;
 import com.jme.math.Vector3f;
@@ -15,7 +14,6 @@ import com.jme.renderer.Renderer;
 import com.jme.scene.shape.Quad;
 import com.jme.scene.state.LightState;
 import com.jme.scene.state.TextureState;
-import com.jme.system.DisplaySystem;
 import com.jme.util.LoggingSystem;
 import com.jme.util.TextureManager;
 import com.jmex.bui.BButton;
@@ -44,7 +42,7 @@ import de.mbws.client.gui.MenuLookAndFeel;
 /**
  * @author Kerim
  */
-public class CharacterCreationState extends StandardGameState {
+public class CharacterCreationState extends BaseGameState {
 
 	// /** THE CURSOR NODE WHICH HOLDS THE MOUSE GOTTEN FROM INPUT. */
 	// private Node cursor;
@@ -52,11 +50,6 @@ public class CharacterCreationState extends StandardGameState {
 	public static final String CREATE_CHARACTER = "CREATECHARACTER";
 	public static final String DELETE_CHARACTER = "DELETECHARACTER";
 	public static final String STARTGAME = "STARTGAME";
-
-	/** Our display system. */
-	private DisplaySystem display;
-
-	//private Text text;
 
 	//private CharacterSelectionStateHandler input;
 
@@ -81,8 +74,7 @@ public class CharacterCreationState extends StandardGameState {
 	public CharacterCreationState(String name) {
 		super(name);
 
-		display = DisplaySystem.getDisplaySystem();
-		initInput();
+//		display = DisplaySystem.getDisplaySystem();
 		initGUI();
 		initBUIGUI();
 		
@@ -93,8 +85,6 @@ public class CharacterCreationState extends StandardGameState {
 		rootNode.updateRenderState();
 		rootNode.updateGeometricState(0, true);
 	}
-
-
 
 	private void initBUIGUI() {
 		_root = new PolledRootNode(MBWSClient.timer, null);
@@ -182,13 +172,6 @@ public class CharacterCreationState extends StandardGameState {
 	}  
 
 	/**
-	 * Inits the input handler we will use for navigation of the menu.
-	 */
-	protected void initInput() {
-		//input = new CharacterSelectionStateHandler(this);
-	}
-
-	/**
 	 * Initializes the 2D Background and the Buttons
 	 */
 	private void initGUI() {
@@ -214,26 +197,15 @@ public class CharacterCreationState extends StandardGameState {
 		rootNode.attachChild(backgroundQuad);
 
 	}
-
-	/**
-	 * Updates input and button.
-	 * 
-	 * @param tpf
-	 *            The time since last frame.
-	 * @see GameState#update(float)
-	 */
-	protected void stateUpdate(float tpf) {
-		// input.update(tpf);
-		rootNode.updateGeometricState(tpf, true);
-	}
-
-	
-
-	
 	
 	public void returnToCharacterSelectionState() {
 		 GameState characterSelection = GameStateManager.getInstance().getChild("characterSelection");
 		 characterSelection.setActive(true);
 		 GameStateManager.getInstance().deactivateChildNamed("characterCreation");
 	}
+
+    @Override
+    protected void initInputHandler() {
+        
+    }
 }

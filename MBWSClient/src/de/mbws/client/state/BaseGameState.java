@@ -1,7 +1,9 @@
 package de.mbws.client.state;
 
+import javax.swing.JComponent;
+import javax.swing.JDesktopPane;
+
 import com.jme.app.BasicGameState;
-import com.jme.input.InputHandler;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 import com.jme.renderer.Renderer;
@@ -11,6 +13,8 @@ import com.jme.scene.state.LightState;
 import com.jme.scene.state.ZBufferState;
 import com.jme.system.DisplaySystem;
 import com.jmex.awt.swingui.JMEDesktop;
+
+import de.mbws.client.state.handler.BaseInputHandler;
 
 /**
  * BaseGameState for MBWS; We add a second node for the gui system (using JMEDesktop),
@@ -22,13 +26,13 @@ public abstract class BaseGameState extends BasicGameState {
 
     protected DisplaySystem display;
 
-    protected JMEDesktop jmeDesktop;
+    protected static JMEDesktop jmeDesktop;
 
     private Node desktopNode;
 
     private Node guiRootNode;
 
-    protected InputHandler input;
+    protected BaseInputHandler input;
 
     protected Camera cam;
 
@@ -58,17 +62,21 @@ public abstract class BaseGameState extends BasicGameState {
 //        } else {
 //            input.setEnabled(false);
 //        }
-        input.update(tpf);
+        if (input != null && isActive()) {
+            input.update(tpf);    
+        }
         guiRootNode.updateGeometricState(tpf, true);
     }
 
     private void initJMEDesktop() {
-        jmeDesktop = new JMEDesktop(name);
-        jmeDesktop.setup(display.getWidth(), display.getHeight(), false);
-        jmeDesktop.setLightCombineMode(LightState.OFF);
+        if (jmeDesktop == null) {
+            jmeDesktop = new JMEDesktop(name);
+            jmeDesktop.setup(display.getWidth(), display.getHeight(), false);
+            jmeDesktop.setLightCombineMode(LightState.OFF);           
+        }
         desktopNode = new Node("desktop node");
         desktopNode.attachChild(jmeDesktop);
-        guiRootNode.attachChild(desktopNode);
+        guiRootNode.attachChild(desktopNode); 
     }
 
     protected void fullScreen() {
@@ -103,11 +111,19 @@ public abstract class BaseGameState extends BasicGameState {
     }
 
     protected abstract void initInputHandler();
-
+    
+    public BaseInputHandler getInputHandler() {
+        return input;
+    }
+    
     public void setActive(boolean active) {
-        if (active)
+        if (active) {
             onActivate();
+        }
+        input.setEnabled(active);
+        jmeDesktop.getJDesktop().setEnabled(active);
         super.setActive(active);
+
     }
 
     @Override
@@ -118,5 +134,18 @@ public abstract class BaseGameState extends BasicGameState {
 
     protected void onActivate() {
         display.getRenderer().setCamera(cam);
+    }
+    
+    /**
+     * Shows a JPanel centered on the jmeDesktop
+     * @param panel
+     */
+    public void showComponentCenteredOnScreen(JComponent panel) {
+        JDesktopPane desktopPane = jmeDesktop.getJDesktop();
+        int x = (desktopPane.getWidth() /2) - (panel.getWidth()/2);
+        int y = (desktopPane.getHeight() /2) - (panel.getHeight()/2);
+        panel.setLocation(x,y);
+        desktopPane.add(panel);
+//        desktopPane.revalidate();
     }
 }

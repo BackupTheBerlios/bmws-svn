@@ -43,7 +43,7 @@ public class MBWSClient extends BaseGame {
 	/** Simply an easy way to get at timer.getTimePerFrame(). */
 	private float timePerFrame;
 
-	public static final String CLIENT = "MBWSClient Version: 0.1";
+	public static final String CLIENT = "MBWSClient";
 	public static ValueMapper languageResources;
     
 	public static ActionQueue actionQueue = new ActionQueue();

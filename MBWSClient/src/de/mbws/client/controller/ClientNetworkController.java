@@ -64,6 +64,7 @@ public class ClientNetworkController extends Thread {
 			}
 		} catch (Exception e) {
 			logger.error("Error in main loop", e);
+            running = false;
 		}
 	}
 

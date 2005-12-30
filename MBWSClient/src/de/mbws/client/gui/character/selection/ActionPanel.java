@@ -14,6 +14,7 @@ import javax.swing.SwingConstants;
 import com.jme.input.InputHandler;
 
 import de.mbws.client.ValueMapper;
+import de.mbws.client.controller.AccountController;
 import de.mbws.client.controller.CharacterController;
 import de.mbws.client.controller.ClientNetworkController;
 import de.mbws.client.data.ClientGlobals;
@@ -22,20 +23,28 @@ import de.mbws.client.state.handler.CharacterSelectionStateHandler;
 import de.mbws.common.eventdata.generated.CharacterData;
 
 /**
- * Description: 
+ * Description:
+ * 
  * @author Azarai
- *
  */
-public class ActionPanel extends JPanel implements PropertyChangeListener{
+public class ActionPanel extends JPanel implements PropertyChangeListener {
 
     private JButton startGameButton = null;
+
     private final static Color buttonBackground = new Color(155, 0, 7);
+
     private JLabel characterNameLabel = null;
+
     InputHandler inputHandler;
+
     CharacterData selectedCharacter = null;
+
     private JPanel buttonPanel = null;
+
     private JPanel rightPanel = null;
+
     private JButton exitButton = null;
+
     /**
      * This is the default constructor
      */
@@ -52,7 +61,7 @@ public class ActionPanel extends JPanel implements PropertyChangeListener{
      */
     private void initialize() {
         this.setOpaque(false);
-//        this.setBackground(new Color(0, 0, 0, 0.2f));
+        // this.setBackground(new Color(0, 0, 0, 0.2f));
         characterNameLabel = new JLabel();
         characterNameLabel.setForeground(Color.ORANGE);
         characterNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -60,7 +69,7 @@ public class ActionPanel extends JPanel implements PropertyChangeListener{
         characterNameLabel.setText("");
         characterNameLabel.setFont(characterNameLabel.getFont().deriveFont(30F));
         this.setSize(400, 80);
-        this.setLayout(new GridLayout(2,3, 0, 0));
+        this.setLayout(new GridLayout(2, 3, 0, 0));
         this.add(new JLabel(""));
         this.add(characterNameLabel, null);
         this.add(new JLabel(""));
@@ -70,9 +79,9 @@ public class ActionPanel extends JPanel implements PropertyChangeListener{
     }
 
     /**
-     * This method initializes startGameButton	
-     * 	
-     * @return javax.swing.JButton	
+     * This method initializes startGameButton
+     * 
+     * @return javax.swing.JButton
      */
     private JButton getStartGameButton() {
         if (startGameButton == null) {
@@ -82,18 +91,16 @@ public class ActionPanel extends JPanel implements PropertyChangeListener{
             startGameButton.setBackground(buttonBackground);
             startGameButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    getInputHandler().getState().showPanelCentered(new LoadingPanel());
-                    ClientNetworkController.getInstance()
-                    .handleOutgoingEvent(
-                            CharacterController.getInstance()
-                                    .createCharacterStartPlayingEvent(
-                                            selectedCharacter.getCharacterID()));
+                    getInputHandler().getState().showComponentCenteredOnScreen(new LoadingPanel());
+                    ClientNetworkController.getInstance().handleOutgoingEvent(
+                            CharacterController.getInstance().createCharacterStartPlayingEvent(selectedCharacter.getCharacterID()));
                 }
             });
             startGameButton.setSize(startGameButton.getPreferredSize());
         }
         return startGameButton;
     }
+
     private CharacterSelectionStateHandler getInputHandler() {
         return (CharacterSelectionStateHandler) inputHandler;
     }
@@ -106,9 +113,9 @@ public class ActionPanel extends JPanel implements PropertyChangeListener{
     }
 
     /**
-     * This method initializes buttonPanel	
-     * 	
-     * @return javax.swing.JPanel	
+     * This method initializes buttonPanel
+     * 
+     * @return javax.swing.JPanel
      */
     private JPanel getButtonPanel() {
         if (buttonPanel == null) {
@@ -120,20 +127,16 @@ public class ActionPanel extends JPanel implements PropertyChangeListener{
     }
 
     /**
-     * This method initializes rightPanel	
-     * 	
-     * @return javax.swing.JPanel	
+     * This method initializes rightPanel
+     * 
+     * @return javax.swing.JPanel
      */
     private JPanel getRightPanel() {
         if (rightPanel == null) {
             rightPanel = new JPanel();
             SpringLayout l = new SpringLayout();
-            l.putConstraint(SpringLayout.EAST,getExitButton() ,
-                    5,
-                    SpringLayout.EAST, rightPanel);
-            l.putConstraint(SpringLayout.NORTH,getExitButton() ,
-                    5,
-                    SpringLayout.NORTH, rightPanel);
+            l.putConstraint(SpringLayout.EAST, getExitButton(), 5, SpringLayout.EAST, rightPanel);
+            l.putConstraint(SpringLayout.NORTH, getExitButton(), 5, SpringLayout.NORTH, rightPanel);
             rightPanel.setLayout(l);
             rightPanel.setOpaque(false);
             rightPanel.add(getExitButton());
@@ -142,9 +145,9 @@ public class ActionPanel extends JPanel implements PropertyChangeListener{
     }
 
     /**
-     * This method initializes exitButton	
-     * 	
-     * @return javax.swing.JButton	
+     * This method initializes exitButton
+     * 
+     * @return javax.swing.JButton
      */
     private JButton getExitButton() {
         if (exitButton == null) {
@@ -155,10 +158,11 @@ public class ActionPanel extends JPanel implements PropertyChangeListener{
             exitButton.setMaximumSize(exitButton.getPreferredSize());
             exitButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-//                    System.exit(0);
+                    ClientNetworkController.getInstance().handleOutgoingEvent(
+                            AccountController.getInstance().createLogoutEvent());
                 }
             });
         }
         return exitButton;
     }
-}  //  @jve:decl-index=0:visual-constraint="10,10"
+} // @jve:decl-index=0:visual-constraint="10,10"

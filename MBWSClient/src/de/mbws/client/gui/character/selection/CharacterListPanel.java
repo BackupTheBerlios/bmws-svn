@@ -23,8 +23,11 @@ import javax.swing.event.ListSelectionListener;
 
 import de.mbws.client.ValueMapper;
 import de.mbws.client.data.ClientGlobals;
+import de.mbws.client.state.handler.CharacterSelectionStateHandler;
 import de.mbws.common.eventdata.generated.CharacterData;
 import javax.swing.JLabel;
+
+import com.jme.input.InputHandler;
 
 /**
  * Description:
@@ -51,11 +54,13 @@ public class CharacterListPanel extends JPanel implements PropertyChangeListener
     private JLabel headerLabel = null;
 
     private JPanel headerPanel = null;
+    InputHandler inputHandler;
     /**
      * This is the default constructor
      */
-    public CharacterListPanel(List<CharacterData> allCharacters) {
+    public CharacterListPanel(List<CharacterData> allCharacters, InputHandler inputHandler) {
         super();
+        this.inputHandler = inputHandler;
         this.allCharacters = allCharacters;
         initialize();
     }
@@ -152,11 +157,12 @@ private JList getCharacterList() {
             createButton.setText(ValueMapper.getText(ClientGlobals.CHARACTER_SELECTION_BUTTON_CREATE_CHARACTER));
             createButton.setBackground(buttonBackground);
             createButton.setSize(createButton.getPreferredSize());
-            createButton.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    System.out.println("switch to characterCreationState");
-                }
-            });
+            createButton.addActionListener(getInputHandler());
+//            {
+//                public void actionPerformed(java.awt.event.ActionEvent e) {
+//                    getInputHandler().startCharacterCreationState();
+//                }
+//            });
         }
         return createButton;
     }
@@ -203,5 +209,9 @@ private JList getCharacterList() {
             headerPanel.add(headerLabel);
         }
         return headerPanel;
+    }
+    
+    private CharacterSelectionStateHandler getInputHandler() {
+        return (CharacterSelectionStateHandler) inputHandler;
     }
 } // @jve:decl-index=0:visual-constraint="10,10"

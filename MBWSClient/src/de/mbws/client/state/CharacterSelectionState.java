@@ -6,11 +6,9 @@ package de.mbws.client.state;
 import java.util.logging.Level;
 
 import javax.swing.JDesktopPane;
-import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import com.jme.app.GameState;
 import com.jme.image.Texture;
 import com.jme.input.MouseInput;
 import com.jme.math.Vector3f;
@@ -18,15 +16,8 @@ import com.jme.renderer.Renderer;
 import com.jme.scene.shape.Quad;
 import com.jme.scene.state.LightState;
 import com.jme.scene.state.TextureState;
-import com.jme.system.DisplaySystem;
 import com.jme.util.LoggingSystem;
 import com.jme.util.TextureManager;
-import com.jmex.bui.BButton;
-import com.jmex.bui.BContainer;
-import com.jmex.bui.BLookAndFeel;
-import com.jmex.bui.BRootNode;
-import com.jmex.bui.BTextArea;
-import com.jmex.bui.BWindow;
 
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.gui.character.selection.ActionPanel;
@@ -45,27 +36,10 @@ public class CharacterSelectionState extends BaseGameState {
 	public static final String DELETE_CHARACTER = "DELETECHARACTER";
 	public static final String STARTGAME = "STARTGAME";
 
-    //private Text text;
-
-    BRootNode _root;
-	public BWindow characterWindow;
-	BContainer cont;
-
-	BWindow controllWindow;
-	BContainer controllContainer;
-	// BWindow characterWindow;
-	BLookAndFeel lnf;
-
-	public BButton startGameBtn;
-	public BButton deleteBtn;
-	public BButton createBtn;
-
-	BTextArea characterDescription;
-
 	public CharacterSelectionState(String name) {
 		super(name);
 
-		display = DisplaySystem.getDisplaySystem();
+//		display = DisplaySystem.getDisplaySystem();
 		initInput();
 		initGUI();
         setupMenu();
@@ -89,6 +63,7 @@ public class CharacterSelectionState extends BaseGameState {
         
 //        jmeDesktop.getJDesktop().setBackground(new Color(1, 1, 1, 0.2f));
         JDesktopPane desktopPane = jmeDesktop.getJDesktop();
+        desktopPane.removeAll();
         ActionPanel actionPanel = new ActionPanel(getInputHandler());
         int x = (desktopPane.getWidth() /2) - (actionPanel.getWidth()/2);
         int y = desktopPane.getHeight() - actionPanel.getHeight();
@@ -97,7 +72,7 @@ public class CharacterSelectionState extends BaseGameState {
         desktopPane.add(actionPanel);
         
         CharacterListPanel clp = new CharacterListPanel(ClientPlayerData
-                .getInstance().getAllCharactersOfPlayer());
+                .getInstance().getAllCharactersOfPlayer(), getInputHandler());
         clp.addPropertyChangeListener(CharacterListPanel.CHARACTER_SELECTION_CHANGE, actionPanel);
         clp.setSize(200, desktopPane.getHeight() - (desktopPane.getHeight()/4));
         clp.setLocation(desktopPane.getWidth() - clp.getWidth(), 0);
@@ -107,13 +82,6 @@ public class CharacterSelectionState extends BaseGameState {
         desktopPane.revalidate();
     }
     
-    public void showPanelCentered(JPanel panel) {
-        JDesktopPane desktopPane = jmeDesktop.getJDesktop();
-        int x = (desktopPane.getWidth() /2) - (panel.getWidth()/2);
-        int y = (desktopPane.getHeight() /2) - (panel.getHeight()/2);
-        panel.setLocation(x,y);
-        desktopPane.add(panel);
-    }
 	/**
 	 * @see com.jme.app.StandardGameState#onActivate()
 	 */
@@ -156,28 +124,8 @@ public class CharacterSelectionState extends BaseGameState {
 
 	}
 
-	/**
-	 * Updates input and button.
-	 * 
-	 * @param tpf
-	 *            The time since last frame.
-	 * @see GameState#update(float)
-	 */
-	protected void stateUpdate(float tpf) {
-		// input.update(tpf);
-		rootNode.updateGeometricState(tpf, true);
-	}
-
 	public CharacterSelectionStateHandler getInputHandler() {
 		return (CharacterSelectionStateHandler) input;
-	}
-
-	public BTextArea getCharacterDescription() {
-		return characterDescription;
-	}
-
-	public void setCharacterDescription(BTextArea characterDescription) {
-		this.characterDescription = characterDescription;
 	}
 
     @Override

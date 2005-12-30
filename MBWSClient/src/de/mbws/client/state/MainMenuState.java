@@ -3,9 +3,14 @@
  */
 package de.mbws.client.state;
 
+import java.awt.Component;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyVetoException;
 import java.util.logging.Level;
 
 import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.metal.MetalLookAndFeel;
@@ -14,7 +19,6 @@ import com.jme.image.Texture;
 import com.jme.input.MouseInput;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Renderer;
-import com.jme.scene.Text;
 import com.jme.scene.shape.Quad;
 import com.jme.scene.state.LightState;
 import com.jme.scene.state.TextureState;
@@ -32,7 +36,7 @@ public class MainMenuState extends BaseGameState {
     // /** THE CURSOR NODE WHICH HOLDS THE MOUSE GOTTEN FROM INPUT. */
     // private Node cursor;
 
-    private Text text;
+    LoginPanel loginPanel;
 
     // private int musicID;
 
@@ -49,9 +53,8 @@ public class MainMenuState extends BaseGameState {
         // SoundSystem.playStream(musicID);
         // }
         initGUI();
-        initText();
         // initCursor();
-       
+
         MouseInput.get().setCursorVisible(true);
         setupMenu();
 
@@ -63,18 +66,20 @@ public class MainMenuState extends BaseGameState {
 
     private void setupMenu() {
         try {
-            UIManager.setLookAndFeel(new MetalLookAndFeel());    
+            UIManager.setLookAndFeel(new MetalLookAndFeel());
         } catch (Exception e) {
             // TODO: handle exception
         }
-        
-//        jmeDesktop.getJDesktop().setBackground(new Color(1, 1, 1, 0.2f));
+
+        // jmeDesktop.getJDesktop().setBackground(new Color(1, 1, 1, 0.2f));
         JDesktopPane desktopPane = jmeDesktop.getJDesktop();
-        LoginPanel loginPanel = new LoginPanel(getInputHandler());
-        int x = (desktopPane.getWidth() /2) - (loginPanel.getWidth()/2);
-        int y = (desktopPane.getHeight() /2) - (loginPanel.getHeight()/2);
-        loginPanel.setLocation(x,y);
+        desktopPane.removeAll();
+        loginPanel = new LoginPanel(getInputHandler());
+        int x = (desktopPane.getWidth() / 2) - (loginPanel.getWidth() / 2);
+        int y = (desktopPane.getHeight() / 2) - (loginPanel.getHeight() / 2);
+        loginPanel.setLocation(x, y);
         desktopPane.add(loginPanel);
+        desktopPane.setLayer(loginPanel, 0);
         desktopPane.repaint();
         desktopPane.revalidate();
     }
@@ -139,19 +144,53 @@ public class MainMenuState extends BaseGameState {
 
     }
 
-    /**
-     * Inits the button placed at the center of the screen.
-     */
-    private void initText() {
-        text = Text.createDefaultTextLabel("menu");
-        text.print("press esc (exit) or click (next step)");
-        text.getLocalTranslation().set(0, 100, 0);
-
-        rootNode.attachChild(text);
+    public void displayInfo(String message) {
+        displayOptionPane(message, JOptionPane.INFORMATION_MESSAGE);
     }
+    
+    public void displayError(String message) {
+        displayOptionPane(message, JOptionPane.ERROR_MESSAGE);
+    }
+    
+    private void displayOptionPane(String message, int type) {
+        final JDesktopPane desktop = jmeDesktop.getJDesktop();
+        JOptionPane options = new JOptionPane(message, type);
+        final JInternalFrame internalFrame = new JInternalFrame();
+        internalFrame.setBorder(null);
+        internalFrame.putClientProperty("JInternalFrame.isPalette", Boolean.TRUE);
+        internalFrame.setVisible(true);
+        internalFrame.getContentPane().add(options);
+        desktop.setLayer(internalFrame, 255);
 
-    public void displayInfo(String info) {
-        JOptionPane.showMessageDialog(jmeDesktop.getJDesktop(), info);
+        Component[] c = desktop.getComponents();
+        for (int i = 0; i < c.length; i++) {
+            if (desktop.getLayer(c[i]) < 255) {
+                c[i].setEnabled(false);
+            }
+        }
+        options.addPropertyChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent event) {
+                if (internalFrame.isVisible()
+                        && (event.getPropertyName().equals(JOptionPane.VALUE_PROPERTY) || event.getPropertyName().equals(
+                                JOptionPane.INPUT_VALUE_PROPERTY))) {
+                    try {
+                        internalFrame.setClosed(true);
+                        Component[] c = desktop.getComponents();
+                        for (int i = 0; i < c.length; i++) {
+                            if (desktop.getLayer(c[i]) < 255) {
+                                c[i].setEnabled(true);
+                            }
+                        }
+                    } catch (PropertyVetoException ignored) {
+                    }
+                    internalFrame.setVisible(false);
+                }
+            }
+        });
+        internalFrame.pack();
+        showComponentCenteredOnScreen(internalFrame);
+        internalFrame.requestFocus();
+//        jmeDesktop.setFocusOwner(internalFrame);
     }
 
     public MainMenuHandler getInputHandler() {

@@ -73,13 +73,13 @@ public class ClientGameEventActionFactory {
 		if (eventKey == EventTypes.C2S_LOGIN) {
 			event = new LoginEvent(payload);
 		} else if (eventKey == EventTypes.S2C_LOGIN_FAILED) {
-			event = new LoginEvent(payload);
+			event = new LoginEvent(payload, null);
 		} else if (eventKey == EventTypes.S2C_LOGIN_OK) {
-			event = new LoginEvent(payload);
+			event = new LoginEvent(payload, null);
 		} else if (eventKey == EventTypes.C2S_LOGOUT) {
 			event = new LoginEvent(payload);
 		} else if (eventKey == EventTypes.S2C_LOGOUT_OK) {
-			event = new LoginEvent(payload);
+			event = new LoginEvent(payload, null);
 		} else if (eventKey == EventTypes.C2S_ACCOUNT_CREATE) {
 			event = new AccountEvent(payload);
 		} else if (eventKey == EventTypes.S2C_ACCOUNT_CREATE_FAIL) {

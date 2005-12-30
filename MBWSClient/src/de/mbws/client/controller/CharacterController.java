@@ -12,6 +12,7 @@ import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.data.Player;
 import de.mbws.client.state.CharacterSelectionState;
 import de.mbws.client.state.MainMenuState;
+import de.mbws.client.state.handler.BaseInputHandler;
 import de.mbws.common.data.generated.CharacterStatus;
 import de.mbws.common.data.generated.CharacterVisualappearance;
 import de.mbws.common.data.generated.Characterdata;
@@ -83,7 +84,7 @@ public class CharacterController {
 			logger
 					.info("retrieved all existing characters, going into selectionstate");
 			((MainMenuState) GameStateManager.getInstance().getChild("menu"))
-					.getInputHandler().setStartNextState(true);
+					.getInputHandler().requestStateSwitch(BaseInputHandler.GAMESTATE_CHARACTER_SELECTION);
 		} else if (event.getEventType() == EventTypes.S2C_CHARACTER_ENTERS_WORLD){ //) {
 			logger.info("Start gameplay!");
 			Player player = new Player(event.getCharacterDetails().getDescription().getCharacterID());
@@ -105,7 +106,7 @@ public class CharacterController {
 			ClientPlayerData.getInstance().setPlayer(player);
 			logger.info("setting flag to start next state");
 			((CharacterSelectionState) GameStateManager.getInstance().getChild(
-					"characterSelection")).getInputHandler().setStartGame(true);
+					"characterSelection")).getInputHandler().requestStateSwitch(BaseInputHandler.GAMESTATE_INGAME);
 		}
 	}
 
