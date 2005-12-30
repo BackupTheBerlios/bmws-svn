@@ -46,7 +46,7 @@ public class GameEventFactory {
         } else if (eventKey == EventTypes.S2C_CHARACTER_START_PLAYING) {
             event = new CharacterEvent(payload, new CharacterSelection());
         } else if (eventKey == EventTypes.C2S_CHARACTER_LIST_RECEIVE_REQUEST) {
-            event = new CharacterEvent(payload);
+            event = new CharacterEvent(payload, null);
         } else if (eventKey == EventTypes.C2S_CHARACTER_ENTERS_WORLD_REQUEST) {
             event = new CharacterEvent(payload, new CharacterSelection());
         } else if (eventKey == EventTypes.S2C_CHARACTER_ENTERS_WORLD) {
@@ -81,6 +81,7 @@ public class GameEventFactory {
             event.setEventType(eventKey);
 			event.setPlayer(p);
 		}
+        payload.clear();
 		return event;
 	}
 }
