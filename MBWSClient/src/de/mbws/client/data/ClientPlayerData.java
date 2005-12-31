@@ -3,7 +3,6 @@ package de.mbws.client.data;
 import java.util.List;
 
 import de.mbws.common.data.AbstractPlayerData;
-import de.mbws.common.data.generated.Characterdata;
 import de.mbws.common.eventdata.generated.CharacterData;
 
 /**
@@ -15,7 +14,7 @@ public class ClientPlayerData extends AbstractPlayerData {
 
 	private static ClientPlayerData instance;
 	
-	private Characterdata characterData;
+	private CharacterData selectedCharacterData;
 	private Player player;
 	private List<CharacterData> allCharactersOfPlayer;
 	
@@ -34,12 +33,6 @@ public class ClientPlayerData extends AbstractPlayerData {
 		}
 		return instance;
 	}
-	public Characterdata getCharacterData() {
-		return characterData;
-	}
-	public void setCharacterData(Characterdata characterData) {
-		this.characterData = characterData;
-	}
 	
 	public void setPlayer(Player aPlayer) {
 		this.player = aPlayer;
@@ -47,5 +40,11 @@ public class ClientPlayerData extends AbstractPlayerData {
 	
 	public Player getPlayer() {
 		return player;
+	}
+	public CharacterData getSelectedCharacterData() {
+		return selectedCharacterData;
+	}
+	public void setSelectedCharacterData(CharacterData selectedCharacterData) {
+		this.selectedCharacterData = selectedCharacterData;
 	}
 }

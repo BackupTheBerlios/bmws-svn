@@ -6,6 +6,7 @@ package de.mbws.client.state;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -84,9 +85,9 @@ public class TestGameState extends StandardGameState {
 		// build the chase cam
 		buildChaseCamera();
 		// build the player input
-		//buildInput();
+		// buildInput();
 		// build trees
-		//buildSkyBox();
+		// buildSkyBox();
 
 		// update the scene graph for rendering
 		rootNode.updateGeometricState(0.0f, true);
@@ -95,8 +96,8 @@ public class TestGameState extends StandardGameState {
 	}
 
 	private void buildInput() {
-		//input = new TestGameHandler(player, null);
-		//input.setActionSpeed(250.0f);
+		// input = new TestGameHandler(player, null);
+		// input.setActionSpeed(250.0f);
 	}
 
 	/**
@@ -121,7 +122,7 @@ public class TestGameState extends StandardGameState {
 		// and 2x larger z. Our map's origin will be the regular origin, and it
 		// won't create an
 		// AreaClodMesh from it.
-		TerrainBlock tb = new TerrainBlock("block", 256, new Vector3f(1, 1, 1),
+		TerrainBlock tb = new TerrainBlock("block", 256, new Vector3f(5, 5, 5),
 				rhm.getHeightMap(), new Vector3f(0, 0, 0), false);
 
 		URL grass = TestGameState.class.getClassLoader().getResource(
@@ -146,9 +147,9 @@ public class TestGameState extends StandardGameState {
 		tb.setModelBound(new BoundingBox());
 		tb.updateModelBound();
 		Vector3f location = new Vector3f(ClientPlayerData.getInstance()
-				.getCharacterData().getCharacterStatus().getCoordinateX(), -0,
-				ClientPlayerData.getInstance().getCharacterData()
-						.getCharacterStatus().getCoordinateZ());
+				.getSelectedCharacterData().getLocation().getX(), -0,
+				ClientPlayerData.getInstance().getSelectedCharacterData()
+						.getLocation().getZ());
 		tb.setLocalTranslation(location);
 		// Attach the terrain TriMesh to our rootNode
 		rootNode.attachChild(tb);
@@ -168,41 +169,40 @@ public class TestGameState extends StandardGameState {
 		skybox.setTexture(Skybox.UP, texture);
 		skybox.setTexture(Skybox.DOWN, texture);
 		skybox.preloadTextures();
-		skybox.setLocalTranslation(new Vector3f(0,0,0));
+		skybox.setLocalTranslation(new Vector3f(0, 0, 0));
 		rootNode.attachChild(skybox);
 
 	}
 
 	private void buildEnvironment() {
-//		try {
-//			MaxToJme C1 = new MaxToJme();
-//			ByteArrayOutputStream BO = new ByteArrayOutputStream();
-//			URL maxFile = TestGameState.class.getClassLoader().getResource(
-//					"resources/models/crypt3.3ds");
-//			C1.convert(new BufferedInputStream(maxFile.openStream()), BO);
-//			JmeBinaryReader jbr = new JmeBinaryReader();
-//			jbr.setProperty("bound", "box");
-//			Node r = jbr.loadBinaryFormat(new ByteArrayInputStream(BO
-//					.toByteArray()));
-//			// TODO: Skaling is not used correctly here
-//			r.setLocalScale(.01f);
-//			// TODO: Tree says it needs no rotationchange
-//			Quaternion temp = new Quaternion();
-//			temp.fromAngleAxis(FastMath.PI / 2, new Vector3f(-1, 0, 0));
-//			// // <POSITION X="9.301813" Y="2.130375" HEIGHT="-0.393879"/>
-//			r.setLocalTranslation(new Vector3f(20f, 0f, 20f));
-//			r.setLocalRotation(temp);
-//			rootNode.attachChild(r);
-//		} catch (IOException e) {
-//			System.out.println("Damn exceptions:" + e);
-//			e.printStackTrace();
-//		}
+		// try {
+		// MaxToJme C1 = new MaxToJme();
+		// ByteArrayOutputStream BO = new ByteArrayOutputStream();
+		// URL maxFile = TestGameState.class.getClassLoader().getResource(
+		// "resources/models/crypt3.3ds");
+		// C1.convert(new BufferedInputStream(maxFile.openStream()), BO);
+		// JmeBinaryReader jbr = new JmeBinaryReader();
+		// jbr.setProperty("bound", "box");
+		// Node r = jbr.loadBinaryFormat(new ByteArrayInputStream(BO
+		// .toByteArray()));
+		// // TODO: Skaling is not used correctly here
+		// r.setLocalScale(.01f);
+		// // TODO: Tree says it needs no rotationchange
+		// Quaternion temp = new Quaternion();
+		// temp.fromAngleAxis(FastMath.PI / 2, new Vector3f(-1, 0, 0));
+		// // // <POSITION X="9.301813" Y="2.130375" HEIGHT="-0.393879"/>
+		// r.setLocalTranslation(new Vector3f(20f, 0f, 20f));
+		// r.setLocalRotation(temp);
+		// rootNode.attachChild(r);
+		// } catch (IOException e) {
+		// System.out.println("Damn exceptions:" + e);
+		// e.printStackTrace();
+		// }
 
 		try {
 			MaxToJme C1 = new MaxToJme();
 			ByteArrayOutputStream BO = new ByteArrayOutputStream();
-			URL maxFile = TestGameState.class.getClassLoader().getResource(
-					"resources/models/dec_autumn01.3ds");
+			URL maxFile = new File("data/plants/treernd4.3ds").toURL();
 			C1.convert(new BufferedInputStream(maxFile.openStream()), BO);
 			JmeBinaryReader jbr = new JmeBinaryReader();
 			jbr.setProperty("bound", "box");
@@ -269,7 +269,6 @@ public class TestGameState extends StandardGameState {
 			targetOffset.y = ((BoundingSphere) player.getWorldBound()).radius * 1.5f;
 		}
 
-
 		HashMap handlerProps = new HashMap();
 		handlerProps.put(ThirdPersonHandler.PROP_ROTATEONLY, "true");
 		handlerProps.put(ThirdPersonHandler.PROP_DOGRADUAL, "true");
@@ -278,30 +277,39 @@ public class TestGameState extends StandardGameState {
 		handlerProps.put(ThirdPersonHandler.PROP_STRAFETARGETALIGN, "true");
 		handlerProps.put(ThirdPersonHandler.PROP_CAMERAALIGNEDMOVE, "false");
 
-		handlerProps.put(ThirdPersonHandler.PROP_KEY_FORWARD, ""+KeyInput.KEY_W);
-		handlerProps.put(ThirdPersonHandler.PROP_KEY_LEFT, ""+KeyInput.KEY_A);
-		handlerProps.put(ThirdPersonHandler.PROP_KEY_BACKWARD, ""+KeyInput.KEY_S);
-		handlerProps.put(ThirdPersonHandler.PROP_KEY_RIGHT, ""+KeyInput.KEY_D);
-		handlerProps.put(ThirdPersonHandler.PROP_KEY_STRAFELEFT, ""+KeyInput.KEY_Q);
-		handlerProps.put(ThirdPersonHandler.PROP_KEY_STRAFERIGHT, ""+KeyInput.KEY_E);
-		//input = new TestGameHandler(player, cam, handlerProps);
+		handlerProps.put(ThirdPersonHandler.PROP_KEY_FORWARD, ""
+				+ KeyInput.KEY_W);
+		handlerProps.put(ThirdPersonHandler.PROP_KEY_LEFT, "" + KeyInput.KEY_A);
+		handlerProps.put(ThirdPersonHandler.PROP_KEY_BACKWARD, ""
+				+ KeyInput.KEY_S);
+		handlerProps
+				.put(ThirdPersonHandler.PROP_KEY_RIGHT, "" + KeyInput.KEY_D);
+		handlerProps.put(ThirdPersonHandler.PROP_KEY_STRAFELEFT, ""
+				+ KeyInput.KEY_Q);
+		handlerProps.put(ThirdPersonHandler.PROP_KEY_STRAFERIGHT, ""
+				+ KeyInput.KEY_E);
+		// input = new TestGameHandler(player, cam, handlerProps);
 		input = new TestGameHandler(player, cam, handlerProps);
-		
-		//input = new ThirdPersonHandler(player, cam, handlerProps);
+
+		// input = new ThirdPersonHandler(player, cam, handlerProps);
 		input.setActionSpeed(250.0f);
 
 		HashMap chaserProps = new HashMap();
-//		chaserProps.put(ChaseCamera.PROP_ENABLESPRING, "true");
-//		chaserProps.put(ChaseCamera.PROP_DAMPINGK, "55.0");
-//		chaserProps.put(ChaseCamera.PROP_SPRINGK, "756.25");
+		// chaserProps.put(ChaseCamera.PROP_ENABLESPRING, "true");
+		// chaserProps.put(ChaseCamera.PROP_DAMPINGK, "55.0");
+		// chaserProps.put(ChaseCamera.PROP_SPRINGK, "756.25");
 		chaserProps.put(ChaseCamera.PROP_MAXDISTANCE, "0.0");
 		chaserProps.put(ChaseCamera.PROP_MINDISTANCE, "0.0");
-		chaserProps.put(ChaseCamera.PROP_INITIALSPHERECOORDS, new Vector3f(65.0f, 0f, FastMath.DEG_TO_RAD * 12.0f));
+		chaserProps.put(ChaseCamera.PROP_INITIALSPHERECOORDS, new Vector3f(
+				65.0f, 0f, FastMath.DEG_TO_RAD * 12.0f));
 		chaserProps.put(ChaseCamera.PROP_STAYBEHINDTARGET, "true");
-		chaserProps.put(ChaseCamera.PROP_TARGETOFFSET, new Vector3f(0f, targetOffset.y, 0f));
+		chaserProps.put(ChaseCamera.PROP_TARGETOFFSET, new Vector3f(0f,
+				targetOffset.y, 0f));
 		chaserProps.put(ThirdPersonMouseLook.PROP_ENABLED, "true");
-		chaserProps.put(ThirdPersonMouseLook.PROP_MAXASCENT, "" + FastMath.DEG_TO_RAD * 85);
-		chaserProps.put(ThirdPersonMouseLook.PROP_MINASCENT, "" + FastMath.DEG_TO_RAD * -15);
+		chaserProps.put(ThirdPersonMouseLook.PROP_MAXASCENT, ""
+				+ FastMath.DEG_TO_RAD * 85);
+		chaserProps.put(ThirdPersonMouseLook.PROP_MINASCENT, ""
+				+ FastMath.DEG_TO_RAD * -15);
 		chaserProps.put(ThirdPersonMouseLook.PROP_INVERTEDY, "false");
 		chaserProps.put(ThirdPersonMouseLook.PROP_ROTATETARGET, "false");
 		chaserProps.put(ThirdPersonMouseLook.PROP_MINROLLOUT, "6.2831855");
@@ -312,9 +320,9 @@ public class TestGameState extends StandardGameState {
 		chaserProps.put(ThirdPersonMouseLook.PROP_LOCKASCENT, "true");
 		chaser = new ChaseCamera(cam, player, chaserProps);
 		chaser.setActionSpeed(1.0f);
-		
-//		chaser = new ChaseCamera(cam, player, props);
-//		chaser.setActionSpeed(10000f);
+
+		// chaser = new ChaseCamera(cam, player, props);
+		// chaser.setActionSpeed(10000f);
 	}
 
 	/**
@@ -334,10 +342,10 @@ public class TestGameState extends StandardGameState {
 		// update the chase camera to handle the player moving around.
 		chaser.update(tpf);
 
-//		// TODO Fix the height and set it somewhere else !!
-//		float camMinHeightPlayer = player.getWorldTranslation().y + 20f;
-//		cam.getLocation().y = camMinHeightPlayer;
-//		cam.update();
+		// // TODO Fix the height and set it somewhere else !!
+		// float camMinHeightPlayer = player.getWorldTranslation().y + 20f;
+		// cam.getLocation().y = camMinHeightPlayer;
+		// cam.update();
 
 		AbstractEventAction action = actionQueue.deQueue();
 
@@ -364,11 +372,10 @@ public class TestGameState extends StandardGameState {
 	 * @param tpf
 	 *            The time since the last frame.
 	 */
-//	protected void stateRender(float tpf) {
-//		display.getRenderer().clearBuffers();
-//		super.stateRender(tpf);
-//	}
-
+	// protected void stateRender(float tpf) {
+	// display.getRenderer().clearBuffers();
+	// super.stateRender(tpf);
+	// }
 	/**
 	 * @see com.jme.app.StandardGameState#onActivate()
 	 */

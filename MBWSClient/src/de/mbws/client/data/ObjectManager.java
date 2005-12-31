@@ -27,15 +27,16 @@ import com.jmex.model.XMLparser.JmeBinaryReader;
 import com.jmex.model.animation.JointController;
 import com.jmex.model.animation.KeyframeController;
 
-import de.mbws.common.data.generated.CharacterVisualappearance;
+import de.mbws.common.eventdata.generated.CharacterVisualAppearance;
 import de.mbws.common.eventdata.generated.WorldObject;
 
 public class ObjectManager {
 
-	private static final String TEXTURE_BASE_PATH = "resources/textures/";
-	private static final String MODEL_BASE_PATH = "resources/models/";
-	private static final String GENERIC_CHARACTER_PATH = "characters/generic/";
-	private static final String BASE_MODEL = "/basemodel.jme";
+	private static final String TEXTURE_BASE_PATH = "/textures/";
+	// private static final String MODEL_BASE_PATH = "/model/";
+	private static final String BASE_PATH = "data/characters/";
+	private static final String GENERIC_CHARACTER_PATH = "generic/";
+	private static final String BASE_MODEL = "/model/basemodel.jme";
 	// private static final String BASE_TEXTURE = "/basemodel.jpg";
 
 	protected static Node rootNode;
@@ -170,23 +171,26 @@ public class ObjectManager {
 		object.setMovespeed(30);
 		object.setTurnspeed(5);
 
-		String race = ClientPlayerData.getInstance().getCharacterData()
-				.getRace().getId().toString();// Name();
-		CharacterVisualappearance appearance = ClientPlayerData.getInstance()
-				.getCharacterData().getCharacterVisualappearance();
+		int race = ClientPlayerData.getInstance().getSelectedCharacterData()
+				.getRace();
+		String gender = ClientPlayerData.getInstance()
+				.getSelectedCharacterData().getGender();
 
-		URL urlOfTexture = ObjectManager.class.getClassLoader().getResource(
-				TEXTURE_BASE_PATH + GENERIC_CHARACTER_PATH + race + "/");
-		URL urlOfModel = ObjectManager.class.getClassLoader().getResource(
-				MODEL_BASE_PATH + GENERIC_CHARACTER_PATH + race + BASE_MODEL);
-		URL urlOfPropertyFile = ObjectManager.class.getClassLoader()
-				.getResource(
-						MODEL_BASE_PATH + GENERIC_CHARACTER_PATH + race
-								+ "/model.properties");
+		CharacterVisualAppearance appearance = ClientPlayerData.getInstance()
+				.getSelectedCharacterData().getVisualAppearance();
 
 		try {
+			URL urlOfTexture = new File(BASE_PATH + GENERIC_CHARACTER_PATH
+					+ race + "/" + gender + TEXTURE_BASE_PATH).toURL();
+
+			URL urlOfModel = new File(BASE_PATH + GENERIC_CHARACTER_PATH + race
+					+ "/" + gender + BASE_MODEL).toURL();
+
+			URL urlOfPropertyFile = new File(BASE_PATH + GENERIC_CHARACTER_PATH
+					+ race + "/" + gender + "/model/model.properties").toURL();
+		
 			Configuration modelConfiguration = new PropertiesConfiguration(
-					new File(urlOfPropertyFile.getFile()));
+					new File(urlOfPropertyFile.getFile()));// urlOfPropertyFile.getFile()));
 			float scaling = modelConfiguration.getFloat("scale", 1.0f);
 			float rotateAroundY = modelConfiguration.getFloat("rotate.y", 0.0f);
 			float animationSpeed = modelConfiguration.getFloat(
@@ -202,12 +206,14 @@ public class ObjectManager {
 			object.getAnimationData().setStandEndTime(
 					modelConfiguration.getInt("animation.stand.end", 325));
 
-			FileInputStream fi = new FileInputStream(new File(urlOfModel
-					.getFile()));
+			FileInputStream fi = new FileInputStream(
+					new File(BASE_PATH + GENERIC_CHARACTER_PATH + race + "/"
+							+ gender + BASE_MODEL));// urlOfModel.getFile()));
 
 			Node modelNode = null;
 
 			JmeBinaryReader jbr = new JmeBinaryReader();
+			//urlOfTexture = new File("../data/kerim.mdl").toURL();
 			jbr.setProperty("texurl", urlOfTexture);
 			try {
 				long time = System.currentTimeMillis();
@@ -242,12 +248,12 @@ public class ObjectManager {
 			Node player = new Node(ClientPlayerData.getInstance().getPlayer()
 					.getObjectID());
 			Vector3f location = new Vector3f(ClientPlayerData.getInstance()
-					.getCharacterData().getCharacterStatus().getCoordinateX(),
-					ClientPlayerData.getInstance().getCharacterData()
-							.getCharacterStatus().getCoordinateY(),
-					ClientPlayerData.getInstance().getCharacterData()
-							.getCharacterStatus().getCoordinateZ());
-			player.setLocalTranslation(location); // player
+					.getSelectedCharacterData().getLocation().getX(),
+					ClientPlayerData.getInstance().getSelectedCharacterData()
+							.getLocation().getY(), ClientPlayerData
+							.getInstance().getSelectedCharacterData()
+							.getLocation().getZ());
+			player.setLocalTranslation(location);
 			// player.setLocalRotation(localRotate);
 
 			// Quaternion temp=new Quaternion();
