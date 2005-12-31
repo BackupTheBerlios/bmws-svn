@@ -3,6 +3,8 @@
  */
 package de.mbws.client.state;
 
+import java.io.File;
+import java.net.MalformedURLException;
 import java.util.logging.Level;
 
 import com.jme.app.GameState;
@@ -51,7 +53,7 @@ public class CharacterCreationState extends BaseGameState {
 	public static final String DELETE_CHARACTER = "DELETECHARACTER";
 	public static final String STARTGAME = "STARTGAME";
 
-	//private CharacterSelectionStateHandler input;
+	// private CharacterSelectionStateHandler input;
 
 	BRootNode _root;
 	public BWindow characterWindow;
@@ -62,10 +64,9 @@ public class CharacterCreationState extends BaseGameState {
 	BComboBox raceCB;
 	BCheckBox gender;
 	BTextField nameTF;
-	
+
 	BLookAndFeel lnf;
 
-	
 	public BButton abortBtn;
 	public BButton createBtn;
 
@@ -74,10 +75,10 @@ public class CharacterCreationState extends BaseGameState {
 	public CharacterCreationState(String name) {
 		super(name);
 
-//		display = DisplaySystem.getDisplaySystem();
+		// display = DisplaySystem.getDisplaySystem();
 		initGUI();
 		initBUIGUI();
-		
+
 		MouseInput.get().setCursorVisible(true);
 
 		rootNode.setLightCombineMode(LightState.OFF);
@@ -92,7 +93,7 @@ public class CharacterCreationState extends BaseGameState {
 		lnf = MenuLookAndFeel.getDefaultLookAndFeel();
 		characterWindow = new BDecoratedWindow(lnf, null);
 		cont = new BContainer(GroupLayout.makeVert(GroupLayout.TOP));
-		//fillData();
+		// fillData();
 		characterDescription = new BTextArea();
 
 		// window.add(new BScrollPane(cont), BorderLayout.WEST);
@@ -108,57 +109,63 @@ public class CharacterCreationState extends BaseGameState {
 		controllWindow.setSize(250, 50);
 		controllWindow.setLocation(display.getWidth() - 250, 0);
 
-		BContainer nameContainer = new BContainer(GroupLayout.makeHoriz(GroupLayout.LEFT));;
-		
+		BContainer nameContainer = new BContainer(GroupLayout
+				.makeHoriz(GroupLayout.LEFT));
+		;
+
 		BLabel nameLb = new BLabel("Name: ");
 		nameTF = new BTextField("Enter Your name here ");
 		nameContainer.add(nameLb);
 		nameContainer.add(nameTF);
 		cont.add(nameContainer);
-		
-		BContainer raceContainer = new BContainer(GroupLayout.makeHoriz(GroupLayout.LEFT));;
+
+		BContainer raceContainer = new BContainer(GroupLayout
+				.makeHoriz(GroupLayout.LEFT));
+		;
 		BLabel raceLb = new BLabel("Race: ");
 		raceCB = new BComboBox();
-		//combobox.setPreferredSize(new Dimension(250,50));
+		// combobox.setPreferredSize(new Dimension(250,50));
 		raceCB.addItem("test1");
 		raceCB.addItem("test2");
 		raceCB.selectItem(0);
 		raceContainer.add(raceLb);
 		raceContainer.add(raceCB);
 		cont.add(raceContainer);
-		
+
 		gender = new BCheckBox("Male");
 		cont.add(gender);
 
-		abortBtn = new BButton("Delete");//, input, DELETE_CHARACTER);
+		abortBtn = new BButton("Delete");// , input, DELETE_CHARACTER);
 		abortBtn.addListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				returnToCharacterSelectionState();
-			}});
+			}
+		});
 		abortBtn.setPreferredSize(new Dimension(70, 30));
 		controllContainer.add(abortBtn);
-		
 
-		createBtn = new BButton("Create");//, input, CREATE_CHARACTER);
+		createBtn = new BButton("Create");// , input, CREATE_CHARACTER);
 		createBtn.addListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				//TODO: implement mapping
+				// TODO: implement mapping
 				byte genderValue = 0;
 				if (gender.isChecked()) {
 					genderValue = 1;
 				}
-				byte raceValue  = 0;
-				ClientNetworkController.getInstance().handleOutgoingEvent(CharacterController.getInstance()
-						.createCreateCharacterEvent(
-								nameTF.getText().trim(),genderValue, raceValue)); 
+				byte raceValue = 0;
+				ClientNetworkController.getInstance().handleOutgoingEvent(
+						CharacterController.getInstance()
+								.createCreateCharacterEvent(
+										nameTF.getText().trim(), genderValue,
+										raceValue));
 				returnToCharacterSelectionState();
-			}});
+			}
+		});
 		createBtn.setPreferredSize(new Dimension(70, 30));
 		controllContainer.add(createBtn);
-		
-		
+
 		controllWindow.add(controllContainer, BorderLayout.CENTER);
-		
+
 		_root.addWindow(characterWindow);
 		_root.addWindow(controllWindow);
 	}
@@ -169,7 +176,7 @@ public class CharacterCreationState extends BaseGameState {
 	public void onActivate() {
 		display.setTitle("MBWS - Select Your Character State");
 		super.onActivate();
-	}  
+	}
 
 	/**
 	 * Initializes the 2D Background and the Buttons
@@ -185,27 +192,34 @@ public class CharacterCreationState extends BaseGameState {
 				"display size = " + (float) display.getWidth() + " "
 						+ (float) display.getHeight());
 
-		 TextureState ts = display.getRenderer().createTextureState();
-		 ts.setTexture(TextureManager.loadTexture(getClass().getClassLoader()
-		 .getResource("resources/IntroAndMainMenu/Background.jpg"),
-		 Texture.MM_LINEAR, Texture.FM_LINEAR, ts.getMaxAnisotropic(),
-		 true));
-		
-		 ts.setEnabled(true);
-		 backgroundQuad.setRenderState(ts);
+		TextureState ts = display.getRenderer().createTextureState();
+		try {
+			ts.setTexture(TextureManager.loadTexture(new File(
+					"data/images/IntroAndMainMenu/Background.jpg").toURL(),
+					Texture.MM_LINEAR, Texture.FM_LINEAR, ts
+							.getMaxAnisotropic(), true));
+		} catch (MalformedURLException e) {
+			System.out.println("Background image not found");
+			e.printStackTrace();
+		}
+
+		ts.setEnabled(true);
+		backgroundQuad.setRenderState(ts);
 
 		rootNode.attachChild(backgroundQuad);
 
 	}
-	
+
 	public void returnToCharacterSelectionState() {
-		 GameState characterSelection = GameStateManager.getInstance().getChild("characterSelection");
-		 characterSelection.setActive(true);
-		 GameStateManager.getInstance().deactivateChildNamed("characterCreation");
+		GameState characterSelection = GameStateManager.getInstance().getChild(
+				"characterSelection");
+		characterSelection.setActive(true);
+		GameStateManager.getInstance()
+				.deactivateChildNamed("characterCreation");
 	}
 
-    @Override
-    protected void initInputHandler() {
-        
-    }
+	@Override
+	protected void initInputHandler() {
+
+	}
 }

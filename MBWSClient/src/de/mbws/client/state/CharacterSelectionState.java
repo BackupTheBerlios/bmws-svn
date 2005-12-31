@@ -3,6 +3,8 @@
  */
 package de.mbws.client.state;
 
+import java.io.File;
+import java.net.MalformedURLException;
 import java.util.logging.Level;
 
 import javax.swing.JDesktopPane;
@@ -39,10 +41,10 @@ public class CharacterSelectionState extends BaseGameState {
 	public CharacterSelectionState(String name) {
 		super(name);
 
-//		display = DisplaySystem.getDisplaySystem();
+		// display = DisplaySystem.getDisplaySystem();
 		initInput();
 		initGUI();
-        setupMenu();
+		setupMenu();
 		// initText();
 		// setupButtons();
 		// initCursor();
@@ -54,34 +56,36 @@ public class CharacterSelectionState extends BaseGameState {
 		rootNode.updateGeometricState(0, true);
 	}
 
-    private void setupMenu() {
-        try {
-            UIManager.setLookAndFeel(new MetalLookAndFeel());    
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
-        
-//        jmeDesktop.getJDesktop().setBackground(new Color(1, 1, 1, 0.2f));
-        JDesktopPane desktopPane = jmeDesktop.getJDesktop();
-        desktopPane.removeAll();
-        ActionPanel actionPanel = new ActionPanel(getInputHandler());
-        int x = (desktopPane.getWidth() /2) - (actionPanel.getWidth()/2);
-        int y = desktopPane.getHeight() - actionPanel.getHeight();
-        actionPanel.setLocation(0,y);
-        actionPanel.setSize(desktopPane.getWidth(), 80);
-        desktopPane.add(actionPanel);
-        
-        CharacterListPanel clp = new CharacterListPanel(ClientPlayerData
-                .getInstance().getAllCharactersOfPlayer(), getInputHandler());
-        clp.addPropertyChangeListener(CharacterListPanel.CHARACTER_SELECTION_CHANGE, actionPanel);
-        clp.setSize(200, desktopPane.getHeight() - (desktopPane.getHeight()/4));
-        clp.setLocation(desktopPane.getWidth() - clp.getWidth(), 0);
-        desktopPane.add(clp);
-        
-        desktopPane.repaint();
-        desktopPane.revalidate();
-    }
-    
+	private void setupMenu() {
+		try {
+			UIManager.setLookAndFeel(new MetalLookAndFeel());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+		// jmeDesktop.getJDesktop().setBackground(new Color(1, 1, 1, 0.2f));
+		JDesktopPane desktopPane = jmeDesktop.getJDesktop();
+		desktopPane.removeAll();
+		ActionPanel actionPanel = new ActionPanel(getInputHandler());
+		int x = (desktopPane.getWidth() / 2) - (actionPanel.getWidth() / 2);
+		int y = desktopPane.getHeight() - actionPanel.getHeight();
+		actionPanel.setLocation(0, y);
+		actionPanel.setSize(desktopPane.getWidth(), 80);
+		desktopPane.add(actionPanel);
+
+		CharacterListPanel clp = new CharacterListPanel(ClientPlayerData
+				.getInstance().getAllCharactersOfPlayer(), getInputHandler());
+		clp.addPropertyChangeListener(
+				CharacterListPanel.CHARACTER_SELECTION_CHANGE, actionPanel);
+		clp.setSize(200, desktopPane.getHeight()
+				- (desktopPane.getHeight() / 4));
+		clp.setLocation(desktopPane.getWidth() - clp.getWidth(), 0);
+		desktopPane.add(clp);
+
+		desktopPane.repaint();
+		desktopPane.revalidate();
+	}
+
 	/**
 	 * @see com.jme.app.StandardGameState#onActivate()
 	 */
@@ -111,14 +115,19 @@ public class CharacterSelectionState extends BaseGameState {
 				"display size = " + (float) display.getWidth() + " "
 						+ (float) display.getHeight());
 
-		 TextureState ts = display.getRenderer().createTextureState();
-		 ts.setTexture(TextureManager.loadTexture(getClass().getClassLoader()
-		 .getResource("resources/IntroAndMainMenu/Background.jpg"),
-		 Texture.MM_LINEAR, Texture.FM_LINEAR, ts.getMaxAnisotropic(),
-		 true));
-		
-		 ts.setEnabled(true);
-		 backgroundQuad.setRenderState(ts);
+		TextureState ts = display.getRenderer().createTextureState();
+
+		try {
+			ts.setTexture(TextureManager.loadTexture(new File(
+					"data/images/IntroAndMainMenu/Background.jpg").toURL(),
+					Texture.MM_LINEAR, Texture.FM_LINEAR, ts.getMaxAnisotropic(),
+					true));
+		} catch (MalformedURLException e) {
+			System.out.println("Background image not found");
+			e.printStackTrace();
+		}
+		ts.setEnabled(true);
+		backgroundQuad.setRenderState(ts);
 
 		rootNode.attachChild(backgroundQuad);
 
@@ -128,9 +137,9 @@ public class CharacterSelectionState extends BaseGameState {
 		return (CharacterSelectionStateHandler) input;
 	}
 
-    @Override
-    protected void initInputHandler() {
-        input = new CharacterSelectionStateHandler(this);
-        
-    }
+	@Override
+	protected void initInputHandler() {
+		input = new CharacterSelectionStateHandler(this);
+
+	}
 }
