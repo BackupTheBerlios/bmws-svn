@@ -20,7 +20,9 @@ public abstract class AbstractGameEvent {
 
     public AbstractGameEvent(ByteBuffer payload, AbstractEventData eventData) {
         this.eventData = eventData;
-        eventData.deserialize(payload);
+        if (eventData != null) {
+            eventData.deserialize(payload);
+        }
     }
 
     public AbstractGameEvent(AbstractEventData eventData) {
@@ -67,10 +69,7 @@ public abstract class AbstractGameEvent {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).
-        append("eventType", eventType).
-        toString();
+        return new ToStringBuilder(this).append("eventType", eventType).toString();
     }
 
-    
 }
