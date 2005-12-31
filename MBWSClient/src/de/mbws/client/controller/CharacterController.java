@@ -1,5 +1,6 @@
 package de.mbws.client.controller;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -13,12 +14,7 @@ import de.mbws.client.data.Player;
 import de.mbws.client.state.CharacterSelectionState;
 import de.mbws.client.state.MainMenuState;
 import de.mbws.client.state.handler.BaseInputHandler;
-import de.mbws.common.data.generated.CharacterStatus;
-import de.mbws.common.data.generated.CharacterVisualappearance;
-import de.mbws.common.data.generated.Characterdata;
-import de.mbws.common.data.generated.Race;
 import de.mbws.common.eventdata.generated.CharacterData;
-import de.mbws.common.eventdata.generated.CharacterDetails;
 import de.mbws.common.eventdata.generated.CharacterSelection;
 import de.mbws.common.eventdata.generated.CharactersOfPlayer;
 import de.mbws.common.eventdata.generated.CreateCharacter;
@@ -56,57 +52,79 @@ public class CharacterController {
 	// TODO Kerim: correct error handling and next stages here !
 	public void handleEvent(CharacterEvent event) {
 		if (event.getEventType() == EventTypes.S2C_CHARACTER_RECEIVE) {
-			//TODO this wont bring us to the characterselectionstate !!!
-			//TODO See what we do here since its not used at the moment!
-//			logger.info("Receiving Details of Character!");
-//			Player player = new Player(event.getCharacterDetails().getDescription().getCharacterID());
-//			Characterdata characterData = new Characterdata();
-//			CharacterDetails eventData = (CharacterDetails) event.getEventData();
-//			CharacterStatus status = new CharacterStatus();
-//			status.setCoordinateX(eventData.getLocation().getX());
-//			status.setCoordinateY(eventData.getLocation().getY());
-//			status.setCoordinateZ(eventData.getLocation().getZ());
-//			characterData.setCharacterStatus(status);
-//			ClientPlayerData.getInstance().setCharacterData(characterData);
-//			ClientPlayerData.getInstance().setPlayer(player);
-//			logger.info("setting flag to start next state");
-//			((MainMenuState) GameStateManager.getInstance().getChild("menu"))
-//					.getInputHandler().setStartNextState(true);
+			// TODO this wont bring us to the characterselectionstate !!!
+			// TODO See what we do here since its not used at the moment!
+			// logger.info("Receiving Details of Character!");
+			// Player player = new
+			// Player(event.getCharacterDetails().getDescription().getCharacterID());
+			// Characterdata characterData = new Characterdata();
+			// CharacterDetails eventData = (CharacterDetails)
+			// event.getEventData();
+			// CharacterStatus status = new CharacterStatus();
+			// status.setCoordinateX(eventData.getLocation().getX());
+			// status.setCoordinateY(eventData.getLocation().getY());
+			// status.setCoordinateZ(eventData.getLocation().getZ());
+			// characterData.setCharacterStatus(status);
+			// ClientPlayerData.getInstance().setCharacterData(characterData);
+			// ClientPlayerData.getInstance().setPlayer(player);
+			// logger.info("setting flag to start next state");
+			// ((MainMenuState) GameStateManager.getInstance().getChild("menu"))
+			// .getInputHandler().setStartNextState(true);
 		} else if (event.getEventType() == EventTypes.S2C_CHARACTER_LIST_RECEIVE) {
-			logger.info("Receiving Shortdescriptions of all Characters of Player!");
+			logger
+					.info("Receiving Shortdescriptions of all Characters of Player!");
 
 			List<CharacterData> allCharacters = ((CharactersOfPlayer) event
 					.getEventData()).getCharactersOfPlayer();
 
 			ClientPlayerData.getInstance().setAllCharactersOfPlayer(
 					allCharacters);
-			
+
 			logger
 					.info("retrieved all existing characters, going into selectionstate");
 			((MainMenuState) GameStateManager.getInstance().getChild("menu"))
-					.getInputHandler().requestStateSwitch(BaseInputHandler.GAMESTATE_CHARACTER_SELECTION);
-		} else if (event.getEventType() == EventTypes.S2C_CHARACTER_ENTERS_WORLD){ //) {
+					.getInputHandler().requestStateSwitch(
+							BaseInputHandler.GAMESTATE_CHARACTER_SELECTION);
+		} else if (event.getEventType() == EventTypes.S2C_CHARACTER_ENTERS_WORLD) { // ) {
 			logger.info("Start gameplay!");
-			Player player = new Player(event.getCharacterDetails().getDescription().getCharacterID());
-			CharacterDetails eventData = (CharacterDetails) event.getEventData();
-            Characterdata characterData = new Characterdata();
-			CharacterVisualappearance characterVisualAppearance = new CharacterVisualappearance();
-			
-            CharacterStatus status = new CharacterStatus();
-			status.setCoordinateX(eventData.getLocation().getX());
-			status.setCoordinateY(eventData.getLocation().getY());
-			status.setCoordinateZ(eventData.getLocation().getZ());
-			characterData.setCharacterStatus(status);
-		//	eventData.getDescription().get
-			Race r = new Race();
-			r.setId(eventData.getDescription().getRace());
-			characterData.setRace(r);
-			
-			ClientPlayerData.getInstance().setCharacterData(characterData);
+			Player player = new Player(event.getCharacterDetails()
+					.getDescription().getCharacterID());
+			List<CharacterData> allCharacters = ClientPlayerData.getInstance()
+					.getAllCharactersOfPlayer();
+			if (allCharacters != null) {
+				for (Iterator iter = allCharacters.iterator(); iter.hasNext();) {
+					CharacterData element = (CharacterData) iter.next();
+					if (element.getCharacterID().trim().equals(
+							element.getCharacterID().trim())) {
+						ClientPlayerData.getInstance()
+								.setSelectedCharacterData(element);
+						break;
+					}
+				}
+			}
+
+			// CharacterDetails eventData = (CharacterDetails)
+			// event.getEventData();
+			// Characterdata characterData = new Characterdata();
+			// CharacterVisualappearance characterVisualAppearance = new
+			// CharacterVisualappearance();
+			//			
+			// CharacterStatus status = new CharacterStatus();
+			// status.setCoordinateX(eventData.getLocation().getX());
+			// status.setCoordinateY(eventData.getLocation().getY());
+			// status.setCoordinateZ(eventData.getLocation().getZ());
+			// characterData.setCharacterStatus(status);
+			// // eventData.getDescription().get
+			// Race r = new Race();
+			// r.setId(eventData.getDescription().getRace());
+			// characterData.setRace(r);
+			//			
+			// ClientPlayerData.getInstance().setCharacterData(characterData);
 			ClientPlayerData.getInstance().setPlayer(player);
 			logger.info("setting flag to start next state");
 			((CharacterSelectionState) GameStateManager.getInstance().getChild(
-					"characterSelection")).getInputHandler().requestStateSwitch(BaseInputHandler.GAMESTATE_INGAME);
+					"characterSelection")).getInputHandler()
+					.requestStateSwitch(BaseInputHandler.GAMESTATE_INGAME);
 		}
 	}
 
@@ -164,17 +182,16 @@ public class CharacterController {
 
 		return event;
 	}
-	
+
 	public AbstractGameEvent createEnterWorldServerEvent() {
 		CharacterSelection cs = new CharacterSelection();
 		cs.setCharacterID(currentCharacterID);
 		CharacterEvent event = new CharacterEvent(cs);
 		event.setEventType(EventTypes.C2S_CHARACTER_ENTERS_WORLD_REQUEST);
-		
 
 		return event;
 	}
-	
+
 	public AbstractGameEvent createDeleteCharacterEvent(String characterID) {
 		CharacterSelection cs = new CharacterSelection();
 		cs.setCharacterID(characterID);
@@ -183,8 +200,9 @@ public class CharacterController {
 
 		return event;
 	}
-	
-	public AbstractGameEvent createCreateCharacterEvent(String name, byte gender, byte race) {
+
+	public AbstractGameEvent createCreateCharacterEvent(String name,
+			byte gender, byte race) {
 		CreateCharacter cc = new CreateCharacter();
 		cc.setGender(gender);
 		cc.setRace(race);
@@ -193,18 +211,5 @@ public class CharacterController {
 		event.setEventType(EventTypes.C2S_CHARACTER_CREATE_REQUEST);
 
 		return event;
-	}
-	
-	private static Characterdata mapCharacterDetailsToStatus(CharacterDetails chardetails) {
-		Characterdata cdata = new Characterdata();
-//		CharacterStatus cs = new CharacterStatus();
-//		Race r = new Race();
-//		chardetails.getDescription()
-//		CharacterVisualappearance cva = new CharacterVisualappearance();
-//		CharacterShortDescription csd = cd.getDescription();
-//		csd.se
-//		cdata.setRace()
-//		cdata.setCharacterStatus(cs);
-		return cdata;
 	}
 }
