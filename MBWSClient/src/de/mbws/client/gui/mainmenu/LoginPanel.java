@@ -3,15 +3,16 @@ package de.mbws.client.gui.mainmenu;
 import java.awt.Color;
 import java.awt.Component;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.border.BevelBorder;
 
 import com.jme.input.InputHandler;
 
+import de.mbws.client.MBWSClient;
 import de.mbws.client.ValueMapper;
 import de.mbws.client.controller.AccountController;
 import de.mbws.client.controller.ClientNetworkController;
@@ -45,8 +46,10 @@ public class LoginPanel extends JPanel {
 
     private InputHandler inputHandler;
 
-    private final static Color buttonBackground = new Color(155, 0, 7);
+    //private final static Color buttonBackground = new Color(155, 0, 7);
     private JLabel versionLabel;
+
+    private JLabel imageLabel = null;
     
     private MainMenuHandler getInputHandler() {
         return (MainMenuHandler) inputHandler;
@@ -61,7 +64,7 @@ public class LoginPanel extends JPanel {
         if (usernameInputField == null) {
             usernameInputField = new JTextField();
             usernameInputField.setText("sack");
-            usernameInputField.setBounds(new java.awt.Rectangle(120,20,120,20));
+            usernameInputField.setBounds(new java.awt.Rectangle(320,70,120,20));
         }
         return usernameInputField;
     }
@@ -75,7 +78,7 @@ public class LoginPanel extends JPanel {
         if (passwordField == null) {
             passwordField = new JPasswordField();
             passwordField.setText("sack");
-            passwordField.setBounds(new java.awt.Rectangle(120,50,120,20));
+            passwordField.setBounds(new java.awt.Rectangle(320,100,120,20));
         }
         return passwordField;
     }
@@ -88,9 +91,9 @@ public class LoginPanel extends JPanel {
     private JButton getLoginButton() {
         if (loginButton == null) {
             loginButton = new JButton();
-            loginButton.setBounds(new java.awt.Rectangle(20, 100, 210, 30));
+            loginButton.setBounds(new java.awt.Rectangle(220, 150, 210, 30));
             loginButton.setText(ValueMapper.getText(ClientGlobals.MENU_BUTTON_LOGIN));
-            loginButton.setBackground(buttonBackground);
+            loginButton.setContentAreaFilled(false);
             loginButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
 //                    getParent().repaint();
@@ -109,9 +112,9 @@ public class LoginPanel extends JPanel {
     private JButton getCreateAccountButton() {
         if (createAccountButton == null) {
             createAccountButton = new JButton();
-            createAccountButton.setBounds(new java.awt.Rectangle(20, 150, 210, 30));
+            createAccountButton.setBounds(new java.awt.Rectangle(220, 200, 210, 30));
             createAccountButton.setText(ValueMapper.getText(ClientGlobals.MENU_BUTTON_CREATE_ACCOUNT));
-            createAccountButton.setBackground(buttonBackground);
+            createAccountButton.setContentAreaFilled(false);
             createAccountButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     String password = String.valueOf(passwordField.getPassword());
@@ -143,9 +146,9 @@ public class LoginPanel extends JPanel {
     private JButton getShowOptionsButton() {
         if (showOptionsButton == null) {
             showOptionsButton = new JButton();
-            showOptionsButton.setBounds(new java.awt.Rectangle(20, 200, 210, 30));
+            showOptionsButton.setBounds(new java.awt.Rectangle(220, 250, 210, 30));
             showOptionsButton.setText(ValueMapper.getText(ClientGlobals.MENU_BUTTON_OPTIONS));
-            showOptionsButton.setBackground(buttonBackground);
+            showOptionsButton.setContentAreaFilled(false);
             showOptionsButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     System.out.println("actionPerformed()"); // TODO Auto-generated Event stub actionPerformed()
@@ -164,12 +167,12 @@ public class LoginPanel extends JPanel {
     private JButton getExitButton() {
         if (exitButton == null) {
             exitButton = new JButton();
-            exitButton.setBounds(new java.awt.Rectangle(20, 250, 210, 30));
+            exitButton.setBounds(new java.awt.Rectangle(220, 300, 210, 30));
             exitButton.setText(ValueMapper.getText(ClientGlobals.MENU_BUTTON_EXIT));
-            exitButton.setBackground(buttonBackground);
+            exitButton.setContentAreaFilled(false);
             exitButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    System.exit(0);
+                    MBWSClient.exit();
                 }
             });
         }
@@ -199,21 +202,25 @@ public class LoginPanel extends JPanel {
      * @return void
      */
     private void initialize() {
-        this.setSize(250, 320);
+        imageLabel = new JLabel(new ImageIcon("data/images/menu/background.png"));
+        
+        
+        this.setSize(640, 480);
         this.setLayout(null);
-        this.setBackground(new Color(0, 0, 0, 0.2f));
-        this.setBorder(new BevelBorder(BevelBorder.RAISED));
+        this.setBackground(null);
+        this.setBorder(null);
+        imageLabel.setBounds(this.getBounds());
         versionLabel = new JLabel();
-        versionLabel.setBounds(new java.awt.Rectangle(5,300,240,20));
+        versionLabel.setBounds(new java.awt.Rectangle(100,420,240,20));
         versionLabel.setForeground(Color.WHITE);
         versionLabel.setText("Version: 0.1");
         passwordLabel = new JLabel();
         passwordLabel.setForeground(Color.WHITE);
-        passwordLabel.setBounds(new java.awt.Rectangle(10,50,100,20));
+        passwordLabel.setBounds(new java.awt.Rectangle(210,100,100,20));
         passwordLabel.setText(ValueMapper.getText(ClientGlobals.MENU_LABEL_PASSWORD));
         usernameLabel = new JLabel();
         usernameLabel.setForeground(Color.WHITE);
-        usernameLabel.setBounds(new java.awt.Rectangle(10,20,100,20));
+        usernameLabel.setBounds(new java.awt.Rectangle(210,70,100,20));
         usernameLabel.setText(ValueMapper.getText(ClientGlobals.MENU_LABEL_USERNAME));
         this.add(versionLabel, null);
         this.add(usernameLabel, null);
@@ -224,6 +231,7 @@ public class LoginPanel extends JPanel {
         this.add(getCreateAccountButton(), null);
         this.add(getShowOptionsButton(), null);
         this.add(getExitButton(), null);
+        this.add(imageLabel, null);
     }
 
     @Override
@@ -232,7 +240,9 @@ public class LoginPanel extends JPanel {
         super.setEnabled(enabled);
         Component[] c = getComponents();
         for (int i = 0; i < c.length; i++) {
+            if (c[i] instanceof JButton) {
             c[i].setEnabled(enabled);
+            }
         }
     }
 

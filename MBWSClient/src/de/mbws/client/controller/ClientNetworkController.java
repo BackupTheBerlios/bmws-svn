@@ -7,9 +7,12 @@ import java.nio.channels.SocketChannel;
 
 import org.apache.log4j.Logger;
 
+import com.jme.app.GameStateManager;
+
 import de.mbws.client.MBWSClient;
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.net.NIOEventReader;
+import de.mbws.client.state.MainMenuState;
 import de.mbws.common.EventQueue;
 import de.mbws.common.Globals;
 import de.mbws.common.NIOUtils;
@@ -87,8 +90,7 @@ public class ClientNetworkController extends Thread {
 			}
 		} catch (Exception e) {
 			logger.error("Error during server connection", e);
-			throw new InitializationException(
-					"Error during server connection. see log file for more information");
+            ((MainMenuState) GameStateManager.getInstance().getChild("menu")).displayError("Cant connect to server.");
 		}
 
 	}

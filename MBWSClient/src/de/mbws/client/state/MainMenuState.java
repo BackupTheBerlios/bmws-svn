@@ -50,7 +50,7 @@ public class MainMenuState extends BaseGameState {
 		if (SoundSystem.isStreamOpened(musicID)) {
 			SoundSystem.playStream(musicID);
 		}
-		initGUI();
+//		initGUI();
 		// initCursor();
 
 		MouseInput.get().setCursorVisible(true);
