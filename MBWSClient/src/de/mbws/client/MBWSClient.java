@@ -175,4 +175,10 @@ public class MBWSClient extends BaseGame {
 	protected void reinit() {
 	}
 
+    @Override
+    protected void quit() {
+        super.quit();
+        System.exit(0);
+    }
+
 }
