@@ -3,17 +3,11 @@
  */
 package de.mbws.client.state;
 
-import java.awt.Component;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyVetoException;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.logging.Level;
 
 import javax.swing.JDesktopPane;
-import javax.swing.JInternalFrame;
-import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
@@ -150,57 +144,6 @@ private void initGUI() {
 		backgroundQuad.setRenderState(ts);
 		rootNode.attachChild(backgroundQuad);
 
-	}
-	public void displayInfo(String message) {
-		displayOptionPane(message, JOptionPane.INFORMATION_MESSAGE);
-	}
-
-	public void displayError(String message) {
-		displayOptionPane(message, JOptionPane.ERROR_MESSAGE);
-	}
-
-	private void displayOptionPane(String message, int type) {
-		final JDesktopPane desktop = jmeDesktop.getJDesktop();
-		JOptionPane options = new JOptionPane(message, type);
-		final JInternalFrame internalFrame = new JInternalFrame();
-		internalFrame.setBorder(null);
-		internalFrame.putClientProperty("JInternalFrame.isPalette",
-				Boolean.TRUE);
-		internalFrame.setVisible(true);
-		internalFrame.getContentPane().add(options);
-		desktop.setLayer(internalFrame, 255);
-
-		Component[] c = desktop.getComponents();
-		for (int i = 0; i < c.length; i++) {
-			if (desktop.getLayer(c[i]) < 255) {
-				c[i].setEnabled(false);
-			}
-		}
-		options.addPropertyChangeListener(new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent event) {
-				if (internalFrame.isVisible()
-						&& (event.getPropertyName().equals(
-								JOptionPane.VALUE_PROPERTY) || event
-								.getPropertyName().equals(
-										JOptionPane.INPUT_VALUE_PROPERTY))) {
-					try {
-						internalFrame.setClosed(true);
-						Component[] c = desktop.getComponents();
-						for (int i = 0; i < c.length; i++) {
-							if (desktop.getLayer(c[i]) < 255) {
-								c[i].setEnabled(true);
-							}
-						}
-					} catch (PropertyVetoException ignored) {
-					}
-					internalFrame.setVisible(false);
-				}
-			}
-		});
-		internalFrame.pack();
-		showComponentCenteredOnScreen(internalFrame);
-		internalFrame.requestFocus();
-		// jmeDesktop.setFocusOwner(internalFrame);
 	}
 
 	public MainMenuHandler getInputHandler() {

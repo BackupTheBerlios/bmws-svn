@@ -1,7 +1,12 @@
 package de.mbws.client.state;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 
 import com.jme.app.BasicGameState;
 import com.jme.math.Vector3f;
@@ -41,12 +46,12 @@ public abstract class BaseGameState extends BasicGameState {
         guiRootNode = new Node("state guiRootNode");
         guiRootNode.setCullMode(Spatial.CULL_NEVER);
         display = DisplaySystem.getDisplaySystem();
+        initZBuffer();
         initCamera();
+        initInputHandler();
         initJMEDesktop();
         fullScreen();
-        initInputHandler();
 
-        initZBuffer();
         // Update geometric and rendering information for the rootNode.
         rootNode.updateGeometricState(0.0f, true);
         rootNode.updateRenderState();
@@ -71,7 +76,7 @@ public abstract class BaseGameState extends BasicGameState {
     private void initJMEDesktop() {
         if (jmeDesktop == null) {
             jmeDesktop = new JMEDesktop(name);
-            jmeDesktop.setup(display.getWidth(), display.getHeight(), false);
+            jmeDesktop.setup(display.getWidth(), display.getHeight(), false, getInputHandler());
             jmeDesktop.setLightCombineMode(LightState.OFF);           
         }
         desktopNode = new Node("desktop node");
@@ -147,5 +152,36 @@ public abstract class BaseGameState extends BasicGameState {
         panel.setLocation(x,y);
         desktopPane.add(panel);
 //        desktopPane.revalidate();
+    }
+    
+    public void displayInfo(String message) {
+        displayOptionPane(message, JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public void displayError(String message) {
+        displayOptionPane(message, JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void displayOptionPane(String message, int type) {       
+        final JDesktopPane desktopPane = jmeDesktop.getJDesktop();
+        final JInternalFrame modalDialog = new JInternalFrame( "Dialog" );
+
+        JOptionPane optionPane = new JOptionPane(message,type );
+        modalDialog.getContentPane().add( optionPane );
+        jmeDesktop.setModalComponent( modalDialog );
+        desktopPane.add( modalDialog, 0 );
+        modalDialog.setVisible( true );
+        modalDialog.setSize( modalDialog.getPreferredSize() );
+        modalDialog.setLocation( ( desktopPane.getWidth() - modalDialog.getWidth() ) / 2,
+                ( desktopPane.getHeight() - modalDialog.getHeight() ) / 2 );
+        jmeDesktop.setFocusOwner( optionPane );
+
+        optionPane.addPropertyChangeListener( JOptionPane.VALUE_PROPERTY, new PropertyChangeListener() {
+            public void propertyChange( PropertyChangeEvent evt ) {
+                modalDialog.setVisible( false );
+                jmeDesktop.setModalComponent( null );
+                desktopPane.remove( modalDialog );
+            }
+        } );
     }
 }
