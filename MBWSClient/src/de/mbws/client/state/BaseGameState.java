@@ -31,7 +31,7 @@ public abstract class BaseGameState extends BasicGameState {
 
     protected DisplaySystem display;
 
-    protected static JMEDesktop jmeDesktop;
+    protected JMEDesktop jmeDesktop;
 
     private Node desktopNode;
 

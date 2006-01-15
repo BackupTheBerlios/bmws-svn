@@ -42,7 +42,6 @@ public class CharacterSelectionState extends BaseGameState {
 		super(name);
 
 		// display = DisplaySystem.getDisplaySystem();
-		initInput();
 		initGUI();
 		setupMenu();
 		// initText();

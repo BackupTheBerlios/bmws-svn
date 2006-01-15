@@ -1,12 +1,10 @@
 package de.mbws.client.state.handler;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import de.mbws.client.state.CharacterSelectionState;
 
-public class CharacterSelectionStateHandler extends BaseInputHandler implements
-		ActionListener {
+public class CharacterSelectionStateHandler extends BaseInputHandler {
 
     private String selectedCharacter = null;
 

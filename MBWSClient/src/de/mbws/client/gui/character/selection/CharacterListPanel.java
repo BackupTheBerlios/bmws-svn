@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Hashtable;
@@ -13,6 +14,7 @@ import java.util.List;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
@@ -23,11 +25,9 @@ import javax.swing.event.ListSelectionListener;
 
 import de.mbws.client.ValueMapper;
 import de.mbws.client.data.ClientGlobals;
+import de.mbws.client.state.handler.BaseInputHandler;
 import de.mbws.client.state.handler.CharacterSelectionStateHandler;
 import de.mbws.common.eventdata.generated.CharacterData;
-import javax.swing.JLabel;
-
-import com.jme.input.InputHandler;
 
 /**
  * Description:
@@ -54,11 +54,11 @@ public class CharacterListPanel extends JPanel implements PropertyChangeListener
     private JLabel headerLabel = null;
 
     private JPanel headerPanel = null;
-    InputHandler inputHandler;
+    BaseInputHandler inputHandler;
     /**
      * This is the default constructor
      */
-    public CharacterListPanel(List<CharacterData> allCharacters, InputHandler inputHandler) {
+    public CharacterListPanel(List<CharacterData> allCharacters, BaseInputHandler inputHandler) {
         super();
         this.inputHandler = inputHandler;
         this.allCharacters = allCharacters;
@@ -157,12 +157,11 @@ private JList getCharacterList() {
             createButton.setText(ValueMapper.getText(ClientGlobals.CHARACTER_SELECTION_BUTTON_CREATE_CHARACTER));
             createButton.setBackground(buttonBackground);
             createButton.setSize(createButton.getPreferredSize());
-            createButton.addActionListener(getInputHandler());
-//            {
-//                public void actionPerformed(java.awt.event.ActionEvent e) {
-//                    getInputHandler().startCharacterCreationState();
-//                }
-//            });
+            createButton.addActionListener(new ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    getInputHandler().requestStateSwitch(BaseInputHandler.GAMESTATE_CHARACTER_CREATION);
+                }
+            });
         }
         return createButton;
     }
