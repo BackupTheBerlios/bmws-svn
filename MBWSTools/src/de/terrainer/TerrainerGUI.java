@@ -20,9 +20,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
-import com.jmex.awt.SimpleCanvasImpl;
-
 import de.terrainer.generators.RandomMidpointDisplacement;
+import de.terrainer.terrainloader.TerrainController;
+import de.terrainer.terrainloader.TerrainPersistence;
 
 public class TerrainerGUI extends JFrame {
 	public static Random random = new Random(System.currentTimeMillis());
@@ -79,8 +79,14 @@ public class TerrainerGUI extends JFrame {
 	}
 
 	protected void save() {
-		// TODO Auto-generated method stub
-
+		TerrainPersistence tp = new TerrainPersistence("world", 8, 8);
+		// TODO for the timebeing we save one terrain 8x8 times
+		for (int x=0; x<8; x++) {
+			for (int y=0; y<8; y++) {
+				tp.addSection(x, y, currentHeightMap.getLinearMap());
+			}
+		}
+		tp.writeWorld();
 	}
 
 	private JPanel createHeightMapPanel() {
@@ -130,10 +136,6 @@ public class TerrainerGUI extends JFrame {
 		button.setIcon(icon);
 		button.setToolTipText(generator.getName());
 		return button;
-	}
-
-	private SimpleCanvasImpl create3DCanvas() {
-		return new SimpleCanvasImpl(400, 650);
 	}
 
 	protected void close() {
