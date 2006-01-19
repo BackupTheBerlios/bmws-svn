@@ -3,6 +3,7 @@
  */
 package de.mbws.client.terrain;
 
+import java.io.File;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
@@ -55,7 +56,7 @@ public class DynamicTerrainPage extends Node {
 	 */
 	public DynamicTerrainPage(String name, int aTileSize, Vector3f aStepScale) {
 		super(name);
-		terrainName = "c:/programmierung/projekte/mbwsclient/src/resources/"+name;
+		terrainName = "src/resources/"+name;
 		tileSize = aTileSize;
 		stepScale = aStepScale;
 	}
@@ -143,7 +144,7 @@ public class DynamicTerrainPage extends Node {
 	}
 
 	private String getTerrainFileName(int u, int v) {
-		return (terrainName + u +"_"+v+".raw");
+		return (new File(terrainName + u +"_"+v+".raw").getAbsolutePath());
 	}
 
 	public RenderState setRenderState (RenderState rs) {
