@@ -13,7 +13,6 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
 import com.jme.bounding.BoundingBox;
-import com.jme.bounding.BoundingSphere;
 import com.jme.math.FastMath;
 import com.jme.math.Matrix3f;
 import com.jme.math.Quaternion;
@@ -188,7 +187,7 @@ public class ObjectManager {
 
 			URL urlOfPropertyFile = new File(BASE_PATH + GENERIC_CHARACTER_PATH
 					+ race + "/" + gender + "/model/model.properties").toURL();
-		
+
 			Configuration modelConfiguration = new PropertiesConfiguration(
 					new File(urlOfPropertyFile.getFile()));// urlOfPropertyFile.getFile()));
 			float scaling = modelConfiguration.getFloat("scale", 1.0f);
@@ -213,8 +212,8 @@ public class ObjectManager {
 			Node modelNode = null;
 
 			JmeBinaryReader jbr = new JmeBinaryReader();
-			//urlOfTexture = new File("../data/kerim.mdl").toURL();
 			jbr.setProperty("texurl", urlOfTexture);
+			jbr.setProperty("bound", "box"); // Doesnt work ?
 			try {
 				long time = System.currentTimeMillis();
 				modelNode = jbr.loadBinaryFormat(fi);
@@ -260,10 +259,11 @@ public class ObjectManager {
 			// temp.fromAngleAxis(FastMath.PI/2,new Vector3f(-1,0,0));
 			// freakmd2.setLocalRotation(temp);
 
-			BoundingSphere bs = new BoundingSphere();
-			bs.setCenter(new Vector3f(0, 0, 0));
-			bs.setRadius(2);
-			modelNode.setWorldBound(bs);
+			// BoundingSphere bs = new BoundingSphere();
+			// bs.setCenter(new Vector3f(0, 0, 0));
+			// bs.setRadius(2);
+
+			modelNode.setWorldBound(new BoundingBox());// bs);
 			modelNode.updateWorldBound();
 			rootNode.attachChild(player);
 			player.attachChild(modelNode);

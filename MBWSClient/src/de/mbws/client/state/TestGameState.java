@@ -48,6 +48,7 @@ import de.mbws.client.MBWSClient;
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.data.ObjectManager;
 import de.mbws.client.eventactions.AbstractEventAction;
+import de.mbws.client.experimental.Compass;
 import de.mbws.client.net.ActionQueue;
 import de.mbws.client.state.handler.TestGameHandler;
 
@@ -226,6 +227,11 @@ public class TestGameState extends StandardGameState {
 			as.setTestFunction(AlphaState.TF_GREATER);
 			r.setRenderState(as);
 			rootNode.attachChild(r);
+			
+			
+			Compass c = new Compass("compass");
+			c.setLocalTranslation(new Vector3f(200,200,0));
+			rootNode.attachChild(c);
 		} catch (IOException e) {
 			System.out.println("Damn exceptions:" + e);
 			e.printStackTrace();
@@ -288,6 +294,7 @@ public class TestGameState extends StandardGameState {
 				+ KeyInput.KEY_Q);
 		handlerProps.put(ThirdPersonHandler.PROP_KEY_STRAFERIGHT, ""
 				+ KeyInput.KEY_E);
+
 		// input = new TestGameHandler(player, cam, handlerProps);
 		input = new TestGameHandler(player, cam, handlerProps);
 
@@ -298,6 +305,7 @@ public class TestGameState extends StandardGameState {
 		// chaserProps.put(ChaseCamera.PROP_ENABLESPRING, "true");
 		// chaserProps.put(ChaseCamera.PROP_DAMPINGK, "55.0");
 		// chaserProps.put(ChaseCamera.PROP_SPRINGK, "756.25");
+
 		chaserProps.put(ChaseCamera.PROP_MAXDISTANCE, "0.0");
 		chaserProps.put(ChaseCamera.PROP_MINDISTANCE, "0.0");
 		chaserProps.put(ChaseCamera.PROP_INITIALSPHERECOORDS, new Vector3f(

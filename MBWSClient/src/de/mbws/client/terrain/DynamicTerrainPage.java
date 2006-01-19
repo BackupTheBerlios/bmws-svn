@@ -19,24 +19,27 @@ public class DynamicTerrainPage extends Node {
 
 	private static Logger logger = Logger.getLogger(DynamicTerrainPage.class);
 
-	// // Tiles
-	// private int u;
-	// private int v;
-
+	
 	// Tiles are stored in a Hashmap IN the HashMap uIndexedTiles
 	// xIndexedTiles contains the y Terrainblocks for each X
-	private HashMap<Integer, TerrainBlock> yTile = new HashMap();
-	private HashMap<Integer, HashMap<Integer, TerrainBlock>> uIndexedTiles = new HashMap();
+	private HashMap<Integer, CachedTerrainBlock> vIndexedTile = new HashMap();
+	private HashMap<Integer, HashMap<Integer, CachedTerrainBlock>> uIndexedTiles = new HashMap();
 
 	private TerrainBlock currentBlock;
 	// size of the tiles
 	private int tileSize;
-
+	
+	//Number of tiles the page currently has loaded and can load as a max
+	private int numberOfCachedTiles;
+	private int maxNumberOfCachedTiles = 4;
+	
+	//fixed string for all terrainfiles
 	private String terrainName;
 
+	//switch for global clod
 	private boolean clod;
 	
-
+	//stepscale for the terrains as a global value
 	private Vector3f stepScale;
 
 	/**
@@ -57,49 +60,78 @@ public class DynamicTerrainPage extends Node {
 		stepScale = aStepScale;
 	}
 
-	// TODO: Make sense here !
 
+	/**
+	 * retrieves the terrainheight at a GLOBAL location. Will first determine the terrain tile
+	 * that should be used and then the local coordinate in it that corresponds to the global one
+	 * 
+	 * @param location global location in the world
+	 * @return height value at that position
+	 */
 	private float getHeight(Vector2f location) {
 		Vector2f tileIndex = mapLocationToTile(location);
-		HashMap<Integer, TerrainBlock> vTile = uIndexedTiles.get(tileIndex.x);
+		HashMap<Integer, CachedTerrainBlock> vTile = uIndexedTiles.get(tileIndex.x);
 		TerrainBlock tb = vTile.get(tileIndex.y);
 		float realLocationX = location.x % tileSize;
 		float realLocationZ = location.y % tileSize;
 		return tb.getHeight(realLocationX, realLocationZ);
 	}
 
-	public void attachBlock(Vector2f location) {
+	/**
+	 * Sets a new current terrainblock.
+	 * Loads a new terrainblock (if its not already in the hashmap)
+	 * depending on the location
+	 * @param location the global location in the world
+	 */
+	public void setOrAttachBlock(Vector2f location) {
+		if (numberOfCachedTiles >= maxNumberOfCachedTiles) {
+			//TODO: delete one or more tiles (based on time and coordinates (distance) ?)
+		}
 		Vector2f tileIndex = mapLocationToTile(location);
+		vIndexedTile = uIndexedTiles.get((int)tileIndex.x);
+		if (vIndexedTile != null) {
+			TerrainBlock tb = vIndexedTile.get((int)tileIndex.y);
+			if (tb != null) {
+				currentBlock = tb;
+				return;
+			}
+		}
 		AbstractHeightMap heightMap = loadHeightMap((int) tileIndex.x,
 				(int) tileIndex.y);
 		if (heightMap != null) {
 
-			TerrainBlock tb = new TerrainBlock("" + (int) location.x
+			CachedTerrainBlock tb = new CachedTerrainBlock("" + (int) location.x
 					+ (int) location.y, tileSize, stepScale, heightMap
 					.getHeightMap(), new Vector3f(0, 0, 0), clod);
+			tb.setTimeBlockWasCached(System.currentTimeMillis());
 			Vector3f loc3d = new Vector3f(location.x,0,location.y);
 			tb.setLocalTranslation(loc3d);
-			HashMap<Integer, TerrainBlock> yTile = uIndexedTiles
-					.get((int) tileIndex.x);
-			if (yTile == null) {
-				yTile = new HashMap();
+			if (vIndexedTile == null) {
+				vIndexedTile = new HashMap();
 			}
-			yTile.put((int) tileIndex.y, tb);
-			uIndexedTiles.put((int) tileIndex.x, yTile);
+			vIndexedTile.put((int) tileIndex.y, tb);
+			uIndexedTiles.put((int) tileIndex.x, vIndexedTile);
 			currentBlock = tb;
 			attachChild(tb);
+			numberOfCachedTiles++;
 		} else {
 			logger.error("Terrain couldnt be loaded for location: "
 					+ location.x + " " + location.y);
 		}
 	}
 
+	/**
+	 * maps the global position to a tile that corresponds to that position
+	 * @param loc
+	 * @return
+	 */
 	private Vector2f mapLocationToTile(Vector2f loc) {
 		float u = loc.x / tileSize + 1;
 		float v = loc.y / tileSize + 1;
 		Vector2f uvTile = new Vector2f(u, v);
 		return uvTile;
 	}
+
 
 	private AbstractHeightMap loadHeightMap(int u, int v) {
 		RawHeightMap rawMap = new RawHeightMap(getTerrainFileName(u, v),
