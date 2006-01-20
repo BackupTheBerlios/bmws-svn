@@ -21,7 +21,6 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
 import de.terrainer.generators.RandomMidpointDisplacement;
-import de.terrainer.terrainloader.TerrainController;
 import de.terrainer.terrainloader.TerrainPersistence;
 
 public class TerrainerGUI extends JFrame {

@@ -19,7 +19,7 @@ public class HeightMap {
 
 	public int getHeightAt(int x, int y) {
 		if (x < 0 || x >= heightMap.length || y < 0 || y >= heightMap[0].length)
-			return -50;
+			return 0;
 		return heightMap[x][y];
 	}
 	
