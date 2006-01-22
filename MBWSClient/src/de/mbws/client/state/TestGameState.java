@@ -53,6 +53,7 @@ import de.mbws.client.net.ActionQueue;
 import de.mbws.client.state.handler.TestGameHandler;
 
 public class TestGameState extends StandardGameState {
+	
 
 	private Node player;
 	protected InputHandler input;
@@ -227,13 +228,12 @@ public class TestGameState extends StandardGameState {
 			as.setTestFunction(AlphaState.TF_GREATER);
 			r.setRenderState(as);
 			rootNode.attachChild(r);
-			
-			
+
 			Compass c = new Compass("compass");
-			c.setLocalTranslation(new Vector3f(200,200,0));
+			c.setLocalTranslation(new Vector3f(200, 200, 0));
 			rootNode.attachChild(c);
 		} catch (IOException e) {
-			System.out.println("Damn exceptions:" + e);
+			logger.error("Damn exceptions:" + e);
 			e.printStackTrace();
 		}
 

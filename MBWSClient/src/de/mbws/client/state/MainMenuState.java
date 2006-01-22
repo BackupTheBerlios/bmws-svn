@@ -11,6 +11,8 @@ import javax.swing.JDesktopPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
+import org.apache.log4j.Logger;
+
 import com.jme.image.Texture;
 import com.jme.input.MouseInput;
 import com.jme.math.Vector3f;
@@ -29,6 +31,7 @@ import de.mbws.client.state.handler.MainMenuHandler;
  * @author Kerim
  */
 public class MainMenuState extends BaseGameState {
+	private static Logger logger = Logger.getLogger(MainMenuState.class);
 
 	// /** THE CURSOR NODE WHICH HOLDS THE MOUSE GOTTEN FROM INPUT. */
 	// private Node cursor;
@@ -44,7 +47,7 @@ public class MainMenuState extends BaseGameState {
 		if (SoundSystem.isStreamOpened(musicID)) {
 			SoundSystem.playStream(musicID);
 		}
-//		initGUI();
+		// initGUI();
 		// initCursor();
 
 		MouseInput.get().setCursorVisible(true);
@@ -118,7 +121,7 @@ public class MainMenuState extends BaseGameState {
 	/**
 	 * Initializes the 2D Background and the Buttons
 	 */
-private void initGUI() {
+	private void initGUI() {
 		Quad backgroundQuad = new Quad("background");
 		backgroundQuad.initialize(display.getWidth(), display.getHeight());
 		backgroundQuad.setLocalTranslation((new Vector3f(
@@ -131,11 +134,12 @@ private void initGUI() {
 
 		TextureState ts = display.getRenderer().createTextureState();
 		try {
-			ts.setTexture(TextureManager.loadTexture(new File("data/images/IntroAndMainMenu/Background.jpg").toURL(),
-					Texture.MM_LINEAR, Texture.FM_LINEAR, ts.getMaxAnisotropic(),
-					true));
+			ts.setTexture(TextureManager.loadTexture(new File(
+					"data/images/IntroAndMainMenu/Background.jpg").toURL(),
+					Texture.MM_LINEAR, Texture.FM_LINEAR, ts
+							.getMaxAnisotropic(), true));
 		} catch (MalformedURLException e) {
-			System.out.println("Background image not found");
+			logger.warn("Background image not found");
 			e.printStackTrace();
 		}
 

@@ -247,7 +247,7 @@ public class Terrainloader extends BaseGame {
 		// tp.updateModelBound();
 		tp.setLocalTranslation(new Vector3f(0, 0, 0));
 
-		tp.setOrAttachBlock(new Vector2f(0, 129));
+		tp.setOrAttachBlock(new Vector2f(0, 128));
 		URL dirt = Terrainloader.class.getClassLoader().getResource(
 				"resources/textures/dirt.jpg");
 		ts = display.getRenderer().createTextureState();

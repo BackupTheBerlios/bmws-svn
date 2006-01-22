@@ -11,6 +11,7 @@ import java.util.Map;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.log4j.Logger;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.math.FastMath;
@@ -30,6 +31,8 @@ import de.mbws.common.eventdata.generated.CharacterVisualAppearance;
 import de.mbws.common.eventdata.generated.WorldObject;
 
 public class ObjectManager {
+
+	private static Logger logger = Logger.getLogger(ObjectManager.class);
 
 	private static final String TEXTURE_BASE_PATH = "/textures/";
 	// private static final String MODEL_BASE_PATH = "/model/";
@@ -217,10 +220,10 @@ public class ObjectManager {
 			try {
 				long time = System.currentTimeMillis();
 				modelNode = jbr.loadBinaryFormat(fi);
-				System.out.println("Time to convert from .jme to SceneGraph:"
+				logger.info("Time to convert from .jme to SceneGraph:"
 						+ (System.currentTimeMillis() - time));
 			} catch (IOException e) {
-				System.out.println("damn exceptions:" + e.getMessage());
+				logger.error("damn exceptions:" + e.getMessage());
 			}
 
 			modelNode.setLocalScale(scaling);

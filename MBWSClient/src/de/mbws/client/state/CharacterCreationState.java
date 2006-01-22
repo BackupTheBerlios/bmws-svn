@@ -7,6 +7,8 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.util.logging.Level;
 
+import org.apache.log4j.Logger;
+
 import com.jme.app.GameState;
 import com.jme.app.GameStateManager;
 import com.jme.image.Texture;
@@ -46,6 +48,8 @@ import de.mbws.client.gui.MenuLookAndFeel;
  */
 public class CharacterCreationState extends BaseGameState {
 
+	private static Logger logger = Logger
+			.getLogger(CharacterCreationState.class);
 	// /** THE CURSOR NODE WHICH HOLDS THE MOUSE GOTTEN FROM INPUT. */
 	// private Node cursor;
 
@@ -199,7 +203,7 @@ public class CharacterCreationState extends BaseGameState {
 					Texture.MM_LINEAR, Texture.FM_LINEAR, ts
 							.getMaxAnisotropic(), true));
 		} catch (MalformedURLException e) {
-			System.out.println("Background image not found");
+			logger.warn("Background image not found");
 			e.printStackTrace();
 		}
 

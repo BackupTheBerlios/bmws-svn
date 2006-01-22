@@ -11,6 +11,8 @@ import javax.swing.JDesktopPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
+import org.apache.log4j.Logger;
+
 import com.jme.image.Texture;
 import com.jme.input.MouseInput;
 import com.jme.math.Vector3f;
@@ -30,6 +32,8 @@ import de.mbws.client.state.handler.CharacterSelectionStateHandler;
  * @author Kerim
  */
 public class CharacterSelectionState extends BaseGameState {
+	private static Logger logger = Logger
+			.getLogger(CharacterSelectionState.class);
 
 	// /** THE CURSOR NODE WHICH HOLDS THE MOUSE GOTTEN FROM INPUT. */
 	// private Node cursor;
@@ -122,7 +126,7 @@ public class CharacterSelectionState extends BaseGameState {
 					Texture.MM_LINEAR, Texture.FM_LINEAR, ts.getMaxAnisotropic(),
 					true));
 		} catch (MalformedURLException e) {
-			System.out.println("Background image not found");
+			logger.warn("Background image not found");
 			e.printStackTrace();
 		}
 		ts.setEnabled(true);
