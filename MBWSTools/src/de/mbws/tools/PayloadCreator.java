@@ -18,6 +18,8 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import org.apache.log4j.Logger;
+
 /**
  * PayloadCreator creates data classes from a simple text description. Using
  * templates the created classes provide:
@@ -28,6 +30,7 @@ import java.util.StringTokenizer;
  * @author Axel Sammet
  */
 public class PayloadCreator {
+	private static Logger logger = Logger.getLogger(PayloadCreator.class);
 	BufferedReader reader;
 
 	int currentLineNo = 0;
@@ -114,7 +117,7 @@ public class PayloadCreator {
 		for (Iterator<String> iter = typeSet.iterator(); iter.hasNext();) {
 			String gentype = iter.next();
 			type = gentype;
-			System.out.println("Generating classes for type " + gentype);
+			logger.info("Generating classes for type " + gentype);
 			generateClasses();
 		}
 	}
@@ -282,8 +285,9 @@ public class PayloadCreator {
 	private void openFile() {
 		try {
 			props.load(new FileInputStream(
-							"..\\MBWSCommons\\mapping\\payloadcreator.properties"));
-			reader = new BufferedReader(new FileReader("..\\MBWSCommons\\mapping\\Payloads.cfg"));
+					"..\\MBWSCommons\\mapping\\payloadcreator.properties"));
+			reader = new BufferedReader(new FileReader(
+					"..\\MBWSCommons\\mapping\\Payloads.cfg"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
