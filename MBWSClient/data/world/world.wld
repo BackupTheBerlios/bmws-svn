@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<World 
+	columns="3" 
+	rows="3" 
+	sectionWidth="128">
+<Section column="0" row="0" terrainFile="..\MBWSClient\data\world\world_0_0.ter"/>
+
+<Section column="0" row="1" terrainFile="..\MBWSClient\data\world\world_0_1.ter"/><Section column="0" row="2" terrainFile="..\MBWSClient\data\world\world_0_2.ter"/><Section column="1" row="0" terrainFile="..\MBWSClient\data\world\world_1_0.ter"/><Section column="1" row="1" terrainFile="..\MBWSClient\data\world\world_1_1.ter"/><Section column="1" row="2" terrainFile="..\MBWSClient\data\world\world_1_2.ter"/><Section column="2" row="0" terrainFile="..\MBWSClient\data\world\world_2_0.ter"/><Section column="2" row="1" terrainFile="..\MBWSClient\data\world\world_2_1.ter"/><Section column="2" row="2" terrainFile="..\MBWSClient\data\world\world_2_2.ter"/></World>
