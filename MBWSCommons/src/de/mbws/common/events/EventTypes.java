@@ -67,6 +67,17 @@ public class EventTypes {
     
     public static final int S2C_MOVABLE_OBJECT_CREATE = 204;
     public static final int S2C_MOVABLE_OBJECT_DESTROY = 205;
+    
+    //numbers 300 to 310 are reserved to chat related events
+    public static final int GROUPID_EVENT_CHAT = 30;
+    public static final int CHAT_WHISPER = 300;
+    public static final int CHAT_SAY = 301;
+    public static final int CHAT_SHOUT = 302;
+    public static final int CHAT_GROUP_SAY = 303;
+    public static final int CHAT_PM = 304;
+    public static final int CHAT_EMOTE = 305;
+    public static final int CHAT_ADMIN_COMMAND = 306;
+    
 	
     
     
