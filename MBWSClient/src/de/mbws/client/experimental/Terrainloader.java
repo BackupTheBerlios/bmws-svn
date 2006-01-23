@@ -23,7 +23,10 @@ import com.jme.system.JmeException;
 import com.jme.util.TextureManager;
 import com.jme.util.Timer;
 
+import de.mbws.client.data.ClientPlayerData;
+import de.mbws.client.gui.ingame.GameDesktop;
 import de.mbws.client.terrain.DynamicTerrainPage;
+import de.mbws.common.eventdata.generated.CharacterData;
 
 public class Terrainloader extends BaseGame {
 
@@ -31,11 +34,12 @@ public class Terrainloader extends BaseGame {
 	// the timer
 	protected Timer timer;
 
+	private GameDesktop gd;
 	// Our camera object for viewing the scene
 	private Camera cam;
 	// private Node player;
-	// private Compass c;
-	// private float testAngle = 0;
+	private Compass c;
+	private float testAngle = 0;
 
 	// the root node of the scene graph
 	private Node rootNode;
@@ -67,17 +71,14 @@ public class Terrainloader extends BaseGame {
 		interpolation = timer.getTimePerFrame();
 
 		input.update(interpolation);
-		// c.setAngle(testAngle++);
-		// c.updateGeometricState(interpolation, true);
+		 c.setAngle(testAngle++);
+		 c.updateGeometricState(interpolation, true);
 
 		// if escape was pressed, we exit
 		if (KeyBindingManager.getKeyBindingManager().isValidCommand("exit")) {
 			finished = true;
 		}
 
-		// Because we are changing the scene (moving the skybox) we need to
-		// update
-		// the graph.
 		rootNode.updateGeometricState(interpolation, true);
 	}
 
@@ -90,7 +91,7 @@ public class Terrainloader extends BaseGame {
 		// Clear the screen
 		display.getRenderer().clearBuffers();
 		display.getRenderer().draw(rootNode);
-		// display.getRenderer().draw(compass);
+		display.getRenderer().draw(c);
 	}
 
 	/**
@@ -163,11 +164,26 @@ public class Terrainloader extends BaseGame {
 		// Light the world
 		buildLighting();
 		// add the tree
-		// buildEnvironment();
+		 buildEnvironment();
+		addGameDesktop();
 
 		// update the scene graph for rendering
 		rootNode.updateGeometricState(0.0f, true);
 		rootNode.updateRenderState();
+	}
+
+	private void addGameDesktop() {
+		CharacterData dummyCharacterData = new CharacterData();
+		dummyCharacterData.setName("DUMMY_PLAYER");
+		ClientPlayerData.getInstance().setSelectedCharacterData(dummyCharacterData);
+		
+		 gd = new GameDesktop("name", input);
+		 gd.getLocalTranslation().set( display.getWidth() / 2, display.getHeight() / 2, 0 );
+		 gd.updateGeometricState(0, true);
+		 gd.updateRenderState();
+			if (rootNode != null)
+				rootNode.attachChild(gd);
+		
 	}
 
 	private void buildInput() {
@@ -194,19 +210,19 @@ public class Terrainloader extends BaseGame {
 	// * create geometry and shared this geometry. Normally, you wouldn't build
 	// * your models by hand as it is too much of a trial and error process.
 	// */
-	// private void buildEnvironment() {
-	//
-	// c = new Compass("compass");
-	// c.setLocalTranslation(new Vector3f(200, 200, 0));
-	// c.updateGeometricState(0, true);
-	// c.updateRenderState();
-	//
-	// rootNode.attachChild(c);
-	// // } catch (IOException e) {
-	// // System.out.println("Damn exceptions:" + e);
-	// // e.printStackTrace();
-	// // }
-	// }
+	 private void buildEnvironment() {
+	
+	 c = new Compass("compass");
+	 c.setLocalTranslation(new Vector3f(200, 200, 0));
+	 c.updateGeometricState(0, true);
+	 c.updateRenderState();
+	
+	 rootNode.attachChild(c);
+	 // } catch (IOException e) {
+	 // System.out.println("Damn exceptions:" + e);
+	 // e.printStackTrace();
+	 // }
+	 }
 
 	/**
 	 * creates a light for the terrain.
@@ -277,4 +293,5 @@ public class Terrainloader extends BaseGame {
 	protected void cleanup() {
 
 	}
+
 }
