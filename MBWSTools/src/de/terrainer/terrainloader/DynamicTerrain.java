@@ -131,18 +131,4 @@ public class DynamicTerrain extends Node {
 
 	}
 
-	public static void main(String[] args) {
-		try {
-			DynamicTerrain dt = new DynamicTerrain();
-			dt.init(null, "..\\MBWSClient\\data\\world\\world");
-		}
-		catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 }
