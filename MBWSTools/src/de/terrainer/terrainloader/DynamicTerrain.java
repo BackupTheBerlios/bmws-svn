@@ -25,7 +25,7 @@ public class DynamicTerrain extends Node {
 	float spatialScale = 5;
 	float heightScale = 0.3f;
 	int sectionResolution = 129;
-	float sectionWidth = spatialScale * sectionResolution;
+	float sectionWidth = spatialScale * (sectionResolution-1);
 	float visibilityRadius2 = 9*sectionWidth*sectionWidth;
 	float prefetchRadius = 3*sectionWidth;
 	float unloadRadius;

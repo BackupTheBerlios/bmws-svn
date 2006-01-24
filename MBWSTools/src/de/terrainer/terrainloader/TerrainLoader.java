@@ -51,7 +51,6 @@ public class TerrainLoader {
 		while ((readct = fis.read(bytes, nr, bytes.length-nr))>0) {
 			nr += readct;
 		}
-		System.out.println("read "+nr+" from "+bytes.length);
 		ByteBuffer buffer = ByteBuffer.wrap(bytes);
 		int[] heightMap = new int[terrainSize];
 		for (int i = 0; i < heightMap.length; i++) {
@@ -63,14 +62,14 @@ public class TerrainLoader {
 				* dynamicTerrain.sectionWidth);
 		TerrainBlock terrainBlock = new TerrainBlock("terrain(" + column + ", " + row + ")",
 				dynamicTerrain.sectionResolution, scale, heightMap, origin, false);
-//		TextureState ts = dynamicTerrain.display.getRenderer().createTextureState();
-//		// TODO use the commented line instead
-//		ts.setTexture(TextureManager.loadTexture("..\\MBWSClient\\data\\images\\grassb.png",
-//				Texture.MM_LINEAR, Texture.FM_LINEAR));
-//		// ts.setTexture(TextureManager.loadTexture(sectionPath+".png",
-//		// Texture.MM_LINEAR,
-//		// Texture.FM_LINEAR));
-//		terrainBlock.setRenderState(ts);
+		TextureState ts = dynamicTerrain.display.getRenderer().createTextureState();
+		// TODO use the commented line instead
+		ts.setTexture(TextureManager.loadTexture("..\\MBWSClient\\data\\images\\grassb.png",
+				Texture.MM_LINEAR, Texture.FM_LINEAR));
+		// ts.setTexture(TextureManager.loadTexture(sectionPath+".png",
+		// Texture.MM_LINEAR,
+		// Texture.FM_LINEAR));
+		terrainBlock.setRenderState(ts);
 		terrainBlock.setModelBound(new BoundingBox());
 		terrainBlock.updateModelBound();
 		return terrainBlock;
