@@ -1,5 +1,6 @@
 package de.terrainer.terrainloader;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class AsyncTaskQueue {
@@ -7,10 +8,10 @@ public class AsyncTaskQueue {
 	private volatile boolean stopping;
 
 	private class QueueEntry {
-		String identifier;
+		Object identifier;
 		Runnable task;
 
-		public QueueEntry(String taskIdentifier, Runnable task) {
+		public QueueEntry(Object taskIdentifier, Runnable task) {
 			this.task = task;
 			this.identifier = taskIdentifier;
 		}
@@ -22,10 +23,13 @@ public class AsyncTaskQueue {
 		Thread tr = new Thread(new Runnable() {
 			public void run() {
 				while (!stopping) {
-					Runnable task = dequeue();
-					if (task != null) {
+					QueueEntry entry = dequeue();
+					if (entry != null) {
 						System.out.println("processing task");
-						task.run();
+						entry.task.run();
+						synchronized (entry) {
+							entry.notifyAll();
+						}
 					}
 					else {
 						// nothing to do, go to sleep
@@ -36,7 +40,6 @@ public class AsyncTaskQueue {
 								System.out.println("woke up");
 							}
 							catch (InterruptedException e) {
-								e.printStackTrace();
 							}
 						}
 					}
@@ -52,17 +55,39 @@ public class AsyncTaskQueue {
 		notify();
 	}
 
-	public synchronized void enqueue(String taskIdentifier, Runnable task) {
+	public synchronized void enqueue(Object taskIdentifier, Runnable task) {
 		queue.addLast(new QueueEntry(taskIdentifier, task));
 		notify();
 	}
 
-	private synchronized Runnable dequeue() {
+	private synchronized QueueEntry dequeue() {
 		if (queue.size() == 0)
 			return null;
-		Runnable ret = queue.getFirst().task;
+		QueueEntry ret = queue.getFirst();
 		queue.removeFirst();
 		return ret;
+	}
+
+	/** 
+	 * Waits for the first entry in the queue matching the identifier.
+	 * @param taskIdentifier
+	 */
+	public void waitForTask(Object taskIdentifier) {
+		Iterator<QueueEntry> it = queue.iterator();
+		while (it.hasNext()) {
+			QueueEntry entry = it.next();
+			if (entry.identifier.equals(taskIdentifier)) {
+				synchronized (entry) {
+					try {
+						entry.wait();
+					}
+					catch (InterruptedException e) {
+					}
+				}
+				return;
+			}
+		}
+		throw new RuntimeException("Unknown task identifier: "+taskIdentifier);
 	}
 
 	public static void main(String[] args) {
