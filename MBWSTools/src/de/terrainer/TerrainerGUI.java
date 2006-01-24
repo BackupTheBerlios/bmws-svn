@@ -80,8 +80,8 @@ public class TerrainerGUI extends JFrame {
 	protected void save() {
 		TerrainPersistence tp = new TerrainPersistence("..\\MBWSClient\\data\\world\\world", 3, 3);
 		// TODO for the timebeing we save one terrain x times
-		for (int x=0; x<3; x++) {
-			for (int y=0; y<3; y++) {
+		for (int x=0; x<16; x++) {
+			for (int y=0; y<16; y++) {
 				tp.addSection(x, y, currentHeightMap.getLinearMap());
 			}
 		}
