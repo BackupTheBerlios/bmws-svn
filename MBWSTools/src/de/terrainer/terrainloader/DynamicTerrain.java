@@ -2,8 +2,10 @@ package de.terrainer.terrainloader;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.xml.sax.SAXException;
 
@@ -39,7 +41,7 @@ public class DynamicTerrain extends Node {
 
 	// TODO Check if Sets are sufficient
 	Map<String, TerrainBlock> sectionCache = new HashMap<String, TerrainBlock>();
-	Map<String, TerrainBlock> visibleSections = new HashMap<String, TerrainBlock>();
+	Set<TerrainBlock> visibleSections = new HashSet<TerrainBlock>();
 
 	TerrainLoader terrainLoader;
 	DisplaySystem display;
@@ -81,24 +83,24 @@ public class DynamicTerrain extends Node {
 			for (int y = ystart; y < yend; y++) {
 				Vector3f sectionPosition = new Vector3f(x * sectionWidth + sectionWidth / 2, 0, y
 						* sectionWidth + sectionWidth / 2);
-				String key = x + "_" + y;
-				if (isInVisibleRange(position, sectionPosition) && !visibleSections.containsKey(key)) {
-					TerrainBlock tb = sectionCache.get(key);
+				TerrainBlock tb = sectionCache.get(x + "_" + y);
+				if (isInVisibleRange(position, sectionPosition) && !visibleSections.contains(tb)) {
 					attachChild(tb);
-					visibleSections.put(key, tb);
+					visibleSections.add(tb);
 				}
 			}
 		}
 	}
 
 	private void removeInvisibleSections(Vector3f position) {
-		Iterator<TerrainBlock> it = visibleSections.values().iterator();
+		Iterator<TerrainBlock> it = visibleSections.iterator();
 		while (it.hasNext()) {
 			TerrainBlock tb = it.next();
 			Vector3f midPoint = new Vector3f(tb.getLocalTranslation().x + sectionWidth / 2, 0, tb
 					.getLocalTranslation().z
 					+ sectionWidth / 2);
 			if (!isInVisibleRange(midPoint, position)) {
+				visibleSections.remove(tb);
 				tb.removeFromParent();
 			}
 		}
