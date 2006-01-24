@@ -8,7 +8,7 @@ import de.terrainer.MetaInfo;
 import de.terrainer.TerrainerGUI;
 
 public class RandomMidpointDisplacement extends AbstractGenerator {
-	private int steepnes = 500;
+	private int steepnes = 100;
 	private int radius = 3;
 
 	public RandomMidpointDisplacement(HeightMap heightMap) {

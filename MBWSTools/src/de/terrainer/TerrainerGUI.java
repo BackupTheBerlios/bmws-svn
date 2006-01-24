@@ -33,7 +33,7 @@ public class TerrainerGUI extends JFrame {
 
 	TerrainerGUI() {
 		super("Terrainer");
-		currentHeightMap = new HeightMap(129, 129);
+		currentHeightMap = new HeightMap(65, 65);
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -78,7 +78,7 @@ public class TerrainerGUI extends JFrame {
 	}
 
 	protected void save() {
-		int size=6;
+		int size=12;
 		TerrainPersistence tp = new TerrainPersistence("..\\MBWSClient\\data\\world\\world", size, size);
 		// TODO for the timebeing we save one terrain x times
 		for (int x=0; x<size; x++) {

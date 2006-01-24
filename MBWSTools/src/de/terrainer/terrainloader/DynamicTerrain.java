@@ -31,11 +31,11 @@ public class DynamicTerrain extends Node {
 	String worldPath;
 	float spatialScale = 5;
 	float heightScale = 0.3f;
-	int sectionResolution = 129;
+	int sectionResolution = 65;
 	float sectionWidth = spatialScale * (sectionResolution - 1);
-	float visibilityRadius = 3 * sectionWidth;
+	float visibilityRadius = 4f * sectionWidth;
 	float visibilityRadius2 = visibilityRadius * visibilityRadius;
-	float prefetchRadius = 3 * sectionWidth;
+	float prefetchRadius = 4f * sectionWidth;
 	float prefetchRadius2 = prefetchRadius * prefetchRadius;
 	float unloadRadius;
 
@@ -74,19 +74,21 @@ public class DynamicTerrain extends Node {
 	}
 
 	private void addVisibleSections(Vector3f position) {
-		int xstart = Math.max((int) ((position.x - prefetchRadius) / sectionWidth), 0);
-		int xend = Math.min((int) ((position.x + prefetchRadius) / sectionWidth),
+		int xstart = Math.max((int) ((position.x - visibilityRadius) / sectionWidth), 0);
+		int xend = Math.min((int) ((position.x + visibilityRadius) / sectionWidth),
 				sectionColumns - 1);
-		int ystart = Math.max((int) ((position.y - prefetchRadius) / sectionWidth), 0);
-		int yend = Math.min((int) ((position.y + prefetchRadius) / sectionWidth), sectionRows - 1);
+		int ystart = Math.max((int) ((position.z - visibilityRadius) / sectionWidth), 0);
+		int yend = Math.min((int) ((position.z + visibilityRadius) / sectionWidth), sectionRows - 1);
 		for (int x = xstart; x < xend; x++) {
 			for (int y = ystart; y < yend; y++) {
-				Vector3f sectionPosition = new Vector3f(x * sectionWidth + sectionWidth / 2, 0, y
-						* sectionWidth + sectionWidth / 2);
 				TerrainBlock tb = sectionCache.get(x + "_" + y);
-				if (isInVisibleRange(position, sectionPosition) && !visibleSections.contains(tb)) {
+				Vector3f terrainMidPoint = new Vector3f(tb.getLocalTranslation().x + sectionWidth
+						/ 2, 0, tb.getLocalTranslation().z + sectionWidth / 2);
+				if (isInVisibleRange(position, terrainMidPoint) && !visibleSections.contains(tb)) {
 					attachChild(tb);
 					visibleSections.add(tb);
+					// System.err.println("attaching "+terrainMidPoint+" view:
+					// "+position);
 				}
 			}
 		}
@@ -96,18 +98,19 @@ public class DynamicTerrain extends Node {
 		Iterator<TerrainBlock> it = visibleSections.iterator();
 		while (it.hasNext()) {
 			TerrainBlock tb = it.next();
-			Vector3f midPoint = new Vector3f(tb.getLocalTranslation().x + sectionWidth / 2, 0, tb
-					.getLocalTranslation().z
-					+ sectionWidth / 2);
-			if (!isInVisibleRange(midPoint, position)) {
-				visibleSections.remove(tb);
+			Vector3f terrainMidPoint = new Vector3f(tb.getLocalTranslation().x + sectionWidth / 2,
+					0, tb.getLocalTranslation().z + sectionWidth / 2);
+			if (!isInVisibleRange(terrainMidPoint, position)) {
+				it.remove();
+				System.err.println("removing " + tb);
 				tb.removeFromParent();
+				System.err.println("detaching " + terrainMidPoint + " view: " + position);
 			}
 		}
 	}
 
 	private boolean isInVisibleRange(Vector3f pos1, Vector3f pos2) {
-		return (pos1.x * pos1.x - pos2.x * pos2.x + pos1.z * pos1.z - pos2.z * pos2.z) < visibilityRadius2;
+		return ((pos1.x - pos2.x) * (pos1.x - pos2.x) + (pos1.z - pos2.z) * (pos1.z - pos2.z)) < visibilityRadius2;
 	}
 
 	public void update(Camera cam) {
