@@ -1,5 +1,9 @@
 package de.terrainer;
 
+import java.io.IOException;
+
+import org.xml.sax.SAXException;
+
 import com.jme.app.SimpleGame;
 import com.jme.bounding.BoundingBox;
 import com.jme.image.Texture;
@@ -8,11 +12,14 @@ import com.jme.scene.state.TextureState;
 import com.jme.util.TextureManager;
 import com.jmex.terrain.TerrainBlock;
 
+import de.terrainer.terrainloader.DynamicTerrain;
+
 /**
  */
 public class Viewer extends SimpleGame {
 	private int[] map;
 	private int length;
+	private DynamicTerrain terrain; 
 
 	public Viewer(int[] map, int length) {
 		this.map = map;
@@ -21,9 +28,25 @@ public class Viewer extends SimpleGame {
 
 	protected void simpleInitGame() {
 		// First a hand made terrain
-		createTerrainFromMap();
-		// generatedHeightMap();
+		//createTerrainFromMap();
+		terrain = new DynamicTerrain();
+		rootNode.attachChild(terrain);
+		try {
+			terrain.init(display, "..\\MBWSClient\\data\\world\\world");
+		}
+		catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
+	@Override
+	protected void simpleUpdate() {
+		terrain.update(cam);
 	}
 
 	@Override

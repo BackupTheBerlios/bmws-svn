@@ -12,6 +12,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.xml.sax.SAXException;
 
+import com.jme.bounding.BoundingBox;
 import com.jme.image.Texture;
 import com.jme.math.Vector3f;
 import com.jme.scene.state.TextureState;
@@ -41,26 +42,37 @@ public class TerrainLoader {
 	}
 
 	public TerrainBlock loadTerrainBlock(int column, int row) throws IOException {
-		String sectionPath = dynamicTerrain.worldPath + "_" + column + "_"
-		+ row;
-		TerrainBlock terrainBlock = new TerrainBlock();
-		ByteBuffer buffer = ByteBuffer.allocate(dynamicTerrain.terrainSize*4);
+		int terrainSize = dynamicTerrain.sectionResolution*dynamicTerrain.sectionResolution;
+		String sectionPath = dynamicTerrain.worldPath + "_" + column + "_" + row;
+		byte[] bytes = new byte[terrainSize * 4];
 		FileInputStream fis = new FileInputStream(sectionPath + ".ter");
-		fis.read(buffer.array());
-		buffer.flip();
-		int[] heightMap = new int[dynamicTerrain.terrainSize];
-		for (int i=0; i<heightMap.length; i++) {
+		int nr = 0;
+		int readct = 0;
+		while ((readct = fis.read(bytes, nr, bytes.length-nr))>0) {
+			nr += readct;
+		}
+		System.out.println("read "+nr+" from "+bytes.length);
+		ByteBuffer buffer = ByteBuffer.wrap(bytes);
+		int[] heightMap = new int[terrainSize];
+		for (int i = 0; i < heightMap.length; i++) {
 			heightMap[i] = buffer.getInt();
 		}
-		terrainBlock.setHeightMap(heightMap);
-		terrainBlock.setStepScale(new Vector3f(dynamicTerrain.spatialScale, dynamicTerrain.heightScale ,dynamicTerrain.spatialScale));
-		TextureState ts = dynamicTerrain.display.getRenderer().createTextureState();
-		// TODO use the commented line instead
-		ts.setTexture(TextureManager.loadTexture("..\\MBWSClient\\data\\images\\grassb.png", Texture.MM_LINEAR,
-				Texture.FM_LINEAR));
-//		ts.setTexture(TextureManager.loadTexture(sectionPath+".png", Texture.MM_LINEAR,
-//				Texture.FM_LINEAR));
-		terrainBlock.setRenderState(ts);
+		Vector3f scale = new Vector3f(dynamicTerrain.spatialScale, dynamicTerrain.heightScale,
+				dynamicTerrain.spatialScale);
+		Vector3f origin = new Vector3f(column * dynamicTerrain.sectionWidth, 0, row
+				* dynamicTerrain.sectionWidth);
+		TerrainBlock terrainBlock = new TerrainBlock("terrain(" + column + ", " + row + ")",
+				dynamicTerrain.sectionResolution, scale, heightMap, origin, false);
+//		TextureState ts = dynamicTerrain.display.getRenderer().createTextureState();
+//		// TODO use the commented line instead
+//		ts.setTexture(TextureManager.loadTexture("..\\MBWSClient\\data\\images\\grassb.png",
+//				Texture.MM_LINEAR, Texture.FM_LINEAR));
+//		// ts.setTexture(TextureManager.loadTexture(sectionPath+".png",
+//		// Texture.MM_LINEAR,
+//		// Texture.FM_LINEAR));
+//		terrainBlock.setRenderState(ts);
+		terrainBlock.setModelBound(new BoundingBox());
+		terrainBlock.updateModelBound();
 		return terrainBlock;
 	}
 
