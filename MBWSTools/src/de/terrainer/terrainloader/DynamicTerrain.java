@@ -35,7 +35,7 @@ public class DynamicTerrain extends Node {
 	float sectionWidth = spatialScale * (sectionResolution - 1);
 	float visibilityRadius = 4f * sectionWidth;
 	float visibilityRadius2 = visibilityRadius * visibilityRadius;
-	float prefetchRadius = 4f * sectionWidth;
+	float prefetchRadius = 4.5f * sectionWidth;
 	float prefetchRadius2 = prefetchRadius * prefetchRadius;
 	float unloadRadius;
 
@@ -66,16 +66,16 @@ public class DynamicTerrain extends Node {
 		this.display = display;
 		this.terrainLoader = new TerrainLoader(this);
 		terrainLoader.loadWorldDescription(worldPath + ".wld");
-		
-//		// TODO replace by dynamic prefetching
-//		for (int x = 0; x < sectionColumns; x++) {
-//			for (int y = 0; y < sectionRows; y++) {
-//				sectionCache.put(x + "_" + y, terrainLoader.loadTerrainBlock(x, y));
-//			}
-//		}
+
+		// // TODO replace by dynamic prefetching
+		// for (int x = 0; x < sectionColumns; x++) {
+		// for (int y = 0; y < sectionRows; y++) {
+		// sectionCache.put(x + "_" + y, terrainLoader.loadTerrainBlock(x, y));
+		// }
+		// }
 	}
-	
-	/** 
+
+	/**
 	 * Destroys all background processes initiated by DynamicTerain.
 	 */
 	public void destroy() {
@@ -87,17 +87,19 @@ public class DynamicTerrain extends Node {
 		int xend = Math.min((int) ((position.x + visibilityRadius) / sectionWidth),
 				sectionColumns - 1);
 		int ystart = Math.max((int) ((position.z - visibilityRadius) / sectionWidth), 0);
-		int yend = Math.min((int) ((position.z + visibilityRadius) / sectionWidth), sectionRows - 1);
+		int yend = Math
+				.min((int) ((position.z + visibilityRadius) / sectionWidth), sectionRows - 1);
 		for (int x = xstart; x < xend; x++) {
 			for (int y = ystart; y < yend; y++) {
 				String key = x + "_" + y;
-				if (!sectionCache.containsKey(key)) {
-					taskQueue.waitForTask(key);
-				}
+				Vector3f terrainMidPoint = new Vector3f(x * sectionWidth + sectionWidth / 2, 0, y
+						* sectionWidth + sectionWidth / 2);
 				TerrainBlock tb = sectionCache.get(key);
-				Vector3f terrainMidPoint = new Vector3f(tb.getLocalTranslation().x + sectionWidth
-						/ 2, 0, tb.getLocalTranslation().z + sectionWidth / 2);
-				if (isInRange(position, terrainMidPoint, visibilityRadius2) && !visibleSections.contains(tb)) {
+				if (isInRange(position, terrainMidPoint, visibilityRadius2) && tb != null
+						&& !visibleSections.contains(tb)) {
+					if (!sectionCache.containsKey(key)) {
+						taskQueue.waitForTask(key);
+					}
 					attachChild(tb);
 					visibleSections.add(tb);
 					// System.err.println("attaching "+terrainMidPoint+" view:
@@ -121,24 +123,27 @@ public class DynamicTerrain extends Node {
 			}
 		}
 	}
+
 	private class BlockLoader implements Runnable {
 		int x, y;
+
 		public BlockLoader(int x, int y) {
 			this.x = x;
 			this.y = y;
 		}
+
 		public void run() {
 			try {
-				sectionCache.put(x+"_"+y, terrainLoader.loadTerrainBlock(x, y));
+				sectionCache.put(x + "_" + y, terrainLoader.loadTerrainBlock(x, y));
 			}
 			catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
-	
+
 	private void preloadSections(Vector3f position) {
-		//TODO put this into one loop with visibility
+		// TODO put this into one loop with visibility
 		int xstart = Math.max((int) ((position.x - prefetchRadius) / sectionWidth), 0);
 		int xend = Math.min((int) ((position.x + prefetchRadius) / sectionWidth),
 				sectionColumns - 1);
@@ -148,15 +153,15 @@ public class DynamicTerrain extends Node {
 			for (int y = ystart; y < yend; y++) {
 				String key = x + "_" + y;
 				if (!sectionCache.containsKey(key)) {
-					Vector3f terrainMidPoint = new Vector3f(x*sectionWidth + sectionWidth
-							/ 2, 0, y*sectionWidth + sectionWidth / 2);
+					Vector3f terrainMidPoint = new Vector3f(x * sectionWidth + sectionWidth / 2, 0,
+							y * sectionWidth + sectionWidth / 2);
 					if (isInRange(position, terrainMidPoint, prefetchRadius2)) {
-						taskQueue.enqueue(key, new BlockLoader(x,y));
+						taskQueue.enqueue(key, new BlockLoader(x, y));
 					}
 				}
 			}
 		}
-		
+
 	}
 
 	private boolean isInRange(Vector3f pos1, Vector3f pos2, float squareOfRange) {
@@ -177,7 +182,7 @@ public class DynamicTerrain extends Node {
 
 		// add visible sections, that are still missing in the model
 		addVisibleSections(location);
-		
+
 		updateGeometricState(0.0f, true);
 		updateRenderState();
 

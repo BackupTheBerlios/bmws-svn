@@ -13,10 +13,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.xml.sax.SAXException;
 
 import com.jme.bounding.BoundingBox;
-import com.jme.image.Texture;
 import com.jme.math.Vector3f;
-import com.jme.scene.state.TextureState;
-import com.jme.util.TextureManager;
 import com.jmex.terrain.TerrainBlock;
 
 public class TerrainLoader {
@@ -42,13 +39,13 @@ public class TerrainLoader {
 	}
 
 	public TerrainBlock loadTerrainBlock(int column, int row) throws IOException {
-		int terrainSize = dynamicTerrain.sectionResolution*dynamicTerrain.sectionResolution;
+		int terrainSize = dynamicTerrain.sectionResolution * dynamicTerrain.sectionResolution;
 		String sectionPath = dynamicTerrain.worldPath + "_" + column + "_" + row;
 		byte[] bytes = new byte[terrainSize * 4];
 		FileInputStream fis = new FileInputStream(sectionPath + ".ter");
 		int nr = 0;
 		int readct = 0;
-		while ((readct = fis.read(bytes, nr, bytes.length-nr))>0) {
+		while ((readct = fis.read(bytes, nr, bytes.length - nr)) > 0) {
 			nr += readct;
 		}
 		ByteBuffer buffer = ByteBuffer.wrap(bytes);
@@ -62,14 +59,15 @@ public class TerrainLoader {
 				* dynamicTerrain.sectionWidth);
 		TerrainBlock terrainBlock = new TerrainBlock("terrain(" + column + ", " + row + ")",
 				dynamicTerrain.sectionResolution, scale, heightMap, origin, false);
-		TextureState ts = dynamicTerrain.display.getRenderer().createTextureState();
-		// TODO use the commented line instead
-		ts.setTexture(TextureManager.loadTexture("..\\MBWSClient\\data\\images\\grassb.png",
-				Texture.MM_LINEAR, Texture.FM_LINEAR));
-		// ts.setTexture(TextureManager.loadTexture(sectionPath+".png",
-		// Texture.MM_LINEAR,
-		// Texture.FM_LINEAR));
-		terrainBlock.setRenderState(ts);
+		// TextureState ts =
+		// dynamicTerrain.display.getRenderer().createTextureState();
+		// // TODO use the commented line instead
+		// ts.setTexture(TextureManager.loadTexture("..\\MBWSClient\\data\\images\\grassb.png",
+		// Texture.MM_LINEAR, Texture.FM_LINEAR));
+		// // ts.setTexture(TextureManager.loadTexture(sectionPath+".png",
+		// // Texture.MM_LINEAR,
+		// // Texture.FM_LINEAR));
+		// terrainBlock.setRenderState(ts);
 		terrainBlock.setModelBound(new BoundingBox());
 		terrainBlock.updateModelBound();
 		return terrainBlock;
