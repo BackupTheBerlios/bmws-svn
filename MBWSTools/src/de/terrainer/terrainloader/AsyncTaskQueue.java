@@ -58,6 +58,12 @@ public class AsyncTaskQueue {
 	}
 
 	public synchronized void enqueue(Object taskIdentifier, Runnable task) {
+		Iterator<QueueEntry> it = queue.iterator();
+		while (it.hasNext()) {
+			if (it.next().identifier.equals(taskIdentifier))
+				// task already in queue
+				return;
+		}
 		System.err.println("enqueue task: "+taskIdentifier);
 		queue.addLast(new QueueEntry(taskIdentifier, task));
 		notify();

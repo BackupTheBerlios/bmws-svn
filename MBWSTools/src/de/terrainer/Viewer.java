@@ -47,8 +47,6 @@ public class Viewer extends SimpleGame {
 	@Override
 	protected void simpleUpdate() {
 		terrain.update(cam);
-		rootNode.updateGeometricState(0.0f, true);
-		rootNode.updateRenderState();
 	}
 
 	@Override
