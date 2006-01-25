@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 public class AsyncTaskQueue {
 
-	private volatile boolean stopping;
+	protected volatile boolean stopping;
 
 	private class QueueEntry {
 		Object identifier;
@@ -23,10 +23,12 @@ public class AsyncTaskQueue {
 		Thread tr = new Thread(new Runnable() {
 			public void run() {
 				while (!stopping) {
-					QueueEntry entry = dequeue();
+					QueueEntry entry = peek();
 					if (entry != null) {
-						System.out.println("processing task");
+						System.err.println(System.currentTimeMillis()+" processing task: "+entry.identifier);
 						entry.task.run();
+						dequeue();
+						System.err.println(System.currentTimeMillis()+" finished task: "+entry.identifier);
 						synchronized (entry) {
 							entry.notifyAll();
 						}
@@ -35,9 +37,9 @@ public class AsyncTaskQueue {
 						// nothing to do, go to sleep
 						synchronized (AsyncTaskQueue.this) {
 							try {
-								System.out.println("going to sleep");
+								System.err.println("going to sleep");
 								AsyncTaskQueue.this.wait();
-								System.out.println("woke up");
+								System.err.println("woke up");
 							}
 							catch (InterruptedException e) {
 							}
@@ -56,18 +58,22 @@ public class AsyncTaskQueue {
 	}
 
 	public synchronized void enqueue(Object taskIdentifier, Runnable task) {
+		System.err.println("enqueue task: "+taskIdentifier);
 		queue.addLast(new QueueEntry(taskIdentifier, task));
 		notify();
 	}
 
-	private synchronized QueueEntry dequeue() {
+	protected QueueEntry peek() {
 		if (queue.size() == 0)
 			return null;
 		QueueEntry ret = queue.getFirst();
-		queue.removeFirst();
 		return ret;
 	}
 
+	protected synchronized void dequeue() {
+		queue.removeFirst();
+	}
+	
 	/** 
 	 * Waits for the first entry in the queue matching the identifier.
 	 * @param taskIdentifier
