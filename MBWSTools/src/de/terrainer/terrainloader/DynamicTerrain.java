@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.xml.sax.SAXException;
 
@@ -37,20 +38,19 @@ public class DynamicTerrain extends Node {
 	float visibilityRadius2 = visibilityRadius * visibilityRadius;
 	float prefetchRadius = 4.5f * sectionWidth;
 	float prefetchRadius2 = prefetchRadius * prefetchRadius;
-	float unloadRadius;
+	float unloadRadius = 6.f * sectionWidth;
+	float unloadRadius2 = unloadRadius * unloadRadius;
 
-	// TODO Check if Sets are sufficient
 	Map<String, TerrainBlock> sectionCache = new HashMap<String, TerrainBlock>();
 	Set<TerrainBlock> visibleSections = new HashSet<TerrainBlock>();
-	AsyncTaskQueue taskQueue;
+	SyncTaskQueue taskQueue;
 
 	TerrainLoader terrainLoader;
 	DisplaySystem display;
 
 	public DynamicTerrain() {
 		super("DynamicTerrain");
-		taskQueue = new AsyncTaskQueue();
-		taskQueue.startQueueProcessor();
+		taskQueue = new SyncTaskQueue();
 	}
 
 	/**
@@ -66,24 +66,15 @@ public class DynamicTerrain extends Node {
 		this.display = display;
 		this.terrainLoader = new TerrainLoader(this);
 		terrainLoader.loadWorldDescription(worldPath + ".wld");
-
-		// // TODO replace by dynamic prefetching
-		// for (int x = 0; x < sectionColumns; x++) {
-		// for (int y = 0; y < sectionRows; y++) {
-		// sectionCache.put(x + "_" + y, terrainLoader.loadTerrainBlock(x, y));
-		// }
-		// }
 	}
 
 	/**
 	 * Destroys all background processes initiated by DynamicTerain.
 	 */
 	public void destroy() {
-		taskQueue.shutdownQueueProcessor();
 	}
 
 	private void preloadAndAddSections(Vector3f position) {
-		// TODO put this into one loop with visibility
 		int xstart = Math.max((int) ((position.x - prefetchRadius) / sectionWidth), 0);
 		int xend = Math.min((int) ((position.x + prefetchRadius) / sectionWidth),
 				sectionColumns - 1);
@@ -107,9 +98,9 @@ public class DynamicTerrain extends Node {
 		TerrainBlock tb = sectionCache.get(key);
 		if (isInRange(position, terrainMidPoint, visibilityRadius2) && tb != null
 				&& !visibleSections.contains(tb)) {
-			if (!sectionCache.containsKey(key)) {
-				taskQueue.waitForTask(key);
-			}
+			// if (!sectionCache.containsKey(key)) {
+			// taskQueue.waitForTask(key);
+			// }
 			attachChild(tb);
 			visibleSections.add(tb);
 			// System.err.println("attaching "+terrainMidPoint+" view:
@@ -159,6 +150,17 @@ public class DynamicTerrain extends Node {
 		}
 	}
 
+	private void unloadDistantSections(Vector3f position) {
+		Iterator<Entry<String,TerrainBlock>> it = sectionCache.entrySet().iterator();
+		while (it.hasNext()) {
+			Vector3f terrainOrig = it.next().getValue().getLocalTranslation();
+			Vector3f terrainMidPoint = new Vector3f(terrainOrig.x+sectionWidth/2, 0, terrainOrig.z+sectionWidth/2);
+			if (!isInRange(terrainMidPoint, position, unloadRadius2)) {
+				it.remove();
+			}
+		}
+	}
+	
 	private boolean isInRange(Vector3f pos1, Vector3f pos2, float squareOfRange) {
 		return ((pos1.x - pos2.x) * (pos1.x - pos2.x) + (pos1.z - pos2.z) * (pos1.z - pos2.z)) < squareOfRange;
 	}
@@ -174,10 +176,12 @@ public class DynamicTerrain extends Node {
 	 * @param cam
 	 */
 	public void update(Camera cam) {
+		taskQueue.process(15);
 		Vector3f location = cam.getLocation();
 
 		// remove preloaded terrain
-
+		unloadDistantSections(location);
+		
 		// remove sections from the model, that are not visible anymore
 		removeInvisibleSections(location);
 
