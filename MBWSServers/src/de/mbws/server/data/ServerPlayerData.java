@@ -2,6 +2,7 @@ package de.mbws.server.data;
 
 import de.mbws.common.Globals;
 import de.mbws.common.data.AbstractPlayerData;
+import de.mbws.common.data.generated.Characterdata;
 import de.mbws.common.eventdata.generated.WorldObject;
 
 /**
@@ -12,14 +13,14 @@ import de.mbws.common.eventdata.generated.WorldObject;
 public class ServerPlayerData extends AbstractPlayerData {
 
     
-    private Long activeCharacter;
+    private Characterdata activeCharacter;
     private WorldObject movementInformation;
     
-    public Long getActiveCharacter() {
+    public Characterdata getActiveCharacter() {
         return activeCharacter;
     }
 
-    public void setActiveCharacter(Long activeCharacter) {
+    public void setActiveCharacter(Characterdata activeCharacter) {
         this.activeCharacter = activeCharacter;
     }
 

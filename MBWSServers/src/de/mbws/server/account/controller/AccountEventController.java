@@ -45,7 +45,7 @@ public class AccountEventController extends AccountServerBaseEventController {
                 Integer sessionId = getAccountServer().nextSessionId();
                 p.setSessionId(sessionId);
                 p.setChannel(l.getPlayer().getChannel());
-                getAccountServer().addPlayer(sessionId, p);
+//                getAccountServer().addPlayer(sessionId, p);
                 AccountEvent ae = new AccountEvent();
                 ae.setPlayer(p);
                 ae.setEventType(EventTypes.S2C_ACCOUNT_CREATE_OK);

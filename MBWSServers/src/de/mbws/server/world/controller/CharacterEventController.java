@@ -37,7 +37,6 @@ public class CharacterEventController extends WorldServerBaseEventController {
 
     public CharacterEventController(WorldServer worldServer) {
         super(worldServer);
-        // TODO Auto-generated constructor stub
     }
 
     /*
@@ -52,7 +51,9 @@ public class CharacterEventController extends WorldServerBaseEventController {
         if (event.getEventType() == EventTypes.S2S_CHARACTER_NEW_CHARACTER_ENTERS_WORLD) {
             CharacterWorldServerInformation cwsi = (CharacterWorldServerInformation) event.getEventData();
             ServerPlayerData spd = new ServerPlayerData();
-            spd.setActiveCharacter(IdHelper.removePrefix(cwsi.getCharacter().getCharacterID()));
+            Characterdata cdata = CharacterPersistenceManager.getInstance().getCharacterByID(
+                    IdHelper.removePrefix(cwsi.getCharacter().getCharacterID()));
+            spd.setActiveCharacter(cdata);
             getWorldServer().addPlayer(cwsi.getSessionId(),spd);
             
             CharacterEvent result = new CharacterEvent(cwsi);
@@ -61,8 +62,10 @@ public class CharacterEventController extends WorldServerBaseEventController {
             sendEvent(result);
         } else if (event.getEventType() == EventTypes.C2S_CHARACTER_ENTERS_WORLD_REQUEST) {
             CharacterSelection csel = (CharacterSelection) event.getEventData();
-            Characterdata cdata = CharacterPersistenceManager.getInstance().getCharacterByID(
-                    IdHelper.removePrefix(csel.getCharacterID()));            
+            Characterdata cdata = ((ServerPlayerData) event.getPlayer()).getActiveCharacter();
+            if(IdHelper.removePrefix(csel.getCharacterID()) != cdata.getId()) {
+                return;    
+            }
             CharacterStatus cs = cdata.getCharacterStatus();
             CharacterDetails charDetails = new CharacterDetails();
             WorldObject wo = new WorldObject();
