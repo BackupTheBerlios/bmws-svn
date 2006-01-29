@@ -174,8 +174,10 @@ insert into language_text_mapping (id,text_key,languages_id,text) values (37,'ch
 insert into language_text_mapping (id,text_key,languages_id,text) values (38,'character.selection.label.menuheader',2,'Character Menu');
 insert into language_text_mapping (id,text_key,languages_id,text) values (39,'loadingscreen.label',1,'laden');
 insert into language_text_mapping (id,text_key,languages_id,text) values (40,'loadingscreen.label',2,'loading');
-
-
+insert into language_text_mapping (id,text_key,languages_id,text) values (41,'generic.button.back',1,'Zurück');
+insert into language_text_mapping (id,text_key,languages_id,text) values (42,'generic.button.back',2,'Back');
+insert into language_text_mapping (id,text_key,languages_id,text) values (43,'character.creation.button.create',1,'Erstellen');
+insert into language_text_mapping (id,text_key,languages_id,text) values (44,'character.creation.button.create',2,'Create');
 #
 # Dumping data for table 'languages'
 #
