@@ -25,5 +25,10 @@ public class ClientGlobals {
     public static final String CHARACTER_SELECTION_BUTTON_DELETE_CHARACTER = "character.selection.button.deletecharacter";
     public static final String CHARACTER_SELECTION_LABEL_MENUHEADER = "character.selection.label.menuheader";
     
+    public static final String CHARACTER_CREATION_BUTTON_CREATE_CHARACTER = "character.creation.button.create";
+    
+    
     public static final String LOADING_SCREEN_LABEL = "loadingscreen.label";
+    
+    public static final String GENERIC_BUTTON_BACK = "generic.button.back";
 }
