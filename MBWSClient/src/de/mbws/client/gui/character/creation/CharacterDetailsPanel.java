@@ -7,7 +7,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,11 +18,13 @@ import javax.swing.event.ChangeListener;
 import org.apache.log4j.Logger;
 
 import se.datadosen.component.RiverLayout;
+import de.mbws.client.ConfigurationData;
 import de.mbws.client.ValueMapper;
 import de.mbws.client.data.ClientGlobals;
 import de.mbws.client.state.handler.BaseInputHandler;
 import de.mbws.client.state.handler.CharacterSelectionStateHandler;
-import de.mbws.common.data.generated.Race;
+import de.mbws.common.data.race.Race;
+
 
 /**
  * Description:
@@ -60,8 +61,6 @@ public class CharacterDetailsPanel extends JPanel implements PropertyChangeListe
 
     private JComboBox raceComboBox = null;
 
-    private List races = new ArrayList();
-
     private JComboBox classTemplateComboBox = null;
 
     private JLabel classTemplateLabel = null;
@@ -79,18 +78,6 @@ public class CharacterDetailsPanel extends JPanel implements PropertyChangeListe
      */
     public CharacterDetailsPanel(BaseInputHandler inputHandler) {
         super();
-        // dummy stuff
-        Race r = new Race();
-        r.setId(1);
-        r.setName("Zwerg");
-        r.setDescription("Ganz super dolle Zwerge");
-        races.add(r);
-        Race r2 = new Race();
-        r2.setId(2);
-        r2.setName("Zwerg2");
-        r2.setDescription("Ganz super dolle Zwerge2");
-        races.add(r2);
-
         this.inputHandler = inputHandler;
         initialize();
 
@@ -240,6 +227,8 @@ private JComboBox getRaceComboBox() {
             DefaultComboBoxModel model = new DefaultComboBoxModel();
             raceComboBox = new JComboBox(model);
             
+            //TODO fixme
+            List races = ConfigurationData.getAllRaces();
             for (Iterator iter = races.iterator(); iter.hasNext();) {
                 Race race = (Race) iter.next();
                 ((DefaultComboBoxModel) raceComboBox.getModel()).addElement(race);
@@ -265,7 +254,7 @@ private JComboBox getRaceComboBox() {
             if (value instanceof Race) {
                 Race race = (Race) value;
                 StringBuffer sb = new StringBuffer();
-                sb.append(race.getName());
+                sb.append(ValueMapper.getRaceName(race.getId()));
                 label.setText(sb.toString());
                 label.setHorizontalAlignment(SwingConstants.LEFT);
                 label.setBackground(buttonBackground);
