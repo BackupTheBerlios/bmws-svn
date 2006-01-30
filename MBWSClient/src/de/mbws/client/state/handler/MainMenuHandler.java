@@ -13,7 +13,6 @@ import com.jme.input.action.InputAction;
 import com.jme.input.action.InputActionEvent;
 import com.jme.system.DisplaySystem;
 import com.jme.util.LoggingSystem;
-import com.jmex.bui.event.ComponentListener;
 
 import de.mbws.client.MBWSClient;
 import de.mbws.client.controller.AccountController;
@@ -29,8 +28,8 @@ import de.mbws.common.events.AbstractGameEvent;
  * 
  * @author Kerim
  */
-// TODO: replace this (and parts in MainMenuState) with a BUI-Interface ?
-public class MainMenuHandler extends BaseInputHandler implements ComponentListener {
+
+public class MainMenuHandler extends BaseInputHandler{
     // Mouse mouse;
 
     public MainMenuHandler(MainMenuState myState) {
