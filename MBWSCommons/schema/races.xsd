@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+		targetNamespace="http://mbws/Races">
+
+   <xsd:element name="races">
+      <xsd:annotation>
+         <xsd:documentation>
+             Races
+         </xsd:documentation>
+      </xsd:annotation>
+
+      <xsd:complexType>
+      	 <xsd:sequence>
+			<xsd:element ref="race" maxOccurs="unbounded" minOccurs="1"/>
+      	</xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+
+   <xsd:element name="race">
+   		<xsd:complexType>	
+	             <xsd:attributeGroup ref="raceAttribs" />
+    	</xsd:complexType>
+   	</xsd:element>
+
+   <xsd:attributeGroup name="raceAttribs">
+        <xsd:attribute name="id" type="xsd:integer" use="required"/>
+        <xsd:attribute name="playable" type="xsd:boolean" use="required"/>
+        <xsd:attribute name="description" type="xsd:string" use="required"/>
+   </xsd:attributeGroup>  
+</xsd:schema>
