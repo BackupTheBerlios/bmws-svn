@@ -1,4 +1,4 @@
-package de.terrainer;
+package de.terrainer.gui;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -15,7 +15,8 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import de.terrainer.gui.IntegerInputField;
+import de.terrainer.GuiActionDescriptor;
+import de.terrainer.MetaInfo;
 
 public class PropertyPanel extends JPanel {
 	private static class ComDesc {

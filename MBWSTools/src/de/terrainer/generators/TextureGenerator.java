@@ -3,7 +3,6 @@ package de.terrainer.generators;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
@@ -13,17 +12,19 @@ import javax.imageio.ImageIO;
 import de.terrainer.AbstractGenerator;
 import de.terrainer.HeightMap;
 import de.terrainer.MetaInfo;
+import de.terrainer.gui.HeightMapComponent;
 
 public class TextureGenerator extends AbstractGenerator {
 	private int resolutionPerField = 4;
 	private Random rand = new Random(System.currentTimeMillis());
 
-	public TextureGenerator(HeightMap heightMap) {
-		super(heightMap);
+	public TextureGenerator(HeightMapComponent hmc) {
+		super(hmc);
 	}
 
 	@Override
 	public void generate() {
+		HeightMap heightMap = getHeightMap();
 		int picWidth = (heightMap.getWidth() - 1) * resolutionPerField;
 		BufferedImage img = new BufferedImage(picWidth, picWidth, BufferedImage.TYPE_INT_RGB);
 		Graphics gr = img.getGraphics();
@@ -60,7 +61,4 @@ public class TextureGenerator extends AbstractGenerator {
 		return null;
 	}
 
-	public static void main(String[] args) {
-		(new TextureGenerator(new HeightMap(129, 129))).generate();
-	}
 }

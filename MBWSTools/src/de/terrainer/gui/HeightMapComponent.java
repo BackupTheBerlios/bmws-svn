@@ -1,4 +1,4 @@
-package de.terrainer;
+package de.terrainer.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -6,11 +6,14 @@ import java.awt.Graphics;
 
 import javax.swing.JComponent;
 
+import de.terrainer.HeightMap;
+
 public class HeightMapComponent extends JComponent {
 	private HeightMap heightMap;
 
 	public void setHeightMap(HeightMap heightMap) {
 		this.heightMap = heightMap;
+		repaint();
 	}
 
 	@Override
@@ -42,5 +45,9 @@ public class HeightMapComponent extends JComponent {
 	@Override
 	public Dimension getPreferredSize() {
 		return new Dimension(620, 620);
+	}
+
+	public HeightMap getCurrentHeightMap() {
+		return heightMap;
 	}
 }

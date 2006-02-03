@@ -8,9 +8,12 @@ import java.io.InputStream;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 
+import de.terrainer.gui.HeightMapComponent;
+
 public abstract class AbstractGenerator implements GuiActionDescriptor {
 	public static final ImageIcon defaultIcon;
-	protected HeightMap heightMap;
+	private HeightMapComponent heightMapComponent;
+	
 	public class DefaultAction implements Action {
 		boolean enabled = true;
 		public Object getValue(String key) {
@@ -53,12 +56,12 @@ public abstract class AbstractGenerator implements GuiActionDescriptor {
 		}
 		defaultIcon = new ImageIcon(buffer);
 	}
-
-	public abstract void generate();
 	
-	public AbstractGenerator(HeightMap heightMap) {
-		this.heightMap = heightMap;
+	public AbstractGenerator(HeightMapComponent hmc) {
+		this.heightMapComponent = hmc;
 	}
+	
+	public abstract void generate();
 
 	public abstract void setMask(int[][] mask);
 
@@ -71,6 +74,10 @@ public abstract class AbstractGenerator implements GuiActionDescriptor {
 	
 	public ImageIcon getIcon() {
 		return defaultIcon;
+	}
+
+	public HeightMap getHeightMap() {
+		return heightMapComponent.getCurrentHeightMap();
 	}
 
 }

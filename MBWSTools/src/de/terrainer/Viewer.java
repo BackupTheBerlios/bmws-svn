@@ -16,7 +16,7 @@ import com.jme.scene.state.TextureState;
 import com.jme.util.TextureManager;
 import com.jmex.terrain.TerrainBlock;
 
-import de.terrainer.terrainloader.DynamicTerrain;
+import de.mbws.client.worldloader.DynamicTerrain;
 
 /**
  */
