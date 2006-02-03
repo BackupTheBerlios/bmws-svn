@@ -20,7 +20,7 @@
     <id
         name="id"
         type="java.lang.Integer"
-        column="id"
+        column="ID"
     >
     
         <generator class="assigned" />
@@ -29,7 +29,7 @@
     <property
         name="name"
         type="java.lang.String"
-        column="name"
+        column="NAME"
         not-null="true"
         length="255"
     />
@@ -46,7 +46,7 @@
 
     >
         <key>
-            <column name="skill_group_id" />
+            <column name="SKILL_GROUP_ID" />
         </key>
         
         <one-to-many 

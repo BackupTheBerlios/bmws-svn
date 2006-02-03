@@ -20,7 +20,7 @@
     <id
         name="id"
         type="java.lang.Integer"
-        column="id"
+        column="ID"
     >
     
         <generator class="assigned" />
@@ -29,21 +29,21 @@
     <property
         name="name"
         type="java.lang.String"
-        column="name"
+        column="NAME"
         not-null="true"
         length="45"
     />
     <property
         name="ip"
         type="java.lang.String"
-        column="ip"
+        column="IP"
         not-null="true"
         length="15"
     />
     <property
         name="port"
         type="int"
-        column="port"
+        column="PORT"
         not-null="true"
         length="10"
     />
@@ -60,7 +60,7 @@
 
     >
         <key>
-            <column name="zoneserver_id" />
+            <column name="ZONESERVER_ID" />
         </key>
         
         <one-to-many 

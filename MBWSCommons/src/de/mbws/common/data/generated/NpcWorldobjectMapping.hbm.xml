@@ -20,13 +20,13 @@
     <composite-id name="comp_id" class="de.mbws.common.data.generated.NpcWorldobjectMappingPK">
         <key-property 
             name="worldobjectId" 
-            column="worldobject_id" 
+            column="WORLDOBJECT_ID" 
             type="java.lang.Long"
             length="20"
         />
         <key-property 
             name="npcId" 
-            column="npc_id" 
+            column="NPC_ID" 
             type="java.lang.Long"
             length="20"
         />
@@ -42,7 +42,7 @@
 	    update="false"
 	    insert="false"
 	>
-    	<column name="worldobject_id" />
+    	<column name="WORLDOBJECT_ID" />
 	</many-to-one>
 	
     <!-- bi-directional many-to-one association to Npc -->
@@ -52,7 +52,7 @@
 	    update="false"
 	    insert="false"
 	>
-    	<column name="npc_id" />
+    	<column name="NPC_ID" />
 	</many-to-one>
 	
     <!-- end of derived association(s) -->

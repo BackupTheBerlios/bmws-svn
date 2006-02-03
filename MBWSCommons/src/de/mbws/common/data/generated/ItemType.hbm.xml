@@ -20,7 +20,7 @@
     <id
         name="id"
         type="java.lang.Integer"
-        column="id"
+        column="ID"
     >
     
         <generator class="assigned" />
@@ -29,21 +29,21 @@
     <property
         name="name"
         type="java.lang.String"
-        column="name"
+        column="NAME"
         not-null="true"
         length="255"
     />
     <property
         name="containersize"
         type="int"
-        column="containersize"
+        column="CONTAINERSIZE"
         not-null="true"
         length="10"
     />
     <property
         name="wearable"
         type="byte"
-        column="wearable"
+        column="WEARABLE"
         not-null="true"
         length="1"
     />
@@ -60,7 +60,7 @@
 
     >
         <key>
-            <column name="item_type_id" />
+            <column name="ITEM_TYPE_ID" />
         </key>
         
         <one-to-many 

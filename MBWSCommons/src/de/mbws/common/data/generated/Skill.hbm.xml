@@ -20,7 +20,7 @@
     <id
         name="id"
         type="java.lang.Integer"
-        column="id"
+        column="ID"
     >
     
         <generator class="assigned" />
@@ -29,83 +29,83 @@
     <property
         name="name"
         type="java.lang.String"
-        column="name"
+        column="NAME"
         not-null="true"
         length="45"
     />
     <property
         name="availableatstartup"
         type="byte"
-        column="availableatstartup"
+        column="AVAILABLEATSTARTUP"
         not-null="true"
         length="1"
     />
     <property
         name="oppositeskill"
         type="java.lang.Integer"
-        column="oppositeskill"
+        column="OPPOSITESKILL"
         length="10"
     />
     <property
         name="costhealth"
         type="int"
-        column="costhealth"
+        column="COSTHEALTH"
         not-null="true"
         length="10"
     />
     <property
         name="coststamina"
         type="int"
-        column="coststamina"
+        column="COSTSTAMINA"
         not-null="true"
         length="10"
     />
     <property
         name="costmana"
         type="int"
-        column="costmana"
+        column="COSTMANA"
         not-null="true"
         length="10"
     />
     <property
         name="xpcostsbuying"
         type="int"
-        column="xpcostsbuying"
+        column="XPCOSTSBUYING"
         not-null="true"
         length="10"
     />
     <property
         name="goldcostsbuying"
         type="int"
-        column="goldcostsbuying"
+        column="GOLDCOSTSBUYING"
         not-null="true"
         length="10"
     />
     <property
         name="xpcostEnhancement"
         type="int"
-        column="xpcost_enhancement"
+        column="XPCOST_ENHANCEMENT"
         not-null="true"
         length="10"
     />
     <property
         name="basevalueFormula"
         type="int"
-        column="basevalue_formula"
+        column="BASEVALUE_FORMULA"
         not-null="true"
         length="10"
     />
     <property
         name="useDuration"
         type="int"
-        column="use_duration"
+        column="USE_DURATION"
         not-null="true"
         length="10"
     />
     <property
         name="useTime"
         type="int"
-        column="use_time"
+        column="USE_TIME"
         not-null="true"
         length="10"
     />
@@ -122,7 +122,7 @@
 
     >
         <key>
-            <column name="skill_id" />
+            <column name="SKILL_ID" />
         </key>
         
         <one-to-many 
@@ -139,7 +139,7 @@
 
     >
         <key>
-            <column name="skill_id" />
+            <column name="SKILL_ID" />
         </key>
         
         <one-to-many 
@@ -156,7 +156,7 @@
 
     >
         <key>
-            <column name="skill_id" />
+            <column name="SKILL_ID" />
         </key>
         
         <one-to-many 
@@ -169,7 +169,7 @@
         class="de.mbws.common.data.generated.SkillGroup"
         not-null="true"
     >
-        <column name="skill_group_id" />
+        <column name="SKILL_GROUP_ID" />
     </many-to-one>
 
 </class>

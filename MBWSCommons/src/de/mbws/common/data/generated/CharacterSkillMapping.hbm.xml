@@ -20,13 +20,13 @@
     <composite-id name="comp_id" class="de.mbws.common.data.generated.CharacterSkillMappingPK">
         <key-property 
             name="characterdataId" 
-            column="characterdata_id" 
+            column="CHARACTERDATA_ID" 
             type="java.lang.Long"
             length="20"
         />
         <key-property 
             name="skillId" 
-            column="skill_id" 
+            column="SKILL_ID" 
             type="java.lang.Integer"
             length="10"
         />
@@ -35,14 +35,14 @@
     <property
         name="bonusvalue"
         type="int"
-        column="bonusvalue"
+        column="BONUSVALUE"
         not-null="true"
         length="10"
     />
     <property
         name="basevalue"
         type="int"
-        column="basevalue"
+        column="BASEVALUE"
         not-null="true"
         length="10"
     />
@@ -56,7 +56,7 @@
 	    update="false"
 	    insert="false"
 	>
-    	<column name="skill_id" />
+    	<column name="SKILL_ID" />
 	</many-to-one>
 	
     <!-- bi-directional many-to-one association to Characterdata -->
@@ -66,7 +66,7 @@
 	    update="false"
 	    insert="false"
 	>
-    	<column name="characterdata_id" />
+    	<column name="CHARACTERDATA_ID" />
 	</many-to-one>
 	
     <!-- end of derived association(s) -->

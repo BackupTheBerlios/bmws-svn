@@ -20,7 +20,7 @@
     <id
         name="id"
         type="java.lang.Integer"
-        column="id"
+        column="ID"
     >
     
         <generator class="assigned" />
@@ -29,7 +29,7 @@
     <property
         name="value"
         type="java.lang.String"
-        column="value"
+        column="VALUE"
         not-null="true"
         length="255"
     />

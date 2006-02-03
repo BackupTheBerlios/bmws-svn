@@ -1,24 +1,14 @@
 package de.mbws.client.gui.ingame;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
-import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.text.StyledDocument;
 
 import org.apache.log4j.Logger;
 
@@ -35,9 +25,11 @@ import de.mbws.client.controller.ChatController;
 public class GameDesktop extends Node {
 
 	private static Logger logger = Logger.getLogger(GameDesktop.class);
+
 	private JMEDesktop desktop;
-	private JTextField chatTF;
-	private JTextPane chatAndMessagesTP;
+
+	// private JTextField chatTF;
+	private ChatWindow chatWindow;
 
 	private JLabel statusField;
 
@@ -82,7 +74,7 @@ public class GameDesktop extends Node {
 		desktop.setVBOInfo(null);
 		addChatWindow();
 		setFocus("chat");
-		ChatController.getInstance().setGameDesktop(this);
+		ChatController.getInstance().setChatWindow(chatWindow);
 	}
 
 	// public boolean isFocusOwner() {
@@ -94,7 +86,7 @@ public class GameDesktop extends Node {
 	public void setFocus(String field) {
 		final JComponent focussed;
 		if (field.equals("chat"))
-			focussed = chatTF;
+			focussed = chatWindow.getChatTf();
 		else
 			focussed = statusField;
 		try {
@@ -110,71 +102,22 @@ public class GameDesktop extends Node {
 
 	protected void addChatWindow() {
 		JDesktopPane desktopPane = desktop.getJDesktop();
-		JInternalFrame internalFrame = new JInternalFrame();
-		internalFrame.setLayout(new BorderLayout());
-		chatTF = new JTextField("huhu");
-		chatTF.setPreferredSize(new Dimension(390, 20));
-		chatTF.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				logger.info("got ActionEvent: " + e + ", getText()="
-						+ chatTF.getText());
-				String input = new String(chatTF.getText()); // copy the
-				// string
-				if (input != null && input.length() != 0) {
-					ChatController.getInstance().parseChat(input);
-					chatTF.setText("");
-				}
-			}
-		});
-		chatAndMessagesTP = new JTextPane();
-		chatAndMessagesTP.setEditable(false);
-		StyledDocument doc = chatAndMessagesTP.getStyledDocument();
-		// setupStyles(doc);
-		final JScrollPane scroller = new JScrollPane();
-		scroller.getViewport().addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				scroller.getViewport().repaint();
-			}
-		});
-		scroller.getViewport().add(chatAndMessagesTP);
-		internalFrame.setLocation(0, desktopPane.getHeight() - 230);
-		internalFrame.add(scroller);
-		internalFrame.add(chatTF, BorderLayout.SOUTH);
-		internalFrame.setPreferredSize(new Dimension(450, 230));
-		internalFrame.setVisible(true);
-		internalFrame.setResizable(true);
-		internalFrame.setIconifiable(true);
-		internalFrame.pack();
-		desktopPane.add(internalFrame);
+		chatWindow = new ChatWindow("Chat");
+		chatWindow.setLocation(0, desktopPane.getHeight() - 230);
+		chatWindow.setPreferredSize(new Dimension(450, 230));
+		chatWindow.setVisible(true);
+		// internalFrame.setIconifiable(true);
+		chatWindow.pack();
+		// internalFrame.show();
+		// internalFrame.requestFocus();
+		desktopPane.add(chatWindow);
 		desktopPane.repaint();
 		desktopPane.revalidate();
 	}
 
-	public void addMessage(String text, String attribute) {
-		StyledDocument doc = chatAndMessagesTP.getStyledDocument();
-		try {
-			doc.insertString(doc.getEndPosition().getOffset(), text + "\n", doc
-					.getStyle(attribute));
-			chatAndMessagesTP
-					.setCaretPosition(doc.getEndPosition().getOffset() - 1);
-		} catch (Exception e) {
-			logger.error("addMessage()", e);
-		}
+	public ChatWindow getChatWindow() {
+		return chatWindow;
 	}
-
-	public JTextPane getChatAndMessagesTP() {
-		return chatAndMessagesTP;
-	}
-
-	// private StyleSheet adaptCSS(StyleSheet css) {
-	// StringReader in = new StringReader(womCSS);
-	// try {
-	// css.loadRules(in, null);
-	// } catch (Exception e) {
-	// _log.warning(e.toString());
-	// }
-	// return css;
-	// }
 
 	// public ClickListener getDefaultClickListener() {
 	// return new ClickListener() {
@@ -191,47 +134,6 @@ public class GameDesktop extends Node {
 	// clickListener = getDefaultClickListener();
 	// else
 	// clickListener = listener;
-	// }
-
-	// public void setStatusMessage(String txt) {
-	// statusField.setText(txt);
-	// }
-	//
-	// protected void addStatusWindow() {
-	// JDesktopPane desktopPane = desktop.getJDesktop();
-	// JInternalFrame internalFrame = new JInternalFrame();
-	// internalFrame.setLayout(new BorderLayout());
-	// statusField = new JLabel();
-	// statusField.setPreferredSize(new Dimension(350, 20));
-	// internalFrame.add(statusField);
-	// internalFrame.setLocation(0, desktopPane.getHeight() - 280);
-	// internalFrame.setVisible(true);
-	// internalFrame.setResizable(true);
-	// internalFrame.setIconifiable(true);
-	// internalFrame.pack();
-	// desktopPane.add(internalFrame);
-	// desktopPane.repaint();
-	// desktopPane.revalidate();
-	// }
-
-	// private void setupStyles(StyledDocument doc) {
-	// Style def = StyleContext.getDefaultStyleContext().getStyle(
-	// StyleContext.DEFAULT_STYLE);
-	// Style st = doc.addStyle("roman", def);
-	// st = doc.addStyle("italic", def);
-	// StyleConstants.setItalic(st, true);
-	// st = doc.addStyle("bold", def);
-	// StyleConstants.setBold(st, true);
-	// st = doc.addStyle("underline", def);
-	// StyleConstants.setUnderline(st, true);
-	// st = doc.addStyle("say_all", def);
-	// StyleConstants.setForeground(st, Color.white);
-	// st = doc.addStyle("say_shout", def);
-	// StyleConstants.setForeground(st, Color.orange);
-	// st = doc.addStyle("say_ooc", def);
-	// StyleConstants.setForeground(st, Color.pink);
-	// st = doc.addStyle("say_whisper", def);
-	// StyleConstants.setForeground(st, Color.magenta);
 	// }
 
 	// public void addWindow(String title, String htmlText) {
@@ -318,14 +220,4 @@ public class GameDesktop extends Node {
 	// }
 	// }
 
-	// private String defaultCSS() {
-	// return
-	// "body {color: #A49E84; background-color: #484132; font-size: 10pt;" +
-	// " font-family: verdana,tahoma,helvetica; } " +
-	// "body a:link, body a:visited, body a:active { color: yellow;
-	// text-decoration: underline; }" +
-	// "body a:hover { color: #FFFFFF; text-decoration: none; }" +
-	// "input { color: #333333; background-color: #E7E9ED; border : 1px solid
-	// #333333; }";
-	// }
 }

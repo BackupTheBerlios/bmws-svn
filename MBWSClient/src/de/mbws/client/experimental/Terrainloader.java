@@ -1,31 +1,30 @@
 package de.mbws.client.experimental;
 
-import java.net.URL;
+import java.io.IOException;
+
+import org.xml.sax.SAXException;
 
 import com.jme.app.BaseGame;
 import com.jme.app.SimpleGame;
-import com.jme.image.Texture;
 import com.jme.input.FirstPersonHandler;
 import com.jme.input.InputHandler;
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
+import com.jme.input.MouseInput;
 import com.jme.light.DirectionalLight;
-import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import com.jme.scene.state.LightState;
-import com.jme.scene.state.TextureState;
 import com.jme.scene.state.ZBufferState;
 import com.jme.system.DisplaySystem;
 import com.jme.system.JmeException;
-import com.jme.util.TextureManager;
 import com.jme.util.Timer;
 
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.gui.ingame.GameDesktop;
-import de.mbws.client.terrain.DynamicTerrainPage;
+import de.mbws.client.worldloader.DynamicTerrain;
 import de.mbws.common.eventdata.generated.CharacterData;
 
 public class Terrainloader extends BaseGame {
@@ -34,6 +33,7 @@ public class Terrainloader extends BaseGame {
 	// the timer
 	protected Timer timer;
 
+	private DynamicTerrain terrain ;
 	private GameDesktop gd;
 	// Our camera object for viewing the scene
 	private Camera cam;
@@ -74,6 +74,8 @@ public class Terrainloader extends BaseGame {
 		 c.setAngle(testAngle++);
 		 c.updateGeometricState(interpolation, true);
 
+		 terrain.update(cam);
+		 
 		// if escape was pressed, we exit
 		if (KeyBindingManager.getKeyBindingManager().isValidCommand("exit")) {
 			finished = true;
@@ -166,6 +168,7 @@ public class Terrainloader extends BaseGame {
 		// add the tree
 		 buildEnvironment();
 		addGameDesktop();
+		MouseInput.get().setCursorVisible(true);
 
 		// update the scene graph for rendering
 		rootNode.updateGeometricState(0.0f, true);
@@ -189,6 +192,7 @@ public class Terrainloader extends BaseGame {
 	private void buildInput() {
 		input = new FirstPersonHandler(cam, 30, 15);// player,
 		// properties.getRenderer());
+		((FirstPersonHandler)input).removeFromAttachedHandlers(((FirstPersonHandler)input).getMouseLookHandler());
 	}
 
 	// private void buildPlayer() {
@@ -246,33 +250,20 @@ public class Terrainloader extends BaseGame {
 	 * build the height map and terrain block.
 	 */
 	private void buildTerrain() {
-		DynamicTerrainPage tp = new DynamicTerrainPage("smd", 128,
-				new Vector3f(1, 1, 1));
-		tp.setOrAttachBlock(new Vector2f(0, 0));
-
-		URL grass = Terrainloader.class.getClassLoader().getResource(
-				"resources/textures/grassb.png");
-
-		TextureState ts = display.getRenderer().createTextureState();
-		ts.setTexture(TextureManager.loadTexture(grass, Texture.MM_LINEAR,
-				Texture.FM_LINEAR));
-
-		tp.setRenderState(ts);
-		// Give the terrain a bounding box.
-		// tp.setModelBound(new BoundingBox());
-		// tp.updateModelBound();
-		tp.setLocalTranslation(new Vector3f(0, 0, 0));
-
-		tp.setOrAttachBlock(new Vector2f(0, 128));
-		URL dirt = Terrainloader.class.getClassLoader().getResource(
-				"resources/textures/dirt.jpg");
-		ts = display.getRenderer().createTextureState();
-		ts.setTexture(TextureManager.loadTexture(dirt, Texture.MM_LINEAR,
-				Texture.FM_LINEAR));
-
-		tp.setRenderState(ts);
-		// Attach the terrain TriMesh to our rootNode
-		rootNode.attachChild(tp);
+		 terrain = new DynamicTerrain();
+		
+		rootNode.attachChild(terrain);
+		try {
+			terrain.init(display, "data\\world\\world");
+		}
+		catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 

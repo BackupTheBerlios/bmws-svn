@@ -20,7 +20,7 @@
     <id
         name="npcId"
         type="java.lang.Long"
-        column="npc_id"
+        column="NPC_ID"
     >
     
         <generator class="assigned" />
@@ -29,68 +29,68 @@
     <property
         name="npcstatus"
         type="java.lang.String"
-        column="npcstatus"
+        column="NPCSTATUS"
         not-null="true"
         length="1"
     />
     <property
         name="gamestatus"
         type="java.lang.String"
-        column="gamestatus"
+        column="GAMESTATUS"
         length="1"
     />
     <property
         name="coordinateX"
         type="java.lang.Integer"
-        column="coordinate_x"
+        column="COORDINATE_X"
         length="10"
     />
     <property
         name="coordinateZ"
         type="java.lang.Integer"
-        column="coordinate_z"
+        column="COORDINATE_Z"
         length="10"
     />
     <property
         name="currentmana"
         type="java.lang.Integer"
-        column="currentmana"
+        column="CURRENTMANA"
         length="10"
     />
     <property
         name="currenthelth"
         type="java.lang.Integer"
-        column="currenthelth"
+        column="CURRENTHELTH"
         length="10"
     />
     <property
         name="currentstamina"
         type="java.lang.Integer"
-        column="currentstamina"
+        column="CURRENTSTAMINA"
         length="10"
     />
     <property
         name="currentstrength"
         type="java.lang.Integer"
-        column="currentstrength"
+        column="CURRENTSTRENGTH"
         length="10"
     />
     <property
         name="currentintelligence"
         type="java.lang.Integer"
-        column="currentintelligence"
+        column="CURRENTINTELLIGENCE"
         length="10"
     />
     <property
         name="currentdexterity"
         type="java.lang.Integer"
-        column="currentdexterity"
+        column="CURRENTDEXTERITY"
         length="10"
     />
     <property
         name="currentconstitution"
         type="java.lang.Integer"
-        column="currentconstitution"
+        column="CURRENTCONSTITUTION"
         length="10"
     />
 
@@ -109,7 +109,7 @@
         class="de.mbws.common.data.generated.Map"
         not-null="true"
     >
-        <column name="map_id" />
+        <column name="MAP_ID" />
     </many-to-one>
 
 </class>

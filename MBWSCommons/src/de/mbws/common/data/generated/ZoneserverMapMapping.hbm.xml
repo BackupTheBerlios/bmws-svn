@@ -20,13 +20,13 @@
     <composite-id name="comp_id" class="de.mbws.common.data.generated.ZoneserverMapMappingPK">
         <key-property 
             name="mapId" 
-            column="map_id" 
+            column="MAP_ID" 
             type="java.lang.Integer"
             length="10"
         />
         <key-property 
             name="zoneserverId" 
-            column="zoneserver_id" 
+            column="ZONESERVER_ID" 
             type="java.lang.Integer"
             length="10"
         />
@@ -35,7 +35,7 @@
     <property
         name="active"
         type="byte"
-        column="active"
+        column="ACTIVE"
         not-null="true"
         length="1"
     />
@@ -49,7 +49,7 @@
 	    update="false"
 	    insert="false"
 	>
-    	<column name="zoneserver_id" />
+    	<column name="ZONESERVER_ID" />
 	</many-to-one>
 	
     <!-- bi-directional many-to-one association to Map -->
@@ -59,7 +59,7 @@
 	    update="false"
 	    insert="false"
 	>
-    	<column name="map_id" />
+    	<column name="MAP_ID" />
 	</many-to-one>
 	
     <!-- end of derived association(s) -->

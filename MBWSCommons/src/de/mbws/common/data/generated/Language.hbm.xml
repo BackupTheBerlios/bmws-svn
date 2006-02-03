@@ -20,7 +20,7 @@
     <id
         name="id"
         type="java.lang.Integer"
-        column="id"
+        column="ID"
     >
     
         <generator class="assigned" />
@@ -29,14 +29,14 @@
     <property
         name="shortname"
         type="java.lang.String"
-        column="shortname"
+        column="SHORTNAME"
         not-null="true"
         length="255"
     />
     <property
         name="description"
         type="java.lang.String"
-        column="description"
+        column="DESCRIPTION"
         not-null="true"
         length="255"
     />
@@ -53,7 +53,7 @@
 
     >
         <key>
-            <column name="languages_id" />
+            <column name="LANGUAGES_ID" />
         </key>
         
         <one-to-many 

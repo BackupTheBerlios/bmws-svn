@@ -20,13 +20,13 @@
     <composite-id name="comp_id" class="de.mbws.common.data.generated.SkillRaceMappingPK">
         <key-property 
             name="raceId" 
-            column="race_id" 
+            column="RACE_ID" 
             type="java.lang.Integer"
             length="10"
         />
         <key-property 
             name="skillId" 
-            column="skill_id" 
+            column="SKILL_ID" 
             type="java.lang.Integer"
             length="10"
         />
@@ -35,7 +35,7 @@
     <property
         name="hasonstartup"
         type="byte"
-        column="hasonstartup"
+        column="HASONSTARTUP"
         not-null="true"
         length="1"
     />
@@ -49,7 +49,7 @@
 	    update="false"
 	    insert="false"
 	>
-    	<column name="skill_id" />
+    	<column name="SKILL_ID" />
 	</many-to-one>
 	
     <!-- bi-directional many-to-one association to Race -->
@@ -59,7 +59,7 @@
 	    update="false"
 	    insert="false"
 	>
-    	<column name="race_id" />
+    	<column name="RACE_ID" />
 	</many-to-one>
 	
     <!-- end of derived association(s) -->

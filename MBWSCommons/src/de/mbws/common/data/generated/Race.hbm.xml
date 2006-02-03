@@ -20,7 +20,7 @@
     <id
         name="id"
         type="java.lang.Integer"
-        column="id"
+        column="ID"
     >
     
         <generator class="assigned" />
@@ -29,70 +29,70 @@
     <property
         name="name"
         type="java.lang.String"
-        column="name"
+        column="NAME"
         not-null="true"
         length="45"
     />
     <property
         name="basehealth"
         type="int"
-        column="basehealth"
+        column="BASEHEALTH"
         not-null="true"
         length="10"
     />
     <property
         name="basemana"
         type="int"
-        column="basemana"
+        column="BASEMANA"
         not-null="true"
         length="10"
     />
     <property
         name="basestamina"
         type="int"
-        column="basestamina"
+        column="BASESTAMINA"
         not-null="true"
         length="10"
     />
     <property
         name="modifierStrength"
         type="int"
-        column="modifier_strength"
+        column="MODIFIER_STRENGTH"
         not-null="true"
         length="11"
     />
     <property
         name="modifierIntelligence"
         type="int"
-        column="modifier_intelligence"
+        column="MODIFIER_INTELLIGENCE"
         not-null="true"
         length="11"
     />
     <property
         name="modifierDexterity"
         type="int"
-        column="modifier_dexterity"
+        column="MODIFIER_DEXTERITY"
         not-null="true"
         length="11"
     />
     <property
         name="modifierConstitution"
         type="int"
-        column="modifier_constitution"
+        column="MODIFIER_CONSTITUTION"
         not-null="true"
         length="11"
     />
     <property
         name="isplayable"
         type="byte"
-        column="isplayable"
+        column="ISPLAYABLE"
         not-null="true"
         length="1"
     />
     <property
         name="description"
         type="java.lang.String"
-        column="description"
+        column="DESCRIPTION"
         not-null="true"
         length="65535"
     />
@@ -109,7 +109,7 @@
 
     >
         <key>
-            <column name="race_id" />
+            <column name="RACE_ID" />
         </key>
         
         <one-to-many 
@@ -126,7 +126,7 @@
 
     >
         <key>
-            <column name="race_id" />
+            <column name="RACE_ID" />
         </key>
         
         <one-to-many 
@@ -143,7 +143,7 @@
 
     >
         <key>
-            <column name="race_id" />
+            <column name="RACE_ID" />
         </key>
         
         <one-to-many 

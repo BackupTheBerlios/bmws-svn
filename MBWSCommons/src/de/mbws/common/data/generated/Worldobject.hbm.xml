@@ -20,7 +20,7 @@
     <id
         name="id"
         type="java.lang.Long"
-        column="id"
+        column="ID"
     >
     
         <generator class="assigned" />
@@ -29,35 +29,35 @@
     <property
         name="name"
         type="java.lang.String"
-        column="name"
+        column="NAME"
         not-null="true"
         length="255"
     />
     <property
         name="description"
         type="java.lang.String"
-        column="description"
+        column="DESCRIPTION"
         not-null="true"
         length="65535"
     />
     <property
         name="coordinateX"
         type="int"
-        column="coordinate_x"
+        column="COORDINATE_X"
         not-null="true"
         length="10"
     />
     <property
         name="coordinateY"
         type="int"
-        column="coordinate_y"
+        column="COORDINATE_Y"
         not-null="true"
         length="10"
     />
     <property
         name="coordinateZ"
         type="int"
-        column="coordinate_z"
+        column="COORDINATE_Z"
         not-null="true"
         length="10"
     />
@@ -74,7 +74,7 @@
 
     >
         <key>
-            <column name="worldobject_id" />
+            <column name="WORLDOBJECT_ID" />
         </key>
         
         <one-to-many 
@@ -91,7 +91,7 @@
 
     >
         <key>
-            <column name="worldobject_id" />
+            <column name="WORLDOBJECT_ID" />
         </key>
         
         <one-to-many 
@@ -104,7 +104,7 @@
         class="de.mbws.common.data.generated.WorldobjectType"
         not-null="true"
     >
-        <column name="worldobject_type_id" />
+        <column name="WORLDOBJECT_TYPE_ID" />
     </many-to-one>
     <!-- bi-directional many-to-one association to Map -->
     <many-to-one
@@ -112,7 +112,7 @@
         class="de.mbws.common.data.generated.Map"
         not-null="true"
     >
-        <column name="map_id" />
+        <column name="MAP_ID" />
     </many-to-one>
 
 </class>

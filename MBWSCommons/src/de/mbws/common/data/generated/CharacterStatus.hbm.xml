@@ -20,7 +20,7 @@
     <id
         name="id"
         type="java.lang.Long"
-        column="id"
+        column="ID"
     >
     
         <generator class="assigned" />
@@ -29,98 +29,98 @@
     <property
         name="charstatus"
         type="java.lang.String"
-        column="charstatus"
+        column="CHARSTATUS"
         not-null="true"
         length="1"
     />
     <property
         name="pvp"
         type="java.lang.String"
-        column="pvp"
+        column="PVP"
         not-null="true"
         length="1"
     />
     <property
         name="gamestatus"
         type="java.lang.String"
-        column="gamestatus"
+        column="GAMESTATUS"
         not-null="true"
         length="1"
     />
     <property
         name="coordinateX"
         type="int"
-        column="coordinate_x"
+        column="COORDINATE_X"
         not-null="true"
         length="10"
     />
     <property
         name="coordinateY"
         type="int"
-        column="coordinate_y"
+        column="COORDINATE_Y"
         not-null="true"
         length="10"
     />
     <property
         name="coordinateZ"
         type="int"
-        column="coordinate_z"
+        column="COORDINATE_Z"
         not-null="true"
         length="10"
     />
     <property
         name="currentmana"
         type="int"
-        column="currentmana"
+        column="CURRENTMANA"
         not-null="true"
         length="10"
     />
     <property
         name="currenthealth"
         type="int"
-        column="currenthealth"
+        column="CURRENTHEALTH"
         not-null="true"
         length="10"
     />
     <property
         name="currentstamina"
         type="int"
-        column="currentstamina"
+        column="CURRENTSTAMINA"
         not-null="true"
         length="10"
     />
     <property
         name="currentstrength"
         type="int"
-        column="currentstrength"
+        column="CURRENTSTRENGTH"
         not-null="true"
         length="10"
     />
     <property
         name="currentinteligence"
         type="int"
-        column="currentinteligence"
+        column="CURRENTINTELIGENCE"
         not-null="true"
         length="10"
     />
     <property
         name="currentdexterity"
         type="int"
-        column="currentdexterity"
+        column="CURRENTDEXTERITY"
         not-null="true"
         length="10"
     />
     <property
         name="currentconstitution"
         type="int"
-        column="currentconstitution"
+        column="CURRENTCONSTITUTION"
         not-null="true"
         length="10"
     />
     <property
         name="freexp"
         type="int"
-        column="freexp"
+        column="FREEXP"
         not-null="true"
         length="10"
     />
@@ -140,7 +140,7 @@
         class="de.mbws.common.data.generated.Map"
         not-null="true"
     >
-        <column name="map_id" />
+        <column name="MAP_ID" />
     </many-to-one>
 
 </class>

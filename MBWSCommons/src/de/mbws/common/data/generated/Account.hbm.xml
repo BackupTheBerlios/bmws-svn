@@ -20,7 +20,7 @@
     <id
         name="username"
         type="java.lang.String"
-        column="username"
+        column="USERNAME"
     >
     
         <generator class="assigned" />
@@ -29,14 +29,14 @@
     <property
         name="password"
         type="java.lang.String"
-        column="password"
+        column="PASSWORD"
         not-null="true"
         length="20"
     />
     <property
         name="emailaddress"
         type="java.lang.String"
-        column="emailaddress"
+        column="EMAILADDRESS"
         not-null="true"
         length="45"
     />
@@ -53,7 +53,7 @@
 
     >
         <key>
-            <column name="account_username" />
+            <column name="ACCOUNT_USERNAME" />
         </key>
         
         <one-to-many 

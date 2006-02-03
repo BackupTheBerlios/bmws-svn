@@ -20,7 +20,7 @@
     <id
         name="id"
         type="java.lang.Long"
-        column="id"
+        column="ID"
     >
     
         <generator class="assigned" />
@@ -29,48 +29,48 @@
     <property
         name="name"
         type="java.lang.String"
-        column="name"
+        column="NAME"
         not-null="true"
         length="45"
     />
     <property
         name="maxCondition"
         type="int"
-        column="max_condition"
+        column="MAX_CONDITION"
         not-null="true"
         length="10"
     />
     <property
         name="weight"
         type="long"
-        column="weight"
+        column="WEIGHT"
         not-null="true"
         length="10"
     />
     <property
         name="size"
         type="long"
-        column="size"
+        column="SIZE"
         not-null="true"
         length="10"
     />
     <property
         name="description"
         type="java.lang.String"
-        column="description"
+        column="DESCRIPTION"
         not-null="true"
         length="65535"
     />
     <property
         name="modelName"
         type="java.lang.String"
-        column="model_name"
+        column="MODEL_NAME"
         length="65535"
     />
     <property
         name="iconName"
         type="java.lang.String"
-        column="icon_name"
+        column="ICON_NAME"
         length="65535"
     />
 
@@ -86,7 +86,7 @@
 
     >
         <key>
-            <column name="item_id" />
+            <column name="ITEM_ID" />
         </key>
         
         <one-to-many 
@@ -99,7 +99,7 @@
         class="de.mbws.common.data.generated.ItemType"
         not-null="true"
     >
-        <column name="item_type_id" />
+        <column name="ITEM_TYPE_ID" />
     </many-to-one>
 
 </class>

@@ -19,8 +19,8 @@
 
     <id
         name="id"
-        type="java.lang.String"
-        column="id"
+        type="java.lang.Long"
+        column="ID"
     >
     
         <generator class="assigned" />
@@ -29,14 +29,14 @@
     <property
         name="textKey"
         type="java.lang.String"
-        column="text_key"
+        column="TEXT_KEY"
         not-null="true"
         length="255"
     />
     <property
         name="text"
         type="java.lang.String"
-        column="text"
+        column="TEXT"
         not-null="true"
         length="255"
     />
@@ -49,7 +49,7 @@
         class="de.mbws.common.data.generated.Language"
         not-null="true"
     >
-        <column name="languages_id" />
+        <column name="LANGUAGES_ID" />
     </many-to-one>
 
 </class>

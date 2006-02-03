@@ -20,7 +20,7 @@
     <id
         name="id"
         type="java.lang.Long"
-        column="id"
+        column="ID"
     >
     
         <generator class="assigned" />
@@ -29,70 +29,70 @@
     <property
         name="name"
         type="java.lang.String"
-        column="name"
+        column="NAME"
         not-null="true"
         length="255"
     />
     <property
         name="health"
         type="int"
-        column="health"
+        column="HEALTH"
         not-null="true"
         length="10"
     />
     <property
         name="mana"
         type="int"
-        column="mana"
+        column="MANA"
         not-null="true"
         length="10"
     />
     <property
         name="stamina"
         type="int"
-        column="stamina"
+        column="STAMINA"
         not-null="true"
         length="10"
     />
     <property
         name="age"
         type="int"
-        column="age"
+        column="AGE"
         not-null="true"
         length="10"
     />
     <property
         name="strength"
         type="int"
-        column="strength"
+        column="STRENGTH"
         not-null="true"
         length="10"
     />
     <property
         name="intelligence"
         type="int"
-        column="intelligence"
+        column="INTELLIGENCE"
         not-null="true"
         length="10"
     />
     <property
         name="dexterity"
         type="int"
-        column="dexterity"
+        column="DEXTERITY"
         not-null="true"
         length="10"
     />
     <property
         name="constitution"
         type="int"
-        column="constitution"
+        column="CONSTITUTION"
         not-null="true"
         length="10"
     />
     <property
         name="isspecial"
         type="byte"
-        column="isspecial"
+        column="ISSPECIAL"
         not-null="true"
         length="1"
     />
@@ -105,7 +105,7 @@
         class="de.mbws.common.data.generated.Race"
         not-null="true"
     >
-        <column name="race_id" />
+        <column name="RACE_ID" />
     </many-to-one>
     <!-- bi-directional one-to-one association to NpcStatus -->
     <one-to-one
@@ -123,7 +123,7 @@
 
     >
         <key>
-            <column name="npc_id" />
+            <column name="NPC_ID" />
         </key>
         
         <one-to-many 
@@ -140,7 +140,7 @@
 
     >
         <key>
-            <column name="npc_id" />
+            <column name="NPC_ID" />
         </key>
         
         <one-to-many 

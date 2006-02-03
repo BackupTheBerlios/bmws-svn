@@ -20,7 +20,7 @@
     <id
         name="id"
         type="java.lang.Long"
-        column="id"
+        column="ID"
     >
     
         <generator class="assigned" />
@@ -29,21 +29,21 @@
     <property
         name="position"
         type="java.lang.String"
-        column="position"
+        column="POSITION"
         not-null="true"
         length="1"
     />
     <property
         name="currentcondition"
         type="int"
-        column="currentcondition"
+        column="CURRENTCONDITION"
         not-null="true"
         length="10"
     />
     <property
         name="depositItem"
         type="int"
-        column="deposit_item"
+        column="DEPOSIT_ITEM"
         not-null="true"
         length="10"
     />
@@ -56,7 +56,7 @@
         class="de.mbws.common.data.generated.Item"
         not-null="true"
     >
-        <column name="item_id" />
+        <column name="ITEM_ID" />
     </many-to-one>
     <!-- bi-directional many-to-one association to Characterdata -->
     <many-to-one
@@ -64,7 +64,7 @@
         class="de.mbws.common.data.generated.Characterdata"
         not-null="true"
     >
-        <column name="characterdata_id" />
+        <column name="CHARACTERDATA_ID" />
     </many-to-one>
 
 </class>

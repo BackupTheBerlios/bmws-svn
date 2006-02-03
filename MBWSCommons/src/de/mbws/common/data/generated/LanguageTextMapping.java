@@ -8,7 +8,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class LanguageTextMapping implements Serializable {
 
     /** identifier field */
-    private String id;
+    private Long id;
 
     /** persistent field */
     private String textKey;
@@ -20,7 +20,7 @@ public class LanguageTextMapping implements Serializable {
     private de.mbws.common.data.generated.Language language;
 
     /** full constructor */
-    public LanguageTextMapping(String id, String textKey, String text, de.mbws.common.data.generated.Language language) {
+    public LanguageTextMapping(Long id, String textKey, String text, de.mbws.common.data.generated.Language language) {
         this.id = id;
         this.textKey = textKey;
         this.text = text;
@@ -31,11 +31,11 @@ public class LanguageTextMapping implements Serializable {
     public LanguageTextMapping() {
     }
 
-    public String getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

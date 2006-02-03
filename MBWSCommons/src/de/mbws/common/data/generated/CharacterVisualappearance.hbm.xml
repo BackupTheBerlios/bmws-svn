@@ -20,7 +20,7 @@
     <id
         name="id"
         type="java.lang.Long"
-        column="id"
+        column="ID"
     >
     
         <generator class="assigned" />
@@ -29,126 +29,126 @@
     <property
         name="height"
         type="int"
-        column="height"
+        column="HEIGHT"
         not-null="true"
         length="10"
     />
     <property
         name="skinColor"
         type="int"
-        column="skin_color"
+        column="SKIN_COLOR"
         not-null="true"
         length="10"
     />
     <property
         name="faceType"
         type="int"
-        column="face_type"
+        column="FACE_TYPE"
         not-null="true"
         length="10"
     />
     <property
         name="hairColor"
         type="int"
-        column="hair_color"
+        column="HAIR_COLOR"
         not-null="true"
         length="10"
     />
     <property
         name="hairStyle"
         type="int"
-        column="hair_style"
+        column="HAIR_STYLE"
         not-null="true"
         length="10"
     />
     <property
         name="hairFacial"
         type="int"
-        column="hair_facial"
+        column="HAIR_FACIAL"
         not-null="true"
         length="10"
     />
     <property
         name="itemHead"
         type="int"
-        column="item_head"
+        column="ITEM_HEAD"
         not-null="true"
         length="10"
     />
     <property
         name="itemShoulders"
         type="int"
-        column="item_shoulders"
+        column="ITEM_SHOULDERS"
         not-null="true"
         length="10"
     />
     <property
         name="itemShirt"
         type="int"
-        column="item_shirt"
+        column="ITEM_SHIRT"
         not-null="true"
         length="10"
     />
     <property
         name="itemChest"
         type="int"
-        column="item_chest"
+        column="ITEM_CHEST"
         not-null="true"
         length="10"
     />
     <property
         name="itemBelt"
         type="int"
-        column="item_belt"
+        column="ITEM_BELT"
         not-null="true"
         length="10"
     />
     <property
         name="itemLegs"
         type="int"
-        column="item_legs"
+        column="ITEM_LEGS"
         not-null="true"
         length="10"
     />
     <property
         name="itemBoots"
         type="int"
-        column="item_boots"
+        column="ITEM_BOOTS"
         not-null="true"
         length="10"
     />
     <property
         name="itemBracers"
         type="int"
-        column="item_bracers"
+        column="ITEM_BRACERS"
         not-null="true"
         length="10"
     />
     <property
         name="itemGloves"
         type="int"
-        column="item_gloves"
+        column="ITEM_GLOVES"
         not-null="true"
         length="10"
     />
     <property
         name="itemCape"
         type="int"
-        column="item_cape"
+        column="ITEM_CAPE"
         not-null="true"
         length="10"
     />
     <property
         name="itemHandLeft"
         type="int"
-        column="item_hand_left"
+        column="ITEM_HAND_LEFT"
         not-null="true"
         length="10"
     />
     <property
         name="itemHandRight"
         type="int"
-        column="item_hand_right"
+        column="ITEM_HAND_RIGHT"
         not-null="true"
         length="10"
     />

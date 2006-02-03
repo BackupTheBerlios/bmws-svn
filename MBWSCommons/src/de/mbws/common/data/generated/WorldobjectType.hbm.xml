@@ -20,7 +20,7 @@
     <id
         name="id"
         type="java.lang.Integer"
-        column="id"
+        column="ID"
     >
     
         <generator class="assigned" />
@@ -29,27 +29,27 @@
     <property
         name="name"
         type="java.lang.String"
-        column="name"
+        column="NAME"
         not-null="true"
         length="255"
     />
     <property
         name="moveable"
         type="byte"
-        column="moveable"
+        column="MOVEABLE"
         not-null="true"
         length="1"
     />
     <property
         name="maxspeed"
         type="java.lang.Integer"
-        column="maxspeed"
+        column="MAXSPEED"
         length="10"
     />
     <property
         name="stamina"
         type="java.lang.Integer"
-        column="stamina"
+        column="STAMINA"
         length="10"
     />
 
@@ -65,7 +65,7 @@
 
     >
         <key>
-            <column name="worldobject_type_id" />
+            <column name="WORLDOBJECT_TYPE_ID" />
         </key>
         
         <one-to-many 

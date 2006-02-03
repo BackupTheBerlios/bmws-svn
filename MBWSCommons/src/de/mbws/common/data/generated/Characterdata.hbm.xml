@@ -20,7 +20,7 @@
     <id
         name="id"
         type="java.lang.Long"
-        column="id"
+        column="ID"
     >
     
         <generator class="assigned" />
@@ -29,70 +29,71 @@
     <property
         name="charactername"
         type="java.lang.String"
-        column="charactername"
+        column="CHARACTERNAME"
         not-null="true"
+        unique="true"
         length="30"
     />
     <property
         name="gender"
         type="java.lang.String"
-        column="gender"
+        column="GENDER"
         not-null="true"
         length="1"
     />
     <property
         name="health"
         type="int"
-        column="health"
+        column="HEALTH"
         not-null="true"
         length="10"
     />
     <property
         name="mana"
         type="int"
-        column="mana"
+        column="MANA"
         not-null="true"
         length="10"
     />
     <property
         name="stamina"
         type="int"
-        column="stamina"
+        column="STAMINA"
         not-null="true"
         length="10"
     />
     <property
         name="age"
         type="short"
-        column="age"
+        column="AGE"
         not-null="true"
         length="5"
     />
     <property
         name="strength"
         type="int"
-        column="strength"
+        column="STRENGTH"
         not-null="true"
         length="10"
     />
     <property
         name="intelligence"
         type="int"
-        column="intelligence"
+        column="INTELLIGENCE"
         not-null="true"
         length="10"
     />
     <property
         name="dexterity"
         type="int"
-        column="dexterity"
+        column="DEXTERITY"
         not-null="true"
         length="10"
     />
     <property
         name="constitution"
         type="int"
-        column="constitution"
+        column="CONSTITUTION"
         not-null="true"
         length="10"
     />
@@ -105,7 +106,7 @@
         class="de.mbws.common.data.generated.Race"
         not-null="true"
     >
-        <column name="race_id" />
+        <column name="RACE_ID" />
     </many-to-one>
     <!-- bi-directional one-to-one association to CharacterStatus -->
     <one-to-one
@@ -123,7 +124,7 @@
 
     >
         <key>
-            <column name="characterdata_id" />
+            <column name="CHARACTERDATA_ID" />
         </key>
         
         <one-to-many 
@@ -146,7 +147,7 @@
 
     >
         <key>
-            <column name="characterdata_id" />
+            <column name="CHARACTERDATA_ID" />
         </key>
         
         <one-to-many 
@@ -163,7 +164,7 @@
 
     >
         <key>
-            <column name="characterdata_id" />
+            <column name="CHARACTERDATA_ID" />
         </key>
         
         <one-to-many 
@@ -176,7 +177,7 @@
         class="de.mbws.common.data.generated.Account"
         not-null="true"
     >
-        <column name="account_username" />
+        <column name="ACCOUNT_USERNAME" />
     </many-to-one>
 
 </class>
