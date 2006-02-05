@@ -2,7 +2,7 @@ package de.mbws.server.data;
 
 import de.mbws.common.Globals;
 import de.mbws.common.data.AbstractPlayerData;
-import de.mbws.common.data.db.Characterdata;
+import de.mbws.common.data.db.generated.Characterdata;
 import de.mbws.common.eventdata.generated.WorldObject;
 
 /**

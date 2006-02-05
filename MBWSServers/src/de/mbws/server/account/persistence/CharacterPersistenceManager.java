@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import de.mbws.common.data.db.Characterdata;
+import de.mbws.common.data.db.generated.Characterdata;
 import de.mbws.server.persistence.BasePersistenceManager;
 
 /**

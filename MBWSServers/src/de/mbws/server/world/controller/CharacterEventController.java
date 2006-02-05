@@ -7,9 +7,9 @@ import java.util.Map;
 import org.apache.commons.beanutils.BeanUtils;
 
 import de.mbws.common.Globals;
-import de.mbws.common.data.db.CharacterStatus;
-import de.mbws.common.data.db.CharacterVisualappearance;
-import de.mbws.common.data.db.Characterdata;
+import de.mbws.common.data.db.generated.CharacterStatus;
+import de.mbws.common.data.db.generated.CharacterVisualappearance;
+import de.mbws.common.data.db.generated.Characterdata;
 import de.mbws.common.eventdata.generated.CharacterDetails;
 import de.mbws.common.eventdata.generated.CharacterSelection;
 import de.mbws.common.eventdata.generated.CharacterShortDescription;
