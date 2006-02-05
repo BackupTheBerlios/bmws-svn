@@ -3,6 +3,8 @@ package de.mbws.client.gui.character.creation;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
@@ -24,6 +26,7 @@ import de.mbws.client.data.ClientGlobals;
 import de.mbws.client.data.Race;
 import de.mbws.client.state.handler.BaseInputHandler;
 import de.mbws.client.state.handler.CharacterSelectionStateHandler;
+import de.mbws.common.Globals;
 
 /**
  * Description:
@@ -71,6 +74,7 @@ public class CharacterDetailsPanel extends JPanel implements PropertyChangeListe
     public static final String CHARACTER_RACE_CHANGE = "characterRaceChange";
 
     public static final String CHARACTER_CLASSTEMPLATE_CHANGE = "characterClassTemplateChange";
+    public static final String CHARACTER_NAME_CHANGE = "characterNameChange";
 
     /**
      * This is the default constructor
@@ -181,6 +185,20 @@ public class CharacterDetailsPanel extends JPanel implements PropertyChangeListe
                 }
 
             });
+            //just for testing purpose 
+            nameTextField.addFocusListener(new FocusListener() {
+            
+                public void focusLost(FocusEvent e) {
+                    String name = getNameTextField().getText();
+                    if (name != null && !"".equals(name)) {
+                        firePropertyChange(CHARACTER_NAME_CHANGE, null, name);    
+                    }
+                }
+            
+                public void focusGained(FocusEvent e) {
+                }
+            
+            });
         }
         return nameTextField;
     }
@@ -204,9 +222,9 @@ public class CharacterDetailsPanel extends JPanel implements PropertyChangeListe
                     if (oldState != genderCheckbox.isSelected()) {
                         oldState = genderCheckbox.isSelected();
                         if (genderCheckbox.isSelected()) {
-                            firePropertyChange(CHARACTER_GENDER_CHANGE, null, "FEMALE");
+                            firePropertyChange(CHARACTER_GENDER_CHANGE, null, Globals.GENDER_FEMALE);
                         } else {
-                            firePropertyChange(CHARACTER_GENDER_CHANGE, null, "MALE");
+                            firePropertyChange(CHARACTER_GENDER_CHANGE, null, Globals.GENDER_MALE);
                         }
                     }
                 }

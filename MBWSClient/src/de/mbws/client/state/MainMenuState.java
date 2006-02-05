@@ -43,7 +43,7 @@ public class MainMenuState extends BaseGameState {
 		SoundSystem.init(null, SoundSystem.OUTPUT_DEFAULT);
 		musicID = SoundSystem.createStream("data/audio/music/intro.ogg", false);
 		if (SoundSystem.isStreamOpened(musicID)) {
-			SoundSystem.playStream(musicID);
+//			SoundSystem.playStream(musicID);
 		}
 		// initGUI();
 		// initCursor();

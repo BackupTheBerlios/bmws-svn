@@ -11,6 +11,7 @@ import com.jme.math.Vector3f;
 
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.data.Player;
+import de.mbws.client.state.CharacterCreationState;
 import de.mbws.client.state.CharacterSelectionState;
 import de.mbws.client.state.MainMenuState;
 import de.mbws.client.state.handler.BaseInputHandler;
@@ -125,7 +126,10 @@ public class CharacterController {
 			((CharacterSelectionState) GameStateManager.getInstance().getChild(
 					"characterSelection")).getInputHandler()
 					.requestStateSwitch(BaseInputHandler.GAMESTATE_INGAME);
-		}
+		} else if (event.getEventType() == EventTypes.S2C_CHARACTER_CREATE_OK) {
+            logger.info("character creation successfully");
+            ((CharacterCreationState) GameStateManager.getInstance().getChild("characterCreation")).displayInfo("Character created successfully.");
+        }
 	}
 
 	public AbstractGameEvent createCharacterReceiveEvent() {

@@ -10,16 +10,11 @@ import de.mbws.client.eventactions.CreateObjectAction;
 import de.mbws.client.eventactions.DestroyObjectAction;
 import de.mbws.client.eventactions.MoveObjectAction;
 import de.mbws.common.data.AbstractPlayerData;
-import de.mbws.common.eventdata.generated.AccountErrorData;
 import de.mbws.common.eventdata.generated.CharactersOfPlayer;
 import de.mbws.common.eventdata.generated.MoveData;
+import de.mbws.common.eventdata.generated.SystemErrorData;
 import de.mbws.common.eventdata.generated.WorldObject;
-import de.mbws.common.events.AbstractGameEvent;
-import de.mbws.common.events.AccountEvent;
-import de.mbws.common.events.CharacterEvent;
-import de.mbws.common.events.EventTypes;
-import de.mbws.common.events.LoginEvent;
-import de.mbws.common.events.ServerRedirectEvent;
+import de.mbws.common.events.*;
 
 public class ClientGameEventActionFactory {
 
@@ -83,7 +78,7 @@ public class ClientGameEventActionFactory {
 		} else if (eventKey == EventTypes.C2S_ACCOUNT_CREATE) {
 			event = new AccountEvent(payload);
 		} else if (eventKey == EventTypes.S2C_ACCOUNT_CREATE_FAIL) {
-			event = new AccountEvent(payload, new AccountErrorData());
+			event = new AccountEvent(payload, new SystemErrorData());
 		} else if (eventKey == EventTypes.S2C_ACCOUNT_CREATE_OK) {
 			event = new AccountEvent(payload);
 		} else if (eventKey == EventTypes.S2C_CHARACTER_RECEIVE
@@ -96,7 +91,9 @@ public class ClientGameEventActionFactory {
 			event = new CharacterEvent(payload);		
 		} else if (eventKey == (EventTypes.S2C_REDIRECT_TO_WORLDSERVER)){
 			event = new ServerRedirectEvent(payload);
-		}
+		} else if (eventKey ==EventTypes.S2C_CHARACTER_CREATE_OK) {
+            event = new CharacterEvent();
+        }
 		
 		
 		if (event != null) {

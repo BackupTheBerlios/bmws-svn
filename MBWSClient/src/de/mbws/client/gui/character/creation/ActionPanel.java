@@ -18,6 +18,7 @@ import de.mbws.client.controller.ClientNetworkController;
 import de.mbws.client.data.ClientGlobals;
 import de.mbws.client.state.handler.BaseInputHandler;
 import de.mbws.client.state.handler.CharacterCreationStateHandler;
+import de.mbws.common.Globals;
 
 /**
  * Description:
@@ -67,16 +68,16 @@ public class ActionPanel extends JPanel implements PropertyChangeListener {
      * 
      * @return javax.swing.JButton
      */
-    private JButton getStartGameButton() {
+    private JButton getCreateCharacterButton() {
         if (createCharacterButton == null) {
             createCharacterButton = new JButton();
-            createCharacterButton.setEnabled(true);
+            createCharacterButton.setEnabled(false);
             createCharacterButton.setText(ValueMapper.getText(ClientGlobals.CHARACTER_CREATION_BUTTON_CREATE_CHARACTER));
             createCharacterButton.setBackground(buttonBackground);
             createCharacterButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     byte gender = 0;
-                    if ("MALE".equals(getInputHandler().getCharacterData().getGender())) {
+                    if (Globals.GENDER_MALE.equals(getInputHandler().getCharacterData().getGender())) {
                         gender = 1;
                     }
                     Integer i = new Integer(getInputHandler().getCharacterData().getRace());
@@ -96,7 +97,12 @@ public class ActionPanel extends JPanel implements PropertyChangeListener {
 
     public void propertyChange(PropertyChangeEvent evt) {
 
-        createCharacterButton.setEnabled(true);
+        Boolean value = (Boolean) evt.getNewValue();
+        if (value.booleanValue()) {
+            createCharacterButton.setEnabled(true);    
+        } else {
+            createCharacterButton.setEnabled(false);
+        }
         getParent().repaint();
     }
 
@@ -109,7 +115,7 @@ public class ActionPanel extends JPanel implements PropertyChangeListener {
         if (buttonPanel == null) {
             buttonPanel = new JPanel();
             buttonPanel.setOpaque(false);
-            buttonPanel.add(getStartGameButton(), null);
+            buttonPanel.add(getCreateCharacterButton(), null);
         }
         return buttonPanel;
     }

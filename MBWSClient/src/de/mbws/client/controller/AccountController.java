@@ -15,6 +15,7 @@ import de.mbws.client.state.handler.BaseInputHandler;
 import de.mbws.common.eventdata.generated.AccountData;
 import de.mbws.common.eventdata.generated.LoginData;
 import de.mbws.common.eventdata.generated.ServerRedirectData;
+import de.mbws.common.eventdata.generated.SystemErrorData;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.AccountEvent;
 import de.mbws.common.events.EventTypes;
@@ -54,10 +55,10 @@ public class AccountController {
     public void handleEvent(AccountEvent accountEvent) {
         if (accountEvent.getEventType() == EventTypes.S2C_ACCOUNT_CREATE_FAIL) {
             // TODO: Kerim Correct error Handling here
-
-            logger.info("Cant Register: " + accountEvent.getAccountErrorData().getReason());
+            SystemErrorData sed = (SystemErrorData)accountEvent.getEventData();
+            logger.info("Cant Register: " + sed.getReason());
             ((MainMenuState) GameStateManager.getInstance().getChild("menu")).displayError("Account creation failed:\n"
-                    + accountEvent.getAccountErrorData().getReason());
+                    + sed.getReason());
         } else if (accountEvent.getEventType() == EventTypes.S2C_ACCOUNT_CREATE_OK) {
             // TODO: Kerim enter next stage !
             logger.info("Registration ok");
