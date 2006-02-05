@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 
 import de.mbws.client.gui.character.creation.CharacterDetailsPanel;
 import de.mbws.client.state.CharacterCreationState;
-import de.mbws.common.data.generated.Characterdata;
+import de.mbws.common.data.db.Characterdata;
 
 public class CharacterCreationStateHandler extends BaseInputHandler implements PropertyChangeListener{
     private static Logger logger = Logger.getLogger(CharacterCreationStateHandler.class);
