@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.2
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="de.mbws.common.data.db.generated.ZoneserverMapMapping" 
+    table="zoneserver_map_mapping"
+    lazy="false"
+>
+
+    <composite-id name="comp_id" class="de.mbws.common.data.db.generated.ZoneserverMapMappingPK">
+        <key-property 
+            name="mapId" 
+            column="map_id" 
+            type="java.lang.Integer"
+            length="10"
+        />
+        <key-property 
+            name="zoneserverId" 
+            column="zoneserver_id" 
+            type="java.lang.Integer"
+            length="10"
+        />
+    </composite-id>    
+
+    <property
+        name="active"
+        type="byte"
+        column="active"
+        not-null="true"
+        length="1"
+    />
+
+    <!-- Associations -->
+    <!-- derived association(s) for compound key -->
+    <!-- bi-directional many-to-one association to Zoneserver -->
+    <many-to-one
+        name="zoneserver"
+	    class="de.mbws.common.data.db.generated.Zoneserver"
+	    update="false"
+	    insert="false"
+	>
+    	<column name="zoneserver_id" />
+	</many-to-one>
+	
+    <!-- bi-directional many-to-one association to Map -->
+    <many-to-one
+        name="map"
+	    class="de.mbws.common.data.db.generated.Map"
+	    update="false"
+	    insert="false"
+	>
+    	<column name="map_id" />
+	</many-to-one>
+	
+    <!-- end of derived association(s) -->
+  
+
+</class>
+</hibernate-mapping>

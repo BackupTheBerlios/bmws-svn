@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.2
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="de.mbws.common.data.db.generated.Zoneserver" 
+    table="zoneserver"
+    lazy="false"
+>
+
+    <id
+        name="id"
+        type="java.lang.Integer"
+        column="id"
+    >
+    
+        <generator class="assigned" />
+    </id>
+
+    <property
+        name="name"
+        type="java.lang.String"
+        column="name"
+        not-null="true"
+        length="45"
+    />
+    <property
+        name="ip"
+        type="java.lang.String"
+        column="ip"
+        not-null="true"
+        length="15"
+    />
+    <property
+        name="port"
+        type="int"
+        column="port"
+        not-null="true"
+        length="10"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional one-to-many association to ZoneserverMapMapping -->
+
+    <set
+        name="zoneserverMapMappings"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+
+    >
+        <key>
+            <column name="zoneserver_id" />
+        </key>
+        
+        <one-to-many 
+            class="de.mbws.common.data.db.generated.ZoneserverMapMapping"
+        />
+    </set>
+
+</class>
+</hibernate-mapping>
