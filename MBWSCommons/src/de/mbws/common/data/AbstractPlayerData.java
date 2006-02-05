@@ -2,7 +2,7 @@ package de.mbws.common.data;
 
 import java.nio.channels.SocketChannel;
 
-import de.mbws.common.data.generated.Account;
+import de.mbws.common.data.db.Account;
 
 /**
  * Description: 
