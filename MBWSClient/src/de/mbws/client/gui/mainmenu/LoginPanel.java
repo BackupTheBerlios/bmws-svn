@@ -1,14 +1,8 @@
 package de.mbws.client.gui.mainmenu;
 
 import java.awt.Color;
-import java.awt.Component;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import org.apache.log4j.Logger;
 
@@ -16,12 +10,8 @@ import com.jme.input.InputHandler;
 
 import de.mbws.client.MBWSClient;
 import de.mbws.client.ValueMapper;
-import de.mbws.client.controller.AccountController;
-import de.mbws.client.controller.ClientNetworkController;
 import de.mbws.client.data.ClientGlobals;
-import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.state.handler.MainMenuHandler;
-import de.mbws.common.data.AccountData;
 
 /**
  * Description:
@@ -67,7 +57,7 @@ public class LoginPanel extends JPanel {
 		if (usernameInputField == null) {
 			usernameInputField = new JTextField();
 			usernameInputField.setText("sack");
-			usernameInputField.setBounds(new java.awt.Rectangle(320, 70, 120,
+			usernameInputField.setBounds(new java.awt.Rectangle(320, 100, 120,
 					20));
 		}
 		return usernameInputField;
@@ -82,7 +72,7 @@ public class LoginPanel extends JPanel {
 		if (passwordField == null) {
 			passwordField = new JPasswordField();
 			passwordField.setText("sack");
-			passwordField.setBounds(new java.awt.Rectangle(320, 100, 120, 20));
+			passwordField.setBounds(new java.awt.Rectangle(320, 130, 120, 20));
 		}
 		return passwordField;
 	}
@@ -95,7 +85,7 @@ public class LoginPanel extends JPanel {
 	private JButton getLoginButton() {
 		if (loginButton == null) {
 			loginButton = new JButton();
-			loginButton.setBounds(new java.awt.Rectangle(220, 150, 210, 30));
+			loginButton.setBounds(new java.awt.Rectangle(220, 180, 210, 30));
 			loginButton.setText(ValueMapper
 					.getText(ClientGlobals.MENU_BUTTON_LOGIN));
 			loginButton.setContentAreaFilled(false);
@@ -118,7 +108,7 @@ public class LoginPanel extends JPanel {
 	private JButton getCreateAccountButton() {
 		if (createAccountButton == null) {
 			createAccountButton = new JButton();
-			createAccountButton.setBounds(new java.awt.Rectangle(220, 200, 210,
+			createAccountButton.setBounds(new java.awt.Rectangle(220, 230, 210,
 					30));
 			createAccountButton.setText(ValueMapper
 					.getText(ClientGlobals.MENU_BUTTON_CREATE_ACCOUNT));
@@ -126,31 +116,34 @@ public class LoginPanel extends JPanel {
 			createAccountButton
 					.addActionListener(new java.awt.event.ActionListener() {
 						public void actionPerformed(java.awt.event.ActionEvent e) {
-							String password = String.valueOf(passwordField
-									.getPassword());
-							String username = usernameInputField.getText();
-							if (username != null && password != null) {
-								AccountData account = new AccountData();
-								account.setUsername(username);
-								account.setPassword(password);
-								account.setPasswordConfirmation(password);
-								account.setEmailaddress("");
-								try {
-									ClientNetworkController.getInstance()
-											.connect("localhost", 5000);
-								} catch (Exception ex) {
-
-								}
-								ClientNetworkController
-										.getInstance()
-										.handleOutgoingEvent(
-												AccountController
-														.getInstance()
-														.createRegisterEvent(
-																account,
-																ClientPlayerData
-																		.getInstance()));
-							}
+                            
+//                            setVisible(false);
+						    getInputHandler().getState().showComponentCenteredOnScreenOnTop(new AccountPanel(getInputHandler()));
+//							String password = String.valueOf(passwordField
+//									.getPassword());
+//							String username = usernameInputField.getText();
+//							if (username != null && password != null) {
+//								AccountData account = new AccountData();
+//								account.setUsername(username);
+//								account.setPassword(password);
+//								account.setPasswordConfirmation(password);
+//								account.setEmailaddress("");
+//								try {
+//									ClientNetworkController.getInstance()
+//											.connect("localhost", 5000);
+//								} catch (Exception ex) {
+//
+//								}
+//								ClientNetworkController
+//										.getInstance()
+//										.handleOutgoingEvent(
+//												AccountController
+//														.getInstance()
+//														.createRegisterEvent(
+//																account,
+//																ClientPlayerData
+//																		.getInstance()));
+//							}
 						}
 					});
 		}
@@ -165,7 +158,7 @@ public class LoginPanel extends JPanel {
 	private JButton getShowOptionsButton() {
 		if (showOptionsButton == null) {
 			showOptionsButton = new JButton();
-			showOptionsButton.setBounds(new java.awt.Rectangle(220, 250, 210,
+			showOptionsButton.setBounds(new java.awt.Rectangle(220, 280, 210,
 					30));
 			showOptionsButton.setText(ValueMapper
 					.getText(ClientGlobals.MENU_BUTTON_OPTIONS));
@@ -193,7 +186,7 @@ public class LoginPanel extends JPanel {
 	private JButton getExitButton() {
 		if (exitButton == null) {
 			exitButton = new JButton();
-			exitButton.setBounds(new java.awt.Rectangle(220, 300, 210, 30));
+			exitButton.setBounds(new java.awt.Rectangle(220, 330, 210, 30));
 			exitButton.setText(ValueMapper
 					.getText(ClientGlobals.MENU_BUTTON_EXIT));
 			exitButton.setContentAreaFilled(false);
@@ -238,17 +231,17 @@ public class LoginPanel extends JPanel {
 		this.setBorder(null);
 		imageLabel.setBounds(this.getBounds());
 		versionLabel = new JLabel();
-		versionLabel.setBounds(new java.awt.Rectangle(100, 420, 240, 20));
+		versionLabel.setBounds(new java.awt.Rectangle(100, 450, 240, 20));
 		versionLabel.setForeground(Color.WHITE);
 		versionLabel.setText("Version: 0.1");
 		passwordLabel = new JLabel();
 		passwordLabel.setForeground(Color.WHITE);
-		passwordLabel.setBounds(new java.awt.Rectangle(210, 100, 100, 20));
+		passwordLabel.setBounds(new java.awt.Rectangle(210, 130, 100, 20));
 		passwordLabel.setText(ValueMapper
 				.getText(ClientGlobals.MENU_LABEL_PASSWORD));
 		usernameLabel = new JLabel();
 		usernameLabel.setForeground(Color.WHITE);
-		usernameLabel.setBounds(new java.awt.Rectangle(210, 70, 100, 20));
+		usernameLabel.setBounds(new java.awt.Rectangle(210, 100, 100, 20));
 		usernameLabel.setText(ValueMapper
 				.getText(ClientGlobals.MENU_LABEL_USERNAME));
 		this.add(versionLabel, null);
@@ -261,18 +254,6 @@ public class LoginPanel extends JPanel {
 		this.add(getShowOptionsButton(), null);
 		this.add(getExitButton(), null);
 		this.add(imageLabel, null);
-	}
-
-	@Override
-	public void setEnabled(boolean enabled) {
-		// TODO Auto-generated method stub
-		super.setEnabled(enabled);
-		Component[] c = getComponents();
-		for (int i = 0; i < c.length; i++) {
-			if (c[i] instanceof JButton) {
-				c[i].setEnabled(enabled);
-			}
-		}
 	}
 
 } // @jve:decl-index=0:visual-constraint="10,10"

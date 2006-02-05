@@ -12,7 +12,7 @@ import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.state.BaseGameState;
 import de.mbws.client.state.MainMenuState;
 import de.mbws.client.state.handler.BaseInputHandler;
-import de.mbws.common.data.AccountData;
+import de.mbws.common.eventdata.generated.AccountData;
 import de.mbws.common.eventdata.generated.LoginData;
 import de.mbws.common.eventdata.generated.ServerRedirectData;
 import de.mbws.common.events.AbstractGameEvent;
@@ -66,14 +66,7 @@ public class AccountController {
     }
 
     public AbstractGameEvent createRegisterEvent(AccountData account, ClientPlayerData player) {
-        de.mbws.common.eventdata.generated.AccountData accountData = new de.mbws.common.eventdata.generated.AccountData();
-
-        accountData.setUserName(account.getUsername());
-        accountData.setNewPassword(account.getPassword());
-        // event.setPasswordConfirmation(account.getPasswordConfirmation());
-        accountData.setPassword(account.getPassword());
-        accountData.setEmailAddress(account.getEmailaddress());
-        AccountEvent event = new AccountEvent(accountData);
+        AccountEvent event = new AccountEvent(account);
         event.setEventType(EventTypes.C2S_ACCOUNT_CREATE);
         player.setSessionId(new Integer(0));
         event.setPlayer(player);

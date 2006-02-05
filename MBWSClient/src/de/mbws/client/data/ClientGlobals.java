@@ -31,4 +31,13 @@ public class ClientGlobals {
     public static final String LOADING_SCREEN_LABEL = "loadingscreen.label";
     
     public static final String GENERIC_BUTTON_BACK = "generic.button.back";
+    
+    public static final String ACCOUNT_CREATION_BUTTON_CREATE = "account.creation.create";
+    public static final String ACCOUNT_CREATION_LABEL_PASSWORDVERIFICATION = "account.creation.label.passwordverification";
+    public static final String ACCOUNT_CREATION_LABEL_EMAILADRESS = "account.creation.label.emailaddress";
+    
+    
+    
+    
+
 }

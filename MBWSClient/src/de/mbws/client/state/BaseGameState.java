@@ -3,10 +3,7 @@ package de.mbws.client.state;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.JComponent;
-import javax.swing.JDesktopPane;
-import javax.swing.JInternalFrame;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 import com.jme.app.BasicGameState;
 import com.jme.math.Vector3f;
@@ -154,6 +151,23 @@ public abstract class BaseGameState extends BasicGameState {
 //        desktopPane.revalidate();
     }
     
+    public void showComponentCenteredOnScreenOnTop(JComponent panel) {
+        JDesktopPane desktopPane = jmeDesktop.getJDesktop();
+        int x = (desktopPane.getWidth() /2) - (panel.getWidth()/2);
+        int y = (desktopPane.getHeight() /2) - (panel.getHeight()/2);
+        panel.setLocation(x,y);
+        desktopPane.setLayer(panel, 1);
+        desktopPane.add(panel);
+        desktopPane.revalidate();
+    }
+    
+    public void removeMe(JPanel panel) {
+        panel.setVisible(false);
+        JDesktopPane desktopPane = jmeDesktop.getJDesktop();
+        desktopPane.remove(panel);
+        desktopPane.revalidate();
+    }
+    
     public void displayInfo(String message) {
         displayOptionPane(message, JOptionPane.INFORMATION_MESSAGE);
     }
@@ -169,12 +183,13 @@ public abstract class BaseGameState extends BasicGameState {
         JOptionPane optionPane = new JOptionPane(message,type );
         modalDialog.getContentPane().add( optionPane );
         jmeDesktop.setModalComponent( modalDialog );
+        desktopPane.setLayer(modalDialog, 2);
         desktopPane.add( modalDialog, 0 );
         modalDialog.setVisible( true );
         modalDialog.setSize( modalDialog.getPreferredSize() );
         modalDialog.setLocation( ( desktopPane.getWidth() - modalDialog.getWidth() ) / 2,
                 ( desktopPane.getHeight() - modalDialog.getHeight() ) / 2 );
-        jmeDesktop.setFocusOwner( optionPane );
+//        jmeDesktop.setFocusOwner( optionPane );
 
         optionPane.addPropertyChangeListener( JOptionPane.VALUE_PROPERTY, new PropertyChangeListener() {
             public void propertyChange( PropertyChangeEvent evt ) {
@@ -183,5 +198,7 @@ public abstract class BaseGameState extends BasicGameState {
                 desktopPane.remove( modalDialog );
             }
         } );
+        desktopPane.revalidate();
+        desktopPane.repaint();
     }
 }
