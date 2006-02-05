@@ -8,8 +8,6 @@ import java.nio.ByteBuffer;
 public class AccountData extends AbstractEventData { 
 	private String userName;
 	private String password;
-	private String newPassword;
-	private int age;
 	private String emailAddress;
 
 
@@ -29,22 +27,6 @@ public class AccountData extends AbstractEventData {
 		this.password = password;
 	} 
 
-	public String getNewPassword() {
-		return newPassword;
-	}
-
-	public void setNewPassword(String newPassword) {
-		this.newPassword = newPassword;
-	} 
-
-	public int getAge() {
-		return age;
-	}
-
-	public void setAge(int age) {
-		this.age = age;
-	} 
-
 	public String getEmailAddress() {
 		return emailAddress;
 	}
@@ -57,16 +39,12 @@ public class AccountData extends AbstractEventData {
 	public void deserialize(ByteBuffer payload) {
 		userName = readString(payload);
 		password = readString(payload);
-		newPassword = readString(payload);
-		age = payload.getInt();
 		emailAddress = readString(payload);
 	}
 
 	public int serialize(ByteBuffer payload) {
 		writeString(payload, userName);
 		writeString(payload, password);
-		writeString(payload, newPassword);
-		payload.putInt(age);
 		writeString(payload, emailAddress);
 		return payload.position();
 	}

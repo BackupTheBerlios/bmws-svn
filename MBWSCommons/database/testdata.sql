@@ -178,6 +178,14 @@ insert into language_text_mapping (id,text_key,languages_id,text) values (41,'ge
 insert into language_text_mapping (id,text_key,languages_id,text) values (42,'generic.button.back',2,'Back');
 insert into language_text_mapping (id,text_key,languages_id,text) values (43,'character.creation.button.create',1,'Erstellen');
 insert into language_text_mapping (id,text_key,languages_id,text) values (44,'character.creation.button.create',2,'Create');
+insert into language_text_mapping (id,text_key,languages_id,text) values (45,'account.creation.create',1,'Erstellen');
+insert into language_text_mapping (id,text_key,languages_id,text) values (46,'account.creation.create',2,'Create');
+
+insert into language_text_mapping (id,text_key,languages_id,text) values (47,'account.creation.label.passwordverification',1,'Passwort Bestätigung');
+insert into language_text_mapping (id,text_key,languages_id,text) values (48,'account.creation.label.passwordverification',2,'Password Confirmation');
+insert into language_text_mapping (id,text_key,languages_id,text) values (49,'account.creation.label.emailaddress',1,'E-Mail-Adresse');
+insert into language_text_mapping (id,text_key,languages_id,text) values (50,'account.creation.label.emailaddress',2,'Emailaddress');
+
 #
 # Dumping data for table 'languages'
 #
