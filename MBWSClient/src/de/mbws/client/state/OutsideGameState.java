@@ -37,7 +37,7 @@ public class OutsideGameState extends BaseGameState {
 	private Node player;
 	// private InputHandler inputHandler;
 	// TODO: put that in MBWSInputManager ?
-	private InputHandler chaseCam;
+	//private InputHandler chaseCam;
 	private DisplaySystem display;
 	private AbsoluteMouse cursor;
 
@@ -86,7 +86,7 @@ public class OutsideGameState extends BaseGameState {
 		skybox.preloadTextures();
 		skybox.setLocalTranslation(new Vector3f(0, 0, 0));
 
-		player.attachChild(skybox);
+		//player.attachChild(skybox);
 
 	}
 
@@ -130,13 +130,13 @@ public class OutsideGameState extends BaseGameState {
 		chaserProps.put(ThirdPersonMouseLook.PROP_MOUSEYMULT, "30.0");
 		chaserProps.put(ThirdPersonMouseLook.PROP_MOUSEROLLMULT, "240.0");
 		chaserProps.put(ThirdPersonMouseLook.PROP_LOCKASCENT, "true");
-		chaseCam = new ChaseCamera(cam, player, chaserProps);
-		chaseCam.setActionSpeed(1.0f);
+//		chaseCam = new ChaseCamera(cam, player, chaserProps);
+//		chaseCam.setActionSpeed(1.0f);
 
 	}
 
 	private void buildPlayer() {
-		player = ObjectManager.getPlayer();
+		//player = ObjectManager.getPlayer();
 	}
 
 	private void buildEnvironment() {
@@ -158,7 +158,7 @@ public class OutsideGameState extends BaseGameState {
 		// update the keyboard input (move the player around)
 		// input.update(tpf);
 		// update the chase camera to handle the player moving around.
-		chaseCam.update(tpf);
+		//chaseCam.update(tpf);
 
 		// // TODO Fix the height and set it somewhere else !!
 		// float camMinHeightPlayer = player.getWorldTranslation().y + 20f;

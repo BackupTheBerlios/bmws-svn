@@ -53,7 +53,6 @@ import de.mbws.client.net.ActionQueue;
 import de.mbws.client.state.handler.TestGameHandler;
 
 public class TestGameState extends StandardGameState {
-	
 
 	private Node player;
 	protected InputHandler input;
