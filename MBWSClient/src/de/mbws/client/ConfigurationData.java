@@ -3,8 +3,9 @@ package de.mbws.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.mbws.common.data.race.Race;
-import de.mbws.common.data.race.Races;
+import de.mbws.client.data.Race;
+import de.mbws.common.data.xml.RaceElement;
+import de.mbws.common.data.xml.RacesDocument;
 
 /**
  * Description: 
@@ -13,7 +14,7 @@ import de.mbws.common.data.race.Races;
  */
 public class ConfigurationData {
 
-    private static Races races;
+    private static RacesDocument races;
     
     
     public static List<Race> getAllRaces() {
@@ -21,8 +22,13 @@ public class ConfigurationData {
             races = ReferenceFileReader.getRaces();
         }
         List<Race> result = new ArrayList<Race>();
-        for (int i = 0; i < races.getRace().length; i++) {
-            result.add(races.getRace()[i]);
+        for (int i = 0; i < races.getRaceElement().length; i++) {
+            RaceElement elem = races.getRaceElement()[i];
+            Race race = new Race(String.valueOf(elem.getId()));
+            race.setName(ValueMapper.getRaceName(elem.getId()));
+            race.setDescription(ValueMapper.getRaceDescription(elem.getId()));
+            race.setPlayable(elem.getPlayable());
+            result.add(race);
         }
         return result;
     }
@@ -32,10 +38,14 @@ public class ConfigurationData {
             races = ReferenceFileReader.getRaces();
         }
         List<Race> result = new ArrayList<Race>();
-        for (int i = 0; i < races.getRace().length; i++) {
-            Race r = races.getRace()[i];
-            if (r.getPlayable()) {
-                result.add(r);    
+        for (int i = 0; i < races.getRaceElement().length; i++) {
+            RaceElement elem = races.getRaceElement()[i];
+            if (elem.getPlayable()) {
+                  Race race = new Race(String.valueOf(elem.getId()));
+                race.setName(ValueMapper.getRaceName(elem.getId()));
+                race.setDescription(ValueMapper.getRaceDescription(elem.getId()));
+                race.setPlayable(elem.getPlayable());
+                result.add(race);  
             }
         }
         return result;

@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import de.mbws.client.gui.character.creation.CharacterDetailsPanel;
 import de.mbws.client.state.CharacterCreationState;
 import de.mbws.common.data.generated.Characterdata;
-import de.mbws.common.data.generated.Race;
 
 public class CharacterCreationStateHandler extends BaseInputHandler implements PropertyChangeListener{
     private static Logger logger = Logger.getLogger(CharacterCreationStateHandler.class);
@@ -33,7 +32,7 @@ public class CharacterCreationStateHandler extends BaseInputHandler implements P
             if (logger.isDebugEnabled()) {
                 logger.debug(evt.getNewValue());
             }
-            characterData.setRace((Race)evt.getNewValue());
+//            characterData.setRace((Race)evt.getNewValue());
         } else if (CharacterDetailsPanel.CHARACTER_GENDER_CHANGE.equals(evt.getPropertyName())) {
             characterData.setGender((String)evt.getNewValue());
         }

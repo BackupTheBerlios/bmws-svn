@@ -24,15 +24,25 @@ public class ValueMapper {
             props.load(new FileInputStream(new File(fileName)));    
         } catch (Exception e) {
             e.printStackTrace();
-            System.exit(1);
+            MBWSClient.exit();
         }       
     }
 
     public static String getRaceName(int raceId) {
-        return props.getProperty(new StringBuffer("race.").append(raceId).toString());
+        return props.getProperty(new StringBuffer("race.name.").append(raceId).toString());
     }
+
+    public static String getRaceDescription(int raceId) {
+        return props.getProperty(new StringBuffer("race.description.").append(raceId).toString());
+    }
+
     
     public static String getText(String key) {
-    	return props.getProperty(key);
+        try {
+            return props.getProperty(key);    
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    	return "not found";
     }
 }

@@ -6,6 +6,7 @@ package de.mbws.client;
 import java.util.logging.Level;
 
 import javax.swing.UIManager;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
@@ -19,7 +20,6 @@ import com.jme.input.KeyInput;
 import com.jme.input.MouseInput;
 import com.jme.input.joystick.JoystickInput;
 import com.jme.system.DisplaySystem;
-import com.jme.system.JmeException;
 import com.jme.util.LoggingSystem;
 import com.jme.util.Timer;
 
@@ -89,7 +89,7 @@ public class MBWSClient extends BaseGame {
 	protected final void initSystem() {
 		try {
           languageResources = new ValueMapper();
-          UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() );
+          UIManager.setLookAndFeel( new MetalLookAndFeel() );
 
           /**
 			 * Get a DisplaySystem acording to the renderer selected in the

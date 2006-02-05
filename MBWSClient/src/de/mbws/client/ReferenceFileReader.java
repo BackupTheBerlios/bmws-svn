@@ -4,7 +4,7 @@ import java.io.FileReader;
 
 import org.apache.log4j.Logger;
 
-import de.mbws.common.data.race.Races;
+import de.mbws.common.data.xml.RacesDocument;
 
 /**
  * Description: 
@@ -14,9 +14,9 @@ import de.mbws.common.data.race.Races;
 public class ReferenceFileReader {
     private static Logger logger = Logger.getLogger(ReferenceFileReader.class);
     
-    public static Races getRaces() {
+    public static RacesDocument getRaces() {
         try {
-            return (Races) Races.unmarshal(new FileReader("config/Races.xml"));
+            return (RacesDocument) RacesDocument.unmarshal(new FileReader("config/Races.xml"));
         } catch (Exception e) {
             logger.error("Couldnt read races.xml...serious problem", e);
             return null;

@@ -21,10 +21,9 @@ import se.datadosen.component.RiverLayout;
 import de.mbws.client.ConfigurationData;
 import de.mbws.client.ValueMapper;
 import de.mbws.client.data.ClientGlobals;
+import de.mbws.client.data.Race;
 import de.mbws.client.state.handler.BaseInputHandler;
 import de.mbws.client.state.handler.CharacterSelectionStateHandler;
-import de.mbws.common.data.race.Race;
-
 
 /**
  * Description:
@@ -161,27 +160,26 @@ public class CharacterDetailsPanel extends JPanel implements PropertyChangeListe
         if (nameTextField == null) {
             nameTextField = new JTextField();
             nameTextField.setInputVerifier(new InputVerifier() {
-            
+
                 @Override
                 public boolean verify(JComponent input) {
                     // TODO Auto-generated method stub
                     return false;
                 }
-            
+
                 @Override
                 public boolean shouldYieldFocus(JComponent input) {
                     boolean isValid = super.shouldYieldFocus(input);
-                    if ( isValid ){
+                    if (isValid) {
                         nameLabel.setForeground(Color.WHITE);
                         nameTextField.setBackground(null);
-                    }
-                    else {
+                    } else {
                         nameLabel.setForeground(Color.red);
                         nameTextField.setBackground(Color.red);
                     }
                     return true;
                 }
-            
+
             });
         }
         return nameTextField;
@@ -222,12 +220,12 @@ public class CharacterDetailsPanel extends JPanel implements PropertyChangeListe
      * 
      * @return javax.swing.JComboBox
      */
-private JComboBox getRaceComboBox() {
+    private JComboBox getRaceComboBox() {
         if (raceComboBox == null) {
             DefaultComboBoxModel model = new DefaultComboBoxModel();
             raceComboBox = new JComboBox(model);
-            
-            //TODO fixme
+
+            // TODO fixme
             List races = ConfigurationData.getAllRaces();
             for (Iterator iter = races.iterator(); iter.hasNext();) {
                 Race race = (Race) iter.next();
@@ -236,17 +234,18 @@ private JComboBox getRaceComboBox() {
             raceComboBox.setSelectedIndex(-1);
             raceComboBox.setRenderer(new RaceRenderer());
             raceComboBox.addItemListener(new ItemListener() {
-            
+
                 public void itemStateChanged(ItemEvent event) {
-                    if(event.getStateChange() == 1) {
+                    if (event.getStateChange() == 1) {
                         Race race = (Race) event.getItem();
                         firePropertyChange(CHARACTER_RACE_CHANGE, null, race);
                     }
-                }           
+                }
             });
         }
         return raceComboBox;
     }
+
     public class RaceRenderer implements ListCellRenderer {
 
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -254,7 +253,7 @@ private JComboBox getRaceComboBox() {
             if (value instanceof Race) {
                 Race race = (Race) value;
                 StringBuffer sb = new StringBuffer();
-                sb.append(ValueMapper.getRaceName(race.getId()));
+                sb.append(race.getName());
                 label.setText(sb.toString());
                 label.setHorizontalAlignment(SwingConstants.LEFT);
                 label.setBackground(buttonBackground);
@@ -284,6 +283,7 @@ private JComboBox getRaceComboBox() {
         if (infoTextArea == null) {
             infoTextArea = new JTextArea();
             infoTextArea.setEditable(false);
+            infoTextArea.setLineWrap(true);
         }
         return infoTextArea;
     }
@@ -294,7 +294,7 @@ private JComboBox getRaceComboBox() {
             if (logger.isDebugEnabled()) {
                 logger.debug(evt.getNewValue());
             }
-            getInfoTextArea().setText(((Race)evt.getNewValue()).getDescription());
+            getInfoTextArea().setText(((Race) evt.getNewValue()).getDescription());
             getParent().repaint();
         }
     }
