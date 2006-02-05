@@ -3,7 +3,7 @@ package de.mbws.server.account.controller;
 import de.mbws.common.MessageKeys;
 import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.data.db.generated.Account;
-import de.mbws.common.eventdata.generated.AccountErrorData;
+import de.mbws.common.eventdata.generated.SystemErrorData;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.AccountEvent;
 import de.mbws.common.events.EventTypes;
@@ -51,7 +51,7 @@ public class AccountEventController extends AccountServerBaseEventController {
                 ae.setEventType(EventTypes.S2C_ACCOUNT_CREATE_OK);
                 sendEvent(ae);                
             } catch (DuplicateKeyException e) {
-                AccountErrorData aed = new AccountErrorData();
+                SystemErrorData aed = new SystemErrorData();
                 aed.setReason(MessageKeys.ACCOUNT_DUPLICATE);
                 AccountEvent ae = new AccountEvent(aed);
                 ae.setPlayer(event.getPlayer());

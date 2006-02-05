@@ -7,17 +7,10 @@ import java.util.List;
 import org.apache.commons.beanutils.BeanUtils;
 
 import de.mbws.common.Globals;
+import de.mbws.common.MessageKeys;
+import de.mbws.common.data.db.generated.*;
 import de.mbws.common.data.db.generated.CharacterStatus;
-import de.mbws.common.data.db.generated.CharacterVisualappearance;
-import de.mbws.common.data.db.generated.Characterdata;
-import de.mbws.common.eventdata.generated.CharacterData;
-import de.mbws.common.eventdata.generated.CharacterSelection;
-import de.mbws.common.eventdata.generated.CharacterValues;
-import de.mbws.common.eventdata.generated.CharacterVisualAppearance;
-import de.mbws.common.eventdata.generated.CharacterWorldServerInformation;
-import de.mbws.common.eventdata.generated.CharactersOfPlayer;
-import de.mbws.common.eventdata.generated.IntVector3D;
-import de.mbws.common.eventdata.generated.NetQuaternion;
+import de.mbws.common.eventdata.generated.*;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.CharacterEvent;
 import de.mbws.common.events.EventTypes;
@@ -25,6 +18,8 @@ import de.mbws.common.events.ServerRedirectEvent;
 import de.mbws.server.account.AccountServer;
 import de.mbws.server.account.persistence.CharacterPersistenceManager;
 import de.mbws.server.data.ServerCommunicationData;
+import de.mbws.server.data.ServerPlayerData;
+import de.mbws.server.exceptions.DuplicateKeyException;
 
 /**
  * Description:
@@ -89,6 +84,48 @@ public class CharacterEventController extends AccountServerBaseEventController {
             sre.setEventType(EventTypes.S2C_REDIRECT_TO_WORLDSERVER);
             sre.setPlayer(getAccountServer().getPlayerBySessionId(cwsi.getSessionId()));
             sendEvent(sre);
+        } else if (event.getEventType() == EventTypes.C2S_CHARACTER_CREATE_REQUEST) {
+            ServerPlayerData spd = (ServerPlayerData) event.getPlayer();
+            CreateCharacter character = (CreateCharacter) event.getEventData();
+            Characterdata cdata = new Characterdata();
+            cdata.setCharactername(character.getName());
+            cdata.setGender(String.valueOf(character.getGender()));
+            Race r = CharacterPersistenceManager.getInstance().getRace(character.getRace());
+            cdata.setRace(r);
+            CharacterStatus status = new CharacterStatus();
+            status.setCharacterdata(cdata);
+            status.setCoordinateX(1);
+            status.setCoordinateY(1);
+            status.setCoordinateZ(1);
+            status.setCharstatus("A");
+            status.setPvp("0");
+            status.setGamestatus("0");
+            CharacterVisualappearance cva = new CharacterVisualappearance();
+            cva.setCharacterdata(cdata);
+            cdata.setCharacterVisualappearance(cva);
+            
+            Map m = CharacterPersistenceManager.getInstance().getMap(1);
+            status.setMap(m);
+            cdata.setCharacterStatus(status);
+            cdata.setAccount(spd.getAccount());
+            try {
+                CharacterPersistenceManager.getInstance().createCharacter(cdata);    
+            }catch (DuplicateKeyException e) {
+                SystemErrorData sed = new SystemErrorData();
+                sed.setReason(MessageKeys.CHARACTERNAME_DUPLICATE);
+                CharacterEvent ae = new CharacterEvent(sed);
+                ae.setPlayer(event.getPlayer());
+                ae.setEventType(EventTypes.S2C_CHARACTER_CREATE_FAIL);
+                sendEvent(ae);
+            } catch (Exception e) {
+                //ignore for now
+            }
+            
+            
+            CharacterEvent result = new CharacterEvent();
+            result.setEventType(EventTypes.S2C_CHARACTER_CREATE_OK);
+            result.setPlayer(spd);
+            sendEvent(result);
         }
     }
     

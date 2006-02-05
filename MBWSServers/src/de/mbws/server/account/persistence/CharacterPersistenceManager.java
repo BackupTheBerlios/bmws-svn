@@ -3,8 +3,15 @@ package de.mbws.server.account.persistence;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.exception.ConstraintViolationException;
 
 import de.mbws.common.data.db.generated.Characterdata;
+import de.mbws.common.data.db.generated.Map;
+import de.mbws.common.data.db.generated.Race;
+import de.mbws.server.exceptions.DuplicateKeyException;
+import de.mbws.server.exceptions.PersistenceException;
 import de.mbws.server.persistence.BasePersistenceManager;
 
 /**
@@ -76,6 +83,78 @@ public class CharacterPersistenceManager extends BasePersistenceManager {
 
         } catch (Exception e) {
             logger.error("Error during Character retrieving", e);
+        } finally {
+            try {
+                if (session != null) {
+                    session.close();
+                }
+            } catch (Exception e) {
+                logger.error("Error during session closing", e);
+            }
+        }
+        return null;
+    }
+    
+    public void createCharacter(Characterdata character) throws PersistenceException, DuplicateKeyException {
+        Session session = null;
+        try {
+            session = getSessionFactory().openSession(); 
+            Transaction tx = session.beginTransaction();
+            Long key = (Long) session.save(character);
+            character.getCharacterStatus().setId(key);
+            session.save(character.getCharacterStatus());
+            character.getCharacterVisualappearance().setId(key);
+            session.save(character.getCharacterVisualappearance());
+//            session.flush();
+//            session.connection().commit();
+            tx.commit();
+        } catch (ConstraintViolationException cve) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("CharacterName already taken, characterName=" + character.getCharactername());
+            }
+            throw new DuplicateKeyException();
+        } catch (Exception e) {
+            logger.error("Error during Character creation", e);
+            throw new PersistenceException("Error during Character creation. see log file for further information");
+        } finally {
+            try {
+                if (session != null) {
+                    session.close();
+                }                
+            } catch (Exception e) {
+                logger.error("Error during session closing", e);
+            }
+        }
+    }
+    
+    public Race getRace(int id) {
+        org.hibernate.Session session = null;
+        try {
+            session = getSessionFactory().openSession();
+           return (Race) session.createQuery("from Race as r where " + "r.id = ?").setInteger(0, id).uniqueResult();
+
+        } catch (Exception e) {
+            logger.error("Error during Race retrieving", e);
+        } finally {
+            try {
+                if (session != null) {
+                    session.close();
+                }
+            } catch (Exception e) {
+                logger.error("Error during session closing", e);
+            }
+        }
+        return null;
+    }
+    
+    public Map getMap(int id) {
+        org.hibernate.Session session = null;
+        try {
+            session = getSessionFactory().openSession();
+           return (Map) session.createQuery("from Map as m where " + "m.id = ?").setInteger(0, id).uniqueResult();
+
+        } catch (Exception e) {
+            logger.error("Error during Map retrieving", e);
         } finally {
             try {
                 if (session != null) {
