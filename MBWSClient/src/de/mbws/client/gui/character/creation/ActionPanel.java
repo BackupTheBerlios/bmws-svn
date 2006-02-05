@@ -77,11 +77,12 @@ public class ActionPanel extends JPanel implements PropertyChangeListener {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
                     byte gender = 0;
                     if ("MALE".equals(getInputHandler().getCharacterData().getGender())) {
-                        gender =1;
+                        gender = 1;
                     }
+                    Integer i = new Integer(getInputHandler().getCharacterData().getRace());
                     ClientNetworkController.getInstance().handleOutgoingEvent(
-                            CharacterController.getInstance().createCreateCharacterEvent(getInputHandler().getCharacterData().getCharactername(),
-                                   gender , getInputHandler().getCharacterData().getRace().getId().byteValue()));
+                            CharacterController.getInstance().createCreateCharacterEvent(getInputHandler().getCharacterData().getName(), gender,
+                                    i.byteValue()));
                 }
             });
             createCharacterButton.setSize(createCharacterButton.getPreferredSize());
