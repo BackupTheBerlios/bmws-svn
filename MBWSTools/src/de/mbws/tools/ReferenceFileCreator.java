@@ -11,7 +11,7 @@ import org.apache.log4j.PropertyConfigurator;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import de.mbws.common.data.db.Race;
+import de.mbws.common.data.db.generated.Race;
 import de.mbws.common.data.xml.RaceElement;
 import de.mbws.common.data.xml.RacesDocument;
 import de.mbws.server.persistence.BasePersistenceManager;
