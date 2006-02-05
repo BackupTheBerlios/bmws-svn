@@ -33,10 +33,12 @@ public class EventTypes {
     public static final int S2C_CHARACTER_START_PLAYING = 26;
     public static final int C2S_CHARACTER_DELETE_REQUEST = 27;
     public static final int C2S_CHARACTER_CREATE_REQUEST = 28;
-    public static final int C2S_CHARACTER_ENTERS_WORLD_REQUEST = 29;
-    public static final int S2C_CHARACTER_ENTERS_WORLD = 30;
-    public static final int S2S_CHARACTER_NEW_CHARACTER_ENTERS_WORLD = 31;
-    public static final int S2S_CHARACTER_NEW_CHARACTER_ENTERS_WORLD_OK = 32;
+    public static final int S2C_CHARACTER_CREATE_OK = 29;
+    public static final int S2C_CHARACTER_CREATE_FAIL = 30;
+    public static final int C2S_CHARACTER_ENTERS_WORLD_REQUEST = 31;
+    public static final int S2C_CHARACTER_ENTERS_WORLD = 32;
+    public static final int S2S_CHARACTER_NEW_CHARACTER_ENTERS_WORLD = 33;
+    public static final int S2S_CHARACTER_NEW_CHARACTER_ENTERS_WORLD_OK = 34;
     
     public static final int GROUPID_EVENT_REDIRECT = 4;
     public static final int S2C_REDIRECT_TO_WORLDSERVER = 41;

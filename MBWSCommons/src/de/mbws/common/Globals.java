@@ -46,6 +46,11 @@ public class Globals {
 	public static final byte TURN_RIGHT = 2;
     
     public static final String OBJECT_ID_PREFIX_CHARACTER = "C";
+    
+    public static final String GENDER_MALE = "M";
+    public static final String GENDER_FEMALE = "F";
+    
+    
 }
 
 

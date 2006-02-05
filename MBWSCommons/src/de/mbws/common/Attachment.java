@@ -41,7 +41,7 @@ public class Attachment {
 	 */
 	public Attachment() {
 		payload = new byte[Globals.MAX_EVENT_SIZE];
-		readBuff = ByteBuffer.allocateDirect(Globals.NET_BUFFER_SIZE);
+		readBuff = ByteBuffer.allocateDirect(Globals.MAX_EVENT_SIZE);
 	}
 
 	/**

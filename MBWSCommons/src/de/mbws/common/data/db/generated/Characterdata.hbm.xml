@@ -23,7 +23,7 @@
         column="id"
     >
     
-        <generator class="assigned" />
+        <generator class="increment" />
     </id>
 
     <property

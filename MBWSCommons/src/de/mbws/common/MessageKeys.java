@@ -7,5 +7,6 @@ package de.mbws.common;
  */
 public class MessageKeys {
 
-    public static final String ACCOUNT_DUPLICATE = "accountDuplicate";
+    public static final String ACCOUNT_DUPLICATE = "system.message.accountDuplicate";
+    public static final String CHARACTERNAME_DUPLICATE = "system.message.characterNameDuplicate";
 }

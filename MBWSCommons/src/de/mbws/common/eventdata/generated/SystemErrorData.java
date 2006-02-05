@@ -5,7 +5,7 @@ import de.mbws.common.eventdata.AbstractEventData;
 import java.util.*;
 import java.nio.ByteBuffer;
 
-public class AccountErrorData extends AbstractEventData { 
+public class SystemErrorData extends AbstractEventData { 
 	private String reason;
 
 
@@ -27,20 +27,20 @@ public class AccountErrorData extends AbstractEventData {
 		return payload.position();
 	}
 
-	public static void serializeList(ByteBuffer payload, List<AccountErrorData> list) {
+	public static void serializeList(ByteBuffer payload, List<SystemErrorData> list) {
 		if(list==null) return;
 		payload.putInt(list.size());
-		Iterator<AccountErrorData> it = list.iterator();
+		Iterator<SystemErrorData> it = list.iterator();
 		while (it.hasNext()) {
 			it.next().serialize(payload);
 		}
 	}
 
-	public static List<AccountErrorData> deserializeList(ByteBuffer payload) {
-		List<AccountErrorData> list = new LinkedList<AccountErrorData>();
+	public static List<SystemErrorData> deserializeList(ByteBuffer payload) {
+		List<SystemErrorData> list = new LinkedList<SystemErrorData>();
 		int size = payload.getInt();
 		for (int i=0; i<size; i++) {
-			AccountErrorData element = new AccountErrorData();
+			SystemErrorData element = new SystemErrorData();
 			element.deserialize(payload);
 			list.add(element);
 		}

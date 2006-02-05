@@ -54,7 +54,9 @@ public class NIOUtils {
                 }
 			}
 		} catch (ClosedChannelException cce) {
+            cce.printStackTrace();
 		} catch (Exception e) {
+            e.printStackTrace();
 		}
 
 		// get ready for another write if needed

@@ -4,7 +4,6 @@ import java.nio.ByteBuffer;
 
 import de.mbws.common.eventdata.AbstractEventData;
 import de.mbws.common.eventdata.generated.AccountData;
-import de.mbws.common.eventdata.generated.AccountErrorData;
 
 /**
  * Description: 
@@ -39,10 +38,6 @@ public class AccountEvent extends AbstractGameEvent {
 
     public AccountData getAccountData() {
         return (AccountData) eventData;
-    }
-
-    public AccountErrorData getAccountErrorData() {
-        return (AccountErrorData) eventData;
     }
     
     @Override

@@ -26,9 +26,9 @@ INSERT INTO account VALUES('sack','sack','sack@sack.de');
 #
 # Dumping data for table 'characterdata'
 #
-INSERT INTO characterdata VALUES('1','Sir Sackerus','1','sack','0','0','0','0','0','0','0','0','0');
-INSERT INTO characterdata VALUES('2','Mr SugaMaDig','1','minisack','0','0','0','0','0','0','0','0','0');
-INSERT INTO characterdata VALUES('3','Mag ma Dig','1','sack','0','0','0','0','0','0','0','0','0');
+INSERT INTO characterdata VALUES('1','Sir Sackerus','1','sack','M','0','0','0','0','0','0','0','0');
+INSERT INTO characterdata VALUES('2','Mr SugaMaDig','1','minisack','M','0','0','0','0','0','0','0','0');
+INSERT INTO characterdata VALUES('3','Mag ma Dig','1','sack','M','0','0','0','0','0','0','0','0');
 #
 # Dumping data for table 'character_status'
 #

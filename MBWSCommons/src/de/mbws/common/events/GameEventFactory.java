@@ -5,12 +5,7 @@ import java.nio.ByteBuffer;
 import org.apache.log4j.Logger;
 
 import de.mbws.common.data.AbstractPlayerData;
-import de.mbws.common.eventdata.generated.AccountErrorData;
-import de.mbws.common.eventdata.generated.CharacterDetails;
-import de.mbws.common.eventdata.generated.CharacterSelection;
-import de.mbws.common.eventdata.generated.CharacterWorldServerInformation;
-import de.mbws.common.eventdata.generated.CharactersOfPlayer;
-import de.mbws.common.eventdata.generated.ServerLoginData;
+import de.mbws.common.eventdata.generated.*;
 
 public class GameEventFactory {
 	private static Logger logger = Logger.getLogger("GameEventFactory");
@@ -28,15 +23,17 @@ public class GameEventFactory {
 		} else if (eventKey == EventTypes.S2C_LOGIN_OK) {
 			event = new LoginEvent(payload);
 		} else if (eventKey == EventTypes.C2S_LOGOUT) {
-			event = new LoginEvent(payload);
+			event = new LoginEvent();
 		} else if (eventKey == EventTypes.S2C_LOGOUT_OK) {
 			event = new LoginEvent(payload);
 		} else if (eventKey == EventTypes.C2S_ACCOUNT_CREATE) {
 			event = new AccountEvent(payload);
 		} else if (eventKey == EventTypes.S2C_ACCOUNT_CREATE_FAIL) {
-			event = new AccountEvent(payload, new AccountErrorData());
+			event = new AccountEvent(payload, new SystemErrorData());
 		} else if (eventKey == EventTypes.S2C_ACCOUNT_CREATE_OK) {
 			event = new AccountEvent(payload);
+        } else if (eventKey == EventTypes.C2S_CHARACTER_CREATE_REQUEST) {
+            event = new CharacterEvent(payload, new CreateCharacter()); 
         } else if (eventKey == EventTypes.S2C_CHARACTER_RECEIVE) {
             event = new CharacterEvent(payload, new CharacterDetails());
 		} else if (eventKey == EventTypes.C2S_CHARACTER_RECEIVE_REQUEST) {
