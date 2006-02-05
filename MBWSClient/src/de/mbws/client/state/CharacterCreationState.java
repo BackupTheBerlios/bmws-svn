@@ -4,8 +4,6 @@
 package de.mbws.client.state;
 
 import javax.swing.JDesktopPane;
-import javax.swing.UIManager;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.apache.log4j.Logger;
 
@@ -127,11 +125,11 @@ public class CharacterCreationState extends BaseGameState {
     }
 
     private void setupMenu() {
-        try {
-            UIManager.setLookAndFeel(new MetalLookAndFeel());
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
+//        try {
+//            UIManager.setLookAndFeel(new MetalLookAndFeel());
+//        } catch (Exception e) {
+//            // TODO: handle exception
+//        }
 
         // jmeDesktop.getJDesktop().setBackground(new Color(1, 1, 1, 0.2f));
         JDesktopPane desktopPane = jmeDesktop.getJDesktop();

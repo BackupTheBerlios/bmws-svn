@@ -5,6 +5,8 @@ package de.mbws.client;
 
 import java.util.logging.Level;
 
+import javax.swing.UIManager;
+
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -87,6 +89,7 @@ public class MBWSClient extends BaseGame {
 	protected final void initSystem() {
 		try {
           languageResources = new ValueMapper();
+          UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() );
 
           /**
 			 * Get a DisplaySystem acording to the renderer selected in the
@@ -96,7 +99,7 @@ public class MBWSClient extends BaseGame {
 			display.createWindow(properties.getWidth(), properties.getHeight(),
 					properties.getDepth(), properties.getFreq(), properties
 							.getFullscreen());
-		} catch (JmeException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
