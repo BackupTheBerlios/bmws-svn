@@ -11,7 +11,7 @@ public class Race extends AbstractDataObject {
     /**
      * @param id
      */
-    public Race(String id) {
+    public Race(int id) {
         super(id);
 
     }

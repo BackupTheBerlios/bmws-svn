@@ -24,7 +24,7 @@ public class ConfigurationData {
         List<Race> result = new ArrayList<Race>();
         for (int i = 0; i < races.getRaceElement().length; i++) {
             RaceElement elem = races.getRaceElement()[i];
-            Race race = new Race(String.valueOf(elem.getId()));
+            Race race = new Race(elem.getId());
             race.setName(ValueMapper.getRaceName(elem.getId()));
             race.setDescription(ValueMapper.getRaceDescription(elem.getId()));
             race.setPlayable(elem.getPlayable());
@@ -41,7 +41,7 @@ public class ConfigurationData {
         for (int i = 0; i < races.getRaceElement().length; i++) {
             RaceElement elem = races.getRaceElement()[i];
             if (elem.getPlayable()) {
-                  Race race = new Race(String.valueOf(elem.getId()));
+                  Race race = new Race(elem.getId());
                 race.setName(ValueMapper.getRaceName(elem.getId()));
                 race.setDescription(ValueMapper.getRaceDescription(elem.getId()));
                 race.setPlayable(elem.getPlayable());

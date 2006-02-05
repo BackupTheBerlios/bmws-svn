@@ -7,7 +7,7 @@ package de.mbws.client.data;
  */
 public abstract class AbstractDataObject {
 
-    private String id;
+    private int id;
 
     private String name;
 
@@ -16,7 +16,7 @@ public abstract class AbstractDataObject {
     /**
      * 
      */
-    public AbstractDataObject(String id) {
+    public AbstractDataObject(int id) {
         super();
         this.id = id;
     }
@@ -29,7 +29,7 @@ public abstract class AbstractDataObject {
         this.description = description;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 

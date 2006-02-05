@@ -5,13 +5,14 @@ import java.beans.PropertyChangeListener;
 
 import org.apache.log4j.Logger;
 
+import de.mbws.client.data.Race;
 import de.mbws.client.gui.character.creation.CharacterDetailsPanel;
 import de.mbws.client.state.CharacterCreationState;
-import de.mbws.common.data.db.Characterdata;
+import de.mbws.common.eventdata.generated.CharacterData;
 
 public class CharacterCreationStateHandler extends BaseInputHandler implements PropertyChangeListener{
     private static Logger logger = Logger.getLogger(CharacterCreationStateHandler.class);
-    private Characterdata characterData = new Characterdata();
+    private CharacterData characterData = new CharacterData();
 	/**
      * @param state
      */
@@ -23,7 +24,7 @@ public class CharacterCreationStateHandler extends BaseInputHandler implements P
         return (CharacterCreationState) state;
     }
 
-    public Characterdata getCharacterData() {
+    public CharacterData getCharacterData() {
         return characterData;
     }
 
@@ -32,7 +33,7 @@ public class CharacterCreationStateHandler extends BaseInputHandler implements P
             if (logger.isDebugEnabled()) {
                 logger.debug(evt.getNewValue());
             }
-//            characterData.setRace((Race)evt.getNewValue());
+            characterData.setRace(((Race)evt.getNewValue()).getId());
         } else if (CharacterDetailsPanel.CHARACTER_GENDER_CHANGE.equals(evt.getPropertyName())) {
             characterData.setGender((String)evt.getNewValue());
         }
