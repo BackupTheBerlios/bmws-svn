@@ -2,7 +2,7 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
 		targetNamespace="http://mbws/Races">
 
-   <xsd:element name="races">
+   <xsd:element name="racesDocument">
       <xsd:annotation>
          <xsd:documentation>
              Races
@@ -11,12 +11,12 @@
 
       <xsd:complexType>
       	 <xsd:sequence>
-			<xsd:element ref="race" maxOccurs="unbounded" minOccurs="1"/>
+			<xsd:element ref="raceElement" maxOccurs="unbounded" minOccurs="1"/>
       	</xsd:sequence>
       </xsd:complexType>
    </xsd:element>
 
-   <xsd:element name="race">
+   <xsd:element name="raceElement">
    		<xsd:complexType>	
 	             <xsd:attributeGroup ref="raceAttribs" />
     	</xsd:complexType>

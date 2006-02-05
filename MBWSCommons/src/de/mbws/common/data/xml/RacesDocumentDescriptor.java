@@ -5,7 +5,7 @@
  * $Id$
  */
 
-package de.mbws.common.data.race;
+package de.mbws.common.data.xml;
 
   //---------------------------------/
  //- Imported classes and packages -/
@@ -13,11 +13,11 @@ package de.mbws.common.data.race;
 
 
 /**
- * Class RacesDescriptor.
+ * Class RacesDocumentDescriptor.
  * 
  * @version $Revision$ $Date$
  */
-public class RacesDescriptor extends org.exolab.castor.xml.util.XMLClassDescriptorImpl {
+public class RacesDocumentDescriptor extends org.exolab.castor.xml.util.XMLClassDescriptorImpl {
 
 
       //--------------------------/
@@ -49,11 +49,11 @@ public class RacesDescriptor extends org.exolab.castor.xml.util.XMLClassDescript
      //- Constructors -/
     //----------------/
 
-    public RacesDescriptor() 
+    public RacesDocumentDescriptor() 
      {
         super();
         nsURI = "http://mbws/Races";
-        xmlName = "races";
+        xmlName = "racesDocument";
         
         //-- set grouping compositor
         setCompositorAsSequence();
@@ -64,28 +64,28 @@ public class RacesDescriptor extends org.exolab.castor.xml.util.XMLClassDescript
         
         //-- initialize element descriptors
         
-        //-- _raceList
-        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(de.mbws.common.data.race.Race.class, "_raceList", "race", org.exolab.castor.xml.NodeType.Element);
+        //-- _raceElementList
+        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(de.mbws.common.data.xml.RaceElement.class, "_raceElementList", "raceElement", org.exolab.castor.xml.NodeType.Element);
         handler = new org.exolab.castor.xml.XMLFieldHandler() {
             public java.lang.Object getValue( java.lang.Object object ) 
                 throws IllegalStateException
             {
-                Races target = (Races) object;
-                return target.getRace();
+                RacesDocument target = (RacesDocument) object;
+                return target.getRaceElement();
             }
             public void setValue( java.lang.Object object, java.lang.Object value) 
                 throws IllegalStateException, IllegalArgumentException
             {
                 try {
-                    Races target = (Races) object;
-                    target.addRace( (de.mbws.common.data.race.Race) value);
+                    RacesDocument target = (RacesDocument) object;
+                    target.addRaceElement( (de.mbws.common.data.xml.RaceElement) value);
                 }
                 catch (java.lang.Exception ex) {
                     throw new IllegalStateException(ex.toString());
                 }
             }
             public java.lang.Object newInstance( java.lang.Object parent ) {
-                return new de.mbws.common.data.race.Race();
+                return new de.mbws.common.data.xml.RaceElement();
             }
         };
         desc.setHandler(handler);
@@ -94,13 +94,13 @@ public class RacesDescriptor extends org.exolab.castor.xml.util.XMLClassDescript
         desc.setMultivalued(true);
         addFieldDescriptor(desc);
         
-        //-- validation code for: _raceList
+        //-- validation code for: _raceElementList
         fieldValidator = new org.exolab.castor.xml.FieldValidator();
         fieldValidator.setMinOccurs(1);
         { //-- local scope
         }
         desc.setValidator(fieldValidator);
-    } //-- de.mbws.common.data.race.RacesDescriptor()
+    } //-- de.mbws.common.data.xml.RacesDocumentDescriptor()
 
 
       //-----------/
@@ -152,7 +152,7 @@ public class RacesDescriptor extends org.exolab.castor.xml.util.XMLClassDescript
      */
     public java.lang.Class getJavaClass()
     {
-        return de.mbws.common.data.race.Races.class;
+        return de.mbws.common.data.xml.RacesDocument.class;
     } //-- java.lang.Class getJavaClass() 
 
     /**

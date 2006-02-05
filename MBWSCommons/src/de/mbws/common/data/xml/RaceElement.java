@@ -5,7 +5,7 @@
  * $Id$
  */
 
-package de.mbws.common.data.race;
+package de.mbws.common.data.xml;
 
   //---------------------------------/
  //- Imported classes and packages -/
@@ -15,11 +15,11 @@ import org.exolab.castor.xml.Marshaller;
 import org.exolab.castor.xml.Unmarshaller;
 
 /**
- * Class Race.
+ * Class RaceElement.
  * 
  * @version $Revision$ $Date$
  */
-public class Race implements java.io.Serializable {
+public class RaceElement implements java.io.Serializable {
 
 
       //--------------------------/
@@ -56,10 +56,10 @@ public class Race implements java.io.Serializable {
      //- Constructors -/
     //----------------/
 
-    public Race() 
+    public RaceElement() 
      {
         super();
-    } //-- de.mbws.common.data.race.Race()
+    } //-- de.mbws.common.data.xml.RaceElement()
 
 
       //-----------/
@@ -230,7 +230,7 @@ public class Race implements java.io.Serializable {
     public static java.lang.Object unmarshal(java.io.Reader reader)
         throws org.exolab.castor.xml.MarshalException, org.exolab.castor.xml.ValidationException
     {
-        return (de.mbws.common.data.race.Race) Unmarshaller.unmarshal(de.mbws.common.data.race.Race.class, reader);
+        return (de.mbws.common.data.xml.RaceElement) Unmarshaller.unmarshal(de.mbws.common.data.xml.RaceElement.class, reader);
     } //-- java.lang.Object unmarshal(java.io.Reader) 
 
     /**

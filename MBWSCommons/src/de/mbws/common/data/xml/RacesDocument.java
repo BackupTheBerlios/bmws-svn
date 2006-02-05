@@ -5,7 +5,7 @@
  * $Id$
  */
 
-package de.mbws.common.data.race;
+package de.mbws.common.data.xml;
 
   //---------------------------------/
  //- Imported classes and packages -/
@@ -22,7 +22,7 @@ import org.exolab.castor.xml.Unmarshaller;
  * 
  * @version $Revision$ $Date$
  */
-public class Races implements java.io.Serializable {
+public class RacesDocument implements java.io.Serializable {
 
 
       //--------------------------/
@@ -30,20 +30,20 @@ public class Races implements java.io.Serializable {
     //--------------------------/
 
     /**
-     * Field _raceList
+     * Field _raceElementList
      */
-    private java.util.ArrayList _raceList;
+    private java.util.ArrayList _raceElementList;
 
 
       //----------------/
      //- Constructors -/
     //----------------/
 
-    public Races() 
+    public RacesDocument() 
      {
         super();
-        _raceList = new ArrayList();
-    } //-- de.mbws.common.data.race.Races()
+        _raceElementList = new ArrayList();
+    } //-- de.mbws.common.data.xml.RacesDocument()
 
 
       //-----------/
@@ -51,100 +51,100 @@ public class Races implements java.io.Serializable {
     //-----------/
 
     /**
-     * Method addRace
+     * Method addRaceElement
      * 
      * 
      * 
-     * @param vRace
+     * @param vRaceElement
      */
-    public void addRace(de.mbws.common.data.race.Race vRace)
+    public void addRaceElement(de.mbws.common.data.xml.RaceElement vRaceElement)
         throws java.lang.IndexOutOfBoundsException
     {
-        _raceList.add(vRace);
-    } //-- void addRace(de.mbws.common.data.race.Race) 
+        _raceElementList.add(vRaceElement);
+    } //-- void addRaceElement(de.mbws.common.data.xml.RaceElement) 
 
     /**
-     * Method addRace
+     * Method addRaceElement
      * 
      * 
      * 
      * @param index
-     * @param vRace
+     * @param vRaceElement
      */
-    public void addRace(int index, de.mbws.common.data.race.Race vRace)
+    public void addRaceElement(int index, de.mbws.common.data.xml.RaceElement vRaceElement)
         throws java.lang.IndexOutOfBoundsException
     {
-        _raceList.add(index, vRace);
-    } //-- void addRace(int, de.mbws.common.data.race.Race) 
+        _raceElementList.add(index, vRaceElement);
+    } //-- void addRaceElement(int, de.mbws.common.data.xml.RaceElement) 
 
     /**
-     * Method clearRace
+     * Method clearRaceElement
      * 
      */
-    public void clearRace()
+    public void clearRaceElement()
     {
-        _raceList.clear();
-    } //-- void clearRace() 
+        _raceElementList.clear();
+    } //-- void clearRaceElement() 
 
     /**
-     * Method enumerateRace
+     * Method enumerateRaceElement
      * 
      * 
      * 
      * @return Enumeration
      */
-    public java.util.Enumeration enumerateRace()
+    public java.util.Enumeration enumerateRaceElement()
     {
-        return new org.exolab.castor.util.IteratorEnumeration(_raceList.iterator());
-    } //-- java.util.Enumeration enumerateRace() 
+        return new org.exolab.castor.util.IteratorEnumeration(_raceElementList.iterator());
+    } //-- java.util.Enumeration enumerateRaceElement() 
 
     /**
-     * Method getRace
+     * Method getRaceElement
      * 
      * 
      * 
      * @param index
-     * @return Race
+     * @return RaceElement
      */
-    public de.mbws.common.data.race.Race getRace(int index)
+    public de.mbws.common.data.xml.RaceElement getRaceElement(int index)
         throws java.lang.IndexOutOfBoundsException
     {
         //-- check bounds for index
-        if ((index < 0) || (index > _raceList.size())) {
+        if ((index < 0) || (index > _raceElementList.size())) {
             throw new IndexOutOfBoundsException();
         }
         
-        return (de.mbws.common.data.race.Race) _raceList.get(index);
-    } //-- de.mbws.common.data.race.Race getRace(int) 
+        return (de.mbws.common.data.xml.RaceElement) _raceElementList.get(index);
+    } //-- de.mbws.common.data.xml.RaceElement getRaceElement(int) 
 
     /**
-     * Method getRace
+     * Method getRaceElement
      * 
      * 
      * 
-     * @return Race
+     * @return RaceElement
      */
-    public de.mbws.common.data.race.Race[] getRace()
+    public de.mbws.common.data.xml.RaceElement[] getRaceElement()
     {
-        int size = _raceList.size();
-        de.mbws.common.data.race.Race[] mArray = new de.mbws.common.data.race.Race[size];
+        int size = _raceElementList.size();
+        de.mbws.common.data.xml.RaceElement[] mArray = new de.mbws.common.data.xml.RaceElement[size];
         for (int index = 0; index < size; index++) {
-            mArray[index] = (de.mbws.common.data.race.Race) _raceList.get(index);
+            mArray[index] = (de.mbws.common.data.xml.RaceElement) _raceElementList.get(index);
         }
         return mArray;
-    } //-- de.mbws.common.data.race.Race[] getRace() 
+    } //-- de.mbws.common.data.xml.RaceElement[] getRaceElement() 
 
     /**
-     * Method getRaceCount
+     * Method getRaceElementCount
      * 
      * 
      * 
      * @return int
      */
-    public int getRaceCount()
+    public int getRaceElementCount()
     {
-        return _raceList.size();
-    } //-- int getRaceCount() 
+        return _raceElementList.size();
+    } //-- int getRaceElementCount() 
 
     /**
      * Method isValid
@@ -193,52 +193,52 @@ public class Races implements java.io.Serializable {
     } //-- void marshal(org.xml.sax.ContentHandler) 
 
     /**
-     * Method removeRace
+     * Method removeRaceElement
      * 
      * 
      * 
-     * @param vRace
+     * @param vRaceElement
      * @return boolean
      */
-    public boolean removeRace(de.mbws.common.data.race.Race vRace)
+    public boolean removeRaceElement(de.mbws.common.data.xml.RaceElement vRaceElement)
     {
-        boolean removed = _raceList.remove(vRace);
+        boolean removed = _raceElementList.remove(vRaceElement);
         return removed;
-    } //-- boolean removeRace(de.mbws.common.data.race.Race) 
+    } //-- boolean removeRaceElement(de.mbws.common.data.xml.RaceElement) 
 
     /**
-     * Method setRace
+     * Method setRaceElement
      * 
      * 
      * 
      * @param index
-     * @param vRace
+     * @param vRaceElement
      */
-    public void setRace(int index, de.mbws.common.data.race.Race vRace)
+    public void setRaceElement(int index, de.mbws.common.data.xml.RaceElement vRaceElement)
         throws java.lang.IndexOutOfBoundsException
     {
         //-- check bounds for index
-        if ((index < 0) || (index > _raceList.size())) {
+        if ((index < 0) || (index > _raceElementList.size())) {
             throw new IndexOutOfBoundsException();
         }
-        _raceList.set(index, vRace);
-    } //-- void setRace(int, de.mbws.common.data.race.Race) 
+        _raceElementList.set(index, vRaceElement);
+    } //-- void setRaceElement(int, de.mbws.common.data.xml.RaceElement) 
 
     /**
-     * Method setRace
+     * Method setRaceElement
      * 
      * 
      * 
-     * @param raceArray
+     * @param raceElementArray
      */
-    public void setRace(de.mbws.common.data.race.Race[] raceArray)
+    public void setRaceElement(de.mbws.common.data.xml.RaceElement[] raceElementArray)
     {
         //-- copy array
-        _raceList.clear();
-        for (int i = 0; i < raceArray.length; i++) {
-            _raceList.add(raceArray[i]);
+        _raceElementList.clear();
+        for (int i = 0; i < raceElementArray.length; i++) {
+            _raceElementList.add(raceElementArray[i]);
         }
-    } //-- void setRace(de.mbws.common.data.race.Race) 
+    } //-- void setRaceElement(de.mbws.common.data.xml.RaceElement) 
 
     /**
      * Method unmarshal
@@ -251,7 +251,7 @@ public class Races implements java.io.Serializable {
     public static java.lang.Object unmarshal(java.io.Reader reader)
         throws org.exolab.castor.xml.MarshalException, org.exolab.castor.xml.ValidationException
     {
-        return (de.mbws.common.data.race.Races) Unmarshaller.unmarshal(de.mbws.common.data.race.Races.class, reader);
+        return (de.mbws.common.data.xml.RacesDocument) Unmarshaller.unmarshal(de.mbws.common.data.xml.RacesDocument.class, reader);
     } //-- java.lang.Object unmarshal(java.io.Reader) 
 
     /**

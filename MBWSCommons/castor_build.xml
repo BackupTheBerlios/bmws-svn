@@ -23,7 +23,7 @@
 		         classname="org.exolab.castor.tools.ant.taskdefs.CastorSourceGenTask"
 		         classpathref="lib.class.path"/>		
 		<castor file="${base.common.dir}/schema/races.xsd" todir="${build.common-src.dir}"
-		        package="de.mbws.common.data.race"
+		        package="de.mbws.common.data.xml"
 		        warnings="false" types="j2"/>
 	</target>
 

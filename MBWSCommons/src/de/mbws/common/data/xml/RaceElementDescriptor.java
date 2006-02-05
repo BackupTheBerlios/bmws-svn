@@ -5,7 +5,7 @@
  * $Id$
  */
 
-package de.mbws.common.data.race;
+package de.mbws.common.data.xml;
 
   //---------------------------------/
  //- Imported classes and packages -/
@@ -16,11 +16,11 @@ import org.exolab.castor.xml.validators.IntegerValidator;
 import org.exolab.castor.xml.validators.StringValidator;
 
 /**
- * Class RaceDescriptor.
+ * Class RaceElementDescriptor.
  * 
  * @version $Revision$ $Date$
  */
-public class RaceDescriptor extends org.exolab.castor.xml.util.XMLClassDescriptorImpl {
+public class RaceElementDescriptor extends org.exolab.castor.xml.util.XMLClassDescriptorImpl {
 
 
       //--------------------------/
@@ -52,11 +52,11 @@ public class RaceDescriptor extends org.exolab.castor.xml.util.XMLClassDescripto
      //- Constructors -/
     //----------------/
 
-    public RaceDescriptor() 
+    public RaceElementDescriptor() 
      {
         super();
         nsURI = "http://mbws/Races";
-        xmlName = "race";
+        xmlName = "raceElement";
         org.exolab.castor.xml.util.XMLFieldDescriptorImpl  desc           = null;
         org.exolab.castor.mapping.FieldHandler             handler        = null;
         org.exolab.castor.xml.FieldValidator               fieldValidator = null;
@@ -68,7 +68,7 @@ public class RaceDescriptor extends org.exolab.castor.xml.util.XMLClassDescripto
             public java.lang.Object getValue( java.lang.Object object ) 
                 throws IllegalStateException
             {
-                Race target = (Race) object;
+                RaceElement target = (RaceElement) object;
                 if(!target.hasId())
                     return null;
                 return new java.lang.Integer(target.getId());
@@ -77,7 +77,7 @@ public class RaceDescriptor extends org.exolab.castor.xml.util.XMLClassDescripto
                 throws IllegalStateException, IllegalArgumentException
             {
                 try {
-                    Race target = (Race) object;
+                    RaceElement target = (RaceElement) object;
                     // ignore null values for non optional primitives
                     if (value == null) return;
                     
@@ -110,7 +110,7 @@ public class RaceDescriptor extends org.exolab.castor.xml.util.XMLClassDescripto
             public java.lang.Object getValue( java.lang.Object object ) 
                 throws IllegalStateException
             {
-                Race target = (Race) object;
+                RaceElement target = (RaceElement) object;
                 if(!target.hasPlayable())
                     return null;
                 return (target.getPlayable() ? java.lang.Boolean.TRUE : java.lang.Boolean.FALSE);
@@ -119,7 +119,7 @@ public class RaceDescriptor extends org.exolab.castor.xml.util.XMLClassDescripto
                 throws IllegalStateException, IllegalArgumentException
             {
                 try {
-                    Race target = (Race) object;
+                    RaceElement target = (RaceElement) object;
                     // ignore null values for non optional primitives
                     if (value == null) return;
                     
@@ -153,14 +153,14 @@ public class RaceDescriptor extends org.exolab.castor.xml.util.XMLClassDescripto
             public java.lang.Object getValue( java.lang.Object object ) 
                 throws IllegalStateException
             {
-                Race target = (Race) object;
+                RaceElement target = (RaceElement) object;
                 return target.getDescription();
             }
             public void setValue( java.lang.Object object, java.lang.Object value) 
                 throws IllegalStateException, IllegalArgumentException
             {
                 try {
-                    Race target = (Race) object;
+                    RaceElement target = (RaceElement) object;
                     target.setDescription( (java.lang.String) value);
                 }
                 catch (java.lang.Exception ex) {
@@ -187,7 +187,7 @@ public class RaceDescriptor extends org.exolab.castor.xml.util.XMLClassDescripto
         desc.setValidator(fieldValidator);
         //-- initialize element descriptors
         
-    } //-- de.mbws.common.data.race.RaceDescriptor()
+    } //-- de.mbws.common.data.xml.RaceElementDescriptor()
 
 
       //-----------/
@@ -239,7 +239,7 @@ public class RaceDescriptor extends org.exolab.castor.xml.util.XMLClassDescripto
      */
     public java.lang.Class getJavaClass()
     {
-        return de.mbws.common.data.race.Race.class;
+        return de.mbws.common.data.xml.RaceElement.class;
     } //-- java.lang.Class getJavaClass() 
 
     /**
