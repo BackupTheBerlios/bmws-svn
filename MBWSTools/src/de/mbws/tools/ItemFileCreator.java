@@ -15,7 +15,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
 
-import de.mbws.common.data.generated.Item;
+import de.mbws.common.data.db.Item;
 import de.mbws.server.persistence.BasePersistenceManager;
 
 /**

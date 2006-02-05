@@ -13,8 +13,8 @@ import org.apache.log4j.PropertyConfigurator;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import de.mbws.common.data.generated.Language;
-import de.mbws.common.data.generated.LanguageTextMapping;
+import de.mbws.common.data.db.Language;
+import de.mbws.common.data.db.LanguageTextMapping;
 import de.mbws.server.persistence.BasePersistenceManager;
 
 /**
