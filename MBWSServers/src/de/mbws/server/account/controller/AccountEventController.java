@@ -2,7 +2,7 @@ package de.mbws.server.account.controller;
 
 import de.mbws.common.MessageKeys;
 import de.mbws.common.data.AbstractPlayerData;
-import de.mbws.common.data.generated.Account;
+import de.mbws.common.data.db.Account;
 import de.mbws.common.eventdata.generated.AccountErrorData;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.AccountEvent;

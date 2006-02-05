@@ -3,7 +3,7 @@ package de.mbws.server.account.controller;
 import org.apache.log4j.Logger;
 
 import de.mbws.common.data.AbstractPlayerData;
-import de.mbws.common.data.generated.Account;
+import de.mbws.common.data.db.Account;
 import de.mbws.common.eventdata.generated.ServerLoginData;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.EventTypes;

@@ -7,9 +7,9 @@ import java.util.List;
 import org.apache.commons.beanutils.BeanUtils;
 
 import de.mbws.common.Globals;
-import de.mbws.common.data.generated.CharacterStatus;
-import de.mbws.common.data.generated.CharacterVisualappearance;
-import de.mbws.common.data.generated.Characterdata;
+import de.mbws.common.data.db.CharacterStatus;
+import de.mbws.common.data.db.CharacterVisualappearance;
+import de.mbws.common.data.db.Characterdata;
 import de.mbws.common.eventdata.generated.CharacterData;
 import de.mbws.common.eventdata.generated.CharacterSelection;
 import de.mbws.common.eventdata.generated.CharacterValues;
