@@ -33,9 +33,9 @@ public abstract class BaseGameState extends BasicGameState {
 
     protected JMEDesktop jmeDesktop;
 
-    private Node desktopNode;
+    protected Node desktopNode;
 
-    private Node guiRootNode;
+    protected Node guiRootNode;
 
     protected BaseInputHandler input;
 
@@ -73,7 +73,7 @@ public abstract class BaseGameState extends BasicGameState {
         guiRootNode.updateGeometricState(tpf, true);
     }
 
-    private void initJMEDesktop() {
+    protected void initJMEDesktop() {
         if (jmeDesktop == null) {
             jmeDesktop = new JMEDesktop(name);
             jmeDesktop.setup(display.getWidth(), display.getHeight(), false, getInputHandler());

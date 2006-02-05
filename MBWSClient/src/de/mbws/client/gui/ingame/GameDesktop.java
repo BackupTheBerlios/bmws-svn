@@ -28,16 +28,12 @@ public class GameDesktop extends Node {
 
 	private JMEDesktop desktop;
 
-	// private JTextField chatTF;
+	
 	private ChatWindow chatWindow;
 
 	private JLabel statusField;
 
-	// private int windows;
-	// private static String womCSS;
-	// private ChatConverter converter;
-	// private ClickListener clickListener;
-
+	
 	public GameDesktop(String name, InputHandler input) {
 		this(name, DisplaySystem.getDisplaySystem().getWidth(), DisplaySystem
 				.getDisplaySystem().getHeight(), input);
@@ -49,11 +45,6 @@ public class GameDesktop extends Node {
 		attachChild(desktop);
 		desktop.setLightCombineMode(LightState.OFF);
 		desktop.getJDesktop().setBackground(new Color(1, 1, 1, 0.0f));
-
-		// windows = 0;
-		// converter = new ChatConverter();
-		// womCSS = defaultCSS();
-
 		desktop.setColorBuffer(null);
 		desktop.setDefaultColor(new ColorRGBA(1, 1, 1, 0.5f));
 		desktop.setRenderQueueMode(Renderer.QUEUE_ORTHO);
@@ -106,10 +97,7 @@ public class GameDesktop extends Node {
 		chatWindow.setLocation(0, desktopPane.getHeight() - 230);
 		chatWindow.setPreferredSize(new Dimension(450, 230));
 		chatWindow.setVisible(true);
-		// internalFrame.setIconifiable(true);
 		chatWindow.pack();
-		// internalFrame.show();
-		// internalFrame.requestFocus();
 		desktopPane.add(chatWindow);
 		desktopPane.repaint();
 		desktopPane.revalidate();
@@ -117,6 +105,10 @@ public class GameDesktop extends Node {
 
 	public ChatWindow getChatWindow() {
 		return chatWindow;
+	}
+
+	public JMEDesktop getDesktop() {
+		return desktop;
 	}
 
 	// public ClickListener getDefaultClickListener() {

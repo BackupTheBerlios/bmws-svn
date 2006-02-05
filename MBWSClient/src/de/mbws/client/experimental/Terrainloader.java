@@ -11,6 +11,8 @@ import com.jme.input.InputHandler;
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
 import com.jme.input.MouseInput;
+import com.jme.input.action.InputAction;
+import com.jme.input.action.InputActionEvent;
 import com.jme.light.DirectionalLight;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
@@ -34,7 +36,7 @@ public class Terrainloader extends BaseGame {
 	protected Timer timer;
 
 	private DynamicTerrain terrain ;
-	private GameDesktop gd;
+	public GameDesktop gd;
 	// Our camera object for viewing the scene
 	private Camera cam;
 	// private Node player;
@@ -66,6 +68,12 @@ public class Terrainloader extends BaseGame {
 	 * @see com.jme.app.SimpleGame#update()
 	 */
 	protected void update(float interpolation) {
+//		 if ( jmeDesktop.getFocusOwner() == null ) {
+//	            lookHandler.setEnabled( true );
+//	        }
+//	        else {
+//	            lookHandler.setEnabled( false );
+//	        }
 		// update the time to get the framerate
 		timer.update();
 		interpolation = timer.getTimePerFrame();
@@ -193,6 +201,20 @@ public class Terrainloader extends BaseGame {
 		input = new FirstPersonHandler(cam, 30, 15);// player,
 		// properties.getRenderer());
 		((FirstPersonHandler)input).removeFromAttachedHandlers(((FirstPersonHandler)input).getMouseLookHandler());
+		KeyBindingManager keyboard = KeyBindingManager.getKeyBindingManager();
+
+		// TODO make this cleaner later
+		keyboard.set("chat", KeyInput.KEY_C);
+		input.addAction( new ChatAction(), "chat", false);
+	}
+	private  class ChatAction extends InputAction {
+		public void performAction(InputActionEvent evt) {
+			gd.getChatWindow().setVisible(true);
+			//gd.getChatWindow().se
+//			gd.getChatWindow().repaint();
+//			gd.getChatWindow().revalidate();
+			
+		}
 	}
 
 	// private void buildPlayer() {

@@ -8,7 +8,7 @@ import de.mbws.client.state.BaseGameState;
 import de.mbws.client.state.CharacterCreationState;
 import de.mbws.client.state.CharacterSelectionState;
 import de.mbws.client.state.MainMenuState;
-import de.mbws.client.state.TestGameState;
+import de.mbws.client.state.OutsideGameState;
 
 /**
  * Description:
@@ -40,7 +40,7 @@ public class BaseInputHandler extends InputHandler {
     }
 
     private void startMainGameState() {
-        GameState gameState = new TestGameState("ingame");
+        GameState gameState = new OutsideGameState("ingame");
         switchState(gameState);
     }
 

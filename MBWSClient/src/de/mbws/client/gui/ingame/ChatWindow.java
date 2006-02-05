@@ -27,11 +27,13 @@ public class ChatWindow extends JInternalFrame {
 	private JTextField chatTf;
 
 	public ChatWindow(String title) {
-		super(title, true, true, false, false);
+		super(title, true, true, true, true);
 		add(getTabs(), BorderLayout.CENTER);
 		add(createChatTf(), BorderLayout.SOUTH);
 		repaint();
 		revalidate();
+		setDefaultCloseOperation(JInternalFrame.HIDE_ON_CLOSE);
+
 	}
 
 	// TODO refcator: use only one method for the panel !

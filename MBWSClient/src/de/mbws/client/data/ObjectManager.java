@@ -42,6 +42,7 @@ public class ObjectManager {
 	// private static final String BASE_TEXTURE = "/basemodel.jpg";
 
 	protected static Node rootNode;
+	protected static Node player;
 
 	protected static DisplaySystem display;
 
@@ -58,6 +59,7 @@ public class ObjectManager {
 		display = displaysystem;
 		objects = new HashMap<String, AbstractGameObject>();
 		listOfObjectsToDelete = new ArrayList<String>();
+		player = createPlayer();
 	}
 
 	public static void update(float f) {
@@ -76,6 +78,12 @@ public class ObjectManager {
 		}
 	}
 
+	public static Node getPlayer() {
+		if (player == null) {
+			player = createPlayer();
+		}
+		return player;
+	}
 	/**
 	 * createObject created the object based on a worldobject
 	 * 
@@ -166,7 +174,7 @@ public class ObjectManager {
 		listOfObjectsToDelete.add(objectID);
 	}
 
-	public static Node createPlayer() {
+	private static Node createPlayer() {
 		Player object = ClientPlayerData.getInstance().getPlayer();// new
 		// Player(ClientPlayerData.getInstance().getPlayer().getObjectID());
 		object.setAlive(true);
