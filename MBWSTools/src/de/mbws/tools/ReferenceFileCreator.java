@@ -12,7 +12,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import de.mbws.common.data.generated.Race;
-import de.mbws.common.data.race.Races;
+import de.mbws.common.data.xml.RaceElement;
+import de.mbws.common.data.xml.RacesDocument;
 import de.mbws.server.persistence.BasePersistenceManager;
 
 /**
@@ -39,14 +40,14 @@ public class ReferenceFileCreator {
 			SessionFactory sessions = cfg.buildSessionFactory();
 			session = sessions.openSession();
 			List races = session.createQuery("from Race").list();
-			Races finalRaces = new Races();
+			RacesDocument finalRaces = new RacesDocument();
             for (Iterator iter = races.iterator(); iter.hasNext();) {
 				Race element = (Race) iter.next();
-				de.mbws.common.data.race.Race r = new de.mbws.common.data.race.Race();
+				RaceElement r = new RaceElement();
                 r.setId(element.getId());
                 r.setPlayable(Boolean.valueOf(Byte.toString(element.getIsplayable())));
                 r.setDescription(element.getDescription());
-                finalRaces.addRace(r);
+                finalRaces.addRaceElement(r);
 			}
             finalRaces.marshal(new FileWriter("../MBWSClient/config/Races.xml"));
 		} catch (Exception e) {
