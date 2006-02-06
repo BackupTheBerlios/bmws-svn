@@ -109,16 +109,16 @@ public class DynamicTerrain extends Node {
 	}
 
 	private class BlockLoader implements Runnable {
-		int x, y;
+		int x, z;
 
-		public BlockLoader(int x, int y) {
+		public BlockLoader(int x, int z) {
 			this.x = x;
-			this.y = y;
+			this.z = z;
 		}
 
 		public void run() {
 			try {
-				sectionCache.put(x + "_" + y, terrainLoader.loadTerrainBlock(x, y));
+				sectionCache.put(x + "_" + z, terrainLoader.loadTerrainBlock(x, z));
 			}
 			catch (IOException e) {
 				e.printStackTrace();
@@ -126,11 +126,11 @@ public class DynamicTerrain extends Node {
 		}
 	}
 
-	private void preloadSection(Vector3f position, int x, int y, String key,
+	private void preloadSection(Vector3f position, int x, int z, String key,
 			Vector3f terrainMidPoint) {
 		if (!sectionCache.containsKey(key)) {
 			if (isInRange(position, terrainMidPoint, prefetchRadius2)) {
-				taskQueue.enqueue(key, new BlockLoader(x, y));
+				taskQueue.enqueue(key, new BlockLoader(x, z));
 			}
 		}
 	}
@@ -151,16 +151,17 @@ public class DynamicTerrain extends Node {
 	}
 
 	private void unloadDistantSections(Vector3f position) {
-		Iterator<Entry<String,TerrainBlock>> it = sectionCache.entrySet().iterator();
+		Iterator<Entry<String, TerrainBlock>> it = sectionCache.entrySet().iterator();
 		while (it.hasNext()) {
 			Vector3f terrainOrig = it.next().getValue().getLocalTranslation();
-			Vector3f terrainMidPoint = new Vector3f(terrainOrig.x+sectionWidth/2, 0, terrainOrig.z+sectionWidth/2);
+			Vector3f terrainMidPoint = new Vector3f(terrainOrig.x + sectionWidth / 2, 0,
+					terrainOrig.z + sectionWidth / 2);
 			if (!isInRange(terrainMidPoint, position, unloadRadius2)) {
 				it.remove();
 			}
 		}
 	}
-	
+
 	private boolean isInRange(Vector3f pos1, Vector3f pos2, float squareOfRange) {
 		return ((pos1.x - pos2.x) * (pos1.x - pos2.x) + (pos1.z - pos2.z) * (pos1.z - pos2.z)) < squareOfRange;
 	}
@@ -181,7 +182,7 @@ public class DynamicTerrain extends Node {
 
 		// remove preloaded terrain
 		unloadDistantSections(location);
-		
+
 		// remove sections from the model, that are not visible anymore
 		removeInvisibleSections(location);
 
@@ -193,4 +194,32 @@ public class DynamicTerrain extends Node {
 
 	}
 
+	private TerrainBlock getSectionAt(float x, float z) {
+		return sectionCache.get("" + Math.ceil(x) + "_" + Math.ceil(z));
+	}
+
+	/**
+	 * Determines the height at the given x-z-position. The y-component of the
+	 * given location vector will be ignored.
+	 * 
+	 * @param location
+	 * @return
+	 */
+	public float getHeight(Vector3f location) {
+		return getSectionAt(location.x, location.z).getHeight(location.x, location.z);
+	}
+
+	/**
+	 * Determines the steepness at the given x-z-position. The y-component of
+	 * the given location vector will be ignored. The returned value is 1 - the
+	 * cosine of the angle between the terrain and a flat plane.
+	 * 
+	 * @param location
+	 * @return steepness in a value ranging from 0 to 1
+	 */
+	public float getSteepness(Vector3f location) {
+		Vector3f normal = new Vector3f();
+		getSectionAt(location.x, location.z).getSurfaceNormal(location, normal);
+		return 1 - normal.y;
+	}
 }
