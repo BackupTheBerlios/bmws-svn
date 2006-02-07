@@ -13,6 +13,7 @@ import com.jme.image.Texture;
 import com.jme.input.AbsoluteMouse;
 import com.jme.input.ChaseCamera;
 import com.jme.input.InputHandler;
+import com.jme.input.MouseInput;
 import com.jme.input.thirdperson.ThirdPersonMouseLook;
 import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
@@ -37,7 +38,7 @@ public class OutsideGameState extends BaseGameState {
 	private Node player;
 	// private InputHandler inputHandler;
 	// TODO: put that in MBWSInputManager ?
-	//private InputHandler chaseCam;
+	private InputHandler chaseCam;
 	private DisplaySystem display;
 	private AbsoluteMouse cursor;
 
@@ -86,7 +87,7 @@ public class OutsideGameState extends BaseGameState {
 		skybox.preloadTextures();
 		skybox.setLocalTranslation(new Vector3f(0, 0, 0));
 
-		//player.attachChild(skybox);
+		player.attachChild(skybox);
 
 	}
 
@@ -99,18 +100,16 @@ public class OutsideGameState extends BaseGameState {
 		guiRootNode.attachChild(desktopNode);
 	}
 
-	// private void buildInput() {
-	//		
-	// }
+	
 
 	private void buildCamera() {
 		HashMap chaserProps = new HashMap();
-		// chaserProps.put(ChaseCamera.PROP_ENABLESPRING, "true");
-		// chaserProps.put(ChaseCamera.PROP_DAMPINGK, "55.0");
-		// chaserProps.put(ChaseCamera.PROP_SPRINGK, "756.25");
+//		chaserProps.put(ChaseCamera.PROP_ENABLESPRING, "true");
+//		 chaserProps.put(ChaseCamera.PROP_DAMPINGK, "55.0");
+//		 chaserProps.put(ChaseCamera.PROP_SPRINGK, "756.25");
 
-		chaserProps.put(ChaseCamera.PROP_MAXDISTANCE, "0.0");
-		chaserProps.put(ChaseCamera.PROP_MINDISTANCE, "100.0");
+		chaserProps.put(ChaseCamera.PROP_MAXDISTANCE, "110.0");
+		chaserProps.put(ChaseCamera.PROP_MINDISTANCE, "0.0");
 		chaserProps.put(ChaseCamera.PROP_INITIALSPHERECOORDS, new Vector3f(
 				65.0f, 0f, FastMath.DEG_TO_RAD * 12.0f));
 		chaserProps.put(ChaseCamera.PROP_STAYBEHINDTARGET, "false");
@@ -124,19 +123,20 @@ public class OutsideGameState extends BaseGameState {
 				+ FastMath.DEG_TO_RAD * -15);
 		chaserProps.put(ThirdPersonMouseLook.PROP_INVERTEDY, "false");
 		chaserProps.put(ThirdPersonMouseLook.PROP_ROTATETARGET, "false");
-		chaserProps.put(ThirdPersonMouseLook.PROP_MINROLLOUT, "6.2831855");
-		chaserProps.put(ThirdPersonMouseLook.PROP_MAXROLLOUT, "240.0");
+		chaserProps.put(ThirdPersonMouseLook.PROP_MINROLLOUT, "20");
+		chaserProps.put(ThirdPersonMouseLook.PROP_MAXROLLOUT, "100");
 		chaserProps.put(ThirdPersonMouseLook.PROP_MOUSEXMULT, "2.0");
 		chaserProps.put(ThirdPersonMouseLook.PROP_MOUSEYMULT, "30.0");
-		chaserProps.put(ThirdPersonMouseLook.PROP_MOUSEROLLMULT, "240.0");
+		chaserProps.put(ThirdPersonMouseLook.PROP_MOUSEROLLMULT, "5.0");
 		chaserProps.put(ThirdPersonMouseLook.PROP_LOCKASCENT, "true");
-//		chaseCam = new ChaseCamera(cam, player, chaserProps);
-//		chaseCam.setActionSpeed(1.0f);
+		chaseCam = new ChaseCamera(cam, player, chaserProps);
+		chaseCam.setActionSpeed(1.0f);
+		//input.addToAttachedHandlers(chaseCam);
 
 	}
 
 	private void buildPlayer() {
-		//player = ObjectManager.getPlayer();
+		player = ObjectManager.getPlayer();
 	}
 
 	private void buildEnvironment() {
@@ -154,17 +154,19 @@ public class OutsideGameState extends BaseGameState {
 
 	// TODO PUT THAT IN UPDATE
 	public void update(float tpf) {
+		
 		super.update(tpf);
 		// update the keyboard input (move the player around)
 		// input.update(tpf);
+		terrain.update(cam);
 		// update the chase camera to handle the player moving around.
-		//chaseCam.update(tpf);
-
+		chaseCam.update(tpf);
+		//heightAtPoint = terrain.
 		// // TODO Fix the height and set it somewhere else !!
 		// float camMinHeightPlayer = player.getWorldTranslation().y + 20f;
 		// cam.getLocation().y = camMinHeightPlayer;
-		// cam.update();
-
+		//cam.update();
+		
 		AbstractEventAction action = actionQueue.deQueue();
 
 		if (action != null) {
@@ -177,6 +179,7 @@ public class OutsideGameState extends BaseGameState {
 		ObjectManager.update(tpf);
 
 		rootNode.updateGeometricState(tpf, true);
+		
 	}
 
 	@Override
