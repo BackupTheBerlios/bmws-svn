@@ -13,7 +13,6 @@ import com.jme.image.Texture;
 import com.jme.input.AbsoluteMouse;
 import com.jme.input.ChaseCamera;
 import com.jme.input.InputHandler;
-import com.jme.input.MouseInput;
 import com.jme.input.thirdperson.ThirdPersonMouseLook;
 import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
@@ -64,8 +63,6 @@ public class OutsideGameState extends BaseGameState {
 		buildCamera();
 		buildSky();
 
-		buildDesktop();
-
 		rootNode.updateGeometricState(0.0f, true);
 		rootNode.updateRenderState();
 
@@ -91,47 +88,59 @@ public class OutsideGameState extends BaseGameState {
 
 	}
 
-	private void buildDesktop() {
-
-	}
-
 	protected void initJMEDesktop() {
 		desktopNode = new GameDesktop("Desktop", input);
 		guiRootNode.attachChild(desktopNode);
 	}
 
-	
-
 	private void buildCamera() {
 		HashMap chaserProps = new HashMap();
-//		chaserProps.put(ChaseCamera.PROP_ENABLESPRING, "true");
-//		 chaserProps.put(ChaseCamera.PROP_DAMPINGK, "55.0");
-//		 chaserProps.put(ChaseCamera.PROP_SPRINGK, "756.25");
 
-		chaserProps.put(ChaseCamera.PROP_MAXDISTANCE, "110.0");
-		chaserProps.put(ChaseCamera.PROP_MINDISTANCE, "0.0");
+		// enable our custom properties
+		chaserProps.put(ThirdPersonMouseLook.PROP_ENABLED, "true");
+		// we dont want the cam to allways get back behind the player
+		chaserProps.put(ChaseCamera.PROP_STAYBEHINDTARGET, "false");
+
 		chaserProps.put(ChaseCamera.PROP_INITIALSPHERECOORDS, new Vector3f(
 				65.0f, 0f, FastMath.DEG_TO_RAD * 12.0f));
-		chaserProps.put(ChaseCamera.PROP_STAYBEHINDTARGET, "false");
+
 		chaserProps.put(ChaseCamera.PROP_TARGETOFFSET,
 				new Vector3f(0f, 10f, 0f));
 		// targetOffset.y, 0f));
-		chaserProps.put(ThirdPersonMouseLook.PROP_ENABLED, "true");
+
+		// no speeding to the camposition, just set it directly
+		chaserProps.put(ChaseCamera.PROP_ENABLESPRING, "false");
+
+		// we want to look up and down too and invert y direction
+		chaserProps.put(ThirdPersonMouseLook.PROP_LOCKASCENT, "false");
+		chaserProps.put(ThirdPersonMouseLook.PROP_INVERTEDY, "true");
+		// maximum and minimum angle from which to look at character from
+		// above/below
 		chaserProps.put(ThirdPersonMouseLook.PROP_MAXASCENT, ""
 				+ FastMath.DEG_TO_RAD * 85);
 		chaserProps.put(ThirdPersonMouseLook.PROP_MINASCENT, ""
-				+ FastMath.DEG_TO_RAD * -15);
-		chaserProps.put(ThirdPersonMouseLook.PROP_INVERTEDY, "false");
+				+ FastMath.DEG_TO_RAD * -25);
+		// dont rotate the player with the mouse
 		chaserProps.put(ThirdPersonMouseLook.PROP_ROTATETARGET, "false");
-		chaserProps.put(ThirdPersonMouseLook.PROP_MINROLLOUT, "20");
+
+		// Amount of rotation around figure
+		chaserProps.put(ThirdPersonMouseLook.PROP_MOUSEXMULT, "40.0");
+		chaserProps.put(ThirdPersonMouseLook.PROP_MOUSEYMULT, "40.0");
+		// only rotate when mousebutton is pressed
+		chaserProps.put(ThirdPersonMouseLook.PROP_MOUSEBUTTON_FOR_LOOKING, "1");
+
+		// minimum and maximum distance the chasecam can be away from the char
+		chaserProps.put(ChaseCamera.PROP_MINDISTANCE, "10.0");
+		chaserProps.put(ChaseCamera.PROP_MAXDISTANCE, "110.0");
+
+		// Mousewheel minimum distance, maximum and step per wheel tick
+		chaserProps.put(ThirdPersonMouseLook.PROP_MINROLLOUT, "10");
 		chaserProps.put(ThirdPersonMouseLook.PROP_MAXROLLOUT, "100");
-		chaserProps.put(ThirdPersonMouseLook.PROP_MOUSEXMULT, "2.0");
-		chaserProps.put(ThirdPersonMouseLook.PROP_MOUSEYMULT, "30.0");
 		chaserProps.put(ThirdPersonMouseLook.PROP_MOUSEROLLMULT, "5.0");
-		chaserProps.put(ThirdPersonMouseLook.PROP_LOCKASCENT, "true");
+
 		chaseCam = new ChaseCamera(cam, player, chaserProps);
 		chaseCam.setActionSpeed(1.0f);
-		//input.addToAttachedHandlers(chaseCam);
+		// input.addToAttachedHandlers(chaseCam);
 
 	}
 
@@ -154,19 +163,21 @@ public class OutsideGameState extends BaseGameState {
 
 	// TODO PUT THAT IN UPDATE
 	public void update(float tpf) {
-		
+
 		super.update(tpf);
 		// update the keyboard input (move the player around)
 		// input.update(tpf);
 		terrain.update(cam);
 		// update the chase camera to handle the player moving around.
+		// if (MouseInput.get().isButtonDown(1)) {
 		chaseCam.update(tpf);
-		//heightAtPoint = terrain.
+		// }
+		// heightAtPoint = terrain.
 		// // TODO Fix the height and set it somewhere else !!
 		// float camMinHeightPlayer = player.getWorldTranslation().y + 20f;
 		// cam.getLocation().y = camMinHeightPlayer;
-		//cam.update();
-		
+		// cam.update();
+
 		AbstractEventAction action = actionQueue.deQueue();
 
 		if (action != null) {
@@ -179,7 +190,7 @@ public class OutsideGameState extends BaseGameState {
 		ObjectManager.update(tpf);
 
 		rootNode.updateGeometricState(tpf, true);
-		
+
 	}
 
 	@Override
@@ -223,8 +234,8 @@ public class OutsideGameState extends BaseGameState {
 			cursor.getYUpdateAction().setSpeed(1);
 
 			cursor.setCullMode(Spatial.CULL_NEVER);
-			
-			//MouseInput.get().setCursorVisible(false);
+
+			// MouseInput.get().setCursorVisible(false);
 		} catch (Exception e) {
 			logger.error("Couldnt load cursor: ", e);
 		}

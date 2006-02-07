@@ -274,8 +274,8 @@ public class ObjectManager {
 			// bs.setCenter(new Vector3f(0, 0, 0));
 			// bs.setRadius(2);
 
-			modelNode.setWorldBound(new BoundingBox());// bs);
-			modelNode.updateWorldBound();
+//			modelNode.setWorldBound(new BoundingBox());// bs);
+//			modelNode.updateWorldBound();
 			rootNode.attachChild(player);
 			player.attachChild(modelNode);
 			player.updateWorldBound();
