@@ -18,7 +18,6 @@ import de.mbws.client.controller.ClientNetworkController;
 import de.mbws.client.data.ClientGlobals;
 import de.mbws.client.state.handler.BaseInputHandler;
 import de.mbws.client.state.handler.CharacterCreationStateHandler;
-import de.mbws.common.Globals;
 
 /**
  * Description:
@@ -76,14 +75,10 @@ public class ActionPanel extends JPanel implements PropertyChangeListener {
             createCharacterButton.setBackground(buttonBackground);
             createCharacterButton.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent e) {
-                    byte gender = 0;
-                    if (Globals.GENDER_MALE.equals(getInputHandler().getCharacterData().getGender())) {
-                        gender = 1;
-                    }
                     Integer i = new Integer(getInputHandler().getCharacterData().getRace());
                     ClientNetworkController.getInstance().handleOutgoingEvent(
-                            CharacterController.getInstance().createCreateCharacterEvent(getInputHandler().getCharacterData().getName(), gender,
-                                    i.byteValue()));
+                            CharacterController.getInstance().createCreateCharacterEvent(getInputHandler().getCharacterData().getName(),
+                                    Byte.parseByte(getInputHandler().getCharacterData().getGender()), i.byteValue()));
                 }
             });
             createCharacterButton.setSize(createCharacterButton.getPreferredSize());
@@ -99,7 +94,7 @@ public class ActionPanel extends JPanel implements PropertyChangeListener {
 
         Boolean value = (Boolean) evt.getNewValue();
         if (value.booleanValue()) {
-            createCharacterButton.setEnabled(true);    
+            createCharacterButton.setEnabled(true);
         } else {
             createCharacterButton.setEnabled(false);
         }
