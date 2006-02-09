@@ -93,9 +93,12 @@ public class ObjectManager {
 	// TODO: Replace GameObject by the correct type
 	public static AbstractGameObject create(WorldObject wo) {
 
-		if (wo.getMovespeed() == 0 && wo.getTurnspeed() == 0) {
-			// TODO Set a nonmovable object here
-		} else {
+//		if (wo.getMovespeed() == 0 && wo.getTurnspeed() == 0) {
+//			// TODO Set a nonmovable object here
+//			logger.info("Supposed to set a nonmovable object here");
+//			//GameObject object = new GameObject(wo.getObjectID());
+//		} else {
+			logger.info("Supposed to set a movable object here");
 			MovableObject object = new MovableObject(wo.getObjectID());
 			object.setAlive(true);
 			// object.setMovespeed(wo.getMovespeed());
@@ -104,7 +107,7 @@ public class ObjectManager {
 			object.setMovespeed(30);
 			object.setTurnspeed(5);
 			// box stand in
-			Box b = new Box("box", new Vector3f(), 0.35f, 0.5f, 0.25f);
+			Box b = new Box("box", new Vector3f(), 10f, 5f, 10f);
 			b.setDefaultColor(new ColorRGBA(ColorRGBA.white));
 			b.setModelBound(new BoundingBox());
 			b.updateModelBound();
@@ -112,8 +115,8 @@ public class ObjectManager {
 			// TODO: "player2 node" wont work, trying integer.toString of
 			// objectid!!
 			Node player2 = new Node(wo.getObjectID());
-			// player2.setLocalTranslation(new Vector3f(100, 0, 100));
-
+			
+		
 			player2.setLocalTranslation(new Vector3f(wo.getLocation().getX(),
 					wo.getLocation().getY(), wo.getLocation().getZ()));
 			player2.setLocalRotation(new Quaternion(wo.getHeading().getX(), wo
@@ -143,8 +146,8 @@ public class ObjectManager {
 			}
 
 			return object;
-		}
-		return null;
+//		}
+//		return null;
 	}
 
 	public static void detach(String id) {

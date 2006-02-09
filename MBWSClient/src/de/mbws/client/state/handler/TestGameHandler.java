@@ -31,8 +31,7 @@ import de.mbws.common.events.EventTypes;
 public class TestGameHandler extends ThirdPersonHandler {
 
 
-	private Spatial player;
-
+	
 	/**
 	 * Supply the node to control and the api that will handle input creation.
 	 * 
@@ -48,7 +47,8 @@ public class TestGameHandler extends ThirdPersonHandler {
 
 	}
 	
-	
+	private Spatial player;
+
 
 	/**
 	 * creates the keyboard object, allowing us to obtain the values of a

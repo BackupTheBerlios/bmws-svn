@@ -32,7 +32,7 @@ import de.mbws.client.net.ActionQueue;
 import de.mbws.client.state.handler.MainGameStateHandler;
 import de.mbws.client.worldloader.DynamicTerrain;
 
-public class OutsideGameState extends BaseGameState {
+public class OutdoorGameState extends BaseGameState {
 
 	private Node player;
 	// private InputHandler inputHandler;
@@ -40,16 +40,17 @@ public class OutsideGameState extends BaseGameState {
 	private InputHandler chaseCam;
 	private DisplaySystem display;
 	private AbsoluteMouse cursor;
+	private Skybox skybox;
 
 	private DynamicTerrain terrain;
-	private static Logger logger = Logger.getLogger(OutsideGameState.class);
+	private static Logger logger = Logger.getLogger(OutdoorGameState.class);
 
 	/**
 	 * the actionQueue is where we store those actions we receive from the net.
 	 */
 	private ActionQueue actionQueue = MBWSClient.actionQueue;
 
-	public OutsideGameState(String name) {
+	public OutdoorGameState(String name) {
 		super(name);
 		display = DisplaySystem.getDisplaySystem();
 		// TODO: take that out into a delegator before this class is called,
@@ -69,9 +70,10 @@ public class OutsideGameState extends BaseGameState {
 	}
 
 	private void buildSky() {
-		Skybox skybox = new Skybox("skybox", 200, 200, 200);
+		//TODO: size seems a problem, use skydome anyway ?
+		skybox = new Skybox("skybox", 600, 200, 600);
 
-		Texture texture = TextureManager.loadTexture(TestGameState.class
+		Texture texture = TextureManager.loadTexture(OutdoorGameState.class
 				.getClassLoader().getResource("resources/textures/top.jpg"),
 				Texture.MM_LINEAR, Texture.FM_LINEAR);
 
@@ -82,9 +84,12 @@ public class OutsideGameState extends BaseGameState {
 		skybox.setTexture(Skybox.UP, texture);
 		skybox.setTexture(Skybox.DOWN, texture);
 		skybox.preloadTextures();
-		skybox.setLocalTranslation(new Vector3f(0, 0, 0));
+		skybox.setLocalTranslation(player.getLocalTranslation());
 
-		player.attachChild(skybox);
+		// TODO: Uh this is bad ... we dont want to have it attached to the
+		// player
+		// player.attachChild(skybox);
+		rootNode.attachChild(skybox);
 
 	}
 
@@ -146,6 +151,7 @@ public class OutsideGameState extends BaseGameState {
 
 	private void buildPlayer() {
 		player = ObjectManager.getPlayer();
+		((MainGameStateHandler) input).setPlayer(player);
 	}
 
 	private void buildEnvironment() {
@@ -171,6 +177,7 @@ public class OutsideGameState extends BaseGameState {
 		// update the chase camera to handle the player moving around.
 		// if (MouseInput.get().isButtonDown(1)) {
 		chaseCam.update(tpf);
+		skybox.setLocalTranslation(cam.getLocation());
 		// }
 		// heightAtPoint = terrain.
 		// // TODO Fix the height and set it somewhere else !!
@@ -195,7 +202,7 @@ public class OutsideGameState extends BaseGameState {
 
 	@Override
 	protected void initInputHandler() {
-		input = new MainGameStateHandler(this);
+		input = new MainGameStateHandler(null, this);
 	}
 
 	private void createCustomCursor() {
@@ -246,6 +253,7 @@ public class OutsideGameState extends BaseGameState {
 		if (active) {
 			onActivate();
 		}
+		display.setTitle("OUTDOOR-GameState");
 		input.setEnabled(active);
 		// jmeDesktop.getJDesktop().setEnabled(active);
 		// super.setActive(active);

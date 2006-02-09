@@ -88,15 +88,16 @@ public class CharacterController {
 							BaseInputHandler.GAMESTATE_CHARACTER_SELECTION);
 		} else if (event.getEventType() == EventTypes.S2C_CHARACTER_ENTERS_WORLD) { // ) {
 			logger.info("Start gameplay!");
-			Player player = new Player(event.getCharacterDetails()
-					.getDescription().getCharacterID());
+			String characterID = event.getCharacterDetails()
+			.getDescription().getCharacterID();
+			Player player = new Player(characterID);
 			List<CharacterData> allCharacters = ClientPlayerData.getInstance()
 					.getAllCharactersOfPlayer();
 			if (allCharacters != null) {
 				for (Iterator iter = allCharacters.iterator(); iter.hasNext();) {
 					CharacterData element = (CharacterData) iter.next();
 					if (element.getCharacterID().trim().equals(
-							element.getCharacterID().trim())) {
+							characterID)) {
 						ClientPlayerData.getInstance()
 								.setSelectedCharacterData(element);
 						break;
@@ -104,23 +105,6 @@ public class CharacterController {
 				}
 			}
 
-			// CharacterDetails eventData = (CharacterDetails)
-			// event.getEventData();
-			// Characterdata characterData = new Characterdata();
-			// CharacterVisualappearance characterVisualAppearance = new
-			// CharacterVisualappearance();
-			//			
-			// CharacterStatus status = new CharacterStatus();
-			// status.setCoordinateX(eventData.getLocation().getX());
-			// status.setCoordinateY(eventData.getLocation().getY());
-			// status.setCoordinateZ(eventData.getLocation().getZ());
-			// characterData.setCharacterStatus(status);
-			// // eventData.getDescription().get
-			// Race r = new Race();
-			// r.setId(eventData.getDescription().getRace());
-			// characterData.setRace(r);
-			//			
-			// ClientPlayerData.getInstance().setCharacterData(characterData);
 			ClientPlayerData.getInstance().setPlayer(player);
 			logger.info("setting flag to start next state");
 			((CharacterSelectionState) GameStateManager.getInstance().getChild(
