@@ -2,8 +2,8 @@ package de.mbws.common.events;
 
 import java.nio.ByteBuffer;
 
-import de.mbws.common.eventdata.generated.MessageData;
 import de.mbws.common.events.data.AbstractEventData;
+import de.mbws.common.events.data.generated.MessageData;
 
 
 public class MessageEvent extends AbstractGameEvent {
