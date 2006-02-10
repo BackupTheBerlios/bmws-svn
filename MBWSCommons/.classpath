@@ -19,5 +19,6 @@
 	<classpathentry kind="lib" path="lib/hibernate3.jar"/>
 	<classpathentry kind="lib" path="lib/xerces-2.6.2.jar"/>
 	<classpathentry kind="lib" path="lib/commons-beanutils.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
