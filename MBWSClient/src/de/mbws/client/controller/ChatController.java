@@ -26,10 +26,11 @@ public class ChatController {
 		return instance;
 	}
 
-	public MessageEvent createChatEvent(String text, int chatType) {
+	public MessageEvent createChatEvent(String text, int chatType, String recipient) {
 		MessageData data = new MessageData();
 		data.setMessage(text);
 		data.setAuthor(playerName);
+		data.setRecipient(recipient);
 		MessageEvent event = new MessageEvent(data);
 		event.setEventType(chatType);
 		return event;

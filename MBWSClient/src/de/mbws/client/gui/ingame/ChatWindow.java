@@ -131,7 +131,7 @@ public class ChatWindow extends JInternalFrame {
 				updateMessages(EventTypes.CHAT_SAY, text);
 				ClientNetworkController.getInstance().handleOutgoingEvent(
 						ChatController.getInstance().createChatEvent(text,
-								EventTypes.CHAT_SAY));
+								EventTypes.CHAT_SAY,null));
 			}
 		}
 	}
@@ -141,21 +141,30 @@ public class ChatWindow extends JInternalFrame {
 		if (command.startsWith("msg ")) {
 			logger.info("private message: " + text);
 			updateMessages(EventTypes.CHAT_PM, text);
+			int indexForMessage = text.indexOf(" ");
+			if (indexForMessage>1) {
+			String realMessage = text.substring(indexForMessage+1);
+			String recipient = text.substring(0,indexForMessage);
+			logger.info("recipient: "+recipient);
+			logger.info("message: "+realMessage);
 			ClientNetworkController.getInstance().handleOutgoingEvent(
-					ChatController.getInstance().createChatEvent(text,
-							EventTypes.CHAT_PM));
+					ChatController.getInstance().createChatEvent(realMessage,
+							EventTypes.CHAT_PM,recipient));
+			} else {
+				logger.warn("private msg without recipient");
+			}
 		} else if (command.startsWith("admin ")) {
 			logger.info("Admin Command: " + text);
 			updateMessages(EventTypes.CHAT_ADMIN_COMMAND, text);
 			ClientNetworkController.getInstance().handleOutgoingEvent(
 					ChatController.getInstance().createChatEvent(text,
-							EventTypes.CHAT_ADMIN_COMMAND));
+							EventTypes.CHAT_ADMIN_COMMAND,null));
 		} else if (command.startsWith("grp ")) {
 			logger.info("Group message: " + text);
 			updateMessages(EventTypes.CHAT_GROUP_SAY, text);
 			ClientNetworkController.getInstance().handleOutgoingEvent(
 					ChatController.getInstance().createChatEvent(text,
-							EventTypes.CHAT_GROUP_SAY));
+							EventTypes.CHAT_GROUP_SAY,null));
 		} else {
 			logger.warn("Message unknown: "+text);
 		}
