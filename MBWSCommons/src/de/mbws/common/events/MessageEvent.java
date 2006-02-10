@@ -32,7 +32,7 @@ public class MessageEvent extends AbstractGameEvent {
 		super(eventData);
 	}
 
-	public MessageData getChatData() {
+	public MessageData getMessageData() {
 		return (MessageData) eventData;
 	}
 
