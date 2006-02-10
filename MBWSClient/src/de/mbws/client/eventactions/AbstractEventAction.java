@@ -2,7 +2,7 @@ package de.mbws.client.eventactions;
 
 import java.nio.ByteBuffer;
 
-import de.mbws.common.eventdata.AbstractEventData;
+import de.mbws.common.events.data.AbstractEventData;
 
 public abstract class AbstractEventAction {
 

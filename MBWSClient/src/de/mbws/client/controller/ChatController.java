@@ -4,8 +4,8 @@ import org.apache.log4j.Logger;
 
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.gui.ingame.ChatWindow;
-import de.mbws.common.eventdata.generated.ChatData;
 import de.mbws.common.events.ChatEvent;
+import de.mbws.common.events.data.generated.ChatData;
 
 public class ChatController {
 

@@ -33,9 +33,7 @@ public class MainMenuState extends BaseGameState {
 
 	// /** THE CURSOR NODE WHICH HOLDS THE MOUSE GOTTEN FROM INPUT. */
 	// private Node cursor;
-
-	LoginPanel loginPanel;
-
+    LoginPanel loginPanel;
 	private int musicID;
 
 	public MainMenuState(String name) {
@@ -66,8 +64,8 @@ public class MainMenuState extends BaseGameState {
 
 		// jmeDesktop.getJDesktop().setBackground(new Color(1, 1, 1, 0.2f));
 		JDesktopPane desktopPane = jmeDesktop.getJDesktop();
-		desktopPane.removeAll();
-		loginPanel = new LoginPanel(getInputHandler());
+//		desktopPane.removeAll();
+        loginPanel = new LoginPanel(getInputHandler());
 		int x = (desktopPane.getWidth() / 2) - (loginPanel.getWidth() / 2);
 		int y = (desktopPane.getHeight() / 2) - (loginPanel.getHeight() / 2);
 		loginPanel.setLocation(x, y);
@@ -156,4 +154,10 @@ public class MainMenuState extends BaseGameState {
 	protected void initInputHandler() {
 		input = new MainMenuHandler(this);
 	}
+
+    @Override
+    public void cleanup() {
+        loginPanel = null;
+        super.cleanup();
+    }
 }

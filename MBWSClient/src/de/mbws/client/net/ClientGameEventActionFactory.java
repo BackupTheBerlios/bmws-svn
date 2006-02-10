@@ -10,11 +10,11 @@ import de.mbws.client.eventactions.CreateObjectAction;
 import de.mbws.client.eventactions.DestroyObjectAction;
 import de.mbws.client.eventactions.MoveObjectAction;
 import de.mbws.common.data.AbstractPlayerData;
-import de.mbws.common.eventdata.generated.CharactersOfPlayer;
-import de.mbws.common.eventdata.generated.MoveData;
-import de.mbws.common.eventdata.generated.SystemErrorData;
-import de.mbws.common.eventdata.generated.WorldObject;
 import de.mbws.common.events.*;
+import de.mbws.common.events.data.generated.CharactersOfPlayer;
+import de.mbws.common.events.data.generated.MoveData;
+import de.mbws.common.events.data.generated.SystemErrorData;
+import de.mbws.common.events.data.generated.WorldObject;
 
 public class ClientGameEventActionFactory {
 

@@ -15,17 +15,11 @@ import de.mbws.client.state.CharacterCreationState;
 import de.mbws.client.state.CharacterSelectionState;
 import de.mbws.client.state.MainMenuState;
 import de.mbws.client.state.handler.BaseInputHandler;
-import de.mbws.common.eventdata.generated.CharacterData;
-import de.mbws.common.eventdata.generated.CharacterSelection;
-import de.mbws.common.eventdata.generated.CharactersOfPlayer;
-import de.mbws.common.eventdata.generated.CreateCharacter;
-import de.mbws.common.eventdata.generated.IntVector3D;
-import de.mbws.common.eventdata.generated.MoveData;
-import de.mbws.common.eventdata.generated.NetQuaternion;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.CharacterEvent;
 import de.mbws.common.events.EventTypes;
 import de.mbws.common.events.MoveEvent;
+import de.mbws.common.events.data.generated.*;
 
 /**
  * Description:

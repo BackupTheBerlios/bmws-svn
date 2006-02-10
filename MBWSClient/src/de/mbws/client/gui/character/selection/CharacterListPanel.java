@@ -21,7 +21,8 @@ import de.mbws.client.ValueMapper;
 import de.mbws.client.data.ClientGlobals;
 import de.mbws.client.state.handler.BaseInputHandler;
 import de.mbws.client.state.handler.CharacterSelectionStateHandler;
-import de.mbws.common.eventdata.generated.CharacterData;
+import de.mbws.common.events.data.generated.CharacterData;
+
 
 /**
  * Description:
@@ -166,6 +167,7 @@ public class CharacterListPanel extends JPanel implements
 			createButton.setSize(createButton.getPreferredSize());
 			createButton.addActionListener(new ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
+
 					getInputHandler().requestStateSwitch(
 							BaseInputHandler.GAMESTATE_CHARACTER_CREATION);
 				}

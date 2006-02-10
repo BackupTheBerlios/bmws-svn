@@ -7,16 +7,17 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 
+import se.datadosen.component.RiverLayout;
+
 import com.jme.input.InputHandler;
 
-import se.datadosen.component.RiverLayout;
 import de.mbws.client.ValueMapper;
 import de.mbws.client.controller.AccountController;
 import de.mbws.client.controller.ClientNetworkController;
 import de.mbws.client.data.ClientGlobals;
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.state.handler.MainMenuHandler;
-import de.mbws.common.eventdata.generated.AccountData;
+import de.mbws.common.events.data.generated.AccountData;
 
 
 /**

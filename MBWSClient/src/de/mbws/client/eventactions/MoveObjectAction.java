@@ -11,8 +11,8 @@ import de.mbws.client.controller.CharacterController;
 import de.mbws.client.data.AbstractGameObject;
 import de.mbws.client.data.MovableObject;
 import de.mbws.client.data.ObjectManager;
-import de.mbws.common.eventdata.AbstractEventData;
-import de.mbws.common.eventdata.generated.MoveData;
+import de.mbws.common.events.data.AbstractEventData;
+import de.mbws.common.events.data.generated.MoveData;
 
 public class MoveObjectAction extends AbstractEventAction {
 

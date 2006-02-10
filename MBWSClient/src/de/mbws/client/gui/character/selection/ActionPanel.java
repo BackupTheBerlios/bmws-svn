@@ -5,11 +5,7 @@ import java.awt.GridLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SpringLayout;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 
 import com.jme.input.InputHandler;
 
@@ -20,7 +16,7 @@ import de.mbws.client.controller.ClientNetworkController;
 import de.mbws.client.data.ClientGlobals;
 import de.mbws.client.gui.LoadingPanel;
 import de.mbws.client.state.handler.CharacterSelectionStateHandler;
-import de.mbws.common.eventdata.generated.CharacterData;
+import de.mbws.common.events.data.generated.CharacterData;
 
 /**
  * Description:

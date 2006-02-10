@@ -6,11 +6,7 @@ import org.xml.sax.SAXException;
 
 import com.jme.app.BaseGame;
 import com.jme.app.SimpleGame;
-import com.jme.input.FirstPersonHandler;
-import com.jme.input.InputHandler;
-import com.jme.input.KeyBindingManager;
-import com.jme.input.KeyInput;
-import com.jme.input.MouseInput;
+import com.jme.input.*;
 import com.jme.input.action.InputAction;
 import com.jme.input.action.InputActionEvent;
 import com.jme.light.DirectionalLight;
@@ -27,7 +23,7 @@ import com.jme.util.Timer;
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.gui.ingame.GameDesktop;
 import de.mbws.client.worldloader.DynamicTerrain;
-import de.mbws.common.eventdata.generated.CharacterData;
+import de.mbws.common.events.data.generated.CharacterData;
 
 public class Terrainloader extends BaseGame {
 

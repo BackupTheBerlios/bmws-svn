@@ -19,8 +19,8 @@ import de.mbws.client.controller.AccountController;
 import de.mbws.client.controller.ClientNetworkController;
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.state.MainMenuState;
-import de.mbws.common.eventdata.generated.AccountData;
 import de.mbws.common.events.AbstractGameEvent;
+import de.mbws.common.events.data.generated.AccountData;
 
 /**
  * This input handler is used to navigate the menu. It should start the
@@ -34,8 +34,8 @@ public class MainMenuHandler extends BaseInputHandler{
 
     public MainMenuHandler(MainMenuState myState) {
         super(myState);
-        setKeyBindings();
-        setUpMouse();
+//        setKeyBindings();
+//        setUpMouse();
     }
 
     private void setKeyBindings() {

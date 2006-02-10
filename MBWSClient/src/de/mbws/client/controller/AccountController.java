@@ -12,15 +12,11 @@ import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.state.BaseGameState;
 import de.mbws.client.state.MainMenuState;
 import de.mbws.client.state.handler.BaseInputHandler;
-import de.mbws.common.eventdata.generated.AccountData;
-import de.mbws.common.eventdata.generated.LoginData;
-import de.mbws.common.eventdata.generated.ServerRedirectData;
-import de.mbws.common.eventdata.generated.SystemErrorData;
-import de.mbws.common.events.AbstractGameEvent;
-import de.mbws.common.events.AccountEvent;
-import de.mbws.common.events.EventTypes;
-import de.mbws.common.events.LoginEvent;
-import de.mbws.common.events.ServerRedirectEvent;
+import de.mbws.common.events.*;
+import de.mbws.common.events.data.generated.AccountData;
+import de.mbws.common.events.data.generated.LoginData;
+import de.mbws.common.events.data.generated.ServerRedirectData;
+import de.mbws.common.events.data.generated.SystemErrorData;
 import de.mbws.common.exceptions.InitializationException;
 
 /**
@@ -110,7 +106,7 @@ public class AccountController {
         }
     }
 
-    public AbstractGameEvent createLoginEvent(de.mbws.common.eventdata.generated.AccountData account, ClientPlayerData player) {
+    public AbstractGameEvent createLoginEvent(AccountData account, ClientPlayerData player) {
         LoginData ld = new LoginData();
         ld.setUserName(account.getUserName());
         ld.setPassword(account.getPassword());

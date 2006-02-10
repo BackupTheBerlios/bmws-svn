@@ -16,11 +16,7 @@ import de.mbws.client.state.MainMenuState;
 import de.mbws.common.EventQueue;
 import de.mbws.common.Globals;
 import de.mbws.common.NIOUtils;
-import de.mbws.common.events.AbstractGameEvent;
-import de.mbws.common.events.AccountEvent;
-import de.mbws.common.events.CharacterEvent;
-import de.mbws.common.events.LoginEvent;
-import de.mbws.common.events.ServerRedirectEvent;
+import de.mbws.common.events.*;
 import de.mbws.common.exceptions.InitializationException;
 
 public class ClientNetworkController extends Thread {

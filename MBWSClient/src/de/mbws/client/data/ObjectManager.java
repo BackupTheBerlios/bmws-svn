@@ -27,8 +27,8 @@ import com.jmex.model.XMLparser.JmeBinaryReader;
 import com.jmex.model.animation.JointController;
 import com.jmex.model.animation.KeyframeController;
 
-import de.mbws.common.eventdata.generated.CharacterVisualAppearance;
-import de.mbws.common.eventdata.generated.WorldObject;
+import de.mbws.common.events.data.generated.CharacterVisualAppearance;
+import de.mbws.common.events.data.generated.WorldObject;
 
 public class ObjectManager {
 

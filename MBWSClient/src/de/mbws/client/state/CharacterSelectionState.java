@@ -66,7 +66,7 @@ public class CharacterSelectionState extends BaseGameState {
 
 		// jmeDesktop.getJDesktop().setBackground(new Color(1, 1, 1, 0.2f));
 		JDesktopPane desktopPane = jmeDesktop.getJDesktop();
-		desktopPane.removeAll();
+//		desktopPane.removeAll();
 		ActionPanel actionPanel = new ActionPanel(getInputHandler());
 		int x = (desktopPane.getWidth() / 2) - (actionPanel.getWidth() / 2);
 		int y = desktopPane.getHeight() - actionPanel.getHeight();
@@ -93,13 +93,6 @@ public class CharacterSelectionState extends BaseGameState {
 	public void onActivate() {
 		display.setTitle("MBWS - Select Your Character State");
 		super.onActivate();
-	}
-
-	/**
-	 * Inits the input handler we will use for navigation of the menu.
-	 */
-	protected void initInput() {
-		input = new CharacterSelectionStateHandler(this);
 	}
 
 	/**

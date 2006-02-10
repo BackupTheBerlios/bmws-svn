@@ -3,7 +3,8 @@ package de.mbws.client.data;
 import java.util.List;
 
 import de.mbws.common.data.AbstractPlayerData;
-import de.mbws.common.eventdata.generated.CharacterData;
+import de.mbws.common.events.data.generated.CharacterData;
+
 
 /**
  * Description: 

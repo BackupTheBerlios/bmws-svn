@@ -4,11 +4,7 @@ import com.jme.app.GameState;
 import com.jme.app.GameStateManager;
 import com.jme.input.InputHandler;
 
-import de.mbws.client.state.BaseGameState;
-import de.mbws.client.state.CharacterCreationState;
-import de.mbws.client.state.CharacterSelectionState;
-import de.mbws.client.state.MainMenuState;
-import de.mbws.client.state.OutdoorGameState;
+import de.mbws.client.state.*;
 
 /**
  * Description:
@@ -56,7 +52,7 @@ public class BaseInputHandler extends InputHandler {
 
     private void switchState(GameState newState) {
         state.setActive(false);
-        GameStateManager.getInstance().detachAllChildren();
+        GameStateManager.getInstance().cleanup();
         state = null;
         GameStateManager.getInstance().attachChild(newState);
         newState.setActive(true);

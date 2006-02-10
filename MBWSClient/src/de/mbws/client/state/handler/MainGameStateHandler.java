@@ -4,21 +4,9 @@ import java.util.HashMap;
 
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
-import com.jme.input.action.InputAction;
-import com.jme.input.action.InputActionEvent;
-import com.jme.input.action.KeyNodeBackwardAction;
-import com.jme.input.action.KeyNodeForwardAction;
-import com.jme.input.action.KeyNodeRotateLeftAction;
-import com.jme.input.action.KeyNodeRotateRightAction;
-import com.jme.input.thirdperson.ThirdPersonBackwardAction;
-import com.jme.input.thirdperson.ThirdPersonForwardAction;
-import com.jme.input.thirdperson.ThirdPersonLeftAction;
-import com.jme.input.thirdperson.ThirdPersonRightAction;
-import com.jme.input.thirdperson.ThirdPersonStrafeLeftAction;
-import com.jme.input.thirdperson.ThirdPersonStrafeRightAction;
+import com.jme.input.action.*;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
-import com.jme.renderer.Camera;
 import com.jme.scene.Spatial;
 
 import de.mbws.client.MBWSClient;

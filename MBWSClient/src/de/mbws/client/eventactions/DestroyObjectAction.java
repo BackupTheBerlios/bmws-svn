@@ -3,8 +3,8 @@ package de.mbws.client.eventactions;
 import java.nio.ByteBuffer;
 
 import de.mbws.client.data.ObjectManager;
-import de.mbws.common.eventdata.AbstractEventData;
-import de.mbws.common.eventdata.generated.WorldObject;
+import de.mbws.common.events.data.AbstractEventData;
+import de.mbws.common.events.data.generated.WorldObject;
 
 public class DestroyObjectAction extends AbstractEventAction {
 

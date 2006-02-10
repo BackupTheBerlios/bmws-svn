@@ -9,7 +9,9 @@ import org.apache.log4j.Logger;
 import de.mbws.client.data.Race;
 import de.mbws.client.gui.character.creation.CharacterDetailsPanel;
 import de.mbws.client.state.CharacterCreationState;
-import de.mbws.common.eventdata.generated.CharacterData;
+import de.mbws.common.Globals;
+import de.mbws.common.events.data.generated.CharacterData;
+
 
 public class CharacterCreationStateHandler extends BaseInputHandler implements PropertyChangeListener {
 
@@ -26,6 +28,7 @@ public class CharacterCreationStateHandler extends BaseInputHandler implements P
      */
     public CharacterCreationStateHandler(CharacterCreationState state) {
         super(state);
+        characterData.setGender(Globals.GENDER_MALE);
     }
 
     public CharacterCreationState getState() {

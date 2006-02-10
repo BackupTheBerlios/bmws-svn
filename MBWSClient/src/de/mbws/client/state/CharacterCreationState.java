@@ -7,8 +7,6 @@ import javax.swing.JDesktopPane;
 
 import org.apache.log4j.Logger;
 
-import com.jme.app.GameState;
-import com.jme.app.GameStateManager;
 import com.jme.input.MouseInput;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
@@ -50,7 +48,7 @@ public class CharacterCreationState extends BaseGameState {
     private void setupMenu() {
         // jmeDesktop.getJDesktop().setBackground(new Color(1, 1, 1, 0.2f));
         JDesktopPane desktopPane = jmeDesktop.getJDesktop();
-        desktopPane.removeAll();
+//        desktopPane.removeAll();
         ActionPanel actionPanel = new ActionPanel(getInputHandler());
         int x = (desktopPane.getWidth() / 2) - (actionPanel.getWidth() / 2);
         int y = desktopPane.getHeight() - actionPanel.getHeight();
@@ -69,12 +67,6 @@ public class CharacterCreationState extends BaseGameState {
 
         desktopPane.repaint();
         desktopPane.revalidate();
-    }
-
-    public void returnToCharacterSelectionState() {
-        GameState characterSelection = GameStateManager.getInstance().getChild("characterSelection");
-        characterSelection.setActive(true);
-        GameStateManager.getInstance().deactivateChildNamed("characterCreation");
     }
 
     @Override
