@@ -23,7 +23,6 @@ import com.jme.scene.state.AlphaState;
 import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
-import com.jmex.awt.swingui.JMEDesktop;
 
 import de.mbws.client.MBWSClient;
 import de.mbws.client.data.ObjectManager;
