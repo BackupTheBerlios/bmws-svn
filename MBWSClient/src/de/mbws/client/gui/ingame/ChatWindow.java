@@ -131,7 +131,7 @@ public class ChatWindow extends JInternalFrame {
 				updateMessages(EventTypes.CHAT_SAY, text);
 				ClientNetworkController.getInstance().handleOutgoingEvent(
 						ChatController.getInstance().createChatEvent(text,
-								EventTypes.CHAT_SAY,null));
+								EventTypes.CHAT_SAY,""));
 			}
 		}
 	}
@@ -158,13 +158,13 @@ public class ChatWindow extends JInternalFrame {
 			updateMessages(EventTypes.CHAT_ADMIN_COMMAND, text);
 			ClientNetworkController.getInstance().handleOutgoingEvent(
 					ChatController.getInstance().createChatEvent(text,
-							EventTypes.CHAT_ADMIN_COMMAND,null));
+							EventTypes.CHAT_ADMIN_COMMAND,""));
 		} else if (command.startsWith("grp ")) {
 			logger.info("Group message: " + text);
 			updateMessages(EventTypes.CHAT_GROUP_SAY, text);
 			ClientNetworkController.getInstance().handleOutgoingEvent(
 					ChatController.getInstance().createChatEvent(text,
-							EventTypes.CHAT_GROUP_SAY,null));
+							EventTypes.CHAT_GROUP_SAY,""));
 		} else {
 			logger.warn("Message unknown: "+text);
 		}
