@@ -217,9 +217,11 @@ public abstract class BaseGameState extends BasicGameState {
 	@Override
 	public void cleanup() {
 		super.cleanup();
-        jmeDesktop.getJDesktop().removeAll();
-        jmeDesktop.dispose();
-        jmeDesktop = null;
+        if (jmeDesktop != null) {
+            jmeDesktop.getJDesktop().removeAll();
+            jmeDesktop.dispose();
+            jmeDesktop = null;            
+        }
         desktopNode = null;
 //		input.clearActions();
         guiRootNode.detachAllChildren();
