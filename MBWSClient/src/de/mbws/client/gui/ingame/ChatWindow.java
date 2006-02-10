@@ -170,7 +170,7 @@ public class ChatWindow extends JInternalFrame {
 		}
 	}
 
-	private void updateMessages(int messageType, String message) {
+	public void updateMessages(int messageType, String message) {
 		if (messageType == EventTypes.CHAT_SAY) {
 			addMessage(allMessages, message, GlobalStyleSheet.ALL);
 		} else if (messageType == EventTypes.CHAT_PM) {

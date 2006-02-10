@@ -152,6 +152,9 @@ public class ClientNetworkController extends Thread {
 				} else if (event instanceof ServerRedirectEvent) {
 					ServerRedirectEvent e = (ServerRedirectEvent) event;
 					AccountController.getInstance().handleServerRedirectionEvent(e);
+				} else if (event instanceof MessageEvent) {
+					MessageEvent e = (MessageEvent) event;
+					ChatController.getInstance().handleEvent(e);
 				}
 			} catch (InterruptedException ie) {
 				logger.info("InterruptedException in readin in-queue", ie);

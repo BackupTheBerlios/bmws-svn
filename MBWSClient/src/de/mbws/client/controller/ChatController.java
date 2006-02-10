@@ -42,10 +42,8 @@ public class ChatController {
 			return;
 		}
 		MessageData data = event.getMessageData();
-		// String messages = chatWindow.getChatAndMessagesTP().getText();
-		// chatWindow.getChatAndMessagesTP().setText(
-		// messages + data.getAuthor() + " > " + data.getMessage() + "\n");
-
+		String message = data.getAuthor()+": "+data.getMessage();
+		chatWindow.updateMessages(event.getEventType(),message);
 	}
 
 	public void setChatWindow(ChatWindow chatWindow) {
