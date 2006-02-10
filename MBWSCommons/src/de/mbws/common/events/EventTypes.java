@@ -80,8 +80,5 @@ public class EventTypes {
     public static final int CHAT_EMOTE = 305;
     public static final int CHAT_ADMIN_COMMAND = 306;
     
-	
-    
-    
-    
+    public static final int S2C_SYSTEM_MESSAGE = 307;   
 }
