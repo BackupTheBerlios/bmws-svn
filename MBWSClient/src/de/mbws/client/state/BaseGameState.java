@@ -1,8 +1,5 @@
 package de.mbws.client.state;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -31,7 +28,7 @@ public abstract class BaseGameState extends BasicGameState {
 
 	protected DisplaySystem display;
 
-	protected JMEDesktop jmeDesktop;
+	public JMEDesktop jmeDesktop;
 
 	protected Node desktopNode;
 
@@ -51,28 +48,7 @@ public abstract class BaseGameState extends BasicGameState {
 		initInputHandler();
 		initJMEDesktop();
 		fullScreen();
-
-        JPanel p = new JPanel();
-        p.setLayout(new BorderLayout());
-        JButton b = new JButton("Start GC");
-        
-        p.setLocation( 300, 100 );
-        p.setSize( 50,50 );
-        b.addActionListener(new ActionListener() {
-        
-            public void actionPerformed(ActionEvent e) {
-                    System.out.println("juhu");
-                    System.gc();
-        
-            }
-        
-        });
-        p.add(b);
-        
-        jmeDesktop.getJDesktop().add(p);
-        jmeDesktop.getJDesktop().repaint();
-        jmeDesktop.getJDesktop().revalidate();
-        
+      
 		// Update geometric and rendering information for the rootNode.
 		rootNode.updateGeometricState(0.0f, true);
 		rootNode.updateRenderState();
@@ -244,6 +220,7 @@ public abstract class BaseGameState extends BasicGameState {
         jmeDesktop.getJDesktop().removeAll();
         jmeDesktop.dispose();
         jmeDesktop = null;
+        desktopNode = null;
 //		input.clearActions();
         guiRootNode.detachAllChildren();
         input = null;
