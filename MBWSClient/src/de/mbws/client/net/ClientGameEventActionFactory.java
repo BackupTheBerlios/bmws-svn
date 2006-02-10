@@ -18,7 +18,7 @@ import de.mbws.common.events.data.generated.WorldObject;
 
 public class ClientGameEventActionFactory {
 
-	private static Logger logger = Logger.getLogger("GameEventActionFactory");
+	private static Logger logger = Logger.getLogger("ClientGameEventActionFactory");
 
 	public ClientGameEventActionFactory() {
 		super();
@@ -93,6 +93,10 @@ public class ClientGameEventActionFactory {
 			event = new ServerRedirectEvent(payload);
 		} else if (eventKey ==EventTypes.S2C_CHARACTER_CREATE_OK) {
             event = new CharacterEvent();
+        } else if (eventKey == EventTypes.CHAT_WHISPER || eventKey == EventTypes.CHAT_SAY || eventKey == EventTypes.CHAT_SHOUT
+                || eventKey == EventTypes.CHAT_GROUP_SAY || eventKey == EventTypes.CHAT_PM || eventKey == EventTypes.CHAT_EMOTE
+                || eventKey == EventTypes.CHAT_ADMIN_COMMAND) {
+            event = new MessageEvent(payload);
         }
 		
 		
