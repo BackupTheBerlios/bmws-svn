@@ -2,9 +2,9 @@ package de.mbws.common.events;
 
 import java.nio.ByteBuffer;
 
-import de.mbws.common.eventdata.AbstractEventData;
-import de.mbws.common.eventdata.generated.ChatData;
-import de.mbws.common.eventdata.generated.LoginData;
+import de.mbws.common.events.data.AbstractEventData;
+import de.mbws.common.events.data.generated.ChatData;
+import de.mbws.common.events.data.generated.LoginData;
 
 public class ChatEvent extends AbstractGameEvent {
 

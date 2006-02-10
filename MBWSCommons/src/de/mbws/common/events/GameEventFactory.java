@@ -5,7 +5,7 @@ import java.nio.ByteBuffer;
 import org.apache.log4j.Logger;
 
 import de.mbws.common.data.AbstractPlayerData;
-import de.mbws.common.eventdata.generated.*;
+import de.mbws.common.events.data.generated.*;
 
 public class GameEventFactory {
 	private static Logger logger = Logger.getLogger("GameEventFactory");

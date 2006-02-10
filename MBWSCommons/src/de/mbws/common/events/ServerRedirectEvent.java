@@ -2,9 +2,9 @@ package de.mbws.common.events;
 
 import java.nio.ByteBuffer;
 
-import de.mbws.common.eventdata.AbstractEventData;
-import de.mbws.common.eventdata.generated.LoginData;
-import de.mbws.common.eventdata.generated.ServerRedirectData;
+import de.mbws.common.events.data.AbstractEventData;
+import de.mbws.common.events.data.generated.LoginData;
+import de.mbws.common.events.data.generated.ServerRedirectData;
 
 /**
  * Description: 

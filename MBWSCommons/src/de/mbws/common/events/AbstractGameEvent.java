@@ -5,7 +5,7 @@ import java.nio.ByteBuffer;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import de.mbws.common.data.AbstractPlayerData;
-import de.mbws.common.eventdata.AbstractEventData;
+import de.mbws.common.events.data.AbstractEventData;
 
 public abstract class AbstractGameEvent {
 

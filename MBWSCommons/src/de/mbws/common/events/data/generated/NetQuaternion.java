@@ -1,15 +1,24 @@
 /** Generated class. Do not change !!! **/
-package de.mbws.common.eventdata.generated;
+package de.mbws.common.events.data.generated;
 
-import de.mbws.common.eventdata.AbstractEventData;
+import de.mbws.common.events.data.AbstractEventData;
 import java.util.*;
 import java.nio.ByteBuffer;
 
-public class IntVector3D extends AbstractEventData { 
+public class NetQuaternion extends AbstractEventData { 
+	private int w;
 	private int x;
 	private int y;
 	private int z;
 
+
+	public int getW() {
+		return w;
+	}
+
+	public void setW(int w) {
+		this.w = w;
+	} 
 
 	public int getX() {
 		return x;
@@ -37,32 +46,34 @@ public class IntVector3D extends AbstractEventData {
 
 
 	public void deserialize(ByteBuffer payload) {
+		w = payload.getInt();
 		x = payload.getInt();
 		y = payload.getInt();
 		z = payload.getInt();
 	}
 
 	public int serialize(ByteBuffer payload) {
+		payload.putInt(w);
 		payload.putInt(x);
 		payload.putInt(y);
 		payload.putInt(z);
 		return payload.position();
 	}
 
-	public static void serializeList(ByteBuffer payload, List<IntVector3D> list) {
+	public static void serializeList(ByteBuffer payload, List<NetQuaternion> list) {
 		if(list==null) return;
 		payload.putInt(list.size());
-		Iterator<IntVector3D> it = list.iterator();
+		Iterator<NetQuaternion> it = list.iterator();
 		while (it.hasNext()) {
 			it.next().serialize(payload);
 		}
 	}
 
-	public static List<IntVector3D> deserializeList(ByteBuffer payload) {
-		List<IntVector3D> list = new LinkedList<IntVector3D>();
+	public static List<NetQuaternion> deserializeList(ByteBuffer payload) {
+		List<NetQuaternion> list = new LinkedList<NetQuaternion>();
 		int size = payload.getInt();
 		for (int i=0; i<size; i++) {
-			IntVector3D element = new IntVector3D();
+			NetQuaternion element = new NetQuaternion();
 			element.deserialize(payload);
 			list.add(element);
 		}

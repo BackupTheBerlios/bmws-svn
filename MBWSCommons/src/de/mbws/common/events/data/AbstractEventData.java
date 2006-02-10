@@ -1,4 +1,4 @@
-package de.mbws.common.eventdata;
+package de.mbws.common.events.data;
 
 import java.nio.ByteBuffer;
 

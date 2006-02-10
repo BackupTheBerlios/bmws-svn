@@ -1,7 +1,7 @@
 /** Generated class. Do not change !!! **/
-package de.mbws.common.eventdata.generated;
+package de.mbws.common.events.data.generated;
 
-import de.mbws.common.eventdata.AbstractEventData;
+import de.mbws.common.events.data.AbstractEventData;
 import java.util.*;
 import java.nio.ByteBuffer;
 

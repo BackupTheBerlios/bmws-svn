@@ -2,8 +2,8 @@ package de.mbws.common.events;
 
 import java.nio.ByteBuffer;
 
-import de.mbws.common.eventdata.AbstractEventData;
-import de.mbws.common.eventdata.generated.WorldObject;
+import de.mbws.common.events.data.AbstractEventData;
+import de.mbws.common.events.data.generated.WorldObject;
 
 /**
  * Description: This event is for all objects that are NOT moved 
