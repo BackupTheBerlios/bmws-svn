@@ -10,11 +10,11 @@ import de.mbws.common.Globals;
 import de.mbws.common.MessageKeys;
 import de.mbws.common.data.db.generated.*;
 import de.mbws.common.data.db.generated.CharacterStatus;
-import de.mbws.common.eventdata.generated.*;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.CharacterEvent;
 import de.mbws.common.events.EventTypes;
 import de.mbws.common.events.ServerRedirectEvent;
+import de.mbws.common.events.data.generated.*;
 import de.mbws.server.account.AccountServer;
 import de.mbws.server.account.persistence.CharacterPersistenceManager;
 import de.mbws.server.data.ServerCommunicationData;
@@ -138,7 +138,7 @@ public class CharacterEventController extends AccountServerBaseEventController {
         characterData.setAge(cdata.getAge());
         characterData.setCharacterID(Globals.OBJECT_ID_PREFIX_CHARACTER + cdata.getId());
         
-        de.mbws.common.eventdata.generated.CharacterStatus clientCharacterStatus = new de.mbws.common.eventdata.generated.CharacterStatus();
+        de.mbws.common.events.data.generated.CharacterStatus clientCharacterStatus = new de.mbws.common.events.data.generated.CharacterStatus();
         CharacterStatus serverCharacterStatus = cdata.getCharacterStatus();
         clientCharacterStatus.setCharstatus(serverCharacterStatus.getCharstatus());;
         clientCharacterStatus.setFreexp(serverCharacterStatus.getFreexp());

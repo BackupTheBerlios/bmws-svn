@@ -4,10 +4,10 @@ import org.apache.log4j.Logger;
 
 import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.data.db.generated.Account;
-import de.mbws.common.eventdata.generated.ServerLoginData;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.EventTypes;
 import de.mbws.common.events.LoginEvent;
+import de.mbws.common.events.data.generated.ServerLoginData;
 import de.mbws.server.account.AccountServer;
 import de.mbws.server.account.persistence.AccountPersistenceManager;
 import de.mbws.server.data.ServerCommunicationData;

@@ -3,11 +3,7 @@ package de.mbws.server.world;
 import java.lang.reflect.Constructor;
 import java.net.InetSocketAddress;
 import java.nio.channels.SocketChannel;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
@@ -15,10 +11,10 @@ import javax.management.ObjectName;
 import org.apache.log4j.Logger;
 
 import de.mbws.common.data.AbstractPlayerData;
-import de.mbws.common.eventdata.generated.ServerLoginData;
-import de.mbws.common.eventdata.generated.ServerRedirectData;
 import de.mbws.common.events.EventTypes;
 import de.mbws.common.events.LoginEvent;
+import de.mbws.common.events.data.generated.ServerLoginData;
+import de.mbws.common.events.data.generated.ServerRedirectData;
 import de.mbws.common.exceptions.InitializationException;
 import de.mbws.server.AbstractTcpServer;
 import de.mbws.server.ServerConfig;

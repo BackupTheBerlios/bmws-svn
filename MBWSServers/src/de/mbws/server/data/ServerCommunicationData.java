@@ -1,7 +1,7 @@
 package de.mbws.server.data;
 
 import de.mbws.common.data.AbstractPlayerData;
-import de.mbws.common.eventdata.generated.ServerRedirectData;
+import de.mbws.common.events.data.generated.ServerRedirectData;
 
 /**
  * Description: 
