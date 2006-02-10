@@ -43,6 +43,7 @@ public class WorldServer extends AbstractTcpServer {
             ObjectName name = new ObjectName(this.getClass().getCanonicalName() + ":type=Statistics");
             Statatistic smb = new Statatistic(this);
             mbs.registerMBean(smb, name);
+//            GameTimerController.getInstance();
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);

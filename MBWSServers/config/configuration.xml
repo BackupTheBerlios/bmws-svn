@@ -23,6 +23,7 @@
 			<eventController type="0" class="de.mbws.server.world.controller.LoginEventController"/>
 			<eventController type="2" class="de.mbws.server.world.controller.CharacterEventController"/>
  			<eventController type="10" class="de.mbws.server.world.controller.MovementEventController"/>
+ 			<eventController type="30" class="de.mbws.server.world.controller.ChatEventController"/>
 		</eventControllers>
 		<accountserverip>localhost</accountserverip>
 		<accountserverport>5000</accountserverport>
