@@ -4,8 +4,8 @@ import org.apache.log4j.Logger;
 
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.gui.ingame.ChatWindow;
-import de.mbws.common.events.ChatEvent;
-import de.mbws.common.events.data.generated.ChatData;
+import de.mbws.common.eventdata.generated.MessageData;
+import de.mbws.common.events.MessageEvent;
 
 public class ChatController {
 
@@ -14,12 +14,6 @@ public class ChatController {
 	private ChatWindow chatWindow;
 	private String playerName = ClientPlayerData.getInstance()
 			.getSelectedCharacterData().getName();
-
-	public static final int SERVERMESSAGE = 0;
-	public static final int ADMINMESSAGE = 1;
-	public static final int CHATMESSAGE = 2;
-	public static final int GROUPMESSAGE = 3;
-	public static final int WHISPERMESSAGE = 4;
 
 	private ChatController() {
 		super();
@@ -32,21 +26,21 @@ public class ChatController {
 		return instance;
 	}
 
-	public ChatEvent createChatEvent(String text, int chatType) {
-		ChatData data = new ChatData();
+	public MessageEvent createChatEvent(String text, int chatType) {
+		MessageData data = new MessageData();
 		data.setMessage(text);
 		data.setAuthor(playerName);
-		ChatEvent event = new ChatEvent(data);
+		MessageEvent event = new MessageEvent(data);
 		event.setEventType(chatType);
 		return event;
 	}
 
-	public void handleEvent(ChatEvent event) {
+	public void handleEvent(MessageEvent event) {
 		if (chatWindow == null) {
 			logger.error("No access to chatwindow !");
 			return;
 		}
-		ChatData data = event.getChatData();
+		MessageData data = event.getChatData();
 		// String messages = chatWindow.getChatAndMessagesTP().getText();
 		// chatWindow.getChatAndMessagesTP().setText(
 		// messages + data.getAuthor() + " > " + data.getMessage() + "\n");

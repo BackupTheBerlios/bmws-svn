@@ -23,12 +23,14 @@ import com.jme.scene.state.AlphaState;
 import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
+import com.jmex.awt.swingui.JMEDesktop;
 
 import de.mbws.client.MBWSClient;
 import de.mbws.client.data.ObjectManager;
 import de.mbws.client.eventactions.AbstractEventAction;
 import de.mbws.client.gui.ingame.GameDesktop;
 import de.mbws.client.net.ActionQueue;
+import de.mbws.client.state.handler.BaseInputHandler;
 import de.mbws.client.state.handler.MainGameStateHandler;
 import de.mbws.client.worldloader.DynamicTerrain;
 
@@ -38,6 +40,7 @@ public class OutdoorGameState extends BaseGameState {
 	// private InputHandler inputHandler;
 	// TODO: put that in MBWSInputManager ?
 	private InputHandler chaseCam;
+	private InputHandler playerInputHandler;
 	private DisplaySystem display;
 	private AbsoluteMouse cursor;
 	private Skybox skybox;
@@ -70,7 +73,7 @@ public class OutdoorGameState extends BaseGameState {
 	}
 
 	private void buildSky() {
-		//TODO: size seems a problem, use skydome anyway ?
+		// TODO: size seems a problem, use skydome anyway ?
 		skybox = new Skybox("skybox", 600, 200, 600);
 
 		Texture texture = TextureManager.loadTexture(OutdoorGameState.class
@@ -151,7 +154,7 @@ public class OutdoorGameState extends BaseGameState {
 
 	private void buildPlayer() {
 		player = ObjectManager.getPlayer();
-		((MainGameStateHandler) input).setPlayer(player);
+		((MainGameStateHandler) playerInputHandler).setPlayer(player);
 	}
 
 	private void buildEnvironment() {
@@ -169,13 +172,16 @@ public class OutdoorGameState extends BaseGameState {
 
 	// TODO PUT THAT IN UPDATE
 	public void update(float tpf) {
-
+		if (((GameDesktop) desktopNode).getDesktop().getFocusOwner() != null) {
+			playerInputHandler.setEnabled(false);
+		} else {
+			playerInputHandler.setEnabled(true);
+		}
 		super.update(tpf);
-		// update the keyboard input (move the player around)
-		// input.update(tpf);
+
 		terrain.update(cam);
 		// update the chase camera to handle the player moving around.
-		// if (MouseInput.get().isButtonDown(1)) {
+
 		chaseCam.update(tpf);
 		skybox.setLocalTranslation(cam.getLocation());
 		// }
@@ -202,7 +208,10 @@ public class OutdoorGameState extends BaseGameState {
 
 	@Override
 	protected void initInputHandler() {
-		input = new MainGameStateHandler(null, this);
+		input = new BaseInputHandler(this);
+		playerInputHandler = new MainGameStateHandler(null, this);
+		((MainGameStateHandler)playerInputHandler).gd = (GameDesktop)desktopNode;
+		input.addToAttachedHandlers(playerInputHandler);
 	}
 
 	private void createCustomCursor() {

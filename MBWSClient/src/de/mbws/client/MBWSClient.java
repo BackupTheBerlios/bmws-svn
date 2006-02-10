@@ -156,6 +156,7 @@ public class MBWSClient extends BaseGame {
         PropertyConfigurator.configure("log4j.properties");
         logger.info("Init log4j ... done");
         MBWSClient app = new MBWSClient();
+
 		app.setDialogBehaviour(
 				MBWSClient.FIRSTRUN_OR_NOCONFIGFILE_SHOW_PROPS_DIALOG,
 				MBWSClient.class.getClassLoader().getResource(

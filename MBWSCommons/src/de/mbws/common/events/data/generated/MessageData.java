@@ -5,10 +5,19 @@ import de.mbws.common.events.data.AbstractEventData;
 import java.util.*;
 import java.nio.ByteBuffer;
 
-public class ChatData extends AbstractEventData { 
+public class MessageData extends AbstractEventData { 
+	private byte type;
 	private String author;
 	private String message;
 
+
+	public byte getType() {
+		return type;
+	}
+
+	public void setType(byte type) {
+		this.type = type;
+	} 
 
 	public String getAuthor() {
 		return author;
@@ -28,30 +37,32 @@ public class ChatData extends AbstractEventData {
 
 
 	public void deserialize(ByteBuffer payload) {
+		type = payload.get();
 		author = readString(payload);
 		message = readString(payload);
 	}
 
 	public int serialize(ByteBuffer payload) {
+		payload.put(type);
 		writeString(payload, author);
 		writeString(payload, message);
 		return payload.position();
 	}
 
-	public static void serializeList(ByteBuffer payload, List<ChatData> list) {
+	public static void serializeList(ByteBuffer payload, List<MessageData> list) {
 		if(list==null) return;
 		payload.putInt(list.size());
-		Iterator<ChatData> it = list.iterator();
+		Iterator<MessageData> it = list.iterator();
 		while (it.hasNext()) {
 			it.next().serialize(payload);
 		}
 	}
 
-	public static List<ChatData> deserializeList(ByteBuffer payload) {
-		List<ChatData> list = new LinkedList<ChatData>();
+	public static List<MessageData> deserializeList(ByteBuffer payload) {
+		List<MessageData> list = new LinkedList<MessageData>();
 		int size = payload.getInt();
 		for (int i=0; i<size; i++) {
-			ChatData element = new ChatData();
+			MessageData element = new MessageData();
 			element.deserialize(payload);
 			list.add(element);
 		}

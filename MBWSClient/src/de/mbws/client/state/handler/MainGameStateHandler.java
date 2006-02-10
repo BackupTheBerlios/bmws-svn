@@ -4,7 +4,12 @@ import java.util.HashMap;
 
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
-import com.jme.input.action.*;
+import com.jme.input.action.InputAction;
+import com.jme.input.action.InputActionEvent;
+import com.jme.input.action.KeyNodeBackwardAction;
+import com.jme.input.action.KeyNodeForwardAction;
+import com.jme.input.action.KeyNodeRotateLeftAction;
+import com.jme.input.action.KeyNodeRotateRightAction;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.scene.Spatial;
@@ -13,6 +18,7 @@ import de.mbws.client.MBWSClient;
 import de.mbws.client.controller.CharacterController;
 import de.mbws.client.controller.ClientNetworkController;
 import de.mbws.client.data.ClientPlayerData;
+import de.mbws.client.gui.ingame.GameDesktop;
 import de.mbws.client.state.BaseGameState;
 import de.mbws.common.Globals;
 import de.mbws.common.events.EventTypes;
@@ -29,8 +35,10 @@ public class MainGameStateHandler extends BaseInputHandler {
 	public static final String PROP_MOVEMENT_SPEED = "moveSpeed";
 	public static final String PROP_TURN_SPEED = "turnSpeed";
 	public static final String PROP_MOVE_BACK_SPEED = "moveBackSpeed";
-
 	
+	public static final String PROP_HIDE_CHAT_WINDOW = "hideChatWindow";
+
+	public static GameDesktop gd;
 	private Spatial player;
 	// TODO: do we really need to keep this here ?
 
@@ -38,10 +46,7 @@ public class MainGameStateHandler extends BaseInputHandler {
 	private float playerTurnSpeed;
 	private float playerMoveBackSpeed;
 
-	// public MainGameStateHandler(BaseGameState state) {
-	// super(state);
-	// }
-
+	
 	/**
 	 * Supply the node to control and the api that will handle input creation.
 	 * 
@@ -74,6 +79,8 @@ public class MainGameStateHandler extends BaseInputHandler {
 				KeyInput.KEY_A));
 		keyboard.set(PROP_KEY_RIGHT, getIntProp(props, PROP_KEY_RIGHT,
 				KeyInput.KEY_D));
+		
+		keyboard.set("ts", KeyInput.KEY_C);
 		// keyboard.set(PROP_KEY_STRAFELEFT, getIntProp(props,
 		// PROP_KEY_STRAFELEFT, KeyInput.KEY_Q));
 		// keyboard.set(PROP_KEY_STRAFERIGHT, getIntProp(props,
@@ -98,7 +105,10 @@ public class MainGameStateHandler extends BaseInputHandler {
 				PROP_KEY_LEFT, true);
 
 		addAction(new ExitAction(), "exit", false);
+		addAction(new ChatWindowAction(), "ts", false);
 	}
+	
+	
 
 	public void update(float time) {
 		// //TODO: We only take care of walking at the moment
@@ -180,6 +190,12 @@ public class MainGameStateHandler extends BaseInputHandler {
 	private static class ExitAction extends InputAction {
 		public void performAction(InputActionEvent evt) {
 			MBWSClient.exit();
+		}
+	}
+	
+	private static class ChatWindowAction extends InputAction {
+		public void performAction(InputActionEvent evt) {
+			gd.getChatWindow().setVisible(!gd.getChatWindow().isVisible());
 		}
 	}
 

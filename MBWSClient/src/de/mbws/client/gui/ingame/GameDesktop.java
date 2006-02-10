@@ -28,12 +28,10 @@ public class GameDesktop extends Node {
 
 	private JMEDesktop desktop;
 
-	
 	private ChatWindow chatWindow;
 
 	private JLabel statusField;
 
-	
 	public GameDesktop(String name, InputHandler input) {
 		this(name, DisplaySystem.getDisplaySystem().getWidth(), DisplaySystem
 				.getDisplaySystem().getHeight(), input);
@@ -68,11 +66,11 @@ public class GameDesktop extends Node {
 		ChatController.getInstance().setChatWindow(chatWindow);
 	}
 
-	// public boolean isFocusOwner() {
-	// return (desktop.getFocusOwner() != null
-	// && desktop.getFocusOwner() != desktop.getJDesktop() && desktop
-	// .getFocusOwner() != chatTF);
-	// }
+	public boolean isFocusOwner() {
+		return (desktop.getFocusOwner() != null
+				&& desktop.getFocusOwner() != desktop.getJDesktop() && desktop
+				.getFocusOwner() == chatWindow.getChatTf());
+	}
 
 	public void setFocus(String field) {
 		final JComponent focussed;

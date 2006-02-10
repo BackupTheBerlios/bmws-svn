@@ -12,13 +12,17 @@ import javax.swing.text.html.StyleSheet;
 
 import org.apache.log4j.Logger;
 
-public class GlobalStyleSheet {
+public class GlobalStyleSheet extends StyleSheet{
 
 	private static Logger logger = Logger.getLogger(GlobalStyleSheet.class);
 
 	private static GlobalStyleSheet instance;
+	public static String ALL = "all";
+	public static String ADMIN = "admin";
+	public static String PM = "privatemessage";
+	public static String GROUP = "group";
 
-	private StyleSheet styleSheet = new StyleSheet();
+	//private static StyleSheet styleSheet = new StyleSheet();
 
 	private GlobalStyleSheet() {
 		setDefaultCSS();
@@ -38,7 +42,7 @@ public class GlobalStyleSheet {
 				+ "body a:hover { color: #FFFFFF; text-decoration: none; }"
 				+ "input { color: #333333; background-color: #E7E9ED; border : 1px solid #333333; }";
 		try {
-			styleSheet.loadRules(new StringReader(css), null);
+			loadRules(new StringReader(css), null);
 		} catch (IOException e) {
 			logger.error("StyleSheet couldnt be loaded: ", e);
 		}
@@ -58,8 +62,10 @@ public class GlobalStyleSheet {
 		StyleConstants.setForeground(st, Color.WHITE);
 		st = doc.addStyle("admin", def);
 		StyleConstants.setForeground(st, Color.ORANGE);
-		st = doc.addStyle("whisper", def);
+		st = doc.addStyle("privatemessage", def);
 		StyleConstants.setForeground(st, Color.GREEN);
+		st = doc.addStyle("group", def);
+		StyleConstants.setForeground(st, Color.BLUE);
 	}
 
 }

@@ -4,7 +4,15 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.JEditorPane;
+import javax.swing.JInternalFrame;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.text.StyledDocument;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
 
 import org.apache.log4j.Logger;
 
@@ -16,10 +24,10 @@ public class ChatWindow extends JInternalFrame {
 
 	private static Logger logger = Logger.getLogger(ChatWindow.class);
 
-	private String allMessages = new String();
-	private String groupMessages = new String();
-	private String whisperMessages = new String();
-	private String consoleMessages = new String();
+	private StyledDocument allMessages = new HTMLDocument();
+	private StyledDocument groupMessages = new HTMLDocument();
+	private StyledDocument privateMessages = new HTMLDocument();
+	private StyledDocument consoleMessages = new HTMLDocument();
 	private JTextField chatTf;
 
 	public ChatWindow(String title) {
@@ -38,7 +46,7 @@ public class ChatWindow extends JInternalFrame {
 		// TODO: use constants for tabtitles
 		tp.addTab("All", getAllMessagesPanel());
 		tp.addTab("Group", getGroupMessagesPanel());
-		tp.addTab("Whisper", getWhisperMessagesPanel());
+		tp.addTab("Private Message", getPrivateMessagesPanel());
 		tp.addTab("Console", getConsoleMessagesPanel());
 
 		return tp;
@@ -67,40 +75,46 @@ public class ChatWindow extends JInternalFrame {
 
 	private JPanel getAllMessagesPanel() {
 		JPanel p = new JPanel(new BorderLayout());
-		// p.setOpaque(true);
-		// StyledDocument doc = new HTMLDocument();
 		p.add(getTextPane(allMessages), BorderLayout.CENTER);
 		return p;
 	}
 
 	private JPanel getGroupMessagesPanel() {
 		JPanel p = new JPanel(new BorderLayout());
-		// p.setOpaque(true);
-		// StyledDocument doc = new HTMLDocument();
 		p.add(getTextPane(groupMessages), BorderLayout.CENTER);
 		return p;
 	}
 
-	private JPanel getWhisperMessagesPanel() {
+	private JPanel getPrivateMessagesPanel() {
 		JPanel p = new JPanel(new BorderLayout());
-		// p.setOpaque(true);
-		// StyledDocument doc = new HTMLDocument();
-		p.add(getTextPane(whisperMessages), BorderLayout.CENTER);
+		p.add(getTextPane(privateMessages), BorderLayout.CENTER);
 		return p;
 	}
 
 	private JPanel getConsoleMessagesPanel() {
 		JPanel p = new JPanel(new BorderLayout());
-		// p.setOpaque(true);
-		// StyledDocument doc = new HTMLDocument();
 		p.add(getTextPane(consoleMessages), BorderLayout.CENTER);
 		return p;
 	}
 
-	private JTextPane getTextPane(String message) {
+	private JTextPane getTextPane(StyledDocument doc) {
 		JTextPane textPane = new JTextPane();
 		textPane.setContentType("text/html");
-		textPane.setText(message);
+		GlobalStyleSheet.getInstance().setupStyles(doc);
+		textPane.setStyledDocument(doc);
+		((HTMLEditorKit) textPane.getEditorKit())
+				.setStyleSheet(GlobalStyleSheet.getInstance());
+		textPane.setEnabled(false);
+		return textPane;
+	}
+	
+	private JEditorPane getEditorPane(StyledDocument doc) {
+		JEditorPane textPane = new JTextPane();
+		textPane.setContentType("text/html");
+		GlobalStyleSheet.getInstance().setupStyles(doc);
+		textPane.setDocument(doc);
+		((HTMLEditorKit) textPane.getEditorKit())
+				.setStyleSheet(GlobalStyleSheet.getInstance());
 		textPane.setEnabled(false);
 		return textPane;
 	}
@@ -109,13 +123,12 @@ public class ChatWindow extends JInternalFrame {
 		switch (text.charAt(0)) {
 		case '/':
 			logger.info("Command issued");
-			// onCommand(line.substring(1));
+			onCommand(text.substring(1));
 			break;
 		default:
 			if (text.length() > 0) {
 				logger.info("Saying: " + text);
-				System.out.println(text);
-				updateMessages(ChatController.CHATMESSAGE, text);
+				updateMessages(EventTypes.CHAT_SAY, text);
 				ClientNetworkController.getInstance().handleOutgoingEvent(
 						ChatController.getInstance().createChatEvent(text,
 								EventTypes.CHAT_SAY));
@@ -123,23 +136,56 @@ public class ChatWindow extends JInternalFrame {
 		}
 	}
 
-	private void updateMessages(int messageType, String message) {
-		// if (messageType = ChatController.CHATMESSAGE) {
-		// addMessage(allMessages, message);
-		// }
+	private void onCommand(String command) {
+		String text = command.substring(command.indexOf(" ")+1);
+		if (command.startsWith("msg ")) {
+			logger.info("private message: " + text);
+			updateMessages(EventTypes.CHAT_PM, text);
+			ClientNetworkController.getInstance().handleOutgoingEvent(
+					ChatController.getInstance().createChatEvent(text,
+							EventTypes.CHAT_PM));
+		} else if (command.startsWith("admin ")) {
+			logger.info("Admin Command: " + text);
+			updateMessages(EventTypes.CHAT_ADMIN_COMMAND, text);
+			ClientNetworkController.getInstance().handleOutgoingEvent(
+					ChatController.getInstance().createChatEvent(text,
+							EventTypes.CHAT_ADMIN_COMMAND));
+		} else if (command.startsWith("grp ")) {
+			logger.info("Group message: " + text);
+			updateMessages(EventTypes.CHAT_GROUP_SAY, text);
+			ClientNetworkController.getInstance().handleOutgoingEvent(
+					ChatController.getInstance().createChatEvent(text,
+							EventTypes.CHAT_GROUP_SAY));
+		} else {
+			logger.warn("Message unknown: "+text);
+		}
 	}
 
-	// public void addMessage(String text, String attribute) {
-	// StyledDocument doc = chatAndMessagesTP.getStyledDocument();
-	// try {
-	// doc.insertString(doc.getEndPosition().getOffset(), text + "\n", doc
-	// .getStyle(attribute));
-	// chatAndMessagesTP
-	// .setCaretPosition(doc.getEndPosition().getOffset() - 1);
-	// } catch (Exception e) {
-	// logger.error("addMessage()", e);
-	// }
-	// }
+	private void updateMessages(int messageType, String message) {
+		if (messageType == EventTypes.CHAT_SAY) {
+			addMessage(allMessages, message, GlobalStyleSheet.ALL);
+		} else if (messageType == EventTypes.CHAT_PM) {
+			addMessage(allMessages, message, GlobalStyleSheet.PM);
+			addMessage(privateMessages, message, GlobalStyleSheet.PM);
+		} else if (messageType == EventTypes.CHAT_ADMIN_COMMAND) {
+			addMessage(allMessages, message, GlobalStyleSheet.ADMIN);
+			addMessage(consoleMessages, message, GlobalStyleSheet.ADMIN);
+		} else if (messageType == EventTypes.CHAT_GROUP_SAY) {
+			addMessage(allMessages, message, GlobalStyleSheet.GROUP);
+			addMessage(groupMessages, message, GlobalStyleSheet.GROUP);
+		}
+	}
+
+	public void addMessage(StyledDocument doc, String text, String attribute) {
+		try {
+			doc.insertString(doc.getEndPosition().getOffset(), text + "\n", doc
+					.getStyle(attribute));
+			// chatAndMessagesTP
+			// .setCaretPosition(doc.getEndPosition().getOffset() - 1);
+		} catch (Exception e) {
+			logger.error("addMessage()", e);
+		}
+	}
 	//
 	// public JTextPane getChatAndMessagesTP() {
 	// return chatAndMessagesTP;
