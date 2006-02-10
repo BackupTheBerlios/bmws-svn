@@ -4,8 +4,8 @@ import org.apache.log4j.Logger;
 
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.gui.ingame.ChatWindow;
-import de.mbws.common.eventdata.generated.MessageData;
 import de.mbws.common.events.MessageEvent;
+import de.mbws.common.events.data.generated.MessageData;
 
 public class ChatController {
 
@@ -40,7 +40,7 @@ public class ChatController {
 			logger.error("No access to chatwindow !");
 			return;
 		}
-		MessageData data = event.getChatData();
+		MessageData data = event.getMessageData();
 		// String messages = chatWindow.getChatAndMessagesTP().getText();
 		// chatWindow.getChatAndMessagesTP().setText(
 		// messages + data.getAuthor() + " > " + data.getMessage() + "\n");

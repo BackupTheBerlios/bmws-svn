@@ -80,7 +80,7 @@ public class MainGameStateHandler extends BaseInputHandler {
 		keyboard.set(PROP_KEY_RIGHT, getIntProp(props, PROP_KEY_RIGHT,
 				KeyInput.KEY_D));
 		
-		keyboard.set("ts", KeyInput.KEY_C);
+		//keyboard.set("ts", KeyInput.KEY_C);
 		// keyboard.set(PROP_KEY_STRAFELEFT, getIntProp(props,
 		// PROP_KEY_STRAFELEFT, KeyInput.KEY_Q));
 		// keyboard.set(PROP_KEY_STRAFERIGHT, getIntProp(props,
@@ -105,7 +105,7 @@ public class MainGameStateHandler extends BaseInputHandler {
 				PROP_KEY_LEFT, true);
 
 		addAction(new ExitAction(), "exit", false);
-		addAction(new ChatWindowAction(), "ts", false);
+		//addAction(new ChatWindowAction(), "ts", false);
 	}
 	
 	

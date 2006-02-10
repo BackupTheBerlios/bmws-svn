@@ -6,18 +6,10 @@ import java.util.*;
 import java.nio.ByteBuffer;
 
 public class MessageData extends AbstractEventData { 
-	private byte type;
 	private String author;
+	private String recipient;
 	private String message;
 
-
-	public byte getType() {
-		return type;
-	}
-
-	public void setType(byte type) {
-		this.type = type;
-	} 
 
 	public String getAuthor() {
 		return author;
@@ -25,6 +17,14 @@ public class MessageData extends AbstractEventData {
 
 	public void setAuthor(String author) {
 		this.author = author;
+	} 
+
+	public String getRecipient() {
+		return recipient;
+	}
+
+	public void setRecipient(String recipient) {
+		this.recipient = recipient;
 	} 
 
 	public String getMessage() {
@@ -37,14 +37,14 @@ public class MessageData extends AbstractEventData {
 
 
 	public void deserialize(ByteBuffer payload) {
-		type = payload.get();
 		author = readString(payload);
+		recipient = readString(payload);
 		message = readString(payload);
 	}
 
 	public int serialize(ByteBuffer payload) {
-		payload.put(type);
 		writeString(payload, author);
+		writeString(payload, recipient);
 		writeString(payload, message);
 		return payload.position();
 	}
