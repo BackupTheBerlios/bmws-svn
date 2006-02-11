@@ -38,7 +38,7 @@ public class ServerStarter {
         }
         if (config.getWorldserver().getBasicAttributes().getStartup()) {
             startWorldServer();
-        }        
+        }
     }
 
     private static void startAccountServer() {
@@ -52,6 +52,7 @@ public class ServerStarter {
         ServerConfig sc = new ServerConfig(config.getWorldserver().getAccountserverip(), config.getWorldserver().getAccountserverport(), config
                 .getWorldserver().getBasicAttributes().getC2sport(), config.getWorldserver().getEventControllers(), config.getWorldserver()
                 .getBasicAttributes().getQueueworkersize());
+        sc.setMyClientIP(config.getWorldserver().getMyclientip());
         WorldServer ws = new WorldServer(sc);
         ws.start();
         ws.connect();

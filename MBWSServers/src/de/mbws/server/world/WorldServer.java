@@ -68,7 +68,7 @@ public class WorldServer extends AbstractTcpServer {
                 sld.setName("worldserver");
                 sld.setPassword("worldserver");
                 ServerRedirectData srd = new ServerRedirectData();
-                srd.setHost(accountServerChannel.socket().getLocalAddress().getHostAddress());
+                srd.setHost(config.getMyClientIP());
                 srd.setPort(config.getC2sport());
                 sld.setHostData(srd);
                 LoginEvent lv = new LoginEvent(sld);
@@ -127,6 +127,7 @@ public class WorldServer extends AbstractTcpServer {
         }
         if (sessionId != null) {
             removePlayer(sessionId);
+            //TODO send client an object remove event
         }
     }
 
@@ -155,5 +156,12 @@ public class WorldServer extends AbstractTcpServer {
             }
         }
         return apd;
+    }
+
+    @Override
+    protected void shutdown() {
+        if (logger.isDebugEnabled()) {
+            logger.debug("WorldServer is shuting down....");
+        }
     }
 }

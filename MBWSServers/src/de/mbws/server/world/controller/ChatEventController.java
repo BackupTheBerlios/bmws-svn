@@ -37,28 +37,25 @@ public class ChatEventController extends WorldServerBaseEventController {
                     
                     break;
                 case EventTypes.CHAT_SAY:
+                case EventTypes.CHAT_SHOUT:
+                case EventTypes.CHAT_EMOTE:
                     receivers = (ArrayList<Integer>) getWorldServer().getSessionIDOfAllPlayers().clone();
                     if (receivers.size() >= 1) {
                         receivers.remove(me.getPlayer().getSessionId());
                     }
                     break;
-                case EventTypes.CHAT_SHOUT:
-                    
-                    break;
+
                 case EventTypes.CHAT_GROUP_SAY:
                     
                     break;
                 case EventTypes.CHAT_PM:
                     
                     break;
-                case EventTypes.CHAT_EMOTE:
-                    
-                    break;
                 case EventTypes.CHAT_ADMIN_COMMAND:
                     
                     break;
                 default:
-                    break;
+                    return;
             }
 
             if (receivers.size() >= 1) {

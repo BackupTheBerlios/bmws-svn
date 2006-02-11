@@ -25,6 +25,7 @@
  			<eventController type="10" class="de.mbws.server.world.controller.MovementEventController"/>
  			<eventController type="30" class="de.mbws.server.world.controller.ChatEventController"/>
 		</eventControllers>
+		<myclientip>localhost</myclientip>
 		<accountserverip>localhost</accountserverip>
 		<accountserverport>5000</accountserverport>
 	</worldserver>

@@ -11,8 +11,15 @@ package de.mbws.server.configuration;
  //- Imported classes and packages -/
 //---------------------------------/
 
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Serializable;
+import java.io.Writer;
+import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.Marshaller;
 import org.exolab.castor.xml.Unmarshaller;
+import org.exolab.castor.xml.ValidationException;
+import org.xml.sax.ContentHandler;
 
 /**
  * Class Worldserver.
@@ -35,6 +42,11 @@ public class Worldserver implements java.io.Serializable {
      * Field _eventControllers
      */
     private de.mbws.server.configuration.EventControllers _eventControllers;
+
+    /**
+     * Field _myclientip
+     */
+    private java.lang.String _myclientip;
 
     /**
      * Field _accountserverip
@@ -118,6 +130,17 @@ public class Worldserver implements java.io.Serializable {
     {
         return this._eventControllers;
     } //-- de.mbws.server.configuration.EventControllers getEventControllers() 
+
+    /**
+     * Returns the value of field 'myclientip'.
+     * 
+     * @return String
+     * @return the value of field 'myclientip'.
+     */
+    public java.lang.String getMyclientip()
+    {
+        return this._myclientip;
+    } //-- java.lang.String getMyclientip() 
 
     /**
      * Method hasAccountserverport
@@ -218,6 +241,16 @@ public class Worldserver implements java.io.Serializable {
     {
         this._eventControllers = eventControllers;
     } //-- void setEventControllers(de.mbws.server.configuration.EventControllers) 
+
+    /**
+     * Sets the value of field 'myclientip'.
+     * 
+     * @param myclientip the value of field 'myclientip'.
+     */
+    public void setMyclientip(java.lang.String myclientip)
+    {
+        this._myclientip = myclientip;
+    } //-- void setMyclientip(java.lang.String) 
 
     /**
      * Method unmarshal

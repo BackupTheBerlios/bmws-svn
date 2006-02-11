@@ -117,4 +117,11 @@ public class AccountServer extends AbstractTcpServer {
     public void setWorldServerSessionId(Integer worldServerSessionId) {
         this.worldServerSessionId = worldServerSessionId;
     }
+
+    @Override
+    protected void shutdown() {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Accountserver is shuting down....");
+        }        
+    }
 }

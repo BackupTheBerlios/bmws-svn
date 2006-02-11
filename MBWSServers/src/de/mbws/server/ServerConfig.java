@@ -12,6 +12,7 @@ public class ServerConfig {
     int s2sport;
     int queueWorkerSize;
     EventControllers eventControllers;
+    String myClientIP;
     String accountServerIp;
     int accountServerPort;
     
@@ -61,5 +62,11 @@ public class ServerConfig {
     }
     public int getAccountServerPort() {
         return accountServerPort;
+    }
+    public String getMyClientIP() {
+        return myClientIP;
+    }
+    public void setMyClientIP(String myClientIP) {
+        this.myClientIP = myClientIP;
     }    
 }

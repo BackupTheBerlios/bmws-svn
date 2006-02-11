@@ -119,6 +119,7 @@ public class RequestDispatcher extends Thread {
                     // check for end-of-stream condition
                     if (nbytes == -1) {
                         logger.info("disconnect: " + channel.socket().getRemoteSocketAddress() + ", end-of-stream");
+                        server.handleClientConnectionLost(channel);
                         channel.close();
                     }
                     // check for a complete event
