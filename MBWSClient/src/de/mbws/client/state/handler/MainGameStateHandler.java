@@ -2,6 +2,8 @@ package de.mbws.client.state.handler;
 
 import java.util.HashMap;
 
+import org.apache.log4j.Logger;
+
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
 import com.jme.input.action.InputAction;
@@ -25,6 +27,8 @@ import de.mbws.common.events.EventTypes;
 
 public class MainGameStateHandler extends BaseInputHandler {
 
+	private static Logger logger = Logger.getLogger("MainGameStateHandler");
+	
 	public static final String PROP_KEY_FORWARD = "fwdKey";
 	public static final String PROP_KEY_BACKWARD = "backKey";
 	public static final String PROP_KEY_LEFT = "leftKey";
@@ -149,9 +153,11 @@ public class MainGameStateHandler extends BaseInputHandler {
 			int turnStatus = ClientPlayerData.getInstance().getPlayer()
 					.getTurnStatus();
 			if (turnLeft && turnStatus != Globals.TURN_LEFT) {
+				//logger.info("sending turn left: "+rotation.toString());
 				sendTurnMovementEvent(Globals.TURN_LEFT,
 						EventTypes.MOVEMENT_START_TURN_LEFT, location, rotation);
 			} else if (!turnLeft && turnStatus == Globals.TURN_LEFT) {
+				logger.info("sending turn stop: "+rotation.toString());
 				sendTurnMovementEvent(Globals.NO_TURN,
 						EventTypes.MOVEMENT_STOP_TURN, location, rotation);
 			} else if (turnRight && turnStatus != Globals.TURN_RIGHT) {
@@ -159,6 +165,7 @@ public class MainGameStateHandler extends BaseInputHandler {
 						EventTypes.MOVEMENT_START_TURN_RIGHT, location,
 						rotation);
 			} else if (!turnRight && turnStatus == Globals.TURN_RIGHT) {
+				//logger.info("sending turn stop: "+rotation.toString());
 				sendTurnMovementEvent(Globals.NO_TURN,
 						EventTypes.MOVEMENT_STOP_TURN, location, rotation);
 			}

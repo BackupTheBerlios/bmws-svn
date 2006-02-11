@@ -136,10 +136,10 @@ public class CharacterController {
 		location.setZ((int) loc.z);
 		md.setLocation(location);
 		NetQuaternion heading = new NetQuaternion();
-		heading.setW((int) rot.w);
-		heading.setX((int) rot.x);
-		heading.setY((int) rot.y);
-		heading.setZ((int) rot.z);
+		heading.setW(rot.w);
+		heading.setX(rot.x);
+		heading.setY(rot.y);
+		heading.setZ(rot.z);
 		md.setHeading(heading);
 		me.setEventType(eventType);
 		md.setMovementType(movementType);

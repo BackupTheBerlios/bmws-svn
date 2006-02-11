@@ -6,57 +6,57 @@ import java.util.*;
 import java.nio.ByteBuffer;
 
 public class NetQuaternion extends AbstractEventData { 
-	private int w;
-	private int x;
-	private int y;
-	private int z;
+	private float w;
+	private float x;
+	private float y;
+	private float z;
 
 
-	public int getW() {
+	public float getW() {
 		return w;
 	}
 
-	public void setW(int w) {
+	public void setW(float w) {
 		this.w = w;
 	} 
 
-	public int getX() {
+	public float getX() {
 		return x;
 	}
 
-	public void setX(int x) {
+	public void setX(float x) {
 		this.x = x;
 	} 
 
-	public int getY() {
+	public float getY() {
 		return y;
 	}
 
-	public void setY(int y) {
+	public void setY(float y) {
 		this.y = y;
 	} 
 
-	public int getZ() {
+	public float getZ() {
 		return z;
 	}
 
-	public void setZ(int z) {
+	public void setZ(float z) {
 		this.z = z;
 	} 
 
 
 	public void deserialize(ByteBuffer payload) {
-		w = payload.getInt();
-		x = payload.getInt();
-		y = payload.getInt();
-		z = payload.getInt();
+		w = payload.getFloat();
+		x = payload.getFloat();
+		y = payload.getFloat();
+		z = payload.getFloat();
 	}
 
 	public int serialize(ByteBuffer payload) {
-		payload.putInt(w);
-		payload.putInt(x);
-		payload.putInt(y);
-		payload.putInt(z);
+		payload.putFloat(w);
+		payload.putFloat(x);
+		payload.putFloat(y);
+		payload.putFloat(z);
 		return payload.position();
 	}
 
