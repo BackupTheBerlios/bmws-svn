@@ -3,11 +3,17 @@
  */
 package de.mbws.client;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.logging.Level;
 
 import javax.swing.UIManager;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -35,10 +41,12 @@ import de.mbws.client.state.MainMenuState;
  */
 // TODO: Kerim: should we use a different game type here ?
 public class MBWSClient extends BaseGame {
-    private static Logger logger = Logger.getLogger(MBWSClient.class);
+	private static Logger logger = Logger.getLogger(MBWSClient.class);
 	/** Only used in the static exit method. */
 	private static AbstractGame instance;
 
+	public static Configuration mbwsConfiguration;
+	
 	/** High resolution timer for jME. */
 	public static Timer timer;
 
@@ -47,7 +55,7 @@ public class MBWSClient extends BaseGame {
 
 	public static final String CLIENT = "MBWSClient";
 	public static ValueMapper languageResources;
-    
+
 	public static ActionQueue actionQueue = new ActionQueue();
 
 	/**
@@ -88,10 +96,10 @@ public class MBWSClient extends BaseGame {
 	 */
 	protected final void initSystem() {
 		try {
-          languageResources = new ValueMapper();
-          UIManager.setLookAndFeel( new MetalLookAndFeel() );
+			languageResources = new ValueMapper();
+			UIManager.setLookAndFeel(new MetalLookAndFeel());
 
-          /**
+			/**
 			 * Get a DisplaySystem acording to the renderer selected in the
 			 * startup box.
 			 */
@@ -152,16 +160,37 @@ public class MBWSClient extends BaseGame {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-        BasicConfigurator.configure();
-        PropertyConfigurator.configure("log4j.properties");
-        logger.info("Init log4j ... done");
-        MBWSClient app = new MBWSClient();
 
-		app.setDialogBehaviour(
-				MBWSClient.FIRSTRUN_OR_NOCONFIGFILE_SHOW_PROPS_DIALOG,
-				MBWSClient.class.getClassLoader().getResource(
-						"resources/IntroAndMainMenu/Properties.jpg"));
-		app.start();
+		BasicConfigurator.configure();
+		PropertyConfigurator.configure("log4j.properties");
+		logger.info("Init log4j ... done");
+		try {
+			URL urlOfPropertyFile = new File("client.properties").toURL();
+			if (args.length == 0) {
+				logger.info("no arguments given, using default propertyfile");
+			} else if (args.length == 1) {
+				logger.info("using propertyfile: " + args[0]);
+				urlOfPropertyFile = new File(args[0]).toURL();
+			}
+
+			Configuration mbwsConfiguration = new PropertiesConfiguration(
+					new File(urlOfPropertyFile.getFile()));
+
+			MBWSClient app = new MBWSClient();
+
+			app.setDialogBehaviour(
+					MBWSClient.FIRSTRUN_OR_NOCONFIGFILE_SHOW_PROPS_DIALOG,
+					MBWSClient.class.getClassLoader().getResource(
+							"resources/IntroAndMainMenu/Properties.jpg"));
+			app.mbwsConfiguration = mbwsConfiguration;
+			app.start();
+		} catch (MalformedURLException mfe) {
+			logger.error("Malformed URL: ", mfe);
+			System.exit(1);
+		} catch (ConfigurationException ce) {
+			logger.error("Configuration Error: ", ce);
+			System.exit(1);
+		}
 	}
 
 	/**
@@ -179,10 +208,10 @@ public class MBWSClient extends BaseGame {
 	protected void reinit() {
 	}
 
-    @Override
-    protected void quit() {
-        super.quit();
-        System.exit(0);
-    }
+	@Override
+	protected void quit() {
+		super.quit();
+		System.exit(0);
+	}
 
 }

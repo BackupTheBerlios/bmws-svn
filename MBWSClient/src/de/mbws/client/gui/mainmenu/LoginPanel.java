@@ -56,7 +56,7 @@ public class LoginPanel extends JPanel {
 	private JTextField getUsernameInputField() {
 		if (usernameInputField == null) {
 			usernameInputField = new JTextField();
-			usernameInputField.setText("sack");
+			usernameInputField.setText(MBWSClient.mbwsConfiguration.getString("user",""));
 			usernameInputField.setBounds(new java.awt.Rectangle(320, 100, 120,
 					20));
 		}
@@ -71,7 +71,7 @@ public class LoginPanel extends JPanel {
 	private JPasswordField getPasswordField() {
 		if (passwordField == null) {
 			passwordField = new JPasswordField();
-			passwordField.setText("sack");
+			passwordField.setText(MBWSClient.mbwsConfiguration.getString("password",""));
 			passwordField.setBounds(new java.awt.Rectangle(320, 130, 120, 20));
 		}
 		return passwordField;

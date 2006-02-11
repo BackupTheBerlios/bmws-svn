@@ -17,6 +17,7 @@ import com.jme.util.LoggingSystem;
 import de.mbws.client.MBWSClient;
 import de.mbws.client.controller.AccountController;
 import de.mbws.client.controller.ClientNetworkController;
+import de.mbws.client.data.ClientGlobals;
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.state.MainMenuState;
 import de.mbws.common.events.AbstractGameEvent;
@@ -29,50 +30,58 @@ import de.mbws.common.events.data.generated.AccountData;
  * @author Kerim
  */
 
-public class MainMenuHandler extends BaseInputHandler{
-    // Mouse mouse;
+public class MainMenuHandler extends BaseInputHandler {
+	// Mouse mouse;
 
-    public MainMenuHandler(MainMenuState myState) {
-        super(myState);
-//        setKeyBindings();
-//        setUpMouse();
-    }
+	public MainMenuHandler(MainMenuState myState) {
+		super(myState);
+		// setKeyBindings();
+		// setUpMouse();
+	}
 
-    private void setKeyBindings() {
-        KeyBindingManager.getKeyBindingManager().set("exit", KeyInput.KEY_ESCAPE);
-        addAction(new ExitAction(), "exit", false);
-    }
+	private void setKeyBindings() {
+		KeyBindingManager.getKeyBindingManager().set("exit",
+				KeyInput.KEY_ESCAPE);
+		addAction(new ExitAction(), "exit", false);
+	}
 
-    private void setUpMouse() {
-        DisplaySystem display = DisplaySystem.getDisplaySystem();
-        Mouse mouse = new AbsoluteMouse("Mouse Input", display.getWidth(), display.getHeight());
-        setMouse(mouse);
-    }
+	private void setUpMouse() {
+		DisplaySystem display = DisplaySystem.getDisplaySystem();
+		Mouse mouse = new AbsoluteMouse("Mouse Input", display.getWidth(),
+				display.getHeight());
+		setMouse(mouse);
+	}
 
-    public void login(String login, String pass) {
-        LoggingSystem.getLogger().log(Level.INFO, "trying to log in with login: " + login + " pass: " + pass);
-        // ((MainMenuState)myState).displayInfo("Trying to log in");
-        AccountData accountData = new AccountData();
-        accountData.setUserName(login);
-        accountData.setPassword(pass);
-        AbstractGameEvent event = AccountController.getInstance().createLoginEvent(accountData, ClientPlayerData.getInstance());
-        try {
-            // ClientNetworkController.getInstance().connect("62.75.214.103",5000);
-            ClientNetworkController.getInstance().connect("localhost", 5000);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        ClientNetworkController.getInstance().handleOutgoingEvent(event);
-    }
+	public void login(String login, String pass) {
+		LoggingSystem.getLogger().log(Level.INFO,
+				"trying to log in with login: " + login + " pass: " + pass);
+		AccountData accountData = new AccountData();
+		accountData.setUserName(login);
+		accountData.setPassword(pass);
+		AbstractGameEvent event = AccountController.getInstance()
+				.createLoginEvent(accountData, ClientPlayerData.getInstance());
+		try {
 
-    private static class ExitAction extends InputAction {
-        public void performAction(InputActionEvent evt) {
-            MBWSClient.exit();
-        }
-    }
+			ClientNetworkController.getInstance().connect(
+					MBWSClient.mbwsConfiguration
+							.getString(ClientGlobals.ACCOUNT_SERVER_IP),
+					MBWSClient.mbwsConfiguration
+							.getInt(ClientGlobals.ACCOUNT_SERVER_PORT));
 
-    public MainMenuState getState() {
-        return (MainMenuState) state;
-    }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		ClientNetworkController.getInstance().handleOutgoingEvent(event);
+	}
+
+	private static class ExitAction extends InputAction {
+		public void performAction(InputActionEvent evt) {
+			MBWSClient.exit();
+		}
+	}
+
+	public MainMenuState getState() {
+		return (MainMenuState) state;
+	}
 
 }

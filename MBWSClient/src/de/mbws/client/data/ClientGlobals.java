@@ -36,6 +36,8 @@ public class ClientGlobals {
     public static final String ACCOUNT_CREATION_LABEL_PASSWORDVERIFICATION = "account.creation.label.passwordverification";
     public static final String ACCOUNT_CREATION_LABEL_EMAILADRESS = "account.creation.label.emailaddress";
     
+    public static final String ACCOUNT_SERVER_IP = "accountserver_ip";
+    public static final String ACCOUNT_SERVER_PORT = "accountserver_port";
     
     
     

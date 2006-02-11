@@ -178,8 +178,7 @@ public class ObjectManager {
 	}
 
 	private static Node createPlayer() {
-		Player object = ClientPlayerData.getInstance().getPlayer();// new
-		// Player(ClientPlayerData.getInstance().getPlayer().getObjectID());
+		Player object = ClientPlayerData.getInstance().getPlayer();
 		object.setAlive(true);
 		object.setMovespeed(30);
 		object.setTurnspeed(5);
