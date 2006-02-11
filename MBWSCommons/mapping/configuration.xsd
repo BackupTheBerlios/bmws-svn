@@ -56,6 +56,7 @@
 	        <xsd:sequence>
 	             <xsd:element ref="basicAttributes" />
 	             <xsd:element ref="eventControllers" />
+   			     <xsd:element name="myclientip" type="xsd:string"/>	             
    			     <xsd:element name="accountserverip" type="xsd:string"/>
 			     <xsd:element name="accountserverport" type="xsd:integer"/>
 	         </xsd:sequence>
