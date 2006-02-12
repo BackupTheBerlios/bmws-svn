@@ -3,13 +3,17 @@ package de.mbws.client.gui.options;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.Logger;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
@@ -42,11 +46,12 @@ public class OptionsPanel extends JPanel {
 	private JTextField accountName = new JTextField();
 	private JTextField accountPass = new JTextField();
 
-	private JCheckBox fullScreen;
+	private JCheckBox fullScreen = new JCheckBox("Fullscreen(language!)");
 	private JList resolution;
-	private JComboBox colorDepth;
-	private JComboBox frequency;
-	private JComboBox renderer;
+	
+
+	private boolean optionsHaveChanged = false;
+	private boolean screenOptionsHaveChanged = false;
 
 	private JButton cancelButton;
 
@@ -62,7 +67,7 @@ public class OptionsPanel extends JPanel {
 		} catch (LWJGLException e) {
 			logger.error("Exception trying to get the displaymodes: ", e);
 		}
-		
+
 		initialize();
 	}
 
@@ -81,7 +86,7 @@ public class OptionsPanel extends JPanel {
 			if (allModes[i].getHeight() < 480) {
 				continue;
 			}
-			
+
 			tempModes.add(allModes[i]);
 		}
 		modes = (DisplayMode[]) tempModes.toArray(modes);
@@ -124,6 +129,21 @@ public class OptionsPanel extends JPanel {
 	}
 
 	private JPanel getAudioPanel() {
+		enableSoundEffects.setSelected(MBWSClient.mbwsConfiguration.getBoolean(
+				ClientGlobals.OPTIONS_ENABLE_SOUND, true));
+		enableSoundEffects.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				optionsHaveChanged = true;
+			}
+		});
+		enableMusic.setSelected(MBWSClient.mbwsConfiguration.getBoolean(
+				ClientGlobals.OPTIONS_ENABLE_MUSIC, true));
+		enableMusic.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				optionsHaveChanged = true;
+			}
+		});
+
 		JPanel p = getDefaultPanel();
 		p.add("p left", enableSoundEffects);
 		p.add("br", enableMusic);
@@ -135,13 +155,24 @@ public class OptionsPanel extends JPanel {
 				.getText(ClientGlobals.MENU_LABEL_USERNAME));
 		JLabel accountPassLb = new JLabel(ValueMapper
 				.getText(ClientGlobals.MENU_LABEL_PASSWORD));
-		accountName.setEnabled(useDefaultAccount.isSelected());
-		accountPass.setEnabled(useDefaultAccount.isSelected());
-
+		accountName.setText(MBWSClient.mbwsConfiguration.getString(
+				ClientGlobals.LOGIN, ""));
+		accountPass.setText(MBWSClient.mbwsConfiguration.getString(
+				ClientGlobals.PASSWORD, ""));
+		if (accountName.getText().trim().equals("")) {
+			accountName.setEnabled(false);
+			accountPass.setEnabled(false);
+			useDefaultAccount.setSelected(false);
+		} else {
+			useDefaultAccount.setSelected(true);
+		}
 		useDefaultAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				accountName.setEnabled(useDefaultAccount.isSelected());
 				accountPass.setEnabled(useDefaultAccount.isSelected());
+				accountName.setText("");
+				accountPass.setText("");
+				optionsHaveChanged = true;
 			}
 		});
 
@@ -156,10 +187,42 @@ public class OptionsPanel extends JPanel {
 	}
 
 	private void storeProperties() {
+		if (optionsHaveChanged) {
+			PropertiesConfiguration pc = (PropertiesConfiguration) MBWSClient.mbwsConfiguration;
+			pc.setProperty(ClientGlobals.LOGIN, accountName.getText());
+			pc.setProperty(ClientGlobals.PASSWORD, accountPass.getText());
 
+			pc.setProperty(ClientGlobals.OPTIONS_ENABLE_SOUND,
+					enableSoundEffects.isSelected() ? "true" : "false");
+			pc.setProperty(ClientGlobals.OPTIONS_ENABLE_MUSIC, enableMusic
+					.isSelected() ? "true" : "false");
+			int selectedResolution = resolution.getSelectedIndex();
+			if (selectedResolution != -1) {
+				pc.setProperty(ClientGlobals.WIDTH, modes[resolution
+						.getSelectedIndex()].getWidth());
+				pc.setProperty(ClientGlobals.HEIGHT, modes[resolution
+						.getSelectedIndex()].getHeight());
+				pc.setProperty(ClientGlobals.DEPTH, modes[resolution
+						.getSelectedIndex()].getBitsPerPixel());
+				pc.setProperty(ClientGlobals.FREQUENCY, modes[resolution
+						.getSelectedIndex()].getFrequency());
+				pc.setProperty(ClientGlobals.FULLSCREEN, fullScreen
+						.isSelected() ? "true" : "false");
+			}
+			try {
+				FileWriter fw = new FileWriter(MBWSClient.propertyFile);
+				pc.save(fw);
+			} catch (Exception e) {
+				logger.error("Error writing propertyfile: ", e);
+			}
+			// if (screenOptionsHaveChanged) {
+			// reboot needed
+
+		} 
+		getInputHandler().getState().removeMe(
+				(JPanel) cancelButton.getParent());
 	}
 
-	
 	private JPanel getDefaultPanel() {
 		JPanel p = new JPanel();
 		p.setLayout(new RiverLayout());
@@ -172,47 +235,45 @@ public class OptionsPanel extends JPanel {
 		for (int i = 0; i < modes.length; i++) {
 			info[i] = getResolutionEntry(modes[i]);
 		}
-//		resolution = new JComboBox(info);
-//		resolution.setSelectedItem(MBWSClient.mbwsConfiguration.getInt("WIDTH",
-//				640)
-//				+ " x "
-//				+ MBWSClient.mbwsConfiguration.getInt("HEIGTH", 480)
-//				+ " - "
-//				+ MBWSClient.mbwsConfiguration.getInt("FREQUENCY", 60)
-//				+ "Hz "
-//				+ MBWSClient.mbwsConfiguration.getInt("DEPTH", 16)
-//				+ "bpp");
-//		resolution.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                logger.info("resolution changed");
-//            }
-//        });
-//		 resolution.setBounds(150,140,200,50);
-//			JPanel p = getDefaultPanel();
-//	        p.setLayout(null);
-//			p.add(resolution, null);
-//			
-			resolution = new JList(info);
-			JScrollPane pane = new JScrollPane(resolution);
-			resolution.setSelectedValue(MBWSClient.mbwsConfiguration.getInt("WIDTH",
-					640)
-					+ " x "
-					+ MBWSClient.mbwsConfiguration.getInt("HEIGTH", 480)
-					+ " - "
-					+ MBWSClient.mbwsConfiguration.getInt("FREQUENCY", 60)
-					+ "Hz "
-					+ MBWSClient.mbwsConfiguration.getInt("DEPTH", 16)
-					+ "bpp",true);
-//			resolution.addActionListener(new ActionListener() {
-//	            public void actionPerformed(ActionEvent e) {
-//	                logger.info("resolution changed");
-//	            }
-//	        });
-			 
-				
+		resolution = new JList(info);
+		JScrollPane pane = new JScrollPane(resolution);
+		resolution.setSelectedIndex(getSelectedResolution());
+		resolution.addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				screenOptionsHaveChanged = true;
+				optionsHaveChanged = true;
+			}
+		});
 		JPanel p = getDefaultPanel();
-		p.add(pane);
+		p.add(new JLabel("Resolution(lang)"));
+		p.add("tab", pane);
+		p.add("br", fullScreen);
 		return p;
+	}
+
+	private int getSelectedResolution() {
+		int width = MBWSClient.mbwsConfiguration.getInt(ClientGlobals.WIDTH,
+				640);
+		int height = MBWSClient.mbwsConfiguration.getInt(ClientGlobals.HEIGHT,
+				480);
+		int freq = MBWSClient.mbwsConfiguration.getInt(ClientGlobals.FREQUENCY,
+				60);
+		int depth = MBWSClient.mbwsConfiguration
+				.getInt(ClientGlobals.DEPTH, 16);
+
+		// TODO: doesnt work ! why ???
+		for (int i = 0; i < modes.length; i++) {
+//			System.out.println((modes[i].getWidth() + "" + modes[i].getHeight()
+//					+ "" + modes[i].getFrequency() + "" + modes[i]
+//					.getBitsPerPixel()));
+			if ((modes[i].getWidth() == width)
+					&& (modes[i].getHeight() == height)
+					&& (modes[i].getFrequency() == freq)
+					&& (modes[i].getBitsPerPixel() == depth)) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	private String getResolutionEntry(DisplayMode mode) {
@@ -220,7 +281,6 @@ public class OptionsPanel extends JPanel {
 				+ mode.getFrequency() + "Hz " + mode.getBitsPerPixel() + "bpp");
 	}
 
-	// TODO : Kerim mansour: Do we need this ?
 	private MainMenuHandler getInputHandler() {
 		return (MainMenuHandler) inputHandler;
 	}

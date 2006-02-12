@@ -46,7 +46,7 @@ public class MBWSClient extends BaseGame {
 	private static AbstractGame instance;
 
 	public static Configuration mbwsConfiguration;
-	
+
 	/** High resolution timer for jME. */
 	public static Timer timer;
 
@@ -55,7 +55,7 @@ public class MBWSClient extends BaseGame {
 
 	public static final String CLIENT = "MBWSClient";
 	public static ValueMapper languageResources;
-
+	public static File propertyFile;
 	public static ActionQueue actionQueue = new ActionQueue();
 
 	/**
@@ -103,25 +103,30 @@ public class MBWSClient extends BaseGame {
 			 * Get a DisplaySystem acording to the renderer selected in the
 			 * startup box.
 			 */
-//			display = DisplaySystem.getDisplaySystem(properties.getRenderer());
-//			display.createWindow(properties.getWidth(), properties.getHeight(),
-//					properties.getDepth(), properties.getFreq(), properties
-//							.getFullscreen());
-//			
-			display = DisplaySystem.getDisplaySystem(mbwsConfiguration.getString("RENDERER","LWJGL"));
-			display.createWindow(mbwsConfiguration.getInt("WIDTH",640), mbwsConfiguration.getInt("HEIGHT",480),
-					mbwsConfiguration.getInt("DEPTH",16), mbwsConfiguration.getInt("FREQ",60), mbwsConfiguration
-							.getBoolean("FULLSCREEN",false));
-			
-			
+			// display =
+			// DisplaySystem.getDisplaySystem(properties.getRenderer());
+			// display.createWindow(properties.getWidth(),
+			// properties.getHeight(),
+			// properties.getDepth(), properties.getFreq(), properties
+			// .getFullscreen());
+			//			
+			display = DisplaySystem.getDisplaySystem(mbwsConfiguration
+					.getString("RENDERER", "LWJGL"));
+			display.createWindow(mbwsConfiguration.getInt("WIDTH", 640),
+					mbwsConfiguration.getInt("HEIGHT", 480), mbwsConfiguration
+							.getInt("DEPTH", 16), mbwsConfiguration.getInt(
+							"FREQ", 60), mbwsConfiguration.getBoolean(
+							"FULLSCREEN", false));
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
 
 		/** Get a high resolution timer for FPS updates. */
-		timer = Timer.getTimer(mbwsConfiguration.getString("RENDERER","LWJGL"));
-		//timer = Timer.getTimer(properties.getRenderer());
+		timer = Timer
+				.getTimer(mbwsConfiguration.getString("RENDERER", "LWJGL"));
+		// timer = Timer.getTimer(properties.getRenderer());
 
 	}
 
@@ -180,19 +185,19 @@ public class MBWSClient extends BaseGame {
 				logger.info("using propertyfile: " + args[0]);
 				urlOfPropertyFile = new File(args[0]).toURL();
 			}
-
+			propertyFile = new File(urlOfPropertyFile.getFile());
 			Configuration mbwsConfiguration = new PropertiesConfiguration(
-					new File(urlOfPropertyFile.getFile()));
+					propertyFile);
 
 			MBWSClient app = new MBWSClient();
 
-//			app.setDialogBehaviour(
-//					MBWSClient.FIRSTRUN_OR_NOCONFIGFILE_SHOW_PROPS_DIALOG,
-//					MBWSClient.class.getClassLoader().getResource(
-//							"resources/IntroAndMainMenu/Properties.jpg"));
-//			app.setDialogBehaviour(MBWSClient.ALWAYS_SHOW_PROPS_DIALOG,
-//					MBWSClient.class.getClassLoader().getResource(
-//							"resources/IntroAndMainMenu/Properties.jpg"));
+			// app.setDialogBehaviour(
+			// MBWSClient.FIRSTRUN_OR_NOCONFIGFILE_SHOW_PROPS_DIALOG,
+			// MBWSClient.class.getClassLoader().getResource(
+			// "resources/IntroAndMainMenu/Properties.jpg"));
+			// app.setDialogBehaviour(MBWSClient.ALWAYS_SHOW_PROPS_DIALOG,
+			// MBWSClient.class.getClassLoader().getResource(
+			// "resources/IntroAndMainMenu/Properties.jpg"));
 			MBWSClient.mbwsConfiguration = mbwsConfiguration;
 			app.start();
 		} catch (MalformedURLException mfe) {

@@ -39,11 +39,16 @@ public class ClientGlobals {
     public static final String ACCOUNT_CREATION_LABEL_PASSWORDVERIFICATION = "account.creation.label.passwordverification";
     public static final String ACCOUNT_CREATION_LABEL_EMAILADRESS = "account.creation.label.emailaddress";
     
-    public static final String ACCOUNT_SERVER_IP = "accountserver_ip";
-    public static final String ACCOUNT_SERVER_PORT = "accountserver_port";
+    public static final String ACCOUNT_SERVER_IP = "accountserver.ip";
+    public static final String ACCOUNT_SERVER_PORT = "accountserver.port";
 	public static final String OPTIONS_ENABLE_SOUND = "options.enable.sound";
 	public static final String OPTIONS_ENABLE_MUSIC = "options.enable.music";
     
+	public static final String WIDTH="WIDTH";
+	public static final String HEIGHT="HEIGHT";
+	public static final String DEPTH="DEPTH";
+	public static final String FREQUENCY="FREQUENCY";
+	public static final String FULLSCREEN = "FULLSCREEN";
     
     
 
