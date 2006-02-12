@@ -103,17 +103,25 @@ public class MBWSClient extends BaseGame {
 			 * Get a DisplaySystem acording to the renderer selected in the
 			 * startup box.
 			 */
-			display = DisplaySystem.getDisplaySystem(properties.getRenderer());
-			display.createWindow(properties.getWidth(), properties.getHeight(),
-					properties.getDepth(), properties.getFreq(), properties
-							.getFullscreen());
+//			display = DisplaySystem.getDisplaySystem(properties.getRenderer());
+//			display.createWindow(properties.getWidth(), properties.getHeight(),
+//					properties.getDepth(), properties.getFreq(), properties
+//							.getFullscreen());
+//			
+			display = DisplaySystem.getDisplaySystem(mbwsConfiguration.getString("RENDERER","LWJGL"));
+			display.createWindow(mbwsConfiguration.getInt("WIDTH",640), mbwsConfiguration.getInt("HEIGHT",480),
+					mbwsConfiguration.getInt("DEPTH",16), mbwsConfiguration.getInt("FREQ",60), mbwsConfiguration
+							.getBoolean("FULLSCREEN",false));
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
 
 		/** Get a high resolution timer for FPS updates. */
-		timer = Timer.getTimer(properties.getRenderer());
+		timer = Timer.getTimer(mbwsConfiguration.getString("RENDERER","LWJGL"));
+		//timer = Timer.getTimer(properties.getRenderer());
 
 	}
 
@@ -178,11 +186,14 @@ public class MBWSClient extends BaseGame {
 
 			MBWSClient app = new MBWSClient();
 
-			app.setDialogBehaviour(
-					MBWSClient.FIRSTRUN_OR_NOCONFIGFILE_SHOW_PROPS_DIALOG,
-					MBWSClient.class.getClassLoader().getResource(
-							"resources/IntroAndMainMenu/Properties.jpg"));
-			app.mbwsConfiguration = mbwsConfiguration;
+//			app.setDialogBehaviour(
+//					MBWSClient.FIRSTRUN_OR_NOCONFIGFILE_SHOW_PROPS_DIALOG,
+//					MBWSClient.class.getClassLoader().getResource(
+//							"resources/IntroAndMainMenu/Properties.jpg"));
+//			app.setDialogBehaviour(MBWSClient.ALWAYS_SHOW_PROPS_DIALOG,
+//					MBWSClient.class.getClassLoader().getResource(
+//							"resources/IntroAndMainMenu/Properties.jpg"));
+			MBWSClient.mbwsConfiguration = mbwsConfiguration;
 			app.start();
 		} catch (MalformedURLException mfe) {
 			logger.error("Malformed URL: ", mfe);

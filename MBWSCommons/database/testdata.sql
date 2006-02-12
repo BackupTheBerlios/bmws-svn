@@ -186,6 +186,14 @@ insert into language_text_mapping (text_key,languages_id, text) values ('account
 insert into language_text_mapping (text_key,languages_id, text) values ('account.creation.label.passwordverification',2,'Password Confirmation');
 insert into language_text_mapping (text_key,languages_id, text) values ('account.creation.label.emailaddress',1,'E-Mail-Adresse');
 insert into language_text_mapping (text_key,languages_id, text) values ('account.creation.label.emailaddress',2,'Emailaddress');
+insert into language_text_mapping (text_key,languages_id, text) values ('generic.button.apply',1,'Anwenden');
+insert into language_text_mapping (text_key,languages_id, text) values ('generic.button.apply',2,'Apply');
+insert into language_text_mapping (text_key,languages_id, text) values ('options.store.account',1,'AccountDaten speichern');
+insert into language_text_mapping (text_key,languages_id, text) values ('options.store.account',2,'save account data');
+insert into language_text_mapping (text_key,languages_id, text) values ('options.enable.sound',1,'Soundeffekte aktivieren');
+insert into language_text_mapping (text_key,languages_id, text) values ('options.enable.sound',2,'enable sound');
+insert into language_text_mapping (text_key,languages_id, text) values ('options.enable.music',1,'Musik aktivieren');
+insert into language_text_mapping (text_key,languages_id, text) values ('options.enable.music',2,'enable music');
 
 #
 # Dumping data for table 'languages'

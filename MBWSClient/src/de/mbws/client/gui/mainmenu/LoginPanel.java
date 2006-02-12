@@ -2,7 +2,12 @@ package de.mbws.client.gui.mainmenu;
 
 import java.awt.Color;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 
@@ -11,6 +16,7 @@ import com.jme.input.InputHandler;
 import de.mbws.client.MBWSClient;
 import de.mbws.client.ValueMapper;
 import de.mbws.client.data.ClientGlobals;
+import de.mbws.client.gui.options.OptionsPanel;
 import de.mbws.client.state.handler.MainMenuHandler;
 
 /**
@@ -56,7 +62,8 @@ public class LoginPanel extends JPanel {
 	private JTextField getUsernameInputField() {
 		if (usernameInputField == null) {
 			usernameInputField = new JTextField();
-			usernameInputField.setText(MBWSClient.mbwsConfiguration.getString("user",""));
+			usernameInputField.setText(MBWSClient.mbwsConfiguration.getString(
+					"user", ""));
 			usernameInputField.setBounds(new java.awt.Rectangle(320, 100, 120,
 					20));
 		}
@@ -71,7 +78,8 @@ public class LoginPanel extends JPanel {
 	private JPasswordField getPasswordField() {
 		if (passwordField == null) {
 			passwordField = new JPasswordField();
-			passwordField.setText(MBWSClient.mbwsConfiguration.getString("password",""));
+			passwordField.setText(MBWSClient.mbwsConfiguration.getString(
+					"password", ""));
 			passwordField.setBounds(new java.awt.Rectangle(320, 130, 120, 20));
 		}
 		return passwordField;
@@ -116,34 +124,37 @@ public class LoginPanel extends JPanel {
 			createAccountButton
 					.addActionListener(new java.awt.event.ActionListener() {
 						public void actionPerformed(java.awt.event.ActionEvent e) {
-                            
-//                            setVisible(false);
-						    getInputHandler().getState().showComponentCenteredOnScreenOnTop(new AccountPanel(getInputHandler()));
-//							String password = String.valueOf(passwordField
-//									.getPassword());
-//							String username = usernameInputField.getText();
-//							if (username != null && password != null) {
-//								AccountData account = new AccountData();
-//								account.setUsername(username);
-//								account.setPassword(password);
-//								account.setPasswordConfirmation(password);
-//								account.setEmailaddress("");
-//								try {
-//									ClientNetworkController.getInstance()
-//											.connect("localhost", 5000);
-//								} catch (Exception ex) {
-//
-//								}
-//								ClientNetworkController
-//										.getInstance()
-//										.handleOutgoingEvent(
-//												AccountController
-//														.getInstance()
-//														.createRegisterEvent(
-//																account,
-//																ClientPlayerData
-//																		.getInstance()));
-//							}
+
+							// setVisible(false);
+							getInputHandler()
+									.getState()
+									.showComponentCenteredOnScreenOnTop(
+											new AccountPanel(getInputHandler()));
+							// String password = String.valueOf(passwordField
+							// .getPassword());
+							// String username = usernameInputField.getText();
+							// if (username != null && password != null) {
+							// AccountData account = new AccountData();
+							// account.setUsername(username);
+							// account.setPassword(password);
+							// account.setPasswordConfirmation(password);
+							// account.setEmailaddress("");
+							// try {
+							// ClientNetworkController.getInstance()
+							// .connect("localhost", 5000);
+							// } catch (Exception ex) {
+							//
+							// }
+							// ClientNetworkController
+							// .getInstance()
+							// .handleOutgoingEvent(
+							// AccountController
+							// .getInstance()
+							// .createRegisterEvent(
+							// account,
+							// ClientPlayerData
+							// .getInstance()));
+							// }
 						}
 					});
 		}
@@ -166,10 +177,16 @@ public class LoginPanel extends JPanel {
 			showOptionsButton
 					.addActionListener(new java.awt.event.ActionListener() {
 						public void actionPerformed(java.awt.event.ActionEvent e) {
-							logger.info("actionPerformed()"); // TODO
-																// Auto-generated
-																// Event stub
-																// actionPerformed()
+							logger
+									.info("actionPerformed(): showing option panel");
+							getInputHandler()
+									.getState()
+									.showComponentCenteredOnScreenOnTop(
+											new OptionsPanel(getInputHandler()));
+							// TODO
+							// Auto-generated
+							// Event stub
+							// actionPerformed()
 							// getInputHandler().getMyState().displayInfo("blalbalb");
 							// //displayInfo("blab");
 						}
@@ -202,6 +219,7 @@ public class LoginPanel extends JPanel {
 	/**
 	 * @param args
 	 */
+	// TODO: remove the main method here (Kerim Mansour)
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
