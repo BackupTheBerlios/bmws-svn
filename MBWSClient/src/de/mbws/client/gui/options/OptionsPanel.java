@@ -7,13 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.BevelBorder;
 
 import org.apache.log4j.Logger;
@@ -49,7 +43,7 @@ public class OptionsPanel extends JPanel {
 	private JTextField accountPass = new JTextField();
 
 	private JCheckBox fullScreen;
-	private JComboBox resolution;
+	private JList resolution;
 	private JComboBox colorDepth;
 	private JComboBox frequency;
 	private JComboBox renderer;
@@ -178,23 +172,46 @@ public class OptionsPanel extends JPanel {
 		for (int i = 0; i < modes.length; i++) {
 			info[i] = getResolutionEntry(modes[i]);
 		}
-		resolution = new JComboBox(info);
-		resolution.setSelectedItem(MBWSClient.mbwsConfiguration.getInt("WIDTH",
-				640)
-				+ " x "
-				+ MBWSClient.mbwsConfiguration.getInt("HEIGTH", 480)
-				+ " - "
-				+ MBWSClient.mbwsConfiguration.getInt("FREQUENCY", 60)
-				+ "Hz "
-				+ MBWSClient.mbwsConfiguration.getInt("DEPTH", 16)
-				+ "bpp");
-		resolution.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                logger.info("resolution changed");
-            }
-        });
+//		resolution = new JComboBox(info);
+//		resolution.setSelectedItem(MBWSClient.mbwsConfiguration.getInt("WIDTH",
+//				640)
+//				+ " x "
+//				+ MBWSClient.mbwsConfiguration.getInt("HEIGTH", 480)
+//				+ " - "
+//				+ MBWSClient.mbwsConfiguration.getInt("FREQUENCY", 60)
+//				+ "Hz "
+//				+ MBWSClient.mbwsConfiguration.getInt("DEPTH", 16)
+//				+ "bpp");
+//		resolution.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                logger.info("resolution changed");
+//            }
+//        });
+//		 resolution.setBounds(150,140,200,50);
+//			JPanel p = getDefaultPanel();
+//	        p.setLayout(null);
+//			p.add(resolution, null);
+//			
+			resolution = new JList(info);
+			JScrollPane pane = new JScrollPane(resolution);
+			resolution.setSelectedValue(MBWSClient.mbwsConfiguration.getInt("WIDTH",
+					640)
+					+ " x "
+					+ MBWSClient.mbwsConfiguration.getInt("HEIGTH", 480)
+					+ " - "
+					+ MBWSClient.mbwsConfiguration.getInt("FREQUENCY", 60)
+					+ "Hz "
+					+ MBWSClient.mbwsConfiguration.getInt("DEPTH", 16)
+					+ "bpp",true);
+//			resolution.addActionListener(new ActionListener() {
+//	            public void actionPerformed(ActionEvent e) {
+//	                logger.info("resolution changed");
+//	            }
+//	        });
+			 
+				
 		JPanel p = getDefaultPanel();
-		p.add(resolution);
+		p.add(pane);
 		return p;
 	}
 
