@@ -68,8 +68,7 @@ public class OptionsPanel extends JPanel {
 		} catch (LWJGLException e) {
 			logger.error("Exception trying to get the displaymodes: ", e);
 		}
-		// TODO: load properties first !!
-		loadProperties();
+		
 		initialize();
 	}
 
@@ -166,10 +165,7 @@ public class OptionsPanel extends JPanel {
 
 	}
 
-	private void loadProperties() {
-
-	}
-
+	
 	private JPanel getDefaultPanel() {
 		JPanel p = new JPanel();
 		p.setLayout(new RiverLayout());
@@ -198,7 +194,7 @@ public class OptionsPanel extends JPanel {
             }
         });
 		JPanel p = getDefaultPanel();
-		p.add("vfill",resolution);
+		p.add(resolution);
 		return p;
 	}
 
