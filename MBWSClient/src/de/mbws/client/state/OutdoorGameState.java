@@ -31,7 +31,7 @@ import de.mbws.client.gui.ingame.GameDesktop;
 import de.mbws.client.net.ActionQueue;
 import de.mbws.client.state.handler.BaseInputHandler;
 import de.mbws.client.state.handler.MainGameStateHandler;
-import de.mbws.client.worldloader.DynamicTerrain;
+import de.mbws.client.worldloader.DynamicWorld;
 
 public class OutdoorGameState extends BaseGameState {
 
@@ -44,7 +44,7 @@ public class OutdoorGameState extends BaseGameState {
 	private AbsoluteMouse cursor;
 	private Skybox skybox;
 
-	private DynamicTerrain terrain;
+	private DynamicWorld terrain;
 	private static Logger logger = Logger.getLogger(OutdoorGameState.class);
 
 	/**
@@ -158,7 +158,7 @@ public class OutdoorGameState extends BaseGameState {
 	}
 
 	private void buildEnvironment() {
-		terrain = new DynamicTerrain();
+		terrain = new DynamicWorld();
 		rootNode.attachChild(terrain);
 		try {
 			terrain.init(display, "data\\world\\world");

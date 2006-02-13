@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.Map.Entry;
 
+import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
 import com.jme.math.Vector3f;
@@ -13,15 +14,17 @@ import com.jme.system.DisplaySystem;
 import com.jmex.terrain.TerrainBlock;
 
 /**
- * DynamicTerrain is a super node for the terrain of a world. The world is
- * described in a xml-file and consists of various quadratic terrains forming a
- * rectangular world. The quadratic terrains reside in the same directory as the
- * world description. They are loaded dynamically and attached as subnodes, when
- * they are within a predefined visibility radius of the camera.
+ * DynamicWorld is a super node for the terrain and static objects of a world. The world is
+ * described in a xml-file and consists of various quadratic terrains forming a rectangular world.
+ * The quadratic terrains reside in the same directory as the world description. They are loaded
+ * dynamically and attached as subnodes, when they are within a predefined visibility radius of the
+ * camera.
  * 
  * @author Axel Sammet
  */
-public class DynamicTerrain extends Node {
+public class DynamicWorld extends Node {
+	
+	private static Logger logger = Logger.getLogger(DynamicWorld.class);
 
 	int sectionRows;
 	int sectionColumns;
@@ -31,27 +34,28 @@ public class DynamicTerrain extends Node {
 	int sectionResolution = 65;
 	float sectionWidth = spatialScale * (sectionResolution - 1);
 	float visibilityRadius = 3f * sectionWidth;
-	float visibilityRadius2 = visibilityRadius * visibilityRadius;
 	float prefetchRadius = 4.5f * sectionWidth;
-	float prefetchRadius2 = prefetchRadius * prefetchRadius;
 	float unloadRadius = 6.f * sectionWidth;
-	float unloadRadius2 = unloadRadius * unloadRadius;
+
+	float visibilityRadius2;
+	float unloadRadius2;
+	float prefetchRadius2;
 
 	Map<String, TerrainBlock> sectionCache = new HashMap<String, TerrainBlock>();
 	Set<TerrainBlock> visibleSections = new HashSet<TerrainBlock>();
+	ModelRepository modelRepository = new ModelRepository();
 	SyncTaskQueue taskQueue;
 
 	TerrainLoader terrainLoader;
 	DisplaySystem display;
 
-	public DynamicTerrain() {
-		super("DynamicTerrain");
+	public DynamicWorld() {
+		super("DynamicWorld");
 		taskQueue = new SyncTaskQueue();
 	}
 
 	/**
-	 * @param pathForWorldDescription
-	 *            path to the world description file <b> without </b> file
+	 * @param pathForWorldDescription path to the world description file <b> without </b> file
 	 *            extension.
 	 * @throws IOException
 	 * @throws SAXException
@@ -62,10 +66,14 @@ public class DynamicTerrain extends Node {
 		this.display = display;
 		this.terrainLoader = new TerrainLoader(this);
 		terrainLoader.loadWorldDescription(worldPath + ".wld");
+		visibilityRadius2 = visibilityRadius * visibilityRadius;
+		prefetchRadius2 = prefetchRadius * prefetchRadius;
+		unloadRadius2 = unloadRadius * unloadRadius;
 	}
 
 	/**
 	 * Destroys all background processes initiated by DynamicTerain.
+	 * @deprecated Unnecessary at the moment.
 	 */
 	public void destroy() {
 	}
@@ -139,9 +147,8 @@ public class DynamicTerrain extends Node {
 					0, tb.getLocalTranslation().z + sectionWidth / 2);
 			if (!isInRange(terrainMidPoint, position, visibilityRadius2)) {
 				it.remove();
-				System.err.println("removing " + tb);
+				logger.debug("removing from world cache " + tb);
 				tb.removeFromParent();
-				System.err.println("detaching " + terrainMidPoint + " view: " + position);
 			}
 		}
 	}
@@ -163,28 +170,20 @@ public class DynamicTerrain extends Node {
 	}
 
 	/**
-	 * Updates the dynamic terrain. Call this method from within the
-	 * <code> update()</code>-method of your <code>BaseGame</code>. For the
-	 * given camera position all terrain sections within the preload radius are
-	 * loaded from the world description. Then all visible sections are added to
-	 * the DynamicTerrain. Vice versa all invisible sections are detached and
-	 * sections outside the unloadRadius are left for garbage collection.
+	 * Updates the dynamic terrain. Call this method from within the <code> update()</code>-method
+	 * of your <code>BaseGame</code>. For the given camera position all terrain sections within
+	 * the preload radius are loaded from the world description. Then all visible sections are added
+	 * to the DynamicTerrain. Vice versa all invisible sections are detached and sections outside
+	 * the unloadRadius are left for garbage collection.
 	 * 
 	 * @param cam
 	 */
 	public void update(Camera cam) {
 		taskQueue.process(15);
 		Vector3f location = cam.getLocation();
-
-		// remove preloaded terrain
 		unloadDistantSections(location);
-
-		// remove sections from the model, that are not visible anymore
 		removeInvisibleSections(location);
-
-		// preload terrain for cache
 		preloadAndAddSections(location);
-
 		updateGeometricState(0.0f, true);
 		updateRenderState();
 
@@ -195,8 +194,8 @@ public class DynamicTerrain extends Node {
 	}
 
 	/**
-	 * Determines the height at the given x-z-position. The y-component of the
-	 * given location vector will be ignored.
+	 * Determines the height at the given x-z-position. The y-component of the given location vector
+	 * will be ignored.
 	 * 
 	 * @param location
 	 * @return
@@ -206,9 +205,9 @@ public class DynamicTerrain extends Node {
 	}
 
 	/**
-	 * Determines the steepness at the given x-z-position. The y-component of
-	 * the given location vector will be ignored. The returned value is 1 - the
-	 * cosine of the angle between the terrain and a flat plane.
+	 * Determines the steepness at the given x-z-position. The y-component of the given location
+	 * vector will be ignored. The returned value is 1 - the cosine of the angle between the terrain
+	 * and a flat plane.
 	 * 
 	 * @param location
 	 * @return steepness in a value ranging from 0 to 1

@@ -22,7 +22,7 @@ import com.jme.util.Timer;
 
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.gui.ingame.GameDesktop;
-import de.mbws.client.worldloader.DynamicTerrain;
+import de.mbws.client.worldloader.DynamicWorld;
 import de.mbws.common.events.data.generated.CharacterData;
 
 public class Terrainloader extends BaseGame {
@@ -31,7 +31,7 @@ public class Terrainloader extends BaseGame {
 	// the timer
 	protected Timer timer;
 
-	private DynamicTerrain terrain ;
+	private DynamicWorld terrain ;
 	public GameDesktop gd;
 	// Our camera object for viewing the scene
 	private Camera cam;
@@ -268,7 +268,7 @@ public class Terrainloader extends BaseGame {
 	 * build the height map and terrain block.
 	 */
 	private void buildTerrain() {
-		 terrain = new DynamicTerrain();
+		 terrain = new DynamicWorld();
 		
 		rootNode.attachChild(terrain);
 		try {
