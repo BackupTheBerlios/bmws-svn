@@ -16,14 +16,14 @@ import com.jme.scene.state.TextureState;
 import com.jme.util.TextureManager;
 import com.jmex.terrain.TerrainBlock;
 
-import de.mbws.client.worldloader.DynamicTerrain;
+import de.mbws.client.worldloader.DynamicWorld;
 
 /**
  */
 public class Viewer extends SimpleGame {
 	private int[] map;
 	private int length;
-	private DynamicTerrain terrain; 
+	private DynamicWorld terrain; 
 
 	public Viewer(int[] map, int length) {
 		this.map = map;
@@ -33,7 +33,7 @@ public class Viewer extends SimpleGame {
 	protected void simpleInitGame() {
 		// First a hand made terrain
 		//createTerrainFromMap();
-		terrain = new DynamicTerrain();
+		terrain = new DynamicWorld();
 		rootNode.attachChild(terrain);
 		try {
 			terrain.init(display, "..\\MBWSClient\\data\\world\\world");
