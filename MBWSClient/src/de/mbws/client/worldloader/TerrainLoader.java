@@ -69,11 +69,11 @@ public class TerrainLoader {
 		}
 	}
 
-	public void loadObject(String worldPath, String objectName, float scaling) {
+	public Node loadObject(String worldPath, String objectName, float scaling) {
+		Node objectNode = null;
 		try {
 			FileInputStream fi = new FileInputStream(new File(worldPath + "/objects/" + objectName));
 			URL urlOfTexture = new URL("file://" + worldPath + "/textures/" + objectName);
-			Node objectNode = null;
 			JmeBinaryReader jbr = new JmeBinaryReader();
 			jbr.setProperty("texurl", urlOfTexture);
 			jbr.setProperty("bound", "box"); // Doesnt work ?
@@ -86,6 +86,7 @@ public class TerrainLoader {
 		catch (Exception e) {
 			logger.error(e + ": " + e.getMessage());
 		}
+		return objectNode;
 	}
 
 	public TerrainBlock loadTerrainBlock(int column, int row) throws IOException {
