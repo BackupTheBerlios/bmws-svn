@@ -48,21 +48,24 @@ public class ModelRepository {
 
 	/**
 	 * Loads a section with all contained objects into the section cache.
+	 * 
 	 * @param section_x
 	 * @param section_y
 	 * @param tb
 	 */
 	void preloadSection(int section_x, int section_y) {
-		
+		// TODO loading of the description and loading of the terrain, objects ... has to be split
+		// by different load tasks for the queue
 	}
-	
+
 	/**
 	 * Removes a section from the cache.
+	 * 
 	 * @param section_x
 	 * @param section_y
 	 */
 	void removeSection(int section_x, int section_y) {
-		
+
 	}
 
 	private void prelaodModelInstance(int section_x, int section_y, ModelInstance mod) {
