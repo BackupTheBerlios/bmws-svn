@@ -2,12 +2,7 @@ package de.mbws.client.gui.mainmenu;
 
 import java.awt.Color;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import org.apache.log4j.Logger;
 
@@ -63,7 +58,7 @@ public class LoginPanel extends JPanel {
 		if (usernameInputField == null) {
 			usernameInputField = new JTextField();
 			usernameInputField.setText(MBWSClient.mbwsConfiguration.getString(
-					"user", ""));
+					ClientGlobals.LOGIN, ""));
 			usernameInputField.setBounds(new java.awt.Rectangle(320, 100, 120,
 					20));
 		}
@@ -79,7 +74,7 @@ public class LoginPanel extends JPanel {
 		if (passwordField == null) {
 			passwordField = new JPasswordField();
 			passwordField.setText(MBWSClient.mbwsConfiguration.getString(
-					"password", ""));
+					ClientGlobals.PASSWORD, ""));
 			passwordField.setBounds(new java.awt.Rectangle(320, 130, 120, 20));
 		}
 		return passwordField;
