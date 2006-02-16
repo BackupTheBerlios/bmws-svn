@@ -218,10 +218,10 @@ public class DynamicWorld extends Node {
 		try {
 			float ret = getSectionAt(location.x, location.z).getHeight(location.x,
 					location.z);
-			logger.debug("getHeight ("+location.x+","+location.z+") ==> "+ret);
+			//logger.debug("getHeight ("+location.x+","+location.z+") ==> "+ret);
 			return ret;
 		} catch (Exception e) {
-			logger.debug(e);
+			//logger.debug(e);
 			return 0;
 		}
 	}

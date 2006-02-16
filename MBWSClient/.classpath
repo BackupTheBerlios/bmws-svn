@@ -5,21 +5,21 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/MBWSCommons"/>
 	<classpathentry kind="lib" path="/MBWSCommons/lib/log4j-1.2.9.jar"/>
 	<classpathentry sourcepath="/jme/src" kind="lib" path="lib/jme.jar"/>
-	<classpathentry sourcepath="C:/Programmierung/projekte/jmecvs/src" kind="lib" path="lib/jme-awt.jar"/>
 	<classpathentry kind="lib" path="lib/jme-effects.jar"/>
 	<classpathentry sourcepath="/jme/src" kind="lib" path="lib/jme-model.jar"/>
-	<classpathentry sourcepath="C:/Programmierung/projekte/jmecvs/src" kind="lib" path="lib/jme-sound.jar"/>
-	<classpathentry sourcepath="C:/Programmierung/projekte/jmecvs/src" kind="lib" path="lib/jme-terrain.jar"/>
 	<classpathentry kind="lib" path="lib/jinput.jar"/>
 	<classpathentry kind="lib" path="lib/jogg-0.0.5.jar"/>
 	<classpathentry kind="lib" path="lib/jorbis-0.0.12.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl_fmod3.jar"/>
-	<classpathentry kind="lib" path="D:/Programmierung/Projekte/MBWSCommons/lib/lwjgl.jar"/>
-	<classpathentry sourcepath="C:/Programmierung/projekte/commons-configuration-1.2/commons-configuration-1.2-ide.zip" kind="lib" path="lib/commons-configuration-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/commons-lang-2.1.jar"/>
 	<classpathentry kind="lib" path="lib/commons-collections-3.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/jme"/>
 	<classpathentry kind="lib" path="lib/riverlayout.jar"/>
 	<classpathentry kind="lib" path="/MBWSCommons/lib/castor-0.9.7-xml.jar"/>
+	<classpathentry kind="lib" path="/MBWSCommons/lib/lwjgl.jar"/>
+	<classpathentry kind="lib" path="lib/commons-configuration-1.2.jar"/>
+	<classpathentry sourcepath="C:/Programmierung/projekte/jmecvs/src" kind="lib" path="lib/jme-awt.jar"/>
+	<classpathentry sourcepath="C:/Programmierung/projekte/jmecvs/src" kind="lib" path="lib/jme-sound.jar"/>
+	<classpathentry sourcepath="C:/Programmierung/projekte/jmecvs/src" kind="lib" path="lib/jme-terrain.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
