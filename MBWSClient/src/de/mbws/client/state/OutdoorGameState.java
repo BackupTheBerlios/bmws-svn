@@ -201,7 +201,10 @@ public class OutdoorGameState extends BaseGameState {
 					+ System.currentTimeMillis());
 		}
 		ObjectManager.update(tpf);
-
+		Vector3f location = player.getLocalTranslation();
+		location.y = terrain.getHeight(location);
+		player.setLocalTranslation(location);
+		
 		rootNode.updateGeometricState(tpf, true);
 
 	}

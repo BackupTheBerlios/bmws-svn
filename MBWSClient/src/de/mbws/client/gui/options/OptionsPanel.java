@@ -32,7 +32,7 @@ public class OptionsPanel extends JPanel {
 
 	private static Logger logger = Logger.getLogger(OptionsPanel.class);
 
-	// TODO: is the inputhandler needed ?
+	
 	private InputHandler inputHandler;
 
 	private DisplayMode[] modes = new DisplayMode[0];
@@ -40,15 +40,12 @@ public class OptionsPanel extends JPanel {
 			.getText(ClientGlobals.OPTIONS_ENABLE_SOUND));
 	private JCheckBox enableMusic = new JCheckBox(ValueMapper
 			.getText(ClientGlobals.OPTIONS_ENABLE_MUSIC));
-
 	private JCheckBox useDefaultAccount = new JCheckBox(ValueMapper
 			.getText(ClientGlobals.OPTIONS_STORE_ACCOUNT));
 	private JTextField accountName = new JTextField();
 	private JTextField accountPass = new JTextField();
-
 	private JCheckBox fullScreen = new JCheckBox("Fullscreen(language!)");
 	private JList resolution;
-	
 
 	private boolean optionsHaveChanged = false;
 	private boolean screenOptionsHaveChanged = false;
@@ -215,12 +212,13 @@ public class OptionsPanel extends JPanel {
 			} catch (Exception e) {
 				logger.error("Error writing propertyfile: ", e);
 			}
-			// if (screenOptionsHaveChanged) {
-			// reboot needed
-
-		} 
-		getInputHandler().getState().removeMe(
-				(JPanel) cancelButton.getParent());
+			if (screenOptionsHaveChanged) {
+				// TODO: Do a reboot
+				MBWSClient.exit();
+			}
+		}
+		getInputHandler().getState()
+				.removeMe((JPanel) cancelButton.getParent());
 	}
 
 	private JPanel getDefaultPanel() {
@@ -263,9 +261,10 @@ public class OptionsPanel extends JPanel {
 
 		// TODO: doesnt work ! why ???
 		for (int i = 0; i < modes.length; i++) {
-//			System.out.println((modes[i].getWidth() + "" + modes[i].getHeight()
-//					+ "" + modes[i].getFrequency() + "" + modes[i]
-//					.getBitsPerPixel()));
+			// System.out.println((modes[i].getWidth() + "" +
+			// modes[i].getHeight()
+			// + "" + modes[i].getFrequency() + "" + modes[i]
+			// .getBitsPerPixel()));
 			if ((modes[i].getWidth() == width)
 					&& (modes[i].getHeight() == height)
 					&& (modes[i].getFrequency() == freq)
