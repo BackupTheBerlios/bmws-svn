@@ -21,6 +21,7 @@
 		<property name="dialect">
 			org.hibernate.dialect.MySQLDialect
 		</property>		
+		<property name="connection.autoReconnect">true</property>
 		<property name="hibernate.show_sql">false</property>
 		<property name="hibernate.transaction.factory_class">
 			org.hibernate.transaction.JDBCTransactionFactory
