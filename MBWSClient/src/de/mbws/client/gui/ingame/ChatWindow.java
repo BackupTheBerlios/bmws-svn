@@ -4,12 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JEditorPane;
-import javax.swing.JInternalFrame;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
+import javax.swing.*;
 import javax.swing.text.StyledDocument;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
@@ -73,9 +68,14 @@ public class ChatWindow extends JInternalFrame {
 		return chatTf;
 	}
 
-	private JPanel getAllMessagesPanel() {
-		JPanel p = new JPanel(new BorderLayout());
-		p.add(getTextPane(allMessages), BorderLayout.CENTER);
+	private JScrollPane getAllMessagesPanel() {
+		JScrollPane p = new JScrollPane(getTextPane(allMessages));//new BorderLayout());
+		//p.setLayout(new BorderLayout());
+		//p.getViewport().add(getTextPane(allMessages));
+//		p.setVerticalScrollBarPolicy(
+//                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		//p.add(getTextPane(allMessages));//, BorderLayout.CENTER);
+		//p.setPreferredSize(new Dimension (200,100));
 		return p;
 	}
 
