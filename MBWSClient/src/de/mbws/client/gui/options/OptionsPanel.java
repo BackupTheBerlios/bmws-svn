@@ -10,6 +10,8 @@ import java.util.Comparator;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -46,6 +48,8 @@ public class OptionsPanel extends JPanel {
 	private JTextField accountPass = new JTextField();
 	private JCheckBox fullScreen = new JCheckBox("Fullscreen(language!)");
 	private JList resolution;
+	
+	public JScrollPane pane;
 
 	private boolean optionsHaveChanged = false;
 	private boolean screenOptionsHaveChanged = false;
@@ -234,7 +238,7 @@ public class OptionsPanel extends JPanel {
 			info[i] = getResolutionEntry(modes[i]);
 		}
 		resolution = new JList(info);
-		JScrollPane pane = new JScrollPane(resolution);
+		pane = new JScrollPane(resolution);
 		resolution.setSelectedIndex(getSelectedResolution());
 		resolution.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
@@ -242,6 +246,13 @@ public class OptionsPanel extends JPanel {
 				optionsHaveChanged = true;
 			}
 		});
+		//TODO:See if we can get rid of that
+		 // note: the listener added here is only a fix for JDK1.4 - when your app is Java5 you don't need that one
+		pane.getViewport().addChangeListener( new ChangeListener() {
+            public void stateChanged( ChangeEvent e ) {
+            	pane.getViewport().repaint();
+            }
+        } );
 		JPanel p = getDefaultPanel();
 		p.add(new JLabel("Resolution(lang)"));
 		p.add("tab", pane);
