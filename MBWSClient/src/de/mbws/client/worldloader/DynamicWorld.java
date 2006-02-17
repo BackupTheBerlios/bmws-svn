@@ -132,15 +132,9 @@ public class DynamicWorld extends Node {
 
 		public void run() {
 			try {
-<<<<<<< .mine
 				sectionCache.put(x + "_" + z, loader.loadTerrainBlock(x, z));
 			}
 			catch (IOException e) {
-=======
-				sectionCache.put(x + "_" + z, terrainLoader.loadTerrainBlock(x,
-						z));
-			} catch (IOException e) {
->>>>>>> .r430
 				e.printStackTrace();
 			}
 		}
