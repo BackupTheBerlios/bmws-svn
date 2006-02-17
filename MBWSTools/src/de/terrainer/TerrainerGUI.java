@@ -94,6 +94,7 @@ public class TerrainerGUI extends JFrame {
 			int size = calculateNextPowerOf2(max);
 			System.out.println("size: " + size);
 			currentHeightMap = new HeightMap(size+1, size+1);
+			System.out.println("using heightmap of "+(size+1));
 			heightMapComp.setHeightMap(currentHeightMap);
 		}
 	}
@@ -129,7 +130,7 @@ public class TerrainerGUI extends JFrame {
 				tp.addSection(x, y, currentHeightMap.getLinearMap());
 			}
 		}
-		tp.writeWorld();
+		tp.writeWorld("world", size, size, currentHeightMap.getWidth());
 	}
 
 	private JPanel createHeightMapPanel() {
