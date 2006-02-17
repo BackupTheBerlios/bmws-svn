@@ -41,6 +41,7 @@ public class TerrainLoader {
 			NamedNodeMap attributes = document.getFirstChild().getAttributes();
 			dynamicTerrain.sectionColumns = readIntAttribute(attributes, "columns");
 			dynamicTerrain.sectionRows = readIntAttribute(attributes, "rows");
+			dynamicTerrain.sectionResolution = readIntAttribute(attributes, "resolution");
 			// spatial size, spatial scale...
 		}
 		catch (ParserConfigurationException e) {

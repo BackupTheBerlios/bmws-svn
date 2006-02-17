@@ -17,7 +17,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class TerrainPersistence {
-	private int sectionWidth = 128;
+	private int sectionResolution = 128;
 	private int sectionColumns = 8;
 	private int sectionRows = 8;
 	private String worldName;
@@ -51,7 +51,7 @@ public class TerrainPersistence {
 			worldElement = document.createElement("World");
 			worldElement.setAttribute("columns", Integer.toString(sectionColumns));
 			worldElement.setAttribute("rows", Integer.toString(sectionRows));
-			worldElement.setAttribute("sectionWidth", Integer.toString(sectionWidth));
+			worldElement.setAttribute("resolution", Integer.toString(sectionResolution));
 			document.appendChild(worldElement);
 		}
 		catch (Exception e) {
@@ -83,7 +83,10 @@ public class TerrainPersistence {
 		}
 	}
 	
-	public void writeWorld() {
+	public void writeWorld(String name, int cols, int rows, int resolution) {
+		sectionColumns = cols;
+		sectionRows = rows;
+		sectionResolution = resolution;
 		createWorldDescription();
 		for (int x=0; x<sectionColumns; x++) {
 			for (int y=0; y<sectionRows; y++) {

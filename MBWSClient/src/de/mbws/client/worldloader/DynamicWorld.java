@@ -221,7 +221,7 @@ public class DynamicWorld extends Node {
 			//logger.debug("getHeight ("+location.x+","+location.z+") ==> "+ret);
 			return ret;
 		} catch (Exception e) {
-			//logger.debug(e);
+			logger.debug(e);
 			return 0;
 		}
 	}
