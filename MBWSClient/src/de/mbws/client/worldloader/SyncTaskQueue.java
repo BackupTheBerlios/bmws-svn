@@ -15,7 +15,7 @@ public class SyncTaskQueue {
 		}
 	}
 
-	LinkedList<QueueEntry> queue = new LinkedList<QueueEntry>();
+	private LinkedList<QueueEntry> queue = new LinkedList<QueueEntry>();
 
 	public void enqueue(Object taskIdentifier, Runnable task) {
 		Iterator<QueueEntry> it = queue.iterator();

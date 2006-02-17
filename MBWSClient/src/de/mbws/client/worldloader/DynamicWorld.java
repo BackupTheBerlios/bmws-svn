@@ -44,10 +44,10 @@ public class DynamicWorld extends Node {
 
 	Map<String, TerrainBlock> sectionCache = new HashMap<String, TerrainBlock>();
 	Set<TerrainBlock> visibleSections = new HashSet<TerrainBlock>();
-	ModelRepository modelRepository = new ModelRepository();
+	ObjectRepository modelRepository = new ObjectRepository();
 	SyncTaskQueue taskQueue;
 
-	TerrainLoader terrainLoader;
+	ObjectLoader loader;
 	DisplaySystem display;
 
 	public DynamicWorld() {
@@ -66,8 +66,8 @@ public class DynamicWorld extends Node {
 			throws SAXException, IOException {
 		this.worldPath = pathForWorldDescription;
 		this.display = display;
-		this.terrainLoader = new TerrainLoader(this);
-		terrainLoader.loadWorldDescription(worldPath + ".wld");
+		this.loader = new ObjectLoader(this);
+		loader.loadWorldDescription(worldPath + ".wld");
 		visibilityRadius2 = visibilityRadius * visibilityRadius;
 		prefetchRadius2 = prefetchRadius * prefetchRadius;
 		unloadRadius2 = unloadRadius * unloadRadius;
@@ -132,9 +132,15 @@ public class DynamicWorld extends Node {
 
 		public void run() {
 			try {
+<<<<<<< .mine
+				sectionCache.put(x + "_" + z, loader.loadTerrainBlock(x, z));
+			}
+			catch (IOException e) {
+=======
 				sectionCache.put(x + "_" + z, terrainLoader.loadTerrainBlock(x,
 						z));
 			} catch (IOException e) {
+>>>>>>> .r430
 				e.printStackTrace();
 			}
 		}
