@@ -1,16 +1,12 @@
 package de.mbws.client.gui.ingame;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyleContext;
 import javax.swing.text.StyledDocument;
 import javax.swing.text.html.HTMLDocument;
 
@@ -29,10 +25,11 @@ public class ChatWindow extends JInternalFrame {
 	private StyledDocument privateMessages = new HTMLDocument();
 	private StyledDocument consoleMessages = new HTMLDocument();
 	private JTextField chatTf;
-	
+
 	private JTextPane messagesTP;
-	
-	public JScrollPane pane; //testpurposes
+	private JTextPane groupMessagesTP;
+	private JTextPane privateMessagesTP;
+	private JTextPane consoleMessagesTP;
 
 	public ChatWindow(String title) {
 		super(title, true, true, true, true);
@@ -49,9 +46,9 @@ public class ChatWindow extends JInternalFrame {
 		JTabbedPane tp = new JTabbedPane();
 		// TODO: use constants for tabtitles
 		tp.addTab("All", getAllMessagesPanel());
-//		tp.addTab("Group", getGroupMessagesPanel());
-//		tp.addTab("Private Message", getPrivateMessagesPanel());
-//		tp.addTab("Console", getConsoleMessagesPanel());
+		tp.addTab("Group", getGroupMessagesPanel());
+		tp.addTab("Private Message", getPrivateMessagesPanel());
+		tp.addTab("Console", getConsoleMessagesPanel());
 
 		return tp;
 	}
@@ -78,94 +75,51 @@ public class ChatWindow extends JInternalFrame {
 	}
 
 	private JScrollPane getAllMessagesPanel() {
-		 pane = new JScrollPane();//new BorderLayout());
-		//p.setLayout(new BorderLayout());
-		
 		messagesTP = new JTextPane();
 		allMessages = messagesTP.getStyledDocument();
-		
-		Style def = StyleContext.getDefaultStyleContext().getStyle(
-				StyleContext.DEFAULT_STYLE);
-		Style st = allMessages.addStyle("roman", def);
-		st = allMessages.addStyle("all", def);
-		StyleConstants.setForeground(st, Color.BLACK);
+		GlobalStyleSheet.getInstance().setupStyles(allMessages);
 		messagesTP.setEditable(false);
-		
-		pane.getViewport().add(messagesTP);
+		return addToScrollPane(messagesTP);
+	}
+
+	private JScrollPane getGroupMessagesPanel() {
+		groupMessagesTP = new JTextPane();
+		groupMessages = groupMessagesTP.getStyledDocument();
+		GlobalStyleSheet.getInstance().setupStyles(groupMessages);
+		groupMessagesTP.setEditable(false);
+		return addToScrollPane(groupMessagesTP);
+	}
+
+	private JScrollPane getPrivateMessagesPanel() {
+		privateMessagesTP = new JTextPane();
+		StyledDocument doc = privateMessagesTP.getStyledDocument();
+		GlobalStyleSheet.getInstance().setupStyles(doc);
+		privateMessagesTP.setEditable(false);
+		return addToScrollPane(privateMessagesTP);
+	}
+
+	private JScrollPane getConsoleMessagesPanel() {
+		consoleMessagesTP = new JTextPane();
+		StyledDocument doc = consoleMessagesTP.getStyledDocument();
+		GlobalStyleSheet.getInstance().setupStyles(doc);
+		consoleMessagesTP.setEditable(false);
+		return addToScrollPane(consoleMessagesTP);
+	}
+
+	private JScrollPane addToScrollPane(JComponent c) {
+		final JScrollPane pane = new JScrollPane();
+		pane.getViewport().add(c);
 		pane.revalidate();
-//		TODO:See if we can get rid of that
-		 // note: the listener added here is only a fix for JDK1.4 - when your app is Java5 you don't need that one
-		pane.getViewport().addChangeListener( new ChangeListener() {
-           public void stateChanged( ChangeEvent e ) {
-           	pane.getViewport().repaint();
-           }
-       } );
-//		p.setVerticalScrollBarPolicy(
-//                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		//p.add(getTextPane(allMessages));//, BorderLayout.CENTER);
-		//p.setPreferredSize(new Dimension (200,100));
+		// TODO:See if we can get rid of that
+		// note: the listener added here is only a fix for JDK1.4 - when your
+		// app is Java5 you don't need that one
+		pane.getViewport().addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				pane.getViewport().repaint();
+			}
+		});
 		return pane;
 	}
-	
-//	private JScrollPane getAllMessagesPanel() {
-//		 pane = new JScrollPane();//new BorderLayout());
-//		//p.setLayout(new BorderLayout());
-//		messagesTP = getTextPane(allMessages);
-//		pane.getViewport().add(getTextPane(allMessages));
-////		TODO:See if we can get rid of that
-//		 // note: the listener added here is only a fix for JDK1.4 - when your app is Java5 you don't need that one
-//		pane.getViewport().addChangeListener( new ChangeListener() {
-//          public void stateChanged( ChangeEvent e ) {
-//          	pane.getViewport().repaint();
-//          }
-//      } );
-////		p.setVerticalScrollBarPolicy(
-////               JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-//		//p.add(getTextPane(allMessages));//, BorderLayout.CENTER);
-//		//p.setPreferredSize(new Dimension (200,100));
-//		return pane;
-//	}
-
-//	private JPanel getGroupMessagesPanel() {
-//		JPanel p = new JPanel(new BorderLayout());
-//		p.add(getTextPane(groupMessages), BorderLayout.CENTER);
-//		return p;
-//	}
-//
-//	private JPanel getPrivateMessagesPanel() {
-//		JPanel p = new JPanel(new BorderLayout());
-//		p.add(getTextPane(privateMessages), BorderLayout.CENTER);
-//		return p;
-//	}
-//
-//	private JPanel getConsoleMessagesPanel() {
-//		JPanel p = new JPanel(new BorderLayout());
-//		p.add(getTextPane(consoleMessages), BorderLayout.CENTER);
-//		return p;
-//	}
-
-	private JTextPane getTextPane(StyledDocument doc) {
-		JTextPane textPane = new JTextPane();
-		allMessages = textPane.getStyledDocument();
-		//textPane.setContentType("text/html");
-		GlobalStyleSheet.getInstance().setupStyles(allMessages);
-		textPane.setStyledDocument(allMessages);
-//		((HTMLEditorKit) textPane.getEditorKit())
-//				.setStyleSheet(GlobalStyleSheet.getInstance());
-		textPane.setEnabled(false);
-		return textPane;
-	}
-	
-//	private JEditorPane getEditorPane(StyledDocument doc) {
-//		JEditorPane textPane = new JTextPane();
-//		textPane.setContentType("text/html");
-//		GlobalStyleSheet.getInstance().setupStyles(doc);
-//		textPane.setDocument(doc);
-//		((HTMLEditorKit) textPane.getEditorKit())
-//				.setStyleSheet(GlobalStyleSheet.getInstance());
-//		textPane.setEnabled(false);
-//		return textPane;
-//	}
 
 	public void parseChat(String text) {
 		switch (text.charAt(0)) {
@@ -179,25 +133,25 @@ public class ChatWindow extends JInternalFrame {
 				updateMessages(EventTypes.CHAT_SAY, text);
 				ClientNetworkController.getInstance().handleOutgoingEvent(
 						ChatController.getInstance().createChatEvent(text,
-								EventTypes.CHAT_SAY,""));
+								EventTypes.CHAT_SAY, ""));
 			}
 		}
 	}
 
 	private void onCommand(String command) {
-		String text = command.substring(command.indexOf(" ")+1);
+		String text = command.substring(command.indexOf(" ") + 1);
 		if (command.startsWith("msg ")) {
 			logger.info("private message: " + text);
 			updateMessages(EventTypes.CHAT_PM, text);
 			int indexForMessage = text.indexOf(" ");
-			if (indexForMessage>1) {
-			String realMessage = text.substring(indexForMessage+1);
-			String recipient = text.substring(0,indexForMessage);
-			logger.info("recipient: "+recipient);
-			logger.info("message: "+realMessage);
-			ClientNetworkController.getInstance().handleOutgoingEvent(
-					ChatController.getInstance().createChatEvent(realMessage,
-							EventTypes.CHAT_PM,recipient));
+			if (indexForMessage > 1) {
+				String realMessage = text.substring(indexForMessage + 1);
+				String recipient = text.substring(0, indexForMessage);
+				logger.info("recipient: " + recipient);
+				logger.info("message: " + realMessage);
+				ClientNetworkController.getInstance().handleOutgoingEvent(
+						ChatController.getInstance().createChatEvent(
+								realMessage, EventTypes.CHAT_PM, recipient));
 			} else {
 				logger.warn("private msg without recipient");
 			}
@@ -206,51 +160,43 @@ public class ChatWindow extends JInternalFrame {
 			updateMessages(EventTypes.CHAT_ADMIN_COMMAND, text);
 			ClientNetworkController.getInstance().handleOutgoingEvent(
 					ChatController.getInstance().createChatEvent(text,
-							EventTypes.CHAT_ADMIN_COMMAND,""));
+							EventTypes.CHAT_ADMIN_COMMAND, ""));
 		} else if (command.startsWith("grp ")) {
 			logger.info("Group message: " + text);
 			updateMessages(EventTypes.CHAT_GROUP_SAY, text);
 			ClientNetworkController.getInstance().handleOutgoingEvent(
 					ChatController.getInstance().createChatEvent(text,
-							EventTypes.CHAT_GROUP_SAY,""));
+							EventTypes.CHAT_GROUP_SAY, ""));
 		} else {
-			logger.warn("Message unknown: "+text);
+			logger.warn("Message unknown: " + text);
 		}
 	}
 
 	public void updateMessages(int messageType, String message) {
 		if (messageType == EventTypes.CHAT_SAY) {
-			addMessage(allMessages, message, GlobalStyleSheet.ALL);
+			addMessage(messagesTP, message, GlobalStyleSheet.ALL);
 		} else if (messageType == EventTypes.CHAT_PM) {
-			addMessage(allMessages, message, GlobalStyleSheet.PM);
-			addMessage(privateMessages, message, GlobalStyleSheet.PM);
+			addMessage(messagesTP, message, GlobalStyleSheet.PM);
+			addMessage(privateMessagesTP, message, GlobalStyleSheet.PM);
 		} else if (messageType == EventTypes.CHAT_ADMIN_COMMAND) {
-			addMessage(allMessages, message, GlobalStyleSheet.ADMIN);
-			addMessage(consoleMessages, message, GlobalStyleSheet.ADMIN);
+			addMessage(messagesTP, message, GlobalStyleSheet.ADMIN);
+			addMessage(consoleMessagesTP, message, GlobalStyleSheet.ADMIN);
 		} else if (messageType == EventTypes.CHAT_GROUP_SAY) {
-			addMessage(allMessages, message, GlobalStyleSheet.GROUP);
-			addMessage(groupMessages, message, GlobalStyleSheet.GROUP);
+			addMessage(messagesTP, message, GlobalStyleSheet.GROUP);
+			addMessage(groupMessagesTP, message, GlobalStyleSheet.GROUP);
 		}
 	}
 
-	public void addMessage(StyledDocument doc, String text, String attribute) {
+	public void addMessage(JTextPane textPane, String text, String attribute) {
 		try {
-			doc.insertString(doc.getEndPosition().getOffset(), text+"\n" , doc
-					.getStyle("all"));
-//			doc.insertString(doc.getEndPosition().getOffset(), text + "\n", doc
-//					.getStyle(attribute));
-			logger.info(messagesTP.getText());
-			logger.info(messagesTP.getText().length());
-			logger.info(messagesTP.getDocument().getLength());
-			messagesTP.setCaretPosition(doc.getEndPosition().getOffset()-1);//.getOffset() - 1);
-			//messagesTP.getText().length()-1);
-			//messagesTP.getDocument().getLength());
+			StyledDocument doc = textPane.getStyledDocument();
+			doc.insertString(doc.getEndPosition().getOffset(), text + "\n", doc
+					.getStyle(attribute));
+			textPane.setCaretPosition(doc.getEndPosition().getOffset() - 1);
+
 		} catch (Exception e) {
 			logger.error("addMessage()", e);
 		}
 	}
-	//
-	// public JTextPane getChatAndMessagesTP() {
-	// return chatAndMessagesTP;
-	// }
+
 }

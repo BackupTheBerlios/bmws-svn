@@ -22,8 +22,7 @@ public class GlobalStyleSheet extends StyleSheet{
 	public static String PM = "privatemessage";
 	public static String GROUP = "group";
 
-	//private static StyleSheet styleSheet = new StyleSheet();
-
+	
 	private GlobalStyleSheet() {
 		setDefaultCSS();
 	}
@@ -59,7 +58,7 @@ public class GlobalStyleSheet extends StyleSheet{
 		st = doc.addStyle("underline", def);
 		StyleConstants.setUnderline(st, true);
 		st = doc.addStyle("all", def);
-		StyleConstants.setForeground(st, Color.WHITE);
+		StyleConstants.setForeground(st, Color.BLACK);
 		st = doc.addStyle("admin", def);
 		StyleConstants.setForeground(st, Color.ORANGE);
 		st = doc.addStyle("privatemessage", def);
