@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.util.logging.Level;
 
 import javax.swing.JDesktopPane;
+import javax.swing.JLayeredPane;
 
 import org.apache.log4j.Logger;
 
@@ -56,12 +57,6 @@ public class MainMenuState extends BaseGameState {
 	}
 
 	private void setupMenu() {
-//		try {
-//			UIManager.setLookAndFeel(new MetalLookAndFeel());
-//		} catch (Exception e) {
-//			// TODO: handle exception
-//		}
-
 		// jmeDesktop.getJDesktop().setBackground(new Color(1, 1, 1, 0.2f));
 		JDesktopPane desktopPane = jmeDesktop.getJDesktop();
 //		desktopPane.removeAll();
@@ -69,8 +64,8 @@ public class MainMenuState extends BaseGameState {
 		int x = (desktopPane.getWidth() / 2) - (loginPanel.getWidth() / 2);
 		int y = (desktopPane.getHeight() / 2) - (loginPanel.getHeight() / 2);
 		loginPanel.setLocation(x, y);
-		desktopPane.add(loginPanel);
-		desktopPane.setLayer(loginPanel, 0);
+		desktopPane.add(loginPanel,JLayeredPane.DEFAULT_LAYER);
+		//desktopPane.setLayer(loginPanel, JLayeredPane.DEFAULT_LAYER);
 		desktopPane.repaint();
 		desktopPane.revalidate();
 	}

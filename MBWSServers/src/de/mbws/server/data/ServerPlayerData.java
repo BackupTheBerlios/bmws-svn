@@ -3,7 +3,7 @@ package de.mbws.server.data;
 import de.mbws.common.Globals;
 import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.data.db.generated.Characterdata;
-import de.mbws.common.events.data.generated.WorldObject;
+import de.mbws.common.events.data.generated.CharacterData;
 
 /**
  * Description: 
@@ -14,7 +14,7 @@ public class ServerPlayerData extends AbstractPlayerData {
 
     
     private Characterdata activeCharacter;
-    private WorldObject movementInformation;
+    private CharacterData movementInformation;
     
     public Characterdata getActiveCharacter() {
         return activeCharacter;
@@ -24,11 +24,11 @@ public class ServerPlayerData extends AbstractPlayerData {
         this.activeCharacter = activeCharacter;
     }
 
-    public WorldObject getMovementInformation() {
+    public CharacterData getMovementInformation() {
         return movementInformation;
     }
 
-    public void setMovementInformation(WorldObject movementInformation) {
+    public void setMovementInformation(CharacterData movementInformation) {
         this.movementInformation = movementInformation;
     }
     

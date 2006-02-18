@@ -27,6 +27,7 @@ import com.jmex.model.XMLparser.JmeBinaryReader;
 import com.jmex.model.animation.JointController;
 import com.jmex.model.animation.KeyframeController;
 
+import de.mbws.common.events.data.generated.CharacterData;
 import de.mbws.common.events.data.generated.CharacterVisualAppearance;
 import de.mbws.common.events.data.generated.WorldObject;
 
@@ -84,6 +85,7 @@ public class ObjectManager {
 		}
 		return player;
 	}
+
 	/**
 	 * createObject created the object based on a worldobject
 	 * 
@@ -93,61 +95,60 @@ public class ObjectManager {
 	// TODO: Replace GameObject by the correct type
 	public static AbstractGameObject create(WorldObject wo) {
 
-//		if (wo.getMovespeed() == 0 && wo.getTurnspeed() == 0) {
-//			// TODO Set a nonmovable object here
-//			logger.info("Supposed to set a nonmovable object here");
-//			//GameObject object = new GameObject(wo.getObjectID());
-//		} else {
-			logger.info("Supposed to set a movable object here");
-			MovableObject object = new MovableObject(wo.getObjectID());
-			object.setAlive(true);
-			// object.setMovespeed(wo.getMovespeed());
-			// object.setTurnspeed(wo.getTurnspeed());
-			// TODO: Just for testing:
-			object.setMovespeed(30);
-			object.setTurnspeed(5);
-			// box stand in
-			Box b = new Box("box", new Vector3f(), 10f, 5f, 10f);
-			b.setDefaultColor(new ColorRGBA(ColorRGBA.white));
-			b.setModelBound(new BoundingBox());
-			b.updateModelBound();
+		// if (wo.getMovespeed() == 0 && wo.getTurnspeed() == 0) {
+		// // TODO Set a nonmovable object here
+		// logger.info("Supposed to set a nonmovable object here");
+		// //GameObject object = new GameObject(wo.getObjectID());
+		// } else {
+		logger.info("Supposed to set a movable object here");
+		MovableObject object = new MovableObject(wo.getObjectID());
+		object.setAlive(true);
+		// object.setMovespeed(wo.getMovespeed());
+		// object.setTurnspeed(wo.getTurnspeed());
+		// TODO: Just for testing:
+		object.setMovespeed(30);
+		object.setTurnspeed(5);
+		// box stand in
+		Box b = new Box("box", new Vector3f(), 10f, 5f, 10f);
+		b.setDefaultColor(new ColorRGBA(ColorRGBA.white));
+		b.setModelBound(new BoundingBox());
+		b.updateModelBound();
 
-			// TODO: "player2 node" wont work, trying integer.toString of
-			// objectid!!
-			Node player2 = new Node(wo.getObjectID());
-			
-		
-			player2.setLocalTranslation(new Vector3f(wo.getLocation().getX(),
-					wo.getLocation().getY(), wo.getLocation().getZ()));
-			player2.setLocalRotation(new Quaternion(wo.getHeading().getX(), wo
-					.getHeading().getY(), wo.getHeading().getZ(), wo
-					.getHeading().getW()));
+		// TODO: "player2 node" wont work, trying integer.toString of
+		// objectid!!
+		Node player2 = new Node(wo.getObjectID());
 
-			rootNode.attachChild(player2);
-			player2.attachChild(b);
-			player2.updateWorldBound();
-			object.setModel(player2);
-			rootNode.attachChild(player2);
+		player2.setLocalTranslation(new Vector3f(wo.getLocation().getX(), wo
+				.getLocation().getY(), wo.getLocation().getZ()));
+		player2.setLocalRotation(new Quaternion(wo.getHeading().getX(), wo
+				.getHeading().getY(), wo.getHeading().getZ(), wo.getHeading()
+				.getW()));
 
-			// TODO Remove above
-			// STEP1: Load
-			// Node n = ....
-			// object.setModel(n);
-			// STEP2: Set coordinates and attach
-			// m_rootNode.attachChild(n);
-			// STEP 3: UPDATE STATES
-			// ((Node) (n)).setLocalScale(15F);
-			// ((Node) (n)).updateGeometricState(10F, true);
-			// ((Node) (n)).updateRenderState();
+		rootNode.attachChild(player2);
+		player2.attachChild(b);
+		player2.updateWorldBound();
+		object.setModel(player2);
+		rootNode.attachChild(player2);
 
-			// object.initialize(map);
-			synchronized (objects) {
-				objects.put(object.getObjectID(), object);
-			}
+		// TODO Remove above
+		// STEP1: Load
+		// Node n = ....
+		// object.setModel(n);
+		// STEP2: Set coordinates and attach
+		// m_rootNode.attachChild(n);
+		// STEP 3: UPDATE STATES
+		// ((Node) (n)).setLocalScale(15F);
+		// ((Node) (n)).updateGeometricState(10F, true);
+		// ((Node) (n)).updateRenderState();
 
-			return object;
-//		}
-//		return null;
+		// object.initialize(map);
+		synchronized (objects) {
+			objects.put(object.getObjectID(), object);
+		}
+
+		return object;
+		// }
+		// return null;
 	}
 
 	public static void detach(String id) {
@@ -276,8 +277,8 @@ public class ObjectManager {
 			// bs.setCenter(new Vector3f(0, 0, 0));
 			// bs.setRadius(2);
 
-//			modelNode.setWorldBound(new BoundingBox());// bs);
-//			modelNode.updateWorldBound();
+			// modelNode.setWorldBound(new BoundingBox());// bs);
+			// modelNode.updateWorldBound();
 			rootNode.attachChild(player);
 			player.attachChild(modelNode);
 			player.updateWorldBound();
@@ -294,4 +295,103 @@ public class ObjectManager {
 			return null;
 		}
 	}
+
+	public static Node createMovableObject(CharacterData cd) {
+		MovableObject object = new MovableObject(cd.getCharacterID());
+		object.setAlive(true);
+		object.setMovespeed(30);
+		object.setTurnspeed(5);
+
+		int race = cd.getRace();
+		String gender = cd.getGender();
+		CharacterVisualAppearance appearance = cd.getVisualAppearance();
+
+		try {
+			URL urlOfTexture = new File(BASE_PATH + GENERIC_CHARACTER_PATH
+					+ race + "/" + gender + TEXTURE_BASE_PATH).toURL();
+
+			URL urlOfModel = new File(BASE_PATH + GENERIC_CHARACTER_PATH + race
+					+ "/" + gender + BASE_MODEL).toURL();
+
+			URL urlOfPropertyFile = new File(BASE_PATH + GENERIC_CHARACTER_PATH
+					+ race + "/" + gender + "/model/model.properties").toURL();
+
+			Configuration modelConfiguration = new PropertiesConfiguration(
+					new File(urlOfPropertyFile.getFile()));// urlOfPropertyFile.getFile()));
+			float scaling = modelConfiguration.getFloat("scale", 1.0f);
+			float rotateAroundY = modelConfiguration.getFloat("rotate.y", 0.0f);
+			float animationSpeed = modelConfiguration.getFloat(
+					"animation.speed", 1f);
+
+			object.getAnimationData().setAnimationSpeed(animationSpeed);
+			object.getAnimationData().setWalkStartTime(
+					modelConfiguration.getInt("animation.walk.start", 2));
+			object.getAnimationData().setWalkEndTime(
+					modelConfiguration.getInt("animation.walk.end", 14));
+			object.getAnimationData().setStandStartTime(
+					modelConfiguration.getInt("animation.stand.start", 292));
+			object.getAnimationData().setStandEndTime(
+					modelConfiguration.getInt("animation.stand.end", 325));
+
+			FileInputStream fi = new FileInputStream(
+					new File(BASE_PATH + GENERIC_CHARACTER_PATH + race + "/"
+							+ gender + BASE_MODEL));// urlOfModel.getFile()));
+
+			Node modelNode = null;
+
+			JmeBinaryReader jbr = new JmeBinaryReader();
+			jbr.setProperty("texurl", urlOfTexture);
+			jbr.setProperty("bound", "box"); // Doesnt work ?
+			try {
+				long time = System.currentTimeMillis();
+				modelNode = jbr.loadBinaryFormat(fi);
+				logger.info("Time to convert from .jme to SceneGraph:"
+						+ (System.currentTimeMillis() - time));
+			} catch (IOException e) {
+				logger.error("damn exceptions:" + e.getMessage());
+			}
+
+			modelNode.setLocalScale(scaling);
+			if (rotateAroundY != 0) {
+				Matrix3f localRotate = new Matrix3f();
+				localRotate.fromAxisAngle(new Vector3f(0.0F, 1.0F, 0.0F),
+						-(rotateAroundY * 0.5f * FastMath.PI));
+				modelNode.setLocalRotation(localRotate);
+			}
+			Controller c = modelNode.getChild(0).getController(0);
+			if (c instanceof KeyframeController) {
+				object.setKeyframeController((KeyframeController) c);
+				object.getKeyframeController().setSpeed(animationSpeed);
+				object.getKeyframeController().setNewAnimationTimes(
+						object.getAnimationData().getStandStartTime(),
+						object.getAnimationData().getStandEndTime());
+			} else {
+				object.setJointController((JointController) c);
+				object.getJointController().setSpeed(animationSpeed);
+				object.getJointController().setTimes(
+						object.getAnimationData().getStandStartTime(),
+						object.getAnimationData().getStandEndTime());
+			}
+			Node objectNode = new Node(object.getObjectID());
+			Vector3f location = new Vector3f(cd.getLocation().getX(), cd
+					.getLocation().getY(), cd.getLocation().getZ());
+			objectNode.setLocalTranslation(location);
+			
+			rootNode.attachChild(objectNode);
+			objectNode.attachChild(modelNode);
+			objectNode.updateWorldBound();
+			object.setModel(objectNode);
+
+			synchronized (objects) {
+				objects.put(object.getObjectID(), object);
+			}
+
+			return objectNode;
+		} catch (Exception e1) {
+
+			e1.printStackTrace();
+			return null;
+		}
+	}
+
 }

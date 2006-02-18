@@ -17,7 +17,7 @@ import de.mbws.client.state.handler.MainMenuHandler;
 /**
  * Description:
  * 
- * @author Azarai
+ * @author Azarai, Todi
  */
 public class LoginPanel extends JPanel {
 	private static Logger logger = Logger.getLogger(LoginPanel.class);
@@ -176,8 +176,8 @@ public class LoginPanel extends JPanel {
 									.info("actionPerformed(): showing option panel");
 							getInputHandler()
 									.getState()
-									.showComponentCenteredOnScreenOnTop(
-											new OptionsPanel(getInputHandler()));
+									.showComponentCenteredOnScreenOnLayer(
+											new OptionsPanel(getInputHandler()),JLayeredPane.MODAL_LAYER);
 							// TODO
 							// Auto-generated
 							// Event stub

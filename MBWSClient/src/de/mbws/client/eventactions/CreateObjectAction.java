@@ -4,7 +4,7 @@ import java.nio.ByteBuffer;
 
 import de.mbws.client.data.ObjectManager;
 import de.mbws.common.events.data.AbstractEventData;
-import de.mbws.common.events.data.generated.WorldObject;
+import de.mbws.common.events.data.generated.CharacterData;
 
 public class CreateObjectAction extends AbstractEventAction {
 
@@ -17,7 +17,7 @@ public class CreateObjectAction extends AbstractEventAction {
 	}
 
 	public void performAction() {
-		ObjectManager.create((WorldObject)getEventData());
+		ObjectManager.createMovableObject((CharacterData)getEventData());
 	}
 
 }

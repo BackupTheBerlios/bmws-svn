@@ -13,7 +13,7 @@ import de.mbws.common.data.db.generated.Characterdata;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.CharacterEvent;
 import de.mbws.common.events.EventTypes;
-import de.mbws.common.events.ObjectEvent;
+import de.mbws.common.events.PCEvent;
 import de.mbws.common.events.data.generated.*;
 import de.mbws.server.account.persistence.CharacterPersistenceManager;
 import de.mbws.server.data.ServerPlayerData;
@@ -61,21 +61,43 @@ public class CharacterEventController extends WorldServerBaseEventController {
             }
             CharacterStatus cs = cdata.getCharacterStatus();
             CharacterDetails charDetails = new CharacterDetails();
-            WorldObject wo = new WorldObject();
+            CharacterData cd = new CharacterData();
+            //TODO: FIX THIS
+            cd.setName("test");
+            cd.setGender(cdata.getGender());
+            cd.setRace(cdata.getRace().getId().intValue());
+            cd.setAge((short)0);
+            cd.setLocationdescription("test");
+//            CharacterValues cv = new CharacterValues();
+//            cv.
+            cd.setNormalValues(new CharacterValues());
+            de.mbws.common.events.data.generated.CharacterStatus css = new de.mbws.common.events.data.generated.CharacterStatus();
+            css.setCurrentValues(new CharacterValues());
+            css.setCharstatus("status");
+            css.setGamestatus("status");
+            css.setHeading(new NetQuaternion());
+            css.setLocation(new IntVector3D());
+            css.setPvp("pvp");
+            cd.setStatus(css);
+            
+            CharacterVisualAppearance cva = new CharacterVisualAppearance();
+           
+            cd.setVisualAppearance(cva);
+            //TODO clean up above
             IntVector3D location = new IntVector3D();
             location.setX(cs.getCoordinateX());
             location.setY(cs.getCoordinateY());
             location.setZ(cs.getCoordinateZ());
-            wo.setLocation(location);
+            cd.setLocation(location);
             NetQuaternion heading = new NetQuaternion();
             heading.setW(0);
             heading.setX(0);
             heading.setY(0);
             heading.setZ(0);
-            wo.setHeading(heading);
+            cd.setHeading(heading);
 
-            wo.setObjectID(((ServerPlayerData) ce.getPlayer()).getActiveCharacterAsObjectID());
-            ((ServerPlayerData) ce.getPlayer()).setMovementInformation(wo);
+            cd.setCharacterID(((ServerPlayerData) ce.getPlayer()).getActiveCharacterAsObjectID());
+            ((ServerPlayerData) ce.getPlayer()).setMovementInformation(cd);
             
             charDetails.setDescription(getCharacterShortDescription(cdata));
             charDetails.setHeading(heading);
@@ -87,7 +109,7 @@ public class CharacterEventController extends WorldServerBaseEventController {
 
             ArrayList<Integer> receivers = (ArrayList<Integer>) getWorldServer().getSessionIDOfAllPlayers().clone();
             if (receivers.size() > 1) {
-                ObjectEvent oe = new ObjectEvent(wo);
+            	PCEvent oe = new PCEvent(cd);
                 oe.setEventType(EventTypes.S2C_MOVABLE_OBJECT_CREATE);
                 receivers.remove(ce.getPlayer().getSessionId());
                 oe.setPlayer(ce.getPlayer());
@@ -100,7 +122,7 @@ public class CharacterEventController extends WorldServerBaseEventController {
                 Integer element = (Integer) iter.next();
                 if (!element.equals(ce.getPlayer().getSessionId())) {
                     ServerPlayerData spd = (ServerPlayerData) players.get(element);
-                    ObjectEvent oe = new ObjectEvent(spd.getMovementInformation());
+                    PCEvent oe = new PCEvent(spd.getMovementInformation());
                     oe.setEventType(EventTypes.S2C_MOVABLE_OBJECT_CREATE);
                     oe.setPlayer(ce.getPlayer());
                     sendEvent(oe);

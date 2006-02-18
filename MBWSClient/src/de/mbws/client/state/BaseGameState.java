@@ -170,6 +170,17 @@ public abstract class BaseGameState extends BasicGameState {
 		desktopPane.add(panel);
 		desktopPane.revalidate();
 	}
+	
+	public void showComponentCenteredOnScreenOnLayer(JComponent panel, int layer) {
+		JDesktopPane desktopPane = jmeDesktop.getJDesktop();
+		int x = (desktopPane.getWidth() / 2) - (panel.getWidth() / 2);
+		int y = (desktopPane.getHeight() / 2) - (panel.getHeight() / 2);
+		panel.setLocation(x, y);
+		
+		desktopPane.add(panel, new Integer(layer));
+		desktopPane.revalidate();
+	}
+	
 
 	public void removeMe(JPanel panel) {
 		panel.setVisible(false);

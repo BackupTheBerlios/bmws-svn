@@ -11,10 +11,7 @@ import de.mbws.client.eventactions.DestroyObjectAction;
 import de.mbws.client.eventactions.MoveObjectAction;
 import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.events.*;
-import de.mbws.common.events.data.generated.CharactersOfPlayer;
-import de.mbws.common.events.data.generated.MoveData;
-import de.mbws.common.events.data.generated.SystemErrorData;
-import de.mbws.common.events.data.generated.WorldObject;
+import de.mbws.common.events.data.generated.*;
 
 public class ClientGameEventActionFactory {
 
@@ -39,14 +36,14 @@ public class ClientGameEventActionFactory {
 			action = new MoveObjectAction(payload, new MoveData());
 			action.setEventType(eventKey);
 		} else if (eventKey == EventTypes.OBJECT_CREATE) {
-			action = new CreateObjectAction(payload, new WorldObject());
+			action = new CreateObjectAction(payload, new CharacterData());
 			action.setEventType(eventKey);
 		} else if (eventKey == EventTypes.OBJECT_DESTROY) {
 			action = new DestroyObjectAction(payload, new WorldObject());
 			action.setEventType(eventKey);
 		} else if (eventKey == EventTypes.S2C_MOVABLE_OBJECT_CREATE) {
 			// TODO: Kerim Change action !
-			action = new CreateObjectAction(payload, new WorldObject());
+			action = new CreateObjectAction(payload, new CharacterData());
 			action.setEventType(eventKey);
 		} else {
 			return null;
