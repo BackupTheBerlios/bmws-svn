@@ -98,6 +98,7 @@ public class OutdoorGameState extends BaseGameState {
 	protected void initJMEDesktop() {
 		desktopNode = new GameDesktop("Desktop", input);
 		//jmeDesktop = ((GameDesktop)desktopNode).getDesktop();
+		((MainGameStateHandler)playerInputHandler).gd = (GameDesktop)desktopNode;
 		guiRootNode.attachChild(desktopNode);
 	}
 
@@ -213,7 +214,7 @@ public class OutdoorGameState extends BaseGameState {
 	protected void initInputHandler() {
 		input = new BaseInputHandler(this);
 		playerInputHandler = new MainGameStateHandler(null, this);
-		((MainGameStateHandler)playerInputHandler).gd = (GameDesktop)desktopNode;
+		
 		input.addToAttachedHandlers(playerInputHandler);
 	}
 

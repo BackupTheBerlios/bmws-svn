@@ -8,10 +8,6 @@ import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
 import com.jme.input.action.InputAction;
 import com.jme.input.action.InputActionEvent;
-import com.jme.input.action.KeyNodeBackwardAction;
-import com.jme.input.action.KeyNodeForwardAction;
-import com.jme.input.action.KeyNodeRotateLeftAction;
-import com.jme.input.action.KeyNodeRotateRightAction;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 import com.jme.scene.Spatial;
@@ -84,7 +80,7 @@ public class MainGameStateHandler extends BaseInputHandler {
 		keyboard.set(PROP_KEY_RIGHT, getIntProp(props, PROP_KEY_RIGHT,
 				KeyInput.KEY_D));
 		
-		//keyboard.set("ts", KeyInput.KEY_C);
+		keyboard.set("chatwindow", KeyInput.KEY_C);
 		// keyboard.set(PROP_KEY_STRAFELEFT, getIntProp(props,
 		// PROP_KEY_STRAFELEFT, KeyInput.KEY_Q));
 		// keyboard.set(PROP_KEY_STRAFERIGHT, getIntProp(props,
@@ -95,21 +91,21 @@ public class MainGameStateHandler extends BaseInputHandler {
 		playerMovementSpeed = getFloatProp(props, PROP_MOVEMENT_SPEED, 30f);
 		playerTurnSpeed = getFloatProp(props, PROP_TURN_SPEED, 1.5f);
 		playerMoveBackSpeed = getFloatProp(props, PROP_MOVE_BACK_SPEED, 15f);
-
+		setActions();
 	}
 
 	protected void setActions() {
-		addAction(new KeyNodeForwardAction(player, playerMovementSpeed),
-				PROP_KEY_FORWARD, true);
-		addAction(new KeyNodeBackwardAction(player, playerMoveBackSpeed),
-				PROP_KEY_BACKWARD, true);
-		addAction(new KeyNodeRotateRightAction(player, playerTurnSpeed),
-				PROP_KEY_RIGHT, true);
-		addAction(new KeyNodeRotateLeftAction(player, playerTurnSpeed),
-				PROP_KEY_LEFT, true);
+//		addAction(new KeyNodeForwardAction(player, playerMovementSpeed),
+//				PROP_KEY_FORWARD, true);
+//		addAction(new KeyNodeBackwardAction(player, playerMoveBackSpeed),
+//				PROP_KEY_BACKWARD, true);
+//		addAction(new KeyNodeRotateRightAction(player, playerTurnSpeed),
+//				PROP_KEY_RIGHT, true);
+//		addAction(new KeyNodeRotateLeftAction(player, playerTurnSpeed),
+//				PROP_KEY_LEFT, true);
 
 		addAction(new ExitAction(), "exit", false);
-		//addAction(new ChatWindowAction(), "ts", false);
+		addAction(new ChatWindowAction(), "chatwindow", false);
 	}
 	
 	
