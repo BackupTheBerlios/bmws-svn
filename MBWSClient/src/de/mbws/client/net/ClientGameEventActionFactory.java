@@ -43,7 +43,7 @@ public class ClientGameEventActionFactory {
 			action.setEventType(eventKey);
 		} else if (eventKey == EventTypes.S2C_MOVABLE_OBJECT_CREATE) {
 			// TODO: Kerim Change action !
-			action = new CreateObjectAction(payload, new CharacterData());
+			action = new CreateObjectAction(payload, new OCharacterData());
 			action.setEventType(eventKey);
 		} else {
 			return null;

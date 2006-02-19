@@ -27,8 +27,8 @@ import com.jmex.model.XMLparser.JmeBinaryReader;
 import com.jmex.model.animation.JointController;
 import com.jmex.model.animation.KeyframeController;
 
-import de.mbws.common.events.data.generated.CharacterData;
 import de.mbws.common.events.data.generated.CharacterVisualAppearance;
+import de.mbws.common.events.data.generated.OCharacterData;
 import de.mbws.common.events.data.generated.WorldObject;
 
 public class ObjectManager {
@@ -296,15 +296,18 @@ public class ObjectManager {
 		}
 	}
 
-	public static Node createMovableObject(CharacterData cd) {
-		MovableObject object = new MovableObject(cd.getCharacterID());
+	public static Node createMovableObject(OCharacterData ocd) {
+		
+		//TODO: See if we have set all variables (we have not !)
+		MovableObject object = new MovableObject(ocd.getCharacterID());
 		object.setAlive(true);
 		object.setMovespeed(30);
 		object.setTurnspeed(5);
 
-		int race = cd.getRace();
-		String gender = cd.getGender();
-		CharacterVisualAppearance appearance = cd.getVisualAppearance();
+		object.setName(ocd.getName());
+		int race = ocd.getRace();
+		String gender = ocd.getGender();
+		CharacterVisualAppearance appearance = ocd.getVisualAppearance();
 
 		try {
 			URL urlOfTexture = new File(BASE_PATH + GENERIC_CHARACTER_PATH
@@ -373,8 +376,8 @@ public class ObjectManager {
 						object.getAnimationData().getStandEndTime());
 			}
 			Node objectNode = new Node(object.getObjectID());
-			Vector3f location = new Vector3f(cd.getLocation().getX(), cd
-					.getLocation().getY(), cd.getLocation().getZ());
+			Vector3f location = new Vector3f(ocd.getLocation().getX(), ocd
+					.getLocation().getY(), ocd.getLocation().getZ());
 			objectNode.setLocalTranslation(location);
 			
 			rootNode.attachChild(objectNode);

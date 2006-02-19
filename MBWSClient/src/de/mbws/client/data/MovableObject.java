@@ -33,6 +33,7 @@ public class MovableObject extends GameObject {
 	protected boolean alive;
 	protected long timeOfDeath;
 	protected boolean isPlayer = false;
+	protected String name;
 	// Animations
 	protected AnimationData animationData = new AnimationData();
 
@@ -225,6 +226,14 @@ public class MovableObject extends GameObject {
 
 	public void setAnimationData(AnimationData animationData) {
 		this.animationData = animationData;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }
