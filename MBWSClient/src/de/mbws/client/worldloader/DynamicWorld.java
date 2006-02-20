@@ -14,12 +14,11 @@ import com.jme.system.DisplaySystem;
 import com.jmex.terrain.TerrainBlock;
 
 /**
- * DynamicWorld is a super node for the terrain and static objects of a world.
- * The world is described in a xml-file and consists of various quadratic
- * terrains forming a rectangular world. The quadratic terrains reside in the
- * same directory as the world description. They are loaded dynamically and
- * attached as subnodes, when they are within a predefined visibility radius of
- * the camera.
+ * DynamicWorld is a super node for the terrain and static objects of a world. The world is
+ * described in a xml-file and consists of various quadratic terrains forming a rectangular world.
+ * The quadratic terrains reside in the same directory as the world description. They are loaded
+ * dynamically and attached as subnodes, when they are within a predefined visibility radius of the
+ * camera.
  * 
  * @author Axel Sammet
  */
@@ -54,14 +53,13 @@ public class DynamicWorld extends Node {
 	}
 
 	/**
-	 * @param pathForWorldDescription
-	 *            path to the world description file <b> without </b> file
+	 * @param pathForWorldDescription path to the world description file <b> without </b> file
 	 *            extension.
 	 * @throws IOException
 	 * @throws SAXException
 	 */
-	public void init(DisplaySystem display, String pathForWorldDescription)
-			throws SAXException, IOException {
+	public void init(DisplaySystem display, String pathForWorldDescription) throws SAXException,
+			IOException {
 		this.worldPath = pathForWorldDescription;
 		this.display = display;
 		this.loader = new ObjectLoader(this);
@@ -80,23 +78,17 @@ public class DynamicWorld extends Node {
 	}
 
 	private void preloadAndAddSections(Vector3f position) {
-		int xstart = Math.max(
-				(int) ((position.x - prefetchRadius) / sectionWidth), 0);
-		int xend = Math.min(
-				(int) ((position.x + prefetchRadius) / sectionWidth),
+		int xstart = Math.max((int) ((position.x - prefetchRadius) / sectionWidth), 0);
+		int xend = Math.min((int) ((position.x + prefetchRadius) / sectionWidth),
 				sectionColumns - 1);
-		int ystart = Math.max(
-				(int) ((position.z - prefetchRadius) / sectionWidth), 0);
-		int yend = Math.min(
-				(int) ((position.z + prefetchRadius) / sectionWidth),
-				sectionRows - 1);
+		int ystart = Math.max((int) ((position.z - prefetchRadius) / sectionWidth), 0);
+		int yend = Math.min((int) ((position.z + prefetchRadius) / sectionWidth), sectionRows - 1);
 		for (int x = xstart; x < xend; x++) {
 			for (int y = ystart; y < yend; y++) {
 				String key = x + "_" + y;
 				// preloadSection
-				Vector3f terrainMidPoint = new Vector3f(x * sectionWidth
-						+ sectionWidth / 2, 0, y * sectionWidth + sectionWidth
-						/ 2);
+				Vector3f terrainMidPoint = new Vector3f(x * sectionWidth + sectionWidth / 2, 0, y
+						* sectionWidth + sectionWidth / 2);
 				preloadSection(position, x, y, key, terrainMidPoint);
 				// addVisibleSection
 				addVisibleSection(position, key, terrainMidPoint);
@@ -105,11 +97,10 @@ public class DynamicWorld extends Node {
 
 	}
 
-	private void addVisibleSection(Vector3f position, String key,
-			Vector3f terrainMidPoint) {
+	private void addVisibleSection(Vector3f position, String key, Vector3f terrainMidPoint) {
 		TerrainBlock tb = sectionCache.get(key);
-		if (isInRange(position, terrainMidPoint, visibilityRadius2)
-				&& tb != null && !visibleSections.contains(tb)) {
+		if (isInRange(position, terrainMidPoint, visibilityRadius2) && tb != null
+				&& !visibleSections.contains(tb)) {
 			// if (!sectionCache.containsKey(key)) {
 			// taskQueue.waitForTask(key);
 			// }
@@ -131,8 +122,7 @@ public class DynamicWorld extends Node {
 		public void run() {
 			try {
 				sectionCache.put(x + "_" + z, loader.loadTerrainBlock(x, z));
-			}
-			catch (IOException e) {
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
@@ -151,9 +141,8 @@ public class DynamicWorld extends Node {
 		Iterator<TerrainBlock> it = visibleSections.iterator();
 		while (it.hasNext()) {
 			TerrainBlock tb = it.next();
-			Vector3f terrainMidPoint = new Vector3f(tb.getLocalTranslation().x
-					+ sectionWidth / 2, 0, tb.getLocalTranslation().z
-					+ sectionWidth / 2);
+			Vector3f terrainMidPoint = new Vector3f(tb.getLocalTranslation().x + sectionWidth / 2,
+					0, tb.getLocalTranslation().z + sectionWidth / 2);
 			if (!isInRange(terrainMidPoint, position, visibilityRadius2)) {
 				it.remove();
 				logger.debug("removing from world cache " + tb);
@@ -163,12 +152,11 @@ public class DynamicWorld extends Node {
 	}
 
 	private void unloadDistantSections(Vector3f position) {
-		Iterator<Entry<String, TerrainBlock>> it = sectionCache.entrySet()
-				.iterator();
+		Iterator<Entry<String, TerrainBlock>> it = sectionCache.entrySet().iterator();
 		while (it.hasNext()) {
 			Vector3f terrainOrig = it.next().getValue().getLocalTranslation();
-			Vector3f terrainMidPoint = new Vector3f(terrainOrig.x
-					+ sectionWidth / 2, 0, terrainOrig.z + sectionWidth / 2);
+			Vector3f terrainMidPoint = new Vector3f(terrainOrig.x + sectionWidth / 2, 0,
+					terrainOrig.z + sectionWidth / 2);
 			if (!isInRange(terrainMidPoint, position, unloadRadius2)) {
 				it.remove();
 			}
@@ -176,17 +164,15 @@ public class DynamicWorld extends Node {
 	}
 
 	private boolean isInRange(Vector3f pos1, Vector3f pos2, float squareOfRange) {
-		return ((pos1.x - pos2.x) * (pos1.x - pos2.x) + (pos1.z - pos2.z)
-				* (pos1.z - pos2.z)) < squareOfRange;
+		return ((pos1.x - pos2.x) * (pos1.x - pos2.x) + (pos1.z - pos2.z) * (pos1.z - pos2.z)) < squareOfRange;
 	}
 
 	/**
-	 * Updates the dynamic terrain. Call this method from within the
-	 * <code> update()</code>-method of your <code>BaseGame</code>. For the
-	 * given camera position all terrain sections within the preload radius are
-	 * loaded from the world description. Then all visible sections are added to
-	 * the DynamicTerrain. Vice versa all invisible sections are detached and
-	 * sections outside the unloadRadius are left for garbage collection.
+	 * Updates the dynamic terrain. Call this method from within the <code> update()</code>-method
+	 * of your <code>BaseGame</code>. For the given camera position all terrain sections within
+	 * the preload radius are loaded from the world description. Then all visible sections are added
+	 * to the DynamicTerrain. Vice versa all invisible sections are detached and sections outside
+	 * the unloadRadius are left for garbage collection.
 	 * 
 	 * @param cam
 	 */
@@ -207,16 +193,15 @@ public class DynamicWorld extends Node {
 	}
 
 	/**
-	 * Determines the height at the given x-z-position. The y-component of the
-	 * given location vector will be ignored.
+	 * Determines the height at the given x-z-position. The y-component of the given location vector
+	 * will be ignored.
 	 * 
 	 * @param location
 	 * @return
 	 */
 	public float getHeight(Vector3f location) {
 		try {
-			float ret = getSectionAt(location.x, location.z).getHeight(
-					location.x, location.z);
+			float ret = getSectionAt(location.x, location.z).getHeight(location.x, location.z);
 			return ret;
 		} catch (Exception e) {
 			return 0;
@@ -224,9 +209,9 @@ public class DynamicWorld extends Node {
 	}
 
 	/**
-	 * Determines the steepness at the given x-z-position. The y-component of
-	 * the given location vector will be ignored. The returned value is 1 - the
-	 * cosine of the angle between the terrain and a flat plane.
+	 * Determines the steepness at the given x-z-position. The y-component of the given location
+	 * vector will be ignored. The returned value is 1 - the cosine of the angle between the terrain
+	 * and a flat plane.
 	 * 
 	 * @param location
 	 * @return steepness in a value ranging from 0 to 1
