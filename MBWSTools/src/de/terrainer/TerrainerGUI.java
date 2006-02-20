@@ -93,8 +93,8 @@ public class TerrainerGUI extends JFrame {
 			int max = Math.max(world.getHeight(), world.getWidth());
 			int size = calculateNextPowerOf2(max);
 			System.out.println("size: " + size);
-			currentHeightMap = new HeightMap(size+1, size+1);
-			System.out.println("using heightmap of "+(size+1));
+			currentHeightMap = new HeightMap(size + 1, size + 1);
+			System.out.println("using heightmap of " + (size + 1));
 			heightMapComp.setHeightMap(currentHeightMap);
 		}
 	}
@@ -122,8 +122,8 @@ public class TerrainerGUI extends JFrame {
 
 	protected void save() {
 		int size = 12;
-		TerrainPersistence tp = new TerrainPersistence("..\\MBWSClient\\data\\world\\world", size,
-				size);
+		TerrainPersistence tp = new TerrainPersistence(
+				"..\\MBWSClient\\data\\world\\world", size, size);
 		// TODO for the timebeing we save one terrain x times
 		for (int x = 0; x < size; x++) {
 			for (int y = 0; y < size; y++) {
@@ -135,8 +135,8 @@ public class TerrainerGUI extends JFrame {
 
 	private JPanel createHeightMapPanel() {
 		JPanel pan = new JPanel(new BorderLayout());
-		pan.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLoweredBevelBorder(),
-				"Section"));
+		pan.setBorder(BorderFactory.createTitledBorder(BorderFactory
+				.createLoweredBevelBorder(), "Section"));
 		pan.add(heightMapComp, BorderLayout.CENTER);
 		return pan;
 	}
@@ -164,8 +164,7 @@ public class TerrainerGUI extends JFrame {
 		viewButton.setToolTipText("view in 3D window");
 		viewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				(new Viewer(currentHeightMap.getLinearMap(), currentHeightMap.getWidth()))
-						.showViewer();
+				(new Viewer()).showViewer();
 			}
 		});
 		toolbar.add(viewButton);
