@@ -37,7 +37,6 @@ public class DynamicWorld extends Node {
 	float visibilityRadius = 3f * sectionWidth;
 	float prefetchRadius = 4.5f * sectionWidth;
 	float unloadRadius = 6.f * sectionWidth;
-
 	float visibilityRadius2;
 	float unloadRadius2;
 	float prefetchRadius2;
@@ -46,7 +45,6 @@ public class DynamicWorld extends Node {
 	Set<TerrainBlock> visibleSections = new HashSet<TerrainBlock>();
 	ObjectRepository modelRepository = new ObjectRepository();
 	SyncTaskQueue taskQueue;
-
 	ObjectLoader loader;
 	DisplaySystem display;
 
@@ -204,7 +202,8 @@ public class DynamicWorld extends Node {
 	}
 
 	private TerrainBlock getSectionAt(float x, float z) {
-		return sectionCache.get("" + Math.ceil(x) + "_" + Math.ceil(z));
+		return sectionCache.get("" + (int) Math.ceil(x / sectionWidth) + "_"
+				+ (int) Math.ceil(z / sectionWidth));
 	}
 
 	/**
@@ -216,12 +215,10 @@ public class DynamicWorld extends Node {
 	 */
 	public float getHeight(Vector3f location) {
 		try {
-			float ret = getSectionAt(location.x, location.z).getHeight(location.x,
-					location.z);
-			//logger.debug("getHeight ("+location.x+","+location.z+") ==> "+ret);
+			float ret = getSectionAt(location.x, location.z).getHeight(
+					location.x, location.z);
 			return ret;
 		} catch (Exception e) {
-			logger.debug(e);
 			return 0;
 		}
 	}
