@@ -122,7 +122,8 @@ public class DynamicWorld extends Node {
 		public void run() {
 			try {
 				sectionCache.put(x + "_" + z, loader.loadTerrainBlock(x, z));
-			} catch (IOException e) {
+			}
+			catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
@@ -188,8 +189,8 @@ public class DynamicWorld extends Node {
 	}
 
 	private TerrainBlock getSectionAt(float x, float z) {
-		return sectionCache.get("" + (int) Math.ceil(x / sectionWidth) + "_"
-				+ (int) Math.ceil(z / sectionWidth));
+		String key = (int) (x / sectionWidth) + "_" + (int) (z / sectionWidth);
+		return sectionCache.get(key);
 	}
 
 	/**
@@ -201,9 +202,10 @@ public class DynamicWorld extends Node {
 	 */
 	public float getHeight(Vector3f location) {
 		try {
-			float ret = getSectionAt(location.x, location.z).getHeight(location.x, location.z);
+			float ret = getSectionAt(location.x, location.z).getHeight(location.x%sectionWidth, location.z%sectionWidth);
 			return ret;
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			return 0;
 		}
 	}
