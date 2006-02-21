@@ -1,4 +1,4 @@
-﻿# MySQL-Front Dump 2.2
+# MySQL-Front Dump 2.2
 #
 # Host: localhost   Database: game
 #--------------------------------------------------------
