@@ -5,34 +5,22 @@ import de.mbws.common.events.data.AbstractEventData;
 import java.util.*;
 import java.nio.ByteBuffer;
 
-public class CharacterData extends AbstractEventData { 
-	private VisualAppearance visualAppearance;
-	private String characterID;
+public class CreatureData extends AbstractEventData { 
+	private String creatureID;
 	private String name;
-	private String gender;
-	private int race;
 	private IntVector3D location;
 	private NetQuaternion heading;
 	private int maxHealth;
 	private int currentHealth;
-	private byte pvp;
 	private int predefinedModel;
 
 
-	public VisualAppearance getVisualAppearance() {
-		return visualAppearance;
+	public String getCreatureID() {
+		return creatureID;
 	}
 
-	public void setVisualAppearance(VisualAppearance visualAppearance) {
-		this.visualAppearance = visualAppearance;
-	} 
-
-	public String getCharacterID() {
-		return characterID;
-	}
-
-	public void setCharacterID(String characterID) {
-		this.characterID = characterID;
+	public void setCreatureID(String creatureID) {
+		this.creatureID = creatureID;
 	} 
 
 	public String getName() {
@@ -41,22 +29,6 @@ public class CharacterData extends AbstractEventData {
 
 	public void setName(String name) {
 		this.name = name;
-	} 
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	} 
-
-	public int getRace() {
-		return race;
-	}
-
-	public void setRace(int race) {
-		this.race = race;
 	} 
 
 	public IntVector3D getLocation() {
@@ -91,14 +63,6 @@ public class CharacterData extends AbstractEventData {
 		this.currentHealth = currentHealth;
 	} 
 
-	public byte getPvp() {
-		return pvp;
-	}
-
-	public void setPvp(byte pvp) {
-		this.pvp = pvp;
-	} 
-
 	public int getPredefinedModel() {
 		return predefinedModel;
 	}
@@ -109,51 +73,42 @@ public class CharacterData extends AbstractEventData {
 
 
 	public void deserialize(ByteBuffer payload) {
-		visualAppearance = new VisualAppearance();
-		visualAppearance.deserialize(payload);
-		characterID = readString(payload);
+		creatureID = readString(payload);
 		name = readString(payload);
-		gender = readString(payload);
-		race = payload.getInt();
 		location = new IntVector3D();
 		location.deserialize(payload);
 		heading = new NetQuaternion();
 		heading.deserialize(payload);
 		maxHealth = payload.getInt();
 		currentHealth = payload.getInt();
-		pvp = payload.get();
 		predefinedModel = payload.getInt();
 	}
 
 	public int serialize(ByteBuffer payload) {
-		visualAppearance.serialize(payload);
-		writeString(payload, characterID);
+		writeString(payload, creatureID);
 		writeString(payload, name);
-		writeString(payload, gender);
-		payload.putInt(race);
 		location.serialize(payload);
 		heading.serialize(payload);
 		payload.putInt(maxHealth);
 		payload.putInt(currentHealth);
-		payload.put(pvp);
 		payload.putInt(predefinedModel);
 		return payload.position();
 	}
 
-	public static void serializeList(ByteBuffer payload, List<CharacterData> list) {
+	public static void serializeList(ByteBuffer payload, List<CreatureData> list) {
 		if(list==null) return;
 		payload.putInt(list.size());
-		Iterator<CharacterData> it = list.iterator();
+		Iterator<CreatureData> it = list.iterator();
 		while (it.hasNext()) {
 			it.next().serialize(payload);
 		}
 	}
 
-	public static List<CharacterData> deserializeList(ByteBuffer payload) {
-		List<CharacterData> list = new LinkedList<CharacterData>();
+	public static List<CreatureData> deserializeList(ByteBuffer payload) {
+		List<CreatureData> list = new LinkedList<CreatureData>();
 		int size = payload.getInt();
 		for (int i=0; i<size; i++) {
-			CharacterData element = new CharacterData();
+			CreatureData element = new CreatureData();
 			element.deserialize(payload);
 			list.add(element);
 		}

@@ -69,7 +69,7 @@ public class CharacterController {
 			logger
 					.info("Receiving Shortdescriptions of all Characters of Player!");
 
-			List<CharacterData> allCharacters = ((CharactersOfPlayer) event
+			List<PlayerData> allCharacters = ((CharactersOfPlayer) event
 					.getEventData()).getCharactersOfPlayer();
 
 			ClientPlayerData.getInstance().setAllCharactersOfPlayer(
@@ -85,11 +85,11 @@ public class CharacterController {
 			String characterID = event.getCharacterDetails()
 			.getDescription().getCharacterID();
 			Player player = new Player(characterID);
-			List<CharacterData> allCharacters = ClientPlayerData.getInstance()
+			List<PlayerData> allCharacters = ClientPlayerData.getInstance()
 					.getAllCharactersOfPlayer();
 			if (allCharacters != null) {
 				for (Iterator iter = allCharacters.iterator(); iter.hasNext();) {
-					CharacterData element = (CharacterData) iter.next();
+					PlayerData element = (PlayerData) iter.next();
 					if (element.getCharacterID().trim().equals(
 							characterID)) {
 						ClientPlayerData.getInstance()

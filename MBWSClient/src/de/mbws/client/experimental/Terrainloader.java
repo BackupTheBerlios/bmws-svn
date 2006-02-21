@@ -23,7 +23,7 @@ import com.jme.util.Timer;
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.gui.ingame.GameDesktop;
 import de.mbws.client.worldloader.DynamicWorld;
-import de.mbws.common.events.data.generated.CharacterData;
+import de.mbws.common.events.data.generated.PlayerData;
 
 public class Terrainloader extends BaseGame {
 
@@ -180,7 +180,7 @@ public class Terrainloader extends BaseGame {
 	}
 
 	private void addGameDesktop() {
-		CharacterData dummyCharacterData = new CharacterData();
+		PlayerData dummyCharacterData = new PlayerData();
 		dummyCharacterData.setName("DUMMY_PLAYER");
 		ClientPlayerData.getInstance().setSelectedCharacterData(dummyCharacterData);
 		

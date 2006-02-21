@@ -5,18 +5,27 @@ import de.mbws.common.events.data.AbstractEventData;
 import java.util.*;
 import java.nio.ByteBuffer;
 
-public class CharacterDetails extends AbstractEventData { 
-	private CharacterShortDescription description;
+public class StaticObject extends AbstractEventData { 
+	private String objectID;
+	private int modelID;
 	private IntVector3D location;
 	private NetQuaternion heading;
 
 
-	public CharacterShortDescription getDescription() {
-		return description;
+	public String getObjectID() {
+		return objectID;
 	}
 
-	public void setDescription(CharacterShortDescription description) {
-		this.description = description;
+	public void setObjectID(String objectID) {
+		this.objectID = objectID;
+	} 
+
+	public int getModelID() {
+		return modelID;
+	}
+
+	public void setModelID(int modelID) {
+		this.modelID = modelID;
 	} 
 
 	public IntVector3D getLocation() {
@@ -37,8 +46,8 @@ public class CharacterDetails extends AbstractEventData {
 
 
 	public void deserialize(ByteBuffer payload) {
-		description = new CharacterShortDescription();
-		description.deserialize(payload);
+		objectID = readString(payload);
+		modelID = payload.getInt();
 		location = new IntVector3D();
 		location.deserialize(payload);
 		heading = new NetQuaternion();
@@ -46,26 +55,27 @@ public class CharacterDetails extends AbstractEventData {
 	}
 
 	public int serialize(ByteBuffer payload) {
-		description.serialize(payload);
+		writeString(payload, objectID);
+		payload.putInt(modelID);
 		location.serialize(payload);
 		heading.serialize(payload);
 		return payload.position();
 	}
 
-	public static void serializeList(ByteBuffer payload, List<CharacterDetails> list) {
+	public static void serializeList(ByteBuffer payload, List<StaticObject> list) {
 		if(list==null) return;
 		payload.putInt(list.size());
-		Iterator<CharacterDetails> it = list.iterator();
+		Iterator<StaticObject> it = list.iterator();
 		while (it.hasNext()) {
 			it.next().serialize(payload);
 		}
 	}
 
-	public static List<CharacterDetails> deserializeList(ByteBuffer payload) {
-		List<CharacterDetails> list = new LinkedList<CharacterDetails>();
+	public static List<StaticObject> deserializeList(ByteBuffer payload) {
+		List<StaticObject> list = new LinkedList<StaticObject>();
 		int size = payload.getInt();
 		for (int i=0; i<size; i++) {
-			CharacterDetails element = new CharacterDetails();
+			StaticObject element = new StaticObject();
 			element.deserialize(payload);
 			list.add(element);
 		}

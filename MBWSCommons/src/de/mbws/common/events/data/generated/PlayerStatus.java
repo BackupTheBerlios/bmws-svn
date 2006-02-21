@@ -5,8 +5,8 @@ import de.mbws.common.events.data.AbstractEventData;
 import java.util.*;
 import java.nio.ByteBuffer;
 
-public class CharacterStatus extends AbstractEventData { 
-	private CharacterValues currentValues;
+public class PlayerStatus extends AbstractEventData { 
+	private PlayerValues currentValues;
 	private String charstatus;
 	private String pvp;
 	private String gamestatus;
@@ -15,11 +15,11 @@ public class CharacterStatus extends AbstractEventData {
 	private int freexp;
 
 
-	public CharacterValues getCurrentValues() {
+	public PlayerValues getCurrentValues() {
 		return currentValues;
 	}
 
-	public void setCurrentValues(CharacterValues currentValues) {
+	public void setCurrentValues(PlayerValues currentValues) {
 		this.currentValues = currentValues;
 	} 
 
@@ -73,7 +73,7 @@ public class CharacterStatus extends AbstractEventData {
 
 
 	public void deserialize(ByteBuffer payload) {
-		currentValues = new CharacterValues();
+		currentValues = new PlayerValues();
 		currentValues.deserialize(payload);
 		charstatus = readString(payload);
 		pvp = readString(payload);
@@ -96,20 +96,20 @@ public class CharacterStatus extends AbstractEventData {
 		return payload.position();
 	}
 
-	public static void serializeList(ByteBuffer payload, List<CharacterStatus> list) {
+	public static void serializeList(ByteBuffer payload, List<PlayerStatus> list) {
 		if(list==null) return;
 		payload.putInt(list.size());
-		Iterator<CharacterStatus> it = list.iterator();
+		Iterator<PlayerStatus> it = list.iterator();
 		while (it.hasNext()) {
 			it.next().serialize(payload);
 		}
 	}
 
-	public static List<CharacterStatus> deserializeList(ByteBuffer payload) {
-		List<CharacterStatus> list = new LinkedList<CharacterStatus>();
+	public static List<PlayerStatus> deserializeList(ByteBuffer payload) {
+		List<PlayerStatus> list = new LinkedList<PlayerStatus>();
 		int size = payload.getInt();
 		for (int i=0; i<size; i++) {
-			CharacterStatus element = new CharacterStatus();
+			PlayerStatus element = new PlayerStatus();
 			element.deserialize(payload);
 			list.add(element);
 		}

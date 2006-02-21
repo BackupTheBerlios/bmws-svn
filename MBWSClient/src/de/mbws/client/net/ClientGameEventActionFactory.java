@@ -15,7 +15,8 @@ import de.mbws.common.events.data.generated.*;
 
 public class ClientGameEventActionFactory {
 
-	private static Logger logger = Logger.getLogger("ClientGameEventActionFactory");
+	private static Logger logger = Logger
+			.getLogger("ClientGameEventActionFactory");
 
 	public ClientGameEventActionFactory() {
 		super();
@@ -39,11 +40,11 @@ public class ClientGameEventActionFactory {
 			action = new CreateObjectAction(payload, new CharacterData());
 			action.setEventType(eventKey);
 		} else if (eventKey == EventTypes.OBJECT_DESTROY) {
-			action = new DestroyObjectAction(payload, new WorldObject());
+			action = new DestroyObjectAction(payload, new StaticObject());
 			action.setEventType(eventKey);
 		} else if (eventKey == EventTypes.S2C_MOVABLE_OBJECT_CREATE) {
 			// TODO: Kerim Change action !
-			action = new CreateObjectAction(payload, new OCharacterData());
+			action = new CreateObjectAction(payload, new CharacterData());
 			action.setEventType(eventKey);
 		} else {
 			return null;
@@ -85,18 +86,21 @@ public class ClientGameEventActionFactory {
 				|| eventKey == EventTypes.C2S_CHARACTER_LIST_RECEIVE_REQUEST) {
 			event = new CharacterEvent(payload, new CharactersOfPlayer());
 		} else if (eventKey == EventTypes.S2C_CHARACTER_ENTERS_WORLD) {
-			event = new CharacterEvent(payload);		
-		} else if (eventKey == (EventTypes.S2C_REDIRECT_TO_WORLDSERVER)){
+			event = new CharacterEvent(payload);
+		} else if (eventKey == (EventTypes.S2C_REDIRECT_TO_WORLDSERVER)) {
 			event = new ServerRedirectEvent(payload);
-		} else if (eventKey ==EventTypes.S2C_CHARACTER_CREATE_OK) {
-            event = new CharacterEvent();
-        } else if (eventKey == EventTypes.CHAT_WHISPER || eventKey == EventTypes.CHAT_SAY || eventKey == EventTypes.CHAT_SHOUT
-                || eventKey == EventTypes.CHAT_GROUP_SAY || eventKey == EventTypes.CHAT_PM || eventKey == EventTypes.CHAT_EMOTE
-                || eventKey == EventTypes.CHAT_ADMIN_COMMAND) {
-            event = new MessageEvent(payload);
-        }
-		
-		
+		} else if (eventKey == EventTypes.S2C_CHARACTER_CREATE_OK) {
+			event = new CharacterEvent();
+		} else if (eventKey == EventTypes.CHAT_WHISPER
+				|| eventKey == EventTypes.CHAT_SAY
+				|| eventKey == EventTypes.CHAT_SHOUT
+				|| eventKey == EventTypes.CHAT_GROUP_SAY
+				|| eventKey == EventTypes.CHAT_PM
+				|| eventKey == EventTypes.CHAT_EMOTE
+				|| eventKey == EventTypes.CHAT_ADMIN_COMMAND) {
+			event = new MessageEvent(payload);
+		}
+
 		if (event != null) {
 			event.setPlayer(p);
 			event.setEventType(eventKey);

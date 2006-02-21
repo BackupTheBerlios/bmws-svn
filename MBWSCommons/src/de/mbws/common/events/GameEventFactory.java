@@ -33,7 +33,7 @@ public class GameEventFactory {
         } else if (eventKey == EventTypes.C2S_CHARACTER_CREATE_REQUEST) {
             event = new CharacterEvent(payload, new CreateCharacter());
         } else if (eventKey == EventTypes.S2C_CHARACTER_RECEIVE) {
-            event = new CharacterEvent(payload, new CharacterDetails());
+            event = new CharacterEvent(payload, new PlayerDetails());
         } else if (eventKey == EventTypes.C2S_CHARACTER_RECEIVE_REQUEST) {
             event = new CharacterEvent(payload, new CharacterSelection());
         } else if (eventKey == EventTypes.C2S_CHARACTER_START_PLAYING_REQUEST) {

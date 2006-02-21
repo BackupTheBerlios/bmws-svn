@@ -27,9 +27,9 @@ import com.jmex.model.XMLparser.JmeBinaryReader;
 import com.jmex.model.animation.JointController;
 import com.jmex.model.animation.KeyframeController;
 
-import de.mbws.common.events.data.generated.CharacterVisualAppearance;
-import de.mbws.common.events.data.generated.OCharacterData;
-import de.mbws.common.events.data.generated.WorldObject;
+import de.mbws.common.events.data.generated.CharacterData;
+import de.mbws.common.events.data.generated.StaticObject;
+import de.mbws.common.events.data.generated.VisualAppearance;
 
 public class ObjectManager {
 
@@ -93,7 +93,7 @@ public class ObjectManager {
 	 */
 	// TODO: Should we use a map here with configurable values ?
 	// TODO: Replace GameObject by the correct type
-	public static AbstractGameObject create(WorldObject wo) {
+	public static AbstractGameObject create(StaticObject so) {
 
 		// if (wo.getMovespeed() == 0 && wo.getTurnspeed() == 0) {
 		// // TODO Set a nonmovable object here
@@ -101,7 +101,7 @@ public class ObjectManager {
 		// //GameObject object = new GameObject(wo.getObjectID());
 		// } else {
 		logger.info("Supposed to set a movable object here");
-		MovableObject object = new MovableObject(wo.getObjectID());
+		MovableObject object = new MovableObject(so.getObjectID());
 		object.setAlive(true);
 		// object.setMovespeed(wo.getMovespeed());
 		// object.setTurnspeed(wo.getTurnspeed());
@@ -116,12 +116,12 @@ public class ObjectManager {
 
 		// TODO: "player2 node" wont work, trying integer.toString of
 		// objectid!!
-		Node player2 = new Node(wo.getObjectID());
+		Node player2 = new Node(so.getObjectID());
 
-		player2.setLocalTranslation(new Vector3f(wo.getLocation().getX(), wo
-				.getLocation().getY(), wo.getLocation().getZ()));
-		player2.setLocalRotation(new Quaternion(wo.getHeading().getX(), wo
-				.getHeading().getY(), wo.getHeading().getZ(), wo.getHeading()
+		player2.setLocalTranslation(new Vector3f(so.getLocation().getX(), so
+				.getLocation().getY(), so.getLocation().getZ()));
+		player2.setLocalRotation(new Quaternion(so.getHeading().getX(), so
+				.getHeading().getY(), so.getHeading().getZ(), so.getHeading()
 				.getW()));
 
 		rootNode.attachChild(player2);
@@ -189,7 +189,7 @@ public class ObjectManager {
 		String gender = ClientPlayerData.getInstance()
 				.getSelectedCharacterData().getGender();
 
-		CharacterVisualAppearance appearance = ClientPlayerData.getInstance()
+		VisualAppearance appearance = ClientPlayerData.getInstance()
 				.getSelectedCharacterData().getVisualAppearance();
 
 		try {
@@ -296,7 +296,7 @@ public class ObjectManager {
 		}
 	}
 
-	public static Node createMovableObject(OCharacterData ocd) {
+	public static Node createMovableObject(CharacterData ocd) {
 		
 		//TODO: See if we have set all variables (we have not !)
 		MovableObject object = new MovableObject(ocd.getCharacterID());
@@ -307,7 +307,7 @@ public class ObjectManager {
 		object.setName(ocd.getName());
 		int race = ocd.getRace();
 		String gender = ocd.getGender();
-		CharacterVisualAppearance appearance = ocd.getVisualAppearance();
+		VisualAppearance appearance = ocd.getVisualAppearance();
 
 		try {
 			URL urlOfTexture = new File(BASE_PATH + GENERIC_CHARACTER_PATH

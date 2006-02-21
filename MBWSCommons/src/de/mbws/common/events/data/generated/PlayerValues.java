@@ -5,7 +5,7 @@ import de.mbws.common.events.data.AbstractEventData;
 import java.util.*;
 import java.nio.ByteBuffer;
 
-public class CharacterValues extends AbstractEventData { 
+public class PlayerValues extends AbstractEventData { 
 	private int health;
 	private int mana;
 	private int stamina;
@@ -93,20 +93,20 @@ public class CharacterValues extends AbstractEventData {
 		return payload.position();
 	}
 
-	public static void serializeList(ByteBuffer payload, List<CharacterValues> list) {
+	public static void serializeList(ByteBuffer payload, List<PlayerValues> list) {
 		if(list==null) return;
 		payload.putInt(list.size());
-		Iterator<CharacterValues> it = list.iterator();
+		Iterator<PlayerValues> it = list.iterator();
 		while (it.hasNext()) {
 			it.next().serialize(payload);
 		}
 	}
 
-	public static List<CharacterValues> deserializeList(ByteBuffer payload) {
-		List<CharacterValues> list = new LinkedList<CharacterValues>();
+	public static List<PlayerValues> deserializeList(ByteBuffer payload) {
+		List<PlayerValues> list = new LinkedList<PlayerValues>();
 		int size = payload.getInt();
 		for (int i=0; i<size; i++) {
-			CharacterValues element = new CharacterValues();
+			PlayerValues element = new PlayerValues();
 			element.deserialize(payload);
 			list.add(element);
 		}

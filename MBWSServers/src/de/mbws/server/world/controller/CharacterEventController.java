@@ -65,18 +65,18 @@ public class CharacterEventController extends WorldServerBaseEventController {
 				return;
 			}
 			CharacterStatus cs = cdata.getCharacterStatus();
-			CharacterDetails charDetails = new CharacterDetails();
+			PlayerDetails charDetails = new PlayerDetails();
 
-			OCharacterData ocd = new OCharacterData();
+			CharacterData ocd = new CharacterData();
 			ocd.setName(cdata.getCharactername());
 			ocd.setGender(cdata.getGender());
 			ocd.setCurrentHealth(cs.getCharacterdata().getHealth());
 			ocd.setMaxHealth(cdata.getHealth());
 			ocd.setRace(cdata.getRace().getId().intValue());
 			// TODO: must be set !
-			ocd.setPvp((byte)0);
+			ocd.setPvp((byte) 0);
 			ocd.setPredefinedModel(-1);
-			CharacterVisualAppearance cva = new CharacterVisualAppearance();
+			VisualAppearance cva = new VisualAppearance();
 			ocd.setVisualAppearance(cva);
 			// TODO clean up above
 			IntVector3D location = new IntVector3D();
@@ -95,7 +95,7 @@ public class CharacterEventController extends WorldServerBaseEventController {
 					.getActiveCharacterAsObjectID());
 			((ServerPlayerData) ce.getPlayer()).setMovementInformation(ocd);
 
-			charDetails.setDescription(getCharacterShortDescription(cdata));
+			charDetails.setDescription(getPlayerShortDescription(cdata));
 			charDetails.setHeading(heading);
 			charDetails.setLocation(location);
 			CharacterEvent result = new CharacterEvent(charDetails);
@@ -130,9 +130,8 @@ public class CharacterEventController extends WorldServerBaseEventController {
 		}
 	}
 
-	private CharacterShortDescription getCharacterShortDescription(
-			Characterdata cdata) {
-		CharacterShortDescription csd = new CharacterShortDescription();
+	private PlayerShortDescription getPlayerShortDescription(Characterdata cdata) {
+		PlayerShortDescription csd = new PlayerShortDescription();
 		csd.setGender(cdata.getGender());
 		csd.setLocation(cdata.getCharacterStatus().getMap().getName());
 		csd.setName(cdata.getCharactername());
@@ -143,9 +142,9 @@ public class CharacterEventController extends WorldServerBaseEventController {
 		return csd;
 	}
 
-	private CharacterVisualAppearance getCharacterVisualAppearance(
+	private VisualAppearance getCharacterVisualAppearance(
 			CharacterVisualappearance cdata) {
-		CharacterVisualAppearance cva = new CharacterVisualAppearance();
+		VisualAppearance cva = new VisualAppearance();
 		// cva.setFaceType(cdata.getFaceType());
 		// cva.setHairColor(cdata.getHairColor())
 		// cva.setHairFacial(cdata.getHairFacial())

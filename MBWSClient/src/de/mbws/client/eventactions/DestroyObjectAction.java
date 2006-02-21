@@ -4,7 +4,7 @@ import java.nio.ByteBuffer;
 
 import de.mbws.client.data.ObjectManager;
 import de.mbws.common.events.data.AbstractEventData;
-import de.mbws.common.events.data.generated.WorldObject;
+import de.mbws.common.events.data.generated.StaticObject;
 
 public class DestroyObjectAction extends AbstractEventAction {
 
@@ -17,7 +17,7 @@ public class DestroyObjectAction extends AbstractEventAction {
 	}
 
 	public void performAction() {
-		ObjectManager.detach(((WorldObject)getEventData()).getObjectID());
+		ObjectManager.detach(((StaticObject) getEventData()).getObjectID());
 	}
 
 }

@@ -5,27 +5,18 @@ import de.mbws.common.events.data.AbstractEventData;
 import java.util.*;
 import java.nio.ByteBuffer;
 
-public class WorldObject extends AbstractEventData { 
-	private String objectID;
-	private int modelID;
+public class PlayerDetails extends AbstractEventData { 
+	private PlayerShortDescription description;
 	private IntVector3D location;
 	private NetQuaternion heading;
 
 
-	public String getObjectID() {
-		return objectID;
+	public PlayerShortDescription getDescription() {
+		return description;
 	}
 
-	public void setObjectID(String objectID) {
-		this.objectID = objectID;
-	} 
-
-	public int getModelID() {
-		return modelID;
-	}
-
-	public void setModelID(int modelID) {
-		this.modelID = modelID;
+	public void setDescription(PlayerShortDescription description) {
+		this.description = description;
 	} 
 
 	public IntVector3D getLocation() {
@@ -46,8 +37,8 @@ public class WorldObject extends AbstractEventData {
 
 
 	public void deserialize(ByteBuffer payload) {
-		objectID = readString(payload);
-		modelID = payload.getInt();
+		description = new PlayerShortDescription();
+		description.deserialize(payload);
 		location = new IntVector3D();
 		location.deserialize(payload);
 		heading = new NetQuaternion();
@@ -55,27 +46,26 @@ public class WorldObject extends AbstractEventData {
 	}
 
 	public int serialize(ByteBuffer payload) {
-		writeString(payload, objectID);
-		payload.putInt(modelID);
+		description.serialize(payload);
 		location.serialize(payload);
 		heading.serialize(payload);
 		return payload.position();
 	}
 
-	public static void serializeList(ByteBuffer payload, List<WorldObject> list) {
+	public static void serializeList(ByteBuffer payload, List<PlayerDetails> list) {
 		if(list==null) return;
 		payload.putInt(list.size());
-		Iterator<WorldObject> it = list.iterator();
+		Iterator<PlayerDetails> it = list.iterator();
 		while (it.hasNext()) {
 			it.next().serialize(payload);
 		}
 	}
 
-	public static List<WorldObject> deserializeList(ByteBuffer payload) {
-		List<WorldObject> list = new LinkedList<WorldObject>();
+	public static List<PlayerDetails> deserializeList(ByteBuffer payload) {
+		List<PlayerDetails> list = new LinkedList<PlayerDetails>();
 		int size = payload.getInt();
 		for (int i=0; i<size; i++) {
-			WorldObject element = new WorldObject();
+			PlayerDetails element = new PlayerDetails();
 			element.deserialize(payload);
 			list.add(element);
 		}
