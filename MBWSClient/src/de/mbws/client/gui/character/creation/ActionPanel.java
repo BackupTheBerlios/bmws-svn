@@ -78,7 +78,7 @@ public class ActionPanel extends JPanel implements PropertyChangeListener {
                     Integer i = new Integer(getInputHandler().getCharacterData().getRace());
                     ClientNetworkController.getInstance().handleOutgoingEvent(
                             CharacterController.getInstance().createCreateCharacterEvent(getInputHandler().getCharacterData().getName(),
-                                    Byte.parseByte(getInputHandler().getCharacterData().getGender()), i.byteValue()));
+                                    getInputHandler().getCharacterData().getGender(), i.byteValue()));
                 }
             });
             createCharacterButton.setSize(createCharacterButton.getPreferredSize());

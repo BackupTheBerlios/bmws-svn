@@ -16,7 +16,7 @@ import de.mbws.client.controller.ClientNetworkController;
 import de.mbws.client.data.ClientGlobals;
 import de.mbws.client.gui.LoadingPanel;
 import de.mbws.client.state.handler.CharacterSelectionStateHandler;
-import de.mbws.common.events.data.generated.PlayerData;
+import de.mbws.common.events.data.generated.PlayerCharacterData;
 
 /**
  * Description:
@@ -33,7 +33,7 @@ public class ActionPanel extends JPanel implements PropertyChangeListener {
 
     InputHandler inputHandler;
 
-    PlayerData selectedCharacter = null;
+    PlayerCharacterData selectedCharacter = null;
 
     private JPanel buttonPanel = null;
 
@@ -102,7 +102,7 @@ public class ActionPanel extends JPanel implements PropertyChangeListener {
     }
 
     public void propertyChange(PropertyChangeEvent evt) {
-        selectedCharacter = (PlayerData) evt.getNewValue();
+        selectedCharacter = (PlayerCharacterData) evt.getNewValue();
         characterNameLabel.setText(selectedCharacter.getName());
         startGameButton.setEnabled(true);
         getParent().repaint();

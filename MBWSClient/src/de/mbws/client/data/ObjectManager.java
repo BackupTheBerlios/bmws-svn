@@ -28,8 +28,8 @@ import com.jmex.model.animation.JointController;
 import com.jmex.model.animation.KeyframeController;
 
 import de.mbws.common.events.data.generated.CharacterData;
+import de.mbws.common.events.data.generated.CharacterVisualAppearance;
 import de.mbws.common.events.data.generated.StaticObject;
-import de.mbws.common.events.data.generated.VisualAppearance;
 
 public class ObjectManager {
 
@@ -189,7 +189,7 @@ public class ObjectManager {
 		String gender = ClientPlayerData.getInstance()
 				.getSelectedCharacterData().getGender();
 
-		VisualAppearance appearance = ClientPlayerData.getInstance()
+        CharacterVisualAppearance appearance = ClientPlayerData.getInstance()
 				.getSelectedCharacterData().getVisualAppearance();
 
 		try {
@@ -307,7 +307,7 @@ public class ObjectManager {
 		object.setName(ocd.getName());
 		int race = ocd.getRace();
 		String gender = ocd.getGender();
-		VisualAppearance appearance = ocd.getVisualAppearance();
+        CharacterVisualAppearance appearance = ocd.getVisualAppearance();
 
 		try {
 			URL urlOfTexture = new File(BASE_PATH + GENERIC_CHARACTER_PATH

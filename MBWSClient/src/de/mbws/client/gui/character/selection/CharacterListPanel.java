@@ -21,7 +21,7 @@ import de.mbws.client.ValueMapper;
 import de.mbws.client.data.ClientGlobals;
 import de.mbws.client.state.handler.BaseInputHandler;
 import de.mbws.client.state.handler.CharacterSelectionStateHandler;
-import de.mbws.common.events.data.generated.PlayerData;
+import de.mbws.common.events.data.generated.PlayerCharacterData;
 
 
 /**
@@ -40,7 +40,7 @@ public class CharacterListPanel extends JPanel implements
 																			// 255,
 																			// 201);
 
-	List<PlayerData> allCharacters = null;
+	List<PlayerCharacterData> allCharacters = null;
 
 	private JList characterList = null;
 
@@ -49,7 +49,7 @@ public class CharacterListPanel extends JPanel implements
 	private JButton createButton = null;
 
 	private JButton deleteButton = null;
-	PlayerData selectedCharacter = null;
+	PlayerCharacterData selectedCharacter = null;
 
 	private JLabel headerLabel = null;
 
@@ -59,7 +59,7 @@ public class CharacterListPanel extends JPanel implements
 	/**
 	 * This is the default constructor
 	 */
-	public CharacterListPanel(List<PlayerData> allCharacters,
+	public CharacterListPanel(List<PlayerCharacterData> allCharacters,
 			BaseInputHandler inputHandler) {
 		super();
 		this.inputHandler = inputHandler;
@@ -84,7 +84,7 @@ public class CharacterListPanel extends JPanel implements
 		addPropertyChangeListener(
 				CharacterListPanel.CHARACTER_SELECTION_CHANGE, this);
 		for (Iterator iter = allCharacters.iterator(); iter.hasNext();) {
-			PlayerData character = (PlayerData) iter.next();
+			PlayerCharacterData character = (PlayerCharacterData) iter.next();
 			((DefaultListModel) getCharacterList().getModel())
 					.addElement(character);
 		}
@@ -120,8 +120,8 @@ public class CharacterListPanel extends JPanel implements
 		public Component getListCellRendererComponent(JList list, Object value,
 				int index, boolean isSelected, boolean hasFocus) {
 			JButton label = new JButton();
-			if (value instanceof PlayerData) {
-				PlayerData character = (PlayerData) value;
+			if (value instanceof PlayerCharacterData) {
+				PlayerCharacterData character = (PlayerCharacterData) value;
 				StringBuffer sb = new StringBuffer();
 				sb.append("<html>");
 				sb.append(character.getName());
@@ -201,7 +201,7 @@ public class CharacterListPanel extends JPanel implements
 	}
 
 	public void propertyChange(PropertyChangeEvent evt) {
-		selectedCharacter = (PlayerData) evt.getNewValue();
+		selectedCharacter = (PlayerCharacterData) evt.getNewValue();
 		deleteButton.setEnabled(true);
 		getParent().repaint();
 	}
