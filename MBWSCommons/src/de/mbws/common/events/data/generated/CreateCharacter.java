@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 
 public class CreateCharacter extends AbstractEventData { 
 	private byte race;
-	private byte gender;
+	private String gender;
 	private String name;
 
 
@@ -19,11 +19,11 @@ public class CreateCharacter extends AbstractEventData {
 		this.race = race;
 	} 
 
-	public byte getGender() {
+	public String getGender() {
 		return gender;
 	}
 
-	public void setGender(byte gender) {
+	public void setGender(String gender) {
 		this.gender = gender;
 	} 
 
@@ -38,13 +38,13 @@ public class CreateCharacter extends AbstractEventData {
 
 	public void deserialize(ByteBuffer payload) {
 		race = payload.get();
-		gender = payload.get();
+		gender = readString(payload);
 		name = readString(payload);
 	}
 
 	public int serialize(ByteBuffer payload) {
 		payload.put(race);
-		payload.put(gender);
+		writeString(payload, gender);
 		writeString(payload, name);
 		return payload.position();
 	}

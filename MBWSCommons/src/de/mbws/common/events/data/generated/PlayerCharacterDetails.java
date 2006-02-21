@@ -5,17 +5,17 @@ import de.mbws.common.events.data.AbstractEventData;
 import java.util.*;
 import java.nio.ByteBuffer;
 
-public class PlayerDetails extends AbstractEventData { 
-	private PlayerShortDescription description;
+public class PlayerCharacterDetails extends AbstractEventData { 
+	private PlayerCharacterShortDescription description;
 	private IntVector3D location;
 	private NetQuaternion heading;
 
 
-	public PlayerShortDescription getDescription() {
+	public PlayerCharacterShortDescription getDescription() {
 		return description;
 	}
 
-	public void setDescription(PlayerShortDescription description) {
+	public void setDescription(PlayerCharacterShortDescription description) {
 		this.description = description;
 	} 
 
@@ -37,7 +37,7 @@ public class PlayerDetails extends AbstractEventData {
 
 
 	public void deserialize(ByteBuffer payload) {
-		description = new PlayerShortDescription();
+		description = new PlayerCharacterShortDescription();
 		description.deserialize(payload);
 		location = new IntVector3D();
 		location.deserialize(payload);
@@ -52,20 +52,20 @@ public class PlayerDetails extends AbstractEventData {
 		return payload.position();
 	}
 
-	public static void serializeList(ByteBuffer payload, List<PlayerDetails> list) {
+	public static void serializeList(ByteBuffer payload, List<PlayerCharacterDetails> list) {
 		if(list==null) return;
 		payload.putInt(list.size());
-		Iterator<PlayerDetails> it = list.iterator();
+		Iterator<PlayerCharacterDetails> it = list.iterator();
 		while (it.hasNext()) {
 			it.next().serialize(payload);
 		}
 	}
 
-	public static List<PlayerDetails> deserializeList(ByteBuffer payload) {
-		List<PlayerDetails> list = new LinkedList<PlayerDetails>();
+	public static List<PlayerCharacterDetails> deserializeList(ByteBuffer payload) {
+		List<PlayerCharacterDetails> list = new LinkedList<PlayerCharacterDetails>();
 		int size = payload.getInt();
 		for (int i=0; i<size; i++) {
-			PlayerDetails element = new PlayerDetails();
+			PlayerCharacterDetails element = new PlayerCharacterDetails();
 			element.deserialize(payload);
 			list.add(element);
 		}

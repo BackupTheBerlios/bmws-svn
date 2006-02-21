@@ -6,24 +6,22 @@ import java.util.*;
 import java.nio.ByteBuffer;
 
 public class CharacterData extends AbstractEventData { 
-	private VisualAppearance visualAppearance;
+	private CharacterVisualAppearance visualAppearance;
 	private String characterID;
 	private String name;
 	private String gender;
 	private int race;
 	private IntVector3D location;
 	private NetQuaternion heading;
-	private int maxHealth;
-	private int currentHealth;
 	private byte pvp;
-	private int predefinedModel;
+	private int woundLevel;
 
 
-	public VisualAppearance getVisualAppearance() {
+	public CharacterVisualAppearance getVisualAppearance() {
 		return visualAppearance;
 	}
 
-	public void setVisualAppearance(VisualAppearance visualAppearance) {
+	public void setVisualAppearance(CharacterVisualAppearance visualAppearance) {
 		this.visualAppearance = visualAppearance;
 	} 
 
@@ -75,22 +73,6 @@ public class CharacterData extends AbstractEventData {
 		this.heading = heading;
 	} 
 
-	public int getMaxHealth() {
-		return maxHealth;
-	}
-
-	public void setMaxHealth(int maxHealth) {
-		this.maxHealth = maxHealth;
-	} 
-
-	public int getCurrentHealth() {
-		return currentHealth;
-	}
-
-	public void setCurrentHealth(int currentHealth) {
-		this.currentHealth = currentHealth;
-	} 
-
 	public byte getPvp() {
 		return pvp;
 	}
@@ -99,17 +81,17 @@ public class CharacterData extends AbstractEventData {
 		this.pvp = pvp;
 	} 
 
-	public int getPredefinedModel() {
-		return predefinedModel;
+	public int getWoundLevel() {
+		return woundLevel;
 	}
 
-	public void setPredefinedModel(int predefinedModel) {
-		this.predefinedModel = predefinedModel;
+	public void setWoundLevel(int woundLevel) {
+		this.woundLevel = woundLevel;
 	} 
 
 
 	public void deserialize(ByteBuffer payload) {
-		visualAppearance = new VisualAppearance();
+		visualAppearance = new CharacterVisualAppearance();
 		visualAppearance.deserialize(payload);
 		characterID = readString(payload);
 		name = readString(payload);
@@ -119,10 +101,8 @@ public class CharacterData extends AbstractEventData {
 		location.deserialize(payload);
 		heading = new NetQuaternion();
 		heading.deserialize(payload);
-		maxHealth = payload.getInt();
-		currentHealth = payload.getInt();
 		pvp = payload.get();
-		predefinedModel = payload.getInt();
+		woundLevel = payload.getInt();
 	}
 
 	public int serialize(ByteBuffer payload) {
@@ -133,10 +113,8 @@ public class CharacterData extends AbstractEventData {
 		payload.putInt(race);
 		location.serialize(payload);
 		heading.serialize(payload);
-		payload.putInt(maxHealth);
-		payload.putInt(currentHealth);
 		payload.put(pvp);
-		payload.putInt(predefinedModel);
+		payload.putInt(woundLevel);
 		return payload.position();
 	}
 

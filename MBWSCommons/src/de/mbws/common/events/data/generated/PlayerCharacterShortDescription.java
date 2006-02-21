@@ -5,13 +5,13 @@ import de.mbws.common.events.data.AbstractEventData;
 import java.util.*;
 import java.nio.ByteBuffer;
 
-public class PlayerShortDescription extends AbstractEventData { 
+public class PlayerCharacterShortDescription extends AbstractEventData { 
 	private String characterID;
 	private String name;
 	private String gender;
 	private int race;
 	private String location;
-	private VisualAppearance visualAppearance;
+	private CharacterVisualAppearance visualAppearance;
 
 
 	public String getCharacterID() {
@@ -54,11 +54,11 @@ public class PlayerShortDescription extends AbstractEventData {
 		this.location = location;
 	} 
 
-	public VisualAppearance getVisualAppearance() {
+	public CharacterVisualAppearance getVisualAppearance() {
 		return visualAppearance;
 	}
 
-	public void setVisualAppearance(VisualAppearance visualAppearance) {
+	public void setVisualAppearance(CharacterVisualAppearance visualAppearance) {
 		this.visualAppearance = visualAppearance;
 	} 
 
@@ -69,7 +69,7 @@ public class PlayerShortDescription extends AbstractEventData {
 		gender = readString(payload);
 		race = payload.getInt();
 		location = readString(payload);
-		visualAppearance = new VisualAppearance();
+		visualAppearance = new CharacterVisualAppearance();
 		visualAppearance.deserialize(payload);
 	}
 
@@ -83,20 +83,20 @@ public class PlayerShortDescription extends AbstractEventData {
 		return payload.position();
 	}
 
-	public static void serializeList(ByteBuffer payload, List<PlayerShortDescription> list) {
+	public static void serializeList(ByteBuffer payload, List<PlayerCharacterShortDescription> list) {
 		if(list==null) return;
 		payload.putInt(list.size());
-		Iterator<PlayerShortDescription> it = list.iterator();
+		Iterator<PlayerCharacterShortDescription> it = list.iterator();
 		while (it.hasNext()) {
 			it.next().serialize(payload);
 		}
 	}
 
-	public static List<PlayerShortDescription> deserializeList(ByteBuffer payload) {
-		List<PlayerShortDescription> list = new LinkedList<PlayerShortDescription>();
+	public static List<PlayerCharacterShortDescription> deserializeList(ByteBuffer payload) {
+		List<PlayerCharacterShortDescription> list = new LinkedList<PlayerCharacterShortDescription>();
 		int size = payload.getInt();
 		for (int i=0; i<size; i++) {
-			PlayerShortDescription element = new PlayerShortDescription();
+			PlayerCharacterShortDescription element = new PlayerCharacterShortDescription();
 			element.deserialize(payload);
 			list.add(element);
 		}

@@ -10,9 +10,7 @@ public class CreatureData extends AbstractEventData {
 	private String name;
 	private IntVector3D location;
 	private NetQuaternion heading;
-	private int maxHealth;
-	private int currentHealth;
-	private int predefinedModel;
+	private int woundLevel;
 
 
 	public String getCreatureID() {
@@ -47,28 +45,12 @@ public class CreatureData extends AbstractEventData {
 		this.heading = heading;
 	} 
 
-	public int getMaxHealth() {
-		return maxHealth;
+	public int getWoundLevel() {
+		return woundLevel;
 	}
 
-	public void setMaxHealth(int maxHealth) {
-		this.maxHealth = maxHealth;
-	} 
-
-	public int getCurrentHealth() {
-		return currentHealth;
-	}
-
-	public void setCurrentHealth(int currentHealth) {
-		this.currentHealth = currentHealth;
-	} 
-
-	public int getPredefinedModel() {
-		return predefinedModel;
-	}
-
-	public void setPredefinedModel(int predefinedModel) {
-		this.predefinedModel = predefinedModel;
+	public void setWoundLevel(int woundLevel) {
+		this.woundLevel = woundLevel;
 	} 
 
 
@@ -79,9 +61,7 @@ public class CreatureData extends AbstractEventData {
 		location.deserialize(payload);
 		heading = new NetQuaternion();
 		heading.deserialize(payload);
-		maxHealth = payload.getInt();
-		currentHealth = payload.getInt();
-		predefinedModel = payload.getInt();
+		woundLevel = payload.getInt();
 	}
 
 	public int serialize(ByteBuffer payload) {
@@ -89,9 +69,7 @@ public class CreatureData extends AbstractEventData {
 		writeString(payload, name);
 		location.serialize(payload);
 		heading.serialize(payload);
-		payload.putInt(maxHealth);
-		payload.putInt(currentHealth);
-		payload.putInt(predefinedModel);
+		payload.putInt(woundLevel);
 		return payload.position();
 	}
 

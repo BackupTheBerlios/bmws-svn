@@ -5,30 +5,20 @@ import de.mbws.common.events.data.AbstractEventData;
 import java.util.*;
 import java.nio.ByteBuffer;
 
-public class PlayerStatus extends AbstractEventData { 
-	private PlayerValues currentValues;
-	private String charstatus;
+public class PlayerCharacterStatus extends AbstractEventData { 
+	private PlayerCharacterAttributes currentAttributes;
 	private String pvp;
 	private String gamestatus;
 	private IntVector3D location;
 	private NetQuaternion heading;
-	private int freexp;
 
 
-	public PlayerValues getCurrentValues() {
-		return currentValues;
+	public PlayerCharacterAttributes getCurrentAttributes() {
+		return currentAttributes;
 	}
 
-	public void setCurrentValues(PlayerValues currentValues) {
-		this.currentValues = currentValues;
-	} 
-
-	public String getCharstatus() {
-		return charstatus;
-	}
-
-	public void setCharstatus(String charstatus) {
-		this.charstatus = charstatus;
+	public void setCurrentAttributes(PlayerCharacterAttributes currentAttributes) {
+		this.currentAttributes = currentAttributes;
 	} 
 
 	public String getPvp() {
@@ -63,53 +53,41 @@ public class PlayerStatus extends AbstractEventData {
 		this.heading = heading;
 	} 
 
-	public int getFreexp() {
-		return freexp;
-	}
-
-	public void setFreexp(int freexp) {
-		this.freexp = freexp;
-	} 
-
 
 	public void deserialize(ByteBuffer payload) {
-		currentValues = new PlayerValues();
-		currentValues.deserialize(payload);
-		charstatus = readString(payload);
+		currentAttributes = new PlayerCharacterAttributes();
+		currentAttributes.deserialize(payload);
 		pvp = readString(payload);
 		gamestatus = readString(payload);
 		location = new IntVector3D();
 		location.deserialize(payload);
 		heading = new NetQuaternion();
 		heading.deserialize(payload);
-		freexp = payload.getInt();
 	}
 
 	public int serialize(ByteBuffer payload) {
-		currentValues.serialize(payload);
-		writeString(payload, charstatus);
+		currentAttributes.serialize(payload);
 		writeString(payload, pvp);
 		writeString(payload, gamestatus);
 		location.serialize(payload);
 		heading.serialize(payload);
-		payload.putInt(freexp);
 		return payload.position();
 	}
 
-	public static void serializeList(ByteBuffer payload, List<PlayerStatus> list) {
+	public static void serializeList(ByteBuffer payload, List<PlayerCharacterStatus> list) {
 		if(list==null) return;
 		payload.putInt(list.size());
-		Iterator<PlayerStatus> it = list.iterator();
+		Iterator<PlayerCharacterStatus> it = list.iterator();
 		while (it.hasNext()) {
 			it.next().serialize(payload);
 		}
 	}
 
-	public static List<PlayerStatus> deserializeList(ByteBuffer payload) {
-		List<PlayerStatus> list = new LinkedList<PlayerStatus>();
+	public static List<PlayerCharacterStatus> deserializeList(ByteBuffer payload) {
+		List<PlayerCharacterStatus> list = new LinkedList<PlayerCharacterStatus>();
 		int size = payload.getInt();
 		for (int i=0; i<size; i++) {
-			PlayerStatus element = new PlayerStatus();
+			PlayerCharacterStatus element = new PlayerCharacterStatus();
 			element.deserialize(payload);
 			list.add(element);
 		}

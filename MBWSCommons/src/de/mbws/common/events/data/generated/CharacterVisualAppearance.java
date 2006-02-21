@@ -5,7 +5,7 @@ import de.mbws.common.events.data.AbstractEventData;
 import java.util.*;
 import java.nio.ByteBuffer;
 
-public class VisualAppearance extends AbstractEventData { 
+public class CharacterVisualAppearance extends AbstractEventData { 
 	private int height;
 	private int skinColor;
 	private int faceType;
@@ -214,20 +214,20 @@ public class VisualAppearance extends AbstractEventData {
 		return payload.position();
 	}
 
-	public static void serializeList(ByteBuffer payload, List<VisualAppearance> list) {
+	public static void serializeList(ByteBuffer payload, List<CharacterVisualAppearance> list) {
 		if(list==null) return;
 		payload.putInt(list.size());
-		Iterator<VisualAppearance> it = list.iterator();
+		Iterator<CharacterVisualAppearance> it = list.iterator();
 		while (it.hasNext()) {
 			it.next().serialize(payload);
 		}
 	}
 
-	public static List<VisualAppearance> deserializeList(ByteBuffer payload) {
-		List<VisualAppearance> list = new LinkedList<VisualAppearance>();
+	public static List<CharacterVisualAppearance> deserializeList(ByteBuffer payload) {
+		List<CharacterVisualAppearance> list = new LinkedList<CharacterVisualAppearance>();
 		int size = payload.getInt();
 		for (int i=0; i<size; i++) {
-			VisualAppearance element = new VisualAppearance();
+			CharacterVisualAppearance element = new CharacterVisualAppearance();
 			element.deserialize(payload);
 			list.add(element);
 		}

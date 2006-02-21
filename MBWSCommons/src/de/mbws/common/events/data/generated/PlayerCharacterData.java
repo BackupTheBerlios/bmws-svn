@@ -5,7 +5,7 @@ import de.mbws.common.events.data.AbstractEventData;
 import java.util.*;
 import java.nio.ByteBuffer;
 
-public class PlayerData extends AbstractEventData { 
+public class PlayerCharacterData extends AbstractEventData { 
 	private String characterID;
 	private String name;
 	private String gender;
@@ -14,9 +14,9 @@ public class PlayerData extends AbstractEventData {
 	private String locationdescription;
 	private IntVector3D location;
 	private NetQuaternion heading;
-	private PlayerValues normalValues;
-	private PlayerStatus status;
-	private VisualAppearance visualAppearance;
+	private PlayerCharacterAttributes normalValues;
+	private PlayerCharacterStatus status;
+	private CharacterVisualAppearance visualAppearance;
 
 
 	public String getCharacterID() {
@@ -83,27 +83,27 @@ public class PlayerData extends AbstractEventData {
 		this.heading = heading;
 	} 
 
-	public PlayerValues getNormalValues() {
+	public PlayerCharacterAttributes getNormalValues() {
 		return normalValues;
 	}
 
-	public void setNormalValues(PlayerValues normalValues) {
+	public void setNormalValues(PlayerCharacterAttributes normalValues) {
 		this.normalValues = normalValues;
 	} 
 
-	public PlayerStatus getStatus() {
+	public PlayerCharacterStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(PlayerStatus status) {
+	public void setStatus(PlayerCharacterStatus status) {
 		this.status = status;
 	} 
 
-	public VisualAppearance getVisualAppearance() {
+	public CharacterVisualAppearance getVisualAppearance() {
 		return visualAppearance;
 	}
 
-	public void setVisualAppearance(VisualAppearance visualAppearance) {
+	public void setVisualAppearance(CharacterVisualAppearance visualAppearance) {
 		this.visualAppearance = visualAppearance;
 	} 
 
@@ -119,11 +119,11 @@ public class PlayerData extends AbstractEventData {
 		location.deserialize(payload);
 		heading = new NetQuaternion();
 		heading.deserialize(payload);
-		normalValues = new PlayerValues();
+		normalValues = new PlayerCharacterAttributes();
 		normalValues.deserialize(payload);
-		status = new PlayerStatus();
+		status = new PlayerCharacterStatus();
 		status.deserialize(payload);
-		visualAppearance = new VisualAppearance();
+		visualAppearance = new CharacterVisualAppearance();
 		visualAppearance.deserialize(payload);
 	}
 
@@ -142,20 +142,20 @@ public class PlayerData extends AbstractEventData {
 		return payload.position();
 	}
 
-	public static void serializeList(ByteBuffer payload, List<PlayerData> list) {
+	public static void serializeList(ByteBuffer payload, List<PlayerCharacterData> list) {
 		if(list==null) return;
 		payload.putInt(list.size());
-		Iterator<PlayerData> it = list.iterator();
+		Iterator<PlayerCharacterData> it = list.iterator();
 		while (it.hasNext()) {
 			it.next().serialize(payload);
 		}
 	}
 
-	public static List<PlayerData> deserializeList(ByteBuffer payload) {
-		List<PlayerData> list = new LinkedList<PlayerData>();
+	public static List<PlayerCharacterData> deserializeList(ByteBuffer payload) {
+		List<PlayerCharacterData> list = new LinkedList<PlayerCharacterData>();
 		int size = payload.getInt();
 		for (int i=0; i<size; i++) {
-			PlayerData element = new PlayerData();
+			PlayerCharacterData element = new PlayerCharacterData();
 			element.deserialize(payload);
 			list.add(element);
 		}
