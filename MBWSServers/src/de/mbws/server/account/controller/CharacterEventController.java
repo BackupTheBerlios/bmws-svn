@@ -73,10 +73,10 @@ public class CharacterEventController extends AccountServerBaseEventController {
 			List chars = CharacterPersistenceManager
 					.getInstance()
 					.getAllCharacters(ce.getPlayer().getAccount().getUsername());
-			LinkedList<PlayerData> charsToSend = new LinkedList<PlayerData>();
+			LinkedList<PlayerCharacterData> charsToSend = new LinkedList<PlayerCharacterData>();
 			for (Iterator iter = chars.iterator(); iter.hasNext();) {
 				Characterdata element = (Characterdata) iter.next();
-				charsToSend.add(getCharacterData(element));
+				charsToSend.add(getPlayerCharacterData(element));
 			}
 			CharactersOfPlayer cop = new CharactersOfPlayer();
 			cop.setCharactersOfPlayer(charsToSend);
@@ -139,8 +139,8 @@ public class CharacterEventController extends AccountServerBaseEventController {
 		}
 	}
 
-	private PlayerData getCharacterData(Characterdata cdata) {
-		PlayerData playerData = new PlayerData();
+	private PlayerCharacterData getPlayerCharacterData(Characterdata cdata) {
+        PlayerCharacterData playerData = new PlayerCharacterData();
 		playerData.setGender(cdata.getGender());
 		playerData.setName(cdata.getCharactername());
 		playerData.setRace(cdata.getRace().getId());
@@ -148,11 +148,8 @@ public class CharacterEventController extends AccountServerBaseEventController {
 		playerData.setCharacterID(Globals.OBJECT_ID_PREFIX_CHARACTER
 				+ cdata.getId());
 
-		de.mbws.common.events.data.generated.PlayerStatus clientPlayerStatus = new de.mbws.common.events.data.generated.PlayerStatus();
+		de.mbws.common.events.data.generated.PlayerCharacterStatus clientPlayerStatus = new de.mbws.common.events.data.generated.PlayerCharacterStatus();
 		CharacterStatus serverCharacterStatus = cdata.getCharacterStatus();
-		clientPlayerStatus.setCharstatus(serverCharacterStatus.getCharstatus());
-		;
-		clientPlayerStatus.setFreexp(serverCharacterStatus.getFreexp());
 		clientPlayerStatus.setGamestatus(serverCharacterStatus.getGamestatus());
 		clientPlayerStatus.setPvp(serverCharacterStatus.getPvp());
 
@@ -174,7 +171,7 @@ public class CharacterEventController extends AccountServerBaseEventController {
 		clientPlayerStatus.setHeading(heading);
 		playerData.setHeading(heading);
 
-		PlayerValues clientNormalValues = new PlayerValues();
+		PlayerCharacterAttributes clientNormalValues = new PlayerCharacterAttributes();
 		clientNormalValues.setConstitution(cdata.getConstitution());
 		clientNormalValues.setDexterity(cdata.getDexterity());
 		clientNormalValues.setHealth(cdata.getHealth());
@@ -184,7 +181,7 @@ public class CharacterEventController extends AccountServerBaseEventController {
 		clientNormalValues.setStrength(cdata.getStrength());
 		playerData.setNormalValues(clientNormalValues);
 
-		PlayerValues clientcurrentValues = new PlayerValues();
+        PlayerCharacterAttributes clientcurrentValues = new PlayerCharacterAttributes();
 		clientcurrentValues.setConstitution(serverCharacterStatus
 				.getCurrentconstitution());
 		clientcurrentValues.setDexterity(serverCharacterStatus
@@ -197,7 +194,7 @@ public class CharacterEventController extends AccountServerBaseEventController {
 				.getCurrentstamina());
 		clientcurrentValues.setStrength(serverCharacterStatus
 				.getCurrentstrength());
-		clientPlayerStatus.setCurrentValues(clientcurrentValues);
+		clientPlayerStatus.setCurrentAttributes(clientcurrentValues);
 
 		playerData.setStatus(clientPlayerStatus);
 		playerData.setVisualAppearance(getCharacterVisualAppearance(cdata
@@ -208,9 +205,9 @@ public class CharacterEventController extends AccountServerBaseEventController {
 		return playerData;
 	}
 
-	private VisualAppearance getCharacterVisualAppearance(
+	private CharacterVisualAppearance getCharacterVisualAppearance(
 			CharacterVisualappearance cdata) {
-		VisualAppearance cva = new VisualAppearance();
+        CharacterVisualAppearance cva = new CharacterVisualAppearance();
 		// cva.setFaceType(cdata.getFaceType());
 		// cva.setHairColor(cdata.getHairColor())
 		// cva.setHairFacial(cdata.getHairFacial())

@@ -65,18 +65,18 @@ public class CharacterEventController extends WorldServerBaseEventController {
 				return;
 			}
 			CharacterStatus cs = cdata.getCharacterStatus();
-			PlayerDetails charDetails = new PlayerDetails();
+			PlayerCharacterDetails charDetails = new PlayerCharacterDetails();
 
 			CharacterData ocd = new CharacterData();
 			ocd.setName(cdata.getCharactername());
 			ocd.setGender(cdata.getGender());
-			ocd.setCurrentHealth(cs.getCharacterdata().getHealth());
-			ocd.setMaxHealth(cdata.getHealth());
+            //FIXME define rule for wounded level
+                int woundLevel = 0;
+            //           
+			ocd.setWoundLevel(woundLevel);
 			ocd.setRace(cdata.getRace().getId().intValue());
-			// TODO: must be set !
-			ocd.setPvp((byte) 0);
-			ocd.setPredefinedModel(-1);
-			VisualAppearance cva = new VisualAppearance();
+			ocd.setPvp(Byte.valueOf(cs.getPvp()));
+			CharacterVisualAppearance cva = new CharacterVisualAppearance();
 			ocd.setVisualAppearance(cva);
 			// TODO clean up above
 			IntVector3D location = new IntVector3D();
@@ -85,6 +85,8 @@ public class CharacterEventController extends WorldServerBaseEventController {
 			location.setZ(cs.getCoordinateZ());
 			ocd.setLocation(location);
 			NetQuaternion heading = new NetQuaternion();
+            
+            //FIXME define columns in table
 			heading.setW(0);
 			heading.setX(0);
 			heading.setY(0);
@@ -95,7 +97,7 @@ public class CharacterEventController extends WorldServerBaseEventController {
 					.getActiveCharacterAsObjectID());
 			((ServerPlayerData) ce.getPlayer()).setMovementInformation(ocd);
 
-			charDetails.setDescription(getPlayerShortDescription(cdata));
+			charDetails.setDescription(getPlayerCharacterShortDescription(cdata));
 			charDetails.setHeading(heading);
 			charDetails.setLocation(location);
 			CharacterEvent result = new CharacterEvent(charDetails);
@@ -130,8 +132,8 @@ public class CharacterEventController extends WorldServerBaseEventController {
 		}
 	}
 
-	private PlayerShortDescription getPlayerShortDescription(Characterdata cdata) {
-		PlayerShortDescription csd = new PlayerShortDescription();
+	private PlayerCharacterShortDescription getPlayerCharacterShortDescription(Characterdata cdata) {
+        PlayerCharacterShortDescription csd = new PlayerCharacterShortDescription();
 		csd.setGender(cdata.getGender());
 		csd.setLocation(cdata.getCharacterStatus().getMap().getName());
 		csd.setName(cdata.getCharactername());
@@ -142,9 +144,9 @@ public class CharacterEventController extends WorldServerBaseEventController {
 		return csd;
 	}
 
-	private VisualAppearance getCharacterVisualAppearance(
+	private CharacterVisualAppearance getCharacterVisualAppearance(
 			CharacterVisualappearance cdata) {
-		VisualAppearance cva = new VisualAppearance();
+        CharacterVisualAppearance cva = new CharacterVisualAppearance();
 		// cva.setFaceType(cdata.getFaceType());
 		// cva.setHairColor(cdata.getHairColor())
 		// cva.setHairFacial(cdata.getHairFacial())
