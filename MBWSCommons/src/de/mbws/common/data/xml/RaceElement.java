@@ -46,11 +46,6 @@ public class RaceElement implements java.io.Serializable {
      */
     private boolean _has_playable;
 
-    /**
-     * Field _description
-     */
-    private java.lang.String _description;
-
 
       //----------------/
      //- Constructors -/
@@ -83,17 +78,6 @@ public class RaceElement implements java.io.Serializable {
     {
         this._has_playable= false;
     } //-- void deletePlayable() 
-
-    /**
-     * Returns the value of field 'description'.
-     * 
-     * @return String
-     * @return the value of field 'description'.
-     */
-    public java.lang.String getDescription()
-    {
-        return this._description;
-    } //-- java.lang.String getDescription() 
 
     /**
      * Returns the value of field 'id'.
@@ -186,16 +170,6 @@ public class RaceElement implements java.io.Serializable {
         
         Marshaller.marshal(this, handler);
     } //-- void marshal(org.xml.sax.ContentHandler) 
-
-    /**
-     * Sets the value of field 'description'.
-     * 
-     * @param description the value of field 'description'.
-     */
-    public void setDescription(java.lang.String description)
-    {
-        this._description = description;
-    } //-- void setDescription(java.lang.String) 
 
     /**
      * Sets the value of field 'id'.
