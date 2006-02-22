@@ -184,7 +184,7 @@ public class CharacterController {
 	}
 
 	public AbstractGameEvent createCreateCharacterEvent(String name,
-			String gender, byte race) {
+			char gender, byte race) {
 		CreateCharacter cc = new CreateCharacter();
 		cc.setGender(gender);
 		cc.setRace(race);

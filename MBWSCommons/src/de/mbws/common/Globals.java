@@ -47,8 +47,8 @@ public class Globals {
     
     public static final String OBJECT_ID_PREFIX_CHARACTER = "C";
     
-    public static final String GENDER_MALE = "M";
-    public static final String GENDER_FEMALE = "F";
+    public static final char GENDER_MALE = 'M';
+    public static final char GENDER_FEMALE = 'F';
     
     
 }

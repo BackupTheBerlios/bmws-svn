@@ -9,7 +9,7 @@ public class CharacterData extends AbstractEventData {
 	private CharacterVisualAppearance visualAppearance;
 	private String characterID;
 	private String name;
-	private String gender;
+	private char gender;
 	private int race;
 	private IntVector3D location;
 	private NetQuaternion heading;
@@ -41,11 +41,11 @@ public class CharacterData extends AbstractEventData {
 		this.name = name;
 	} 
 
-	public String getGender() {
+	public char getGender() {
 		return gender;
 	}
 
-	public void setGender(String gender) {
+	public void setGender(char gender) {
 		this.gender = gender;
 	} 
 
@@ -95,7 +95,7 @@ public class CharacterData extends AbstractEventData {
 		visualAppearance.deserialize(payload);
 		characterID = readString(payload);
 		name = readString(payload);
-		gender = readString(payload);
+		gender = payload.getChar();
 		race = payload.getInt();
 		location = new IntVector3D();
 		location.deserialize(payload);
@@ -109,7 +109,7 @@ public class CharacterData extends AbstractEventData {
 		visualAppearance.serialize(payload);
 		writeString(payload, characterID);
 		writeString(payload, name);
-		writeString(payload, gender);
+		payload.putChar(gender);
 		payload.putInt(race);
 		location.serialize(payload);
 		heading.serialize(payload);

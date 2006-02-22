@@ -1,22 +1,7 @@
 package de.mbws.tools;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Properties;
-import java.util.Set;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 import org.apache.log4j.Logger;
 
@@ -67,6 +52,7 @@ public class PayloadCreator {
 		classes.put("byte", null);
 		classes.put("long", null);
 		classes.put("short", null);
+		classes.put("char", null);
 	}
 
 	private static class ClassDeclaration {
@@ -131,7 +117,8 @@ public class PayloadCreator {
 			String key = it.next();
 			if (key.equals("String") || key.startsWith("int")
 					|| key.startsWith("float") || key.startsWith("byte")
-					|| key.startsWith("long") || key.startsWith("short"))
+					|| key.startsWith("long") || key.startsWith("short")
+					|| key.startsWith("char"))
 				continue;
 			ClassDeclaration classDecl = classes.get(key);
 			System.out.println("INFO: generating " + classDecl.name);
@@ -213,6 +200,8 @@ public class PayloadCreator {
 				code += "\t\tpayload.putLong(" + field.name + ");\n";
 			} else if (field.type.equals("short")) {
 				code += "\t\tpayload.putShort(" + field.name + ");\n";
+			} else if (field.type.equals("char")) {
+				code += "\t\tpayload.putChar(" + field.name + ");\n";
 			} else if (classes.containsKey(field.type)) {
 				if (!field.isList) {
 					code += "\t\t" + field.name + getProp("classSep")
@@ -245,6 +234,8 @@ public class PayloadCreator {
 				code += "\t\t" + field.name + " = payload.getLong();\n";
 			} else if (field.type.equals("short")) {
 				code += "\t\t" + field.name + " = payload.getShort();\n";
+			} else if (field.type.equals("char")) {
+				code += "\t\t" + field.name + " = payload.getChar();\n";
 			} else if (classes.containsKey(field.type)) {
 				if (!field.isList) {
 					code += "\t\t" + field.name + " = "

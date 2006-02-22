@@ -186,7 +186,7 @@ public class ObjectManager {
 
 		int race = ClientPlayerData.getInstance().getSelectedCharacterData()
 				.getRace();
-		String gender = ClientPlayerData.getInstance()
+		char gender = ClientPlayerData.getInstance()
 				.getSelectedCharacterData().getGender();
 
         CharacterVisualAppearance appearance = ClientPlayerData.getInstance()
@@ -306,7 +306,7 @@ public class ObjectManager {
 
 		object.setName(ocd.getName());
 		int race = ocd.getRace();
-		String gender = ocd.getGender();
+		char gender = ocd.getGender();
         CharacterVisualAppearance appearance = ocd.getVisualAppearance();
 
 		try {
