@@ -69,7 +69,7 @@ public class CharacterEventController extends WorldServerBaseEventController {
 
 			CharacterData ocd = new CharacterData();
 			ocd.setName(cdata.getCharactername());
-			ocd.setGender(cdata.getGender());
+			ocd.setGender(cdata.getGender().charAt(0));
             //FIXME define rule for wounded level
                 int woundLevel = 0;
             //           
@@ -134,7 +134,7 @@ public class CharacterEventController extends WorldServerBaseEventController {
 
 	private PlayerCharacterShortDescription getPlayerCharacterShortDescription(Characterdata cdata) {
         PlayerCharacterShortDescription csd = new PlayerCharacterShortDescription();
-		csd.setGender(cdata.getGender());
+		csd.setGender(cdata.getGender().charAt(0));
 		csd.setLocation(cdata.getCharacterStatus().getMap().getName());
 		csd.setName(cdata.getCharactername());
 		csd.setRace(cdata.getRace().getId());

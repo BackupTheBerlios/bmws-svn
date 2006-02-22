@@ -141,7 +141,7 @@ public class CharacterEventController extends AccountServerBaseEventController {
 
 	private PlayerCharacterData getPlayerCharacterData(Characterdata cdata) {
         PlayerCharacterData playerData = new PlayerCharacterData();
-		playerData.setGender(cdata.getGender());
+		playerData.setGender(cdata.getGender().charAt(0));
 		playerData.setName(cdata.getCharactername());
 		playerData.setRace(cdata.getRace().getId());
 		playerData.setAge(cdata.getAge());
