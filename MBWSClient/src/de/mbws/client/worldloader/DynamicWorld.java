@@ -42,7 +42,7 @@ public class DynamicWorld extends Node {
 
 	Map<String, TerrainBlock> sectionCache = new HashMap<String, TerrainBlock>();
 	Set<TerrainBlock> visibleSections = new HashSet<TerrainBlock>();
-	ObjectRepository modelRepository = new ObjectRepository();
+	ObjectRepository modelRepository;
 	SyncTaskQueue taskQueue;
 	ObjectLoader loader;
 	DisplaySystem display;

@@ -7,7 +7,7 @@ import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 
 /**
- * The ObjectRepository manages objects in the (game) world. It consists of a blue-print repository
+ * The ObjectRepository manages objects in the (game) world. It consists of a blueprint repository
  * and an instance repository. This way it ensures, that objects can be reused without the overhead
  * of reloading the whole object.
  * 
