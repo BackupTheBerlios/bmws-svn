@@ -220,7 +220,11 @@ public class DynamicWorld extends Node {
 	 */
 	public float getSteepness(Vector3f location) {
 		Vector3f normal = new Vector3f();
+		try {
 		getSectionAt(location.x, location.z).getSurfaceNormal(location, normal);
+		} catch (Exception e) {
+			// do nothing
+		}
 		return 1 - normal.y;
 	}
 }

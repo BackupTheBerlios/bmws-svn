@@ -50,20 +50,21 @@ public class ObjectLoader {
 		}
 	}
 	
-	public List<ObjectRepository.ModelInstance> loadSectionObjectList(String path) {
-		List<ObjectRepository.ModelInstance> objectList = new ArrayList<ObjectRepository.ModelInstance>();
+	public List<ObjectDescription> loadSectionObjectList(String path) {
+		List<ObjectDescription> objectList = new ArrayList<ObjectDescription>();
 		try {
 			Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
 					new File(path));
 			NodeList nodeList = document.getElementsByTagName("Object");
 			for (int i=0; i<nodeList.getLength(); i++) {
+				ObjectDescription descr = new ObjectDescription();
 				NamedNodeMap objectAttrs = nodeList.item(i).getAttributes();
-				String name = objectAttrs.getNamedItem("name").getNodeValue();
-				float x = readFloatAttribute(objectAttrs, "pos_x");
-				float y = readFloatAttribute(objectAttrs, "pos_y");
-				float z = readFloatAttribute(objectAttrs, "pos_z");
-				float scale = readFloatAttribute(objectAttrs, "scale");
-				objectList.add(new ObjectRepository.ModelInstance(name, x, y, z, scale));
+				descr.name = objectAttrs.getNamedItem("name").getNodeValue();
+				descr.x = readFloatAttribute(objectAttrs, "pos_x");
+				descr.y = readFloatAttribute(objectAttrs, "pos_y");
+				descr.z = readFloatAttribute(objectAttrs, "pos_z");
+				descr.scale = readFloatAttribute(objectAttrs, "scale");
+				objectList.add(descr);
 			}
 		}
 		catch (Exception e) {
@@ -72,7 +73,7 @@ public class ObjectLoader {
 		return objectList;
 	}
 
-	public Node loadObject(String worldPath, String objectName, float scaling) {
+	public Node loadObject(String worldPath, String objectName) {
 		Node objectNode = null;
 		try {
 			FileInputStream fi = new FileInputStream(new File(worldPath + "/objects/" + objectName));
@@ -84,7 +85,6 @@ public class ObjectLoader {
 			objectNode = jbr.loadBinaryFormat(fi);
 			logger.info("Time to convert from .jme to SceneGraph:"
 					+ (System.currentTimeMillis() - time));
-			objectNode.setLocalScale(scaling);
 		}
 		catch (Exception e) {
 			logger.error(e + ": " + e.getMessage());

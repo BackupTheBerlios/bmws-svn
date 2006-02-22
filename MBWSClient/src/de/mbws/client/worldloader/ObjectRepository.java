@@ -3,6 +3,7 @@ package de.mbws.client.worldloader;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 
 /**
@@ -14,57 +15,91 @@ import com.jme.scene.Spatial;
  */
 public class ObjectRepository {
 
-	Map<String, Spatial> blueprintMap = new HashMap<String, Spatial>();
+	private Map<String, Blueprint> blueprintMap = new HashMap<String, Blueprint>();
+	private ObjectLoader objectLoader;
+	private String objectRepositoryPath;
+	private SyncTaskQueue taskQueue;
 
 	/**
-	 * ModelInstance represents one instance of a JME-object.
+	 * BluePrint represents the blueprint of a JME-object.
 	 */
-	public static class ModelInstance {
+	private static class Blueprint {
 		String name;
-		float pos_x;
-		float pos_y;
-		float pos_z;
-		float scale;
+		int referenceCount;
 		Spatial instance;
 
-		public ModelInstance(String name, float x, float y, float z, float scale) {
+		public Blueprint(String name, Spatial instance) {
 			this.name = name;
-			this.pos_x = x;
-			this.pos_y = y;
-			this.pos_z = z;
-			this.scale = scale;
+			this.instance = instance;
 		}
-		
-		public void setSpatial(Spatial spatial) {
-			instance = spatial;
+	}
+
+	private class LoadObjectTask implements Runnable {
+		String path;
+		String name;
+
+		public LoadObjectTask(String path, String name) {
+			this.path = path;
+			this.name = name;
+		}
+
+		public void run() {
+			Node object = objectLoader.loadObject(path, name);
+			Blueprint blueprint = new Blueprint(name, object);
+			blueprintMap.put(name, blueprint);
 		}
 	}
 
 	/**
-	 * Loads a section with all contained objects into the section cache.
+	 * Constructs an ObjectRepository.
 	 * 
-	 * @param section_x
-	 * @param section_y
-	 * @param tb
+	 * @param objectLoader The instance of the ObjectLoader will be used to read needed objects,
+	 *            which are not yet contained in the repository.
+	 * @param taskQueue The TaskQueue which should be used for time consuming load jobs.
 	 */
-	void preloadSection(int section_x, int section_y) {
-		// TODO loading of the description and loading of the terrain, objects ... has to be split
-		// by different load tasks for the queue
+	ObjectRepository(ObjectLoader objectLoader, SyncTaskQueue taskQueue) {
+		this.objectLoader = objectLoader;
+		this.taskQueue = taskQueue;
 	}
 
 	/**
-	 * Removes a section from the cache.
+	 * Notifies the ObjectRepository about an object, which might be used in the near future. If it
+	 * is not yet loaded a load task is started and a blueprint of this object is put into the
+	 * repository.
 	 * 
-	 * @param section_x
-	 * @param section_y
+	 * @param descr
 	 */
-	void removeSection(int section_x, int section_y) {
+	void preloadObject(ObjectDescription descr) {
+		if (!blueprintMap.containsKey(descr.name)) {
+			taskQueue.enqueue(descr.name, new LoadObjectTask(objectRepositoryPath, descr.name));
+		}
+	}
+
+	/**
+	 * Creates a clone for a specific object instance using a blueprint from the repository.<p/>
+	 * <b>Caution:</b> Use <code>createObjectClone()</code> and <code>destroyObjectClone()</code>
+	 * symmetrically to avoid memory leaks.
+	 * 
+	 * @return A clone of the requested object.
+	 */
+	Node createObjectClone(ObjectDescription descr) {
+		// retrieve the blueprint, then build clone
+		Blueprint blueprint = blueprintMap.get(descr.name);
+		if (blueprint == null) {
+			throw new RuntimeException("Requested object is not (yet?) contained in the ObjectRepository");
+		}
+		// build clone
+			return null;
+	}
+
+	/**
+	 * Notifies the repository of an object instance, which is not used anymore. If the given
+	 * instance is the last one in use, the blueprint is removed from the repository.
+	 * 
+	 * @param node
+	 */
+	void destroyObjectClone(Node node) {
 
 	}
 
-	private void prelaodModelInstance(int section_x, int section_y, ModelInstance mod) {
-		// if model is not in blue-print repository enqueue task to load it
-
-		// register instance
-	}
 }
