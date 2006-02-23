@@ -3,6 +3,9 @@ package de.mbws.client.worldloader;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
+import com.jme.renderer.CloneCreator;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 
@@ -15,6 +18,9 @@ import com.jme.scene.Spatial;
  */
 public class ObjectRepository {
 
+	private static Logger logger = Logger.getLogger(ObjectRepository.class);
+	private static long uid = 0;
+
 	private Map<String, Blueprint> blueprintMap = new HashMap<String, Blueprint>();
 	private ObjectLoader objectLoader;
 	private String objectRepositoryPath;
@@ -26,12 +32,35 @@ public class ObjectRepository {
 	private static class Blueprint {
 		String name;
 		int referenceCount;
-		Spatial instance;
+		CloneCreator cloneCreator;
+		volatile boolean completed;
 
-		public Blueprint(String name, Spatial instance) {
+		Blueprint(String name) {
 			this.name = name;
-			this.instance = instance;
 		}
+
+		void createCloneCreator(Spatial spatial) {
+			this.cloneCreator = new CloneCreator(spatial);
+			cloneCreator.addProperty("vertices");
+			cloneCreator.addProperty("normals");
+			cloneCreator.addProperty("colors");
+			cloneCreator.addProperty("texcoords");
+			cloneCreator.addProperty("indices");
+			cloneCreator.addProperty("vboinfo");
+		}
+
+		void setCompleted() {
+			completed = true;
+		}
+
+		boolean isCompleted() {
+			return completed;
+		}
+	}
+
+	public static class DelayedSpatial {
+		volatile boolean complete;
+		Spatial spatial;
 	}
 
 	private class LoadObjectTask implements Runnable {
@@ -45,8 +74,29 @@ public class ObjectRepository {
 
 		public void run() {
 			Node object = objectLoader.loadObject(path, name);
-			Blueprint blueprint = new Blueprint(name, object);
-			blueprintMap.put(name, blueprint);
+			Blueprint blueprint = blueprintMap.get(name);
+			blueprint.createCloneCreator(object);
+			blueprint.setCompleted();
+			logger.info("Created blueprint for object "+name);
+		}
+	}
+
+	private class CreateCloneTask implements Runnable {
+		ObjectDescription descr;
+		DelayedSpatial dspatial;
+
+		CreateCloneTask(ObjectDescription descr, DelayedSpatial ds) {
+			this.descr = descr;
+			this.dspatial = ds;
+		}
+
+		public void run() {
+			Blueprint blueprint = blueprintMap.get(descr.name);
+			dspatial.spatial = blueprint.cloneCreator.createCopy();
+			dspatial.spatial.setName(descr.name + "_" + uid++);
+			// TODO set translation, rotation, scaling ...
+			dspatial.complete = true;
+			blueprint.referenceCount++;
 		}
 	}
 
@@ -63,33 +113,26 @@ public class ObjectRepository {
 	}
 
 	/**
-	 * Notifies the ObjectRepository about an object, which might be used in the near future. If it
-	 * is not yet loaded a load task is started and a blueprint of this object is put into the
-	 * repository.
-	 * 
-	 * @param descr
-	 */
-	void preloadObject(ObjectDescription descr) {
-		if (!blueprintMap.containsKey(descr.name)) {
-			taskQueue.enqueue(descr.name, new LoadObjectTask(objectRepositoryPath, descr.name));
-		}
-	}
-
-	/**
-	 * Creates a clone for a specific object instance using a blueprint from the repository.<p/>
+	 * Creates a clone for a specific object instance using a blueprint from the repository. The
+	 * returned DelayedSpatial might be empty if the object is reqested for the first time. In this
+	 * case a blueprint is loaded and the DelayedSpatial is filled after the loading has finished.<p/>
 	 * <b>Caution:</b> Use <code>createObjectClone()</code> and <code>destroyObjectClone()</code>
 	 * symmetrically to avoid memory leaks.
 	 * 
-	 * @return A clone of the requested object.
+	 * @return A DelayedSpatial, which will be filled with a clone of the requested object.
 	 */
-	Node createObjectClone(ObjectDescription descr) {
-		// retrieve the blueprint, then build clone
-		Blueprint blueprint = blueprintMap.get(descr.name);
-		if (blueprint == null) {
-			throw new RuntimeException("Requested object is not (yet?) contained in the ObjectRepository");
+	DelayedSpatial createObjectClone(ObjectDescription descr) {
+		// first check for a blueprint
+		if (!blueprintMap.containsKey(descr.name)) {
+			blueprintMap.put(descr.name, new Blueprint(descr.name));
+			taskQueue.enqueue("blueprint_" + descr.name, new LoadObjectTask(objectRepositoryPath,
+					descr.name));
 		}
-		// build clone
-			return null;
+		// enqueue task to create a clone (the blueprint entry will be processed first and the
+		// factory will be finished when this taks begins
+		DelayedSpatial ret = new DelayedSpatial();
+		taskQueue.enqueue("instance_" + descr.name, new CreateCloneTask(descr, ret));
+		return ret;
 	}
 
 	/**
@@ -98,8 +141,27 @@ public class ObjectRepository {
 	 * 
 	 * @param node
 	 */
-	void destroyObjectClone(Node node) {
+	void destroyObjectClone(Spatial node) {
+		String name = node.getName().substring(0, node.getName().indexOf('_'));
+		Blueprint blueprint = blueprintMap.get(name);
+		if (blueprint != null) {
+			blueprint.referenceCount--;
+			if (blueprint.referenceCount<=0) {
+				blueprintMap.remove(name);
+				logger.info("Removed blueprint for object "+name);
+			}
+		}
+		else {
+			logger.error("Cannot destroy unknown object '" + name + "'");
+		}
+	}
 
+	public String getObjectRepositoryPath() {
+		return objectRepositoryPath;
+	}
+
+	public void setObjectRepositoryPath(String objectRepositoryPath) {
+		this.objectRepositoryPath = objectRepositoryPath;
 	}
 
 }
