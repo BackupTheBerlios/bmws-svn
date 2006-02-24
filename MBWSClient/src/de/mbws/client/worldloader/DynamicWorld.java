@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
+import com.jme.bounding.BoundingSphere;
 import com.jme.image.Texture;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
@@ -80,12 +81,14 @@ public class DynamicWorld extends Node {
 		fs.setEnabled(true);
 		fs.setColor(new ColorRGBA(0.8f, 0.8f, 0.8f, 0.8f));
 		fs.setEnd(2000);
-		fs.setStart(1000);
+		fs.setStart(600);
 		fs.setDensityFunction(FogState.DF_LINEAR);
 		fs.setApplyFunction(FogState.AF_PER_VERTEX);
 		root.setRenderState(fs);
 
 		skydome = new Dome("Skydome", 5, 24, 2200);
+		skydome.setModelBound(new BoundingSphere());
+		skydome.updateModelBound();
 		Texture domeTexture = TextureManager.loadTexture(
 				"..\\MBWSClient\\data\\images\\wolken_16.jpg",
 				Texture.MM_LINEAR, Texture.FM_LINEAR);
