@@ -64,7 +64,7 @@ public class OutdoorGameState extends BaseGameState {
 		buildEnvironment();
 		buildPlayer();
 		buildCamera();
-		buildSky();
+		//buildSky();
 
 		rootNode.updateGeometricState(0.0f, true);
 		rootNode.updateRenderState();
@@ -149,6 +149,7 @@ public class OutdoorGameState extends BaseGameState {
 
 		chaseCam = new ChaseCamera(cam, player, chaserProps);
 		chaseCam.setActionSpeed(1.0f);
+		cam.setFrustumFar(2000);
 		// input.addToAttachedHandlers(chaseCam);
 
 	}
@@ -162,7 +163,7 @@ public class OutdoorGameState extends BaseGameState {
 		terrain = new DynamicWorld();
 		rootNode.attachChild(terrain);
 		try {
-			terrain.init(display, "data\\world\\world");
+			terrain.init(rootNode, display, "data\\world\\world");
 		} catch (SAXException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -184,7 +185,7 @@ public class OutdoorGameState extends BaseGameState {
 		// update the chase camera to handle the player moving around.
 
 		chaseCam.update(tpf);
-		skybox.setLocalTranslation(cam.getLocation());
+		//skybox.setLocalTranslation(cam.getLocation());
 		// }
 		// heightAtPoint = terrain.
 		// // TODO Fix the height and set it somewhere else !!

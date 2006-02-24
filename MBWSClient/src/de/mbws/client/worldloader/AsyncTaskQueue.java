@@ -3,7 +3,9 @@ package de.mbws.client.worldloader;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class AsyncTaskQueue {
+import org.apache.log4j.BasicConfigurator;
+
+public class AsyncTaskQueue extends AbstractTaskQueue {
 
 	protected volatile boolean stopping;
 
@@ -19,16 +21,17 @@ public class AsyncTaskQueue {
 
 	LinkedList<QueueEntry> queue = new LinkedList<QueueEntry>();
 
-	public void startQueueProcessor() {
+	public AsyncTaskQueue() {
+		logger.info("Starting queue processor thread");
 		Thread tr = new Thread(new Runnable() {
 			public void run() {
 				while (!stopping) {
 					QueueEntry entry = peek();
 					if (entry != null) {
-						System.err.println(System.currentTimeMillis()+" processing task: "+entry.identifier);
+						logger.debug("Processing task: "+entry.identifier);
 						entry.task.run();
 						dequeue();
-						System.err.println(System.currentTimeMillis()+" finished task: "+entry.identifier);
+						logger.debug("Finished task: "+entry.identifier);
 						synchronized (entry) {
 							entry.notifyAll();
 						}
@@ -37,16 +40,16 @@ public class AsyncTaskQueue {
 						// nothing to do, go to sleep
 						synchronized (AsyncTaskQueue.this) {
 							try {
-								System.err.println("going to sleep");
+								logger.info("Task processor is going to sleep");
 								AsyncTaskQueue.this.wait();
-								System.err.println("woke up");
+								logger.info("Task processor woke up");
 							}
 							catch (InterruptedException e) {
 							}
 						}
 					}
 				}
-				System.out.println("task queue finished");
+				logger.info("Task queue finished");
 			}
 		});
 		tr.start();
@@ -62,9 +65,10 @@ public class AsyncTaskQueue {
 		while (it.hasNext()) {
 			if (it.next().identifier.equals(taskIdentifier))
 				// task already in queue
+				// logger.debug("Task "+taskIdentifier+" ignored (already in queue)");
 				return;
 		}
-		System.err.println("enqueue task: "+taskIdentifier);
+		logger.info("Enqueue task: "+taskIdentifier);
 		queue.addLast(new QueueEntry(taskIdentifier, task));
 		notify();
 	}
@@ -103,17 +107,17 @@ public class AsyncTaskQueue {
 	}
 
 	public static void main(String[] args) {
+		BasicConfigurator.configure();
 		AsyncTaskQueue queue = new AsyncTaskQueue();
-		queue.startQueueProcessor();
 		for (int j = 0; j < 2; j++) {
 			for (int i = 0; i < 10; i++) {
-				System.out.println("adding task");
-				queue.enqueue("test", new Runnable() {
+				//System.out.println("adding task");
+				queue.enqueue("test"+i, new Runnable() {
 					public void run() {
 						try {
-							System.out.println("task started");
+							//System.out.println("task started");
 							Thread.sleep(1000);
-							System.out.println("task finished");
+							//System.out.println("task finished");
 						}
 						catch (InterruptedException e) {
 							// TODO Auto-generated catch block

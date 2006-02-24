@@ -7,10 +7,16 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
+import com.jme.image.Texture;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
+import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
+import com.jme.scene.shape.Dome;
+import com.jme.scene.state.FogState;
+import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
+import com.jme.util.TextureManager;
 import com.jmex.terrain.TerrainBlock;
 
 /**
@@ -43,9 +49,10 @@ public class DynamicWorld extends Node {
 	Map<String, TerrainBlock> sectionCache = new HashMap<String, TerrainBlock>();
 	Set<TerrainBlock> visibleSections = new HashSet<TerrainBlock>();
 	ObjectRepository modelRepository;
-	SyncTaskQueue taskQueue;
+	AbstractTaskQueue taskQueue;
 	ObjectLoader loader;
 	DisplaySystem display;
+	Dome skydome;
 
 	public DynamicWorld() {
 		super("DynamicWorld");
@@ -58,8 +65,8 @@ public class DynamicWorld extends Node {
 	 * @throws IOException
 	 * @throws SAXException
 	 */
-	public void init(DisplaySystem display, String pathForWorldDescription) throws SAXException,
-			IOException {
+	public void init(Node root, DisplaySystem display, String pathForWorldDescription)
+			throws SAXException, IOException {
 		this.worldPath = pathForWorldDescription;
 		this.display = display;
 		this.loader = new ObjectLoader(this);
@@ -67,6 +74,26 @@ public class DynamicWorld extends Node {
 		visibilityRadius2 = visibilityRadius * visibilityRadius;
 		prefetchRadius2 = prefetchRadius * prefetchRadius;
 		unloadRadius2 = unloadRadius * unloadRadius;
+
+		FogState fs = display.getRenderer().createFogState();
+		fs.setDensity(0.5f);
+		fs.setEnabled(true);
+		fs.setColor(new ColorRGBA(0.8f, 0.8f, 0.8f, 0.8f));
+		fs.setEnd(2000);
+		fs.setStart(1000);
+		fs.setDensityFunction(FogState.DF_LINEAR);
+		fs.setApplyFunction(FogState.AF_PER_VERTEX);
+		root.setRenderState(fs);
+
+		skydome = new Dome("Skydome", 5, 24, 2200);
+		Texture domeTexture = TextureManager.loadTexture(
+				"..\\MBWSClient\\data\\images\\wolken_16.jpg",
+				Texture.MM_LINEAR, Texture.FM_LINEAR);
+		TextureState ts = display.getRenderer().createTextureState();
+		ts.setTexture(domeTexture);
+		skydome.setRenderState(ts);
+		attachChild(skydome);
+		updateRenderState();
 	}
 
 	/**
@@ -169,17 +196,18 @@ public class DynamicWorld extends Node {
 	}
 
 	/**
-	 * Updates the dynamic terrain. Call this method from within the <code> update()</code>-method
-	 * of your <code>BaseGame</code>. For the given camera position all terrain sections within
-	 * the preload radius are loaded from the world description. Then all visible sections are added
-	 * to the DynamicTerrain. Vice versa all invisible sections are detached and sections outside
-	 * the unloadRadius are left for garbage collection.
+	 * Updates the world. Call this method from within the <code> update()</code>-method of your
+	 * <code>BaseGame</code>. For the given camera position all terrain sections within the
+	 * preload-radius are loaded from the world description. Then all visible sections are added to
+	 * the DynamicTerrain. Vice versa all invisible sections are detached and sections outside the
+	 * unloadRadius are left for garbage collection.
 	 * 
 	 * @param cam
 	 */
 	public void update(Camera cam) {
-		taskQueue.process(15);
+		((SyncTaskQueue) taskQueue).process(15);
 		Vector3f location = cam.getLocation();
+		skydome.setLocalTranslation(new Vector3f(location.x, location.y-1000, location.z));
 		unloadDistantSections(location);
 		removeInvisibleSections(location);
 		preloadAndAddSections(location);
@@ -202,7 +230,8 @@ public class DynamicWorld extends Node {
 	 */
 	public float getHeight(Vector3f location) {
 		try {
-			float ret = getSectionAt(location.x, location.z).getHeight(location.x%sectionWidth, location.z%sectionWidth);
+			float ret = getSectionAt(location.x, location.z).getHeight(location.x % sectionWidth,
+					location.z % sectionWidth);
 			return ret;
 		}
 		catch (Exception e) {
@@ -221,8 +250,9 @@ public class DynamicWorld extends Node {
 	public float getSteepness(Vector3f location) {
 		Vector3f normal = new Vector3f();
 		try {
-		getSectionAt(location.x, location.z).getSurfaceNormal(location, normal);
-		} catch (Exception e) {
+			getSectionAt(location.x, location.z).getSurfaceNormal(location, normal);
+		}
+		catch (Exception e) {
 			// do nothing
 		}
 		return 1 - normal.y;

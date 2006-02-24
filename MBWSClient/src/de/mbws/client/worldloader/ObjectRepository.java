@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.jme.math.Vector3f;
 import com.jme.renderer.CloneCreator;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
@@ -94,7 +95,9 @@ public class ObjectRepository {
 			Blueprint blueprint = blueprintMap.get(descr.name);
 			dspatial.spatial = blueprint.cloneCreator.createCopy();
 			dspatial.spatial.setName(descr.name + "_" + uid++);
-			// TODO set translation, rotation, scaling ...
+			// TODO set rotation ...
+			dspatial.spatial.setLocalTranslation(new Vector3f(descr.x, descr.y, descr.z));
+			dspatial.spatial.setLocalScale(descr.scale);
 			dspatial.complete = true;
 			blueprint.referenceCount++;
 		}

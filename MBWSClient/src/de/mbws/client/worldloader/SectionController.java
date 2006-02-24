@@ -1,16 +1,17 @@
 package de.mbws.client.worldloader;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.jme.scene.Node;
 import com.jmex.terrain.TerrainBlock;
+
+import de.mbws.client.worldloader.ObjectRepository.DelayedSpatial;
 
 public class SectionController {
 	
@@ -26,7 +27,7 @@ public class SectionController {
 	 */
 	private static class Section {
 		TerrainBlock terrain;
-		List<Node> objects = new ArrayList<Node>();
+		List<DelayedSpatial> objects = new LinkedList<DelayedSpatial>();
 		boolean complete;
 	}
 
