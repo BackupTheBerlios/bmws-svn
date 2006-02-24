@@ -20,6 +20,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
+import org.apache.log4j.BasicConfigurator;
+
 import de.terrainer.generators.RandomMidpointDisplacement;
 import de.terrainer.gui.HeightMapComponent;
 import de.terrainer.gui.PropertyPanel;
@@ -35,6 +37,7 @@ public class TerrainerGUI extends JFrame {
 
 	TerrainerGUI() {
 		super("Terrainer");
+		BasicConfigurator.configure();
 
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
