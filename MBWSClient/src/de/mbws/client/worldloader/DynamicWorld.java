@@ -15,6 +15,7 @@ import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import com.jme.scene.shape.Dome;
 import com.jme.scene.state.FogState;
+import com.jme.scene.state.LightState;
 import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
@@ -76,12 +77,16 @@ public class DynamicWorld extends Node {
 		prefetchRadius2 = prefetchRadius * prefetchRadius;
 		unloadRadius2 = unloadRadius * unloadRadius;
 
+		createSky(root, display);
+	}
+
+	private void createSky(Node root, DisplaySystem display) {
 		FogState fs = display.getRenderer().createFogState();
 		fs.setDensity(0.5f);
 		fs.setEnabled(true);
 		fs.setColor(new ColorRGBA(0.8f, 0.8f, 0.8f, 0.8f));
+		fs.setStart(1000);
 		fs.setEnd(2000);
-		fs.setStart(600);
 		fs.setDensityFunction(FogState.DF_LINEAR);
 		fs.setApplyFunction(FogState.AF_PER_VERTEX);
 		root.setRenderState(fs);
@@ -89,12 +94,17 @@ public class DynamicWorld extends Node {
 		skydome = new Dome("Skydome", 5, 24, 2200);
 		skydome.setModelBound(new BoundingSphere());
 		skydome.updateModelBound();
+        LightState lightState = display.getRenderer().createLightState();
+        lightState.setEnabled(false);
+        skydome.setRenderState(lightState);
+        skydome.setLightCombineMode(LightState.REPLACE);
 		Texture domeTexture = TextureManager.loadTexture(
 				"..\\MBWSClient\\data\\images\\wolken_16.jpg",
 				Texture.MM_LINEAR, Texture.FM_LINEAR);
 		TextureState ts = display.getRenderer().createTextureState();
 		ts.setTexture(domeTexture);
 		skydome.setRenderState(ts);
+        skydome.setTextureCombineMode(TextureState.REPLACE);
 		attachChild(skydome);
 		updateRenderState();
 	}

@@ -14,27 +14,38 @@ import com.jmex.terrain.TerrainBlock;
 import de.mbws.client.worldloader.ObjectRepository.DelayedSpatial;
 
 public class SectionController {
-	
+
 	private static Logger logger = Logger.getLogger(SectionController.class);
 
-	String worldPath;
-	SyncTaskQueue taskQueue;
-	ObjectLoader loader;
-	Map<String, Section> sectionCache = new HashMap<String, Section>();
+	private String worldPath;
+	private SyncTaskQueue taskQueue;
+	private ObjectLoader loader;
+	private Map<String, Section> sectionCache = new HashMap<String, Section>();
+	private ObjectRepository objectRepository;
 
 	/**
-	 * A Section consists of a terrain and a list of JME-<code>Nodes</code>.
+	 * A Section consists of a terrain and a list of <code>DelayedSpatials</code>.
 	 */
-	private static class Section {
+	private class Section {
 		TerrainBlock terrain;
 		List<DelayedSpatial> objects = new LinkedList<DelayedSpatial>();
 		boolean complete;
+
+		@Override
+		protected void finalize() throws Throwable {
+			Iterator<DelayedSpatial> it = objects.iterator();
+			while (it.hasNext()) {
+				objectRepository.destroyObjectClone(it.next().spatial);
+			}
+			super.finalize();
+		}
 	}
 
 	SectionController(SyncTaskQueue taskQueue, ObjectLoader loader, String worldPath) {
 		this.taskQueue = taskQueue;
 		this.loader = loader;
 		this.worldPath = worldPath;
+		objectRepository = new ObjectRepository(loader, taskQueue);
 	}
 
 	/**
@@ -56,7 +67,7 @@ public class SectionController {
 	/**
 	 * Task to load one terrain block.
 	 */
-	class LoadTerrainBlockTask extends SectionTask implements Runnable {
+	private class LoadTerrainBlockTask extends SectionTask implements Runnable {
 		public LoadTerrainBlockTask(int col, int row) {
 			super(col, row);
 		}
@@ -72,21 +83,39 @@ public class SectionController {
 	}
 
 	/**
-	 * Task to read the section description. It will enqueue more tasks to load subsequently all
+	 * Task to create an spatial 
+	 */
+	private class CreateSpatialTask extends SectionTask implements Runnable {
+		ObjectDescription descr;
+
+		CreateSpatialTask(int col, int row, ObjectDescription descr) {
+			super(col, row);
+			this.descr = descr;
+		}
+
+		public void run() {
+			getSection().objects.add(objectRepository.createObjectClone(descr));
+		}
+	}
+
+	/**
+	 * Task to read the section description. It will enqueue more tasks to create subsequently all
 	 * objects.
 	 */
-	class InitObjectLoadingTask extends SectionTask implements Runnable {
-		public InitObjectLoadingTask(int col, int row) {
+	private class CreateSectionObjectsTask extends SectionTask implements Runnable {
+		CreateSectionObjectsTask(int col, int row) {
 			super(col, row);
 		}
 
 		public void run() {
 			List<ObjectDescription> list = loader.loadSectionObjectList(worldPath);
 			// enqueue LoadTasks for all objects
-			Iterator it = list.iterator();
+			int number = 0;
+			Iterator<ObjectDescription> it = list.iterator();
 			while (it.hasNext()) {
-				// get object from repository and set instance in Section
-				// if not available enqueue object loading and set instance in Section
+				taskQueue.enqueue("LoadObject" + col + "_" + row + "_" + number, new CreateSpatialTask(
+						col, row, it.next()));
+				number++;
 			}
 		}
 	}
@@ -94,25 +123,27 @@ public class SectionController {
 	/**
 	 * Loads a section with all contained objects into the section cache.
 	 * 
-	 * @param section_x
-	 * @param section_y
+	 * @param col
+	 * @param row
 	 * @param tb
 	 */
 	void preloadSection(int col, int row) {
 		if (!sectionCache.containsKey(col + "_" + row)) {
 			sectionCache.put(col + "_" + row, new Section());
 			taskQueue.enqueue("loadTB" + col + "_" + row, new LoadTerrainBlockTask(col, row));
+			taskQueue.enqueue("loadSectionObjects" + col + "_" + row, new CreateSectionObjectsTask(
+					col, row));
 		}
 	}
 
 	/**
 	 * Removes a section from the cache.
 	 * 
-	 * @param section_x
-	 * @param section_y
+	 * @param col
+	 * @param row
 	 */
-	void removeSection(int section_x, int section_y) {
-
+	void removeSection(int col, int row) {
+		sectionCache.remove(col + "_" + row);
 	}
 
 }
