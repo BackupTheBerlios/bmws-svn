@@ -5,8 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.text.StyledDocument;
 import javax.swing.text.html.HTMLDocument;
 
@@ -110,14 +108,7 @@ public class ChatWindow extends JInternalFrame {
 		final JScrollPane pane = new JScrollPane();
 		pane.getViewport().add(c);
 		pane.revalidate();
-		// TODO:See if we can get rid of that
-		// note: the listener added here is only a fix for JDK1.4 - when your
-		// app is Java5 you don't need that one
-		pane.getViewport().addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				pane.getViewport().repaint();
-			}
-		});
+
 		return pane;
 	}
 

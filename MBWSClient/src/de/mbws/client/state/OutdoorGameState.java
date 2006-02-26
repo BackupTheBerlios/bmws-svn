@@ -31,6 +31,7 @@ import de.mbws.client.gui.ingame.GameDesktop;
 import de.mbws.client.net.ActionQueue;
 import de.mbws.client.state.handler.BaseInputHandler;
 import de.mbws.client.state.handler.MainGameStateHandler;
+import de.mbws.client.state.handler.MousePick;
 import de.mbws.client.worldloader.DynamicWorld;
 
 public class OutdoorGameState extends BaseGameState {
@@ -71,29 +72,29 @@ public class OutdoorGameState extends BaseGameState {
 
 	}
 
-	private void buildSky() {
-		// TODO: size seems a problem, use skydome anyway ?
-		skybox = new Skybox("skybox", 600, 200, 600);
-
-		Texture texture = TextureManager.loadTexture(OutdoorGameState.class
-				.getClassLoader().getResource("resources/textures/top.jpg"),
-				Texture.MM_LINEAR, Texture.FM_LINEAR);
-
-		skybox.setTexture(Skybox.NORTH, texture);
-		skybox.setTexture(Skybox.WEST, texture);
-		skybox.setTexture(Skybox.SOUTH, texture);
-		skybox.setTexture(Skybox.EAST, texture);
-		skybox.setTexture(Skybox.UP, texture);
-		skybox.setTexture(Skybox.DOWN, texture);
-		skybox.preloadTextures();
-		skybox.setLocalTranslation(player.getLocalTranslation());
-
-		// TODO: Uh this is bad ... we dont want to have it attached to the
-		// player
-		// player.attachChild(skybox);
-		rootNode.attachChild(skybox);
-
-	}
+//	private void buildSky() {
+//		// TODO: size seems a problem, use skydome anyway ?
+//		skybox = new Skybox("skybox", 600, 200, 600);
+//
+//		Texture texture = TextureManager.loadTexture(OutdoorGameState.class
+//				.getClassLoader().getResource("resources/textures/top.jpg"),
+//				Texture.MM_LINEAR, Texture.FM_LINEAR);
+//
+//		skybox.setTexture(Skybox.NORTH, texture);
+//		skybox.setTexture(Skybox.WEST, texture);
+//		skybox.setTexture(Skybox.SOUTH, texture);
+//		skybox.setTexture(Skybox.EAST, texture);
+//		skybox.setTexture(Skybox.UP, texture);
+//		skybox.setTexture(Skybox.DOWN, texture);
+//		skybox.preloadTextures();
+//		skybox.setLocalTranslation(player.getLocalTranslation());
+//
+//		// TODO: Uh this is bad ... we dont want to have it attached to the
+//		// player
+//		// player.attachChild(skybox);
+//		rootNode.attachChild(skybox);
+//
+//	}
 
 	protected void initJMEDesktop() {
 		desktopNode = new GameDesktop("Desktop", input);
@@ -157,6 +158,7 @@ public class OutdoorGameState extends BaseGameState {
 	private void buildPlayer() {
 		player = ObjectManager.getPlayer();
 		((MainGameStateHandler) playerInputHandler).setPlayer(player);
+		playerInputHandler.addAction(new MousePick(cam,rootNode,cursor,display));
 	}
 
 	private void buildEnvironment() {
