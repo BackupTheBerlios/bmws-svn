@@ -3,15 +3,13 @@ package de.mbws.client.worldloader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.jmex.terrain.TerrainBlock;
-
-import de.mbws.client.worldloader.ObjectRepository.DelayedSpatial;
+import com.jme.scene.Node;
+import com.jme.scene.Spatial;
 
 public class SectionController {
 
@@ -20,22 +18,20 @@ public class SectionController {
 	private String worldPath;
 	private SyncTaskQueue taskQueue;
 	private ObjectLoader loader;
-	private Map<String, Section> sectionCache = new HashMap<String, Section>();
+	private Map<String, SectionNode> sectionCache = new HashMap<String, SectionNode>();
 	private ObjectRepository objectRepository;
 
 	/**
 	 * A Section consists of a terrain and a list of <code>DelayedSpatials</code>.
 	 */
-	private class Section {
-		TerrainBlock terrain;
-		List<DelayedSpatial> objects = new LinkedList<DelayedSpatial>();
+	class SectionNode extends Node {
 		boolean complete;
 
 		@Override
 		protected void finalize() throws Throwable {
-			Iterator<DelayedSpatial> it = objects.iterator();
+			Iterator it = getChildren().iterator();
 			while (it.hasNext()) {
-				objectRepository.destroyObjectClone(it.next().spatial);
+				objectRepository.destroyObjectClone((Spatial) it.next());
 			}
 			super.finalize();
 		}
@@ -59,7 +55,7 @@ public class SectionController {
 			this.row = row;
 		}
 
-		Section getSection() {
+		SectionNode getSection() {
 			return sectionCache.get(col + "_" + row);
 		}
 	}
@@ -74,7 +70,7 @@ public class SectionController {
 
 		public void run() {
 			try {
-				getSection().terrain = loader.loadTerrainBlock(col, row);
+				getSection().attachChild(loader.loadTerrainBlock(col, row));
 			}
 			catch (IOException e) {
 				logger.error(e);
@@ -94,7 +90,7 @@ public class SectionController {
 		}
 
 		public void run() {
-			getSection().objects.add(objectRepository.createObjectClone(descr));
+			objectRepository.addObjectClone(getSection(), descr);
 		}
 	}
 
@@ -129,7 +125,7 @@ public class SectionController {
 	 */
 	void preloadSection(int col, int row) {
 		if (!sectionCache.containsKey(col + "_" + row)) {
-			sectionCache.put(col + "_" + row, new Section());
+			sectionCache.put(col + "_" + row, new SectionNode());
 			taskQueue.enqueue("loadTB" + col + "_" + row, new LoadTerrainBlockTask(col, row));
 			taskQueue.enqueue("loadSectionObjects" + col + "_" + row, new CreateSectionObjectsTask(
 					col, row));

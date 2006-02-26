@@ -78,28 +78,30 @@ public class ObjectRepository {
 			Blueprint blueprint = blueprintMap.get(name);
 			blueprint.createCloneCreator(object);
 			blueprint.setCompleted();
-			logger.info("Created blueprint for object "+name);
+			logger.info("Created blueprint for object " + name);
 		}
 	}
 
 	private class CreateCloneTask implements Runnable {
 		ObjectDescription descr;
-		DelayedSpatial dspatial;
+		SectionController.SectionNode section;
 
-		CreateCloneTask(ObjectDescription descr, DelayedSpatial ds) {
+		CreateCloneTask(ObjectDescription descr, SectionController.SectionNode sn) {
 			this.descr = descr;
-			this.dspatial = ds;
+			this.section = sn;
 		}
 
 		public void run() {
 			Blueprint blueprint = blueprintMap.get(descr.name);
-			dspatial.spatial = blueprint.cloneCreator.createCopy();
-			dspatial.spatial.setName(descr.name + "_" + uid++);
+			Spatial spatial;
+			spatial = blueprint.cloneCreator.createCopy();
+			spatial.setName(descr.name + "_" + uid++);
 			// TODO set rotation ...
-			dspatial.spatial.setLocalTranslation(new Vector3f(descr.x, descr.y, descr.z));
-			dspatial.spatial.setLocalScale(descr.scale);
-			dspatial.complete = true;
+			spatial.setLocalTranslation(new Vector3f(descr.x, descr.y, descr.z));
+			spatial.setLocalScale(descr.scale);
 			blueprint.referenceCount++;
+			section.attachChild(spatial);
+			section.complete = true;
 		}
 	}
 
@@ -117,14 +119,12 @@ public class ObjectRepository {
 
 	/**
 	 * Creates a clone for a specific object instance using a blueprint from the repository. The
-	 * returned DelayedSpatial might be empty if the object is reqested for the first time. In this
-	 * case a blueprint is loaded and the DelayedSpatial is filled after the loading has finished.<p/>
-	 * <b>Caution:</b> Use <code>createObjectClone()</code> and <code>destroyObjectClone()</code>
-	 * symmetrically to avoid memory leaks.
-	 * 
-	 * @return A DelayedSpatial, which will be filled with a clone of the requested object.
+	 * created Spatial will be added to the SectionNode asynchronously. If the object is requested
+	 * for the first time a blueprint (CloneCreator) is loaded first and afterwards the clone is
+	 * created. <p/> <b>Caution:</b> Use <code>addObjectClone()</code> and
+	 * <code>destroyObjectClone()</code> symmetrically to avoid memory leaks.
 	 */
-	DelayedSpatial createObjectClone(ObjectDescription descr) {
+	void addObjectClone(SectionController.SectionNode section, ObjectDescription descr) {
 		// first check for a blueprint
 		if (!blueprintMap.containsKey(descr.name)) {
 			blueprintMap.put(descr.name, new Blueprint(descr.name));
@@ -133,9 +133,7 @@ public class ObjectRepository {
 		}
 		// enqueue task to create a clone (the blueprint entry will be processed first and the
 		// factory will be finished when this taks begins
-		DelayedSpatial ret = new DelayedSpatial();
-		taskQueue.enqueue("instance_" + descr.name, new CreateCloneTask(descr, ret));
-		return ret;
+		taskQueue.enqueue("instance_" + descr.name, new CreateCloneTask(descr, section));
 	}
 
 	/**
@@ -149,9 +147,9 @@ public class ObjectRepository {
 		Blueprint blueprint = blueprintMap.get(name);
 		if (blueprint != null) {
 			blueprint.referenceCount--;
-			if (blueprint.referenceCount<=0) {
+			if (blueprint.referenceCount <= 0) {
 				blueprintMap.remove(name);
-				logger.info("Removed blueprint for object "+name);
+				logger.info("Removed blueprint for object " + name);
 			}
 		}
 		else {
