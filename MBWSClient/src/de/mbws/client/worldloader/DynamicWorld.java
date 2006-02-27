@@ -24,7 +24,7 @@ import com.jmex.terrain.TerrainBlock;
 
 /**
  * DynamicWorld is a super node for the terrain and static objects of a world. The world is
- * described in a xml-file and consists of various quadratic terrains forming a rectangular world.
+ * described in a xml-file and consists of various quadratic sections forming a rectangular world.
  * The quadratic terrains reside in the same directory as the world description. They are loaded
  * dynamically and attached as subnodes, when they are within a predefined visibility radius of the
  * camera.

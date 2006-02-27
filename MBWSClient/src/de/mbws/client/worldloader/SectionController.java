@@ -119,7 +119,7 @@ public class SectionController {
 		}
 
 		public void run() {
-			List<ObjectDescription> list = loader.loadSectionObjectList(worldPath);
+			List<ObjectDescription> list = loader.loadSectionObjectList(worldPath+"_"+key(col, row)+".xml");
 			// enqueue LoadTasks for all objects
 			int number = 0;
 			Iterator<ObjectDescription> it = list.iterator();

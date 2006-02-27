@@ -66,6 +66,7 @@ public class ObjectLoader {
 				descr.scale = readFloatAttribute(objectAttrs, "scale");
 				objectList.add(descr);
 			}
+			logger.debug("Read descriptions for "+nodeList.getLength()+" objects");
 		}
 		catch (Exception e) {
 			logger.error(e+": "+e.getMessage());
@@ -73,11 +74,11 @@ public class ObjectLoader {
 		return objectList;
 	}
 
-	public Node loadObject(String worldPath, String objectName) {
+	public Node loadObject(String objectRepositoryPath, String objectName) {
 		Node objectNode = null;
 		try {
-			FileInputStream fi = new FileInputStream(new File(worldPath + "/objects/" + objectName));
-			URL urlOfTexture = new URL("file://" + worldPath + "/textures/" + objectName);
+			FileInputStream fi = new FileInputStream(new File(objectRepositoryPath +"/model/"+ objectName));
+			URL urlOfTexture = new URL("file://" + objectRepositoryPath + "/textures/" + objectName);
 			JmeBinaryReader jbr = new JmeBinaryReader();
 			jbr.setProperty("texurl", urlOfTexture);
 			jbr.setProperty("bound", "box"); // Doesnt work ?

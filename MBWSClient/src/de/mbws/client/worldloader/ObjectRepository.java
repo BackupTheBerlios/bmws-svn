@@ -24,7 +24,7 @@ public class ObjectRepository {
 
 	private Map<String, Blueprint> blueprintMap = new HashMap<String, Blueprint>();
 	private ObjectLoader objectLoader;
-	private String objectRepositoryPath;
+	private String objectRepositoryPath = "../MBWSClient/data/characters/generic/1/M";
 	private AbstractTaskQueue taskQueue;
 
 	/**
@@ -41,7 +41,7 @@ public class ObjectRepository {
 		}
 
 		void createCloneCreator(Spatial spatial) {
-			this.cloneCreator = new CloneCreator(spatial);
+			cloneCreator = new CloneCreator(spatial);
 			cloneCreator.addProperty("vertices");
 			cloneCreator.addProperty("normals");
 			cloneCreator.addProperty("colors");
@@ -64,11 +64,11 @@ public class ObjectRepository {
 		Spatial spatial;
 	}
 
-	private class LoadObjectTask implements Runnable {
+	private class CreateCloneFactoryTask implements Runnable {
 		String path;
 		String name;
 
-		public LoadObjectTask(String path, String name) {
+		public CreateCloneFactoryTask(String path, String name) {
 			this.path = path;
 			this.name = name;
 		}
@@ -97,7 +97,9 @@ public class ObjectRepository {
 			spatial = blueprint.cloneCreator.createCopy();
 			spatial.setName(descr.name + "_" + uid++);
 			// TODO set rotation ...
-			spatial.setLocalTranslation(new Vector3f(descr.x, descr.y, descr.z));
+			spatial.setLocalTranslation(new Vector3f(descr.x
+					+ section.getTerrainBlock().getLocalTranslation().x, descr.y, descr.z
+					+ section.getTerrainBlock().getLocalTranslation().z));
 			spatial.setLocalScale(descr.scale);
 			blueprint.referenceCount++;
 			section.attachChild(spatial);
@@ -128,12 +130,12 @@ public class ObjectRepository {
 		// first check for a blueprint
 		if (!blueprintMap.containsKey(descr.name)) {
 			blueprintMap.put(descr.name, new Blueprint(descr.name));
-			taskQueue.enqueue("blueprint_" + descr.name, new LoadObjectTask(objectRepositoryPath,
-					descr.name));
+			taskQueue.enqueue("blueprint_" + descr.name, new CreateCloneFactoryTask(
+					objectRepositoryPath, descr.name));
 		}
 		// enqueue task to create a clone (the blueprint entry will be processed first and the
 		// factory will be finished when this taks begins
-		taskQueue.enqueue("instance_" + descr.name, new CreateCloneTask(descr, section));
+		taskQueue.enqueue("instance_" + descr.name+uid++, new CreateCloneTask(descr, section));
 	}
 
 	/**
