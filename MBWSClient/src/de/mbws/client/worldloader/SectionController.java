@@ -10,13 +10,14 @@ import org.apache.log4j.Logger;
 
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
+import com.jmex.terrain.TerrainBlock;
 
 public class SectionController {
 
 	private static Logger logger = Logger.getLogger(SectionController.class);
 
 	private String worldPath;
-	private SyncTaskQueue taskQueue;
+	private AbstractTaskQueue taskQueue;
 	private ObjectLoader loader;
 	private Map<String, SectionNode> sectionCache = new HashMap<String, SectionNode>();
 	private ObjectRepository objectRepository;
@@ -26,6 +27,16 @@ public class SectionController {
 	 */
 	class SectionNode extends Node {
 		boolean complete;
+		TerrainBlock terrain;
+
+		protected SectionNode(String name) {
+			super(name);
+		}
+
+		protected void addTerrain(TerrainBlock tb) {
+			terrain = tb;
+			attachChild(tb);
+		}
 
 		@Override
 		protected void finalize() throws Throwable {
@@ -35,9 +46,13 @@ public class SectionController {
 			}
 			super.finalize();
 		}
+
+		TerrainBlock getTerrainBlock() {
+			return terrain;
+		}
 	}
 
-	SectionController(SyncTaskQueue taskQueue, ObjectLoader loader, String worldPath) {
+	SectionController(AbstractTaskQueue taskQueue, ObjectLoader loader, String worldPath) {
 		this.taskQueue = taskQueue;
 		this.loader = loader;
 		this.worldPath = worldPath;
@@ -70,7 +85,7 @@ public class SectionController {
 
 		public void run() {
 			try {
-				getSection().attachChild(loader.loadTerrainBlock(col, row));
+				getSection().addTerrain(loader.loadTerrainBlock(col, row));
 			}
 			catch (IOException e) {
 				logger.error(e);
@@ -79,7 +94,7 @@ public class SectionController {
 	}
 
 	/**
-	 * Task to create an spatial 
+	 * Task to create an spatial
 	 */
 	private class CreateSpatialTask extends SectionTask implements Runnable {
 		ObjectDescription descr;
@@ -109,11 +124,15 @@ public class SectionController {
 			int number = 0;
 			Iterator<ObjectDescription> it = list.iterator();
 			while (it.hasNext()) {
-				taskQueue.enqueue("LoadObject" + col + "_" + row + "_" + number, new CreateSpatialTask(
-						col, row, it.next()));
+				taskQueue.enqueue("LoadObject" + col + "_" + row + "_" + number,
+						new CreateSpatialTask(col, row, it.next()));
 				number++;
 			}
 		}
+	}
+
+	private String key(int col, int row) {
+		return col + "_" + row;
 	}
 
 	/**
@@ -124,10 +143,10 @@ public class SectionController {
 	 * @param tb
 	 */
 	void preloadSection(int col, int row) {
-		if (!sectionCache.containsKey(col + "_" + row)) {
-			sectionCache.put(col + "_" + row, new SectionNode());
-			taskQueue.enqueue("loadTB" + col + "_" + row, new LoadTerrainBlockTask(col, row));
-			taskQueue.enqueue("loadSectionObjects" + col + "_" + row, new CreateSectionObjectsTask(
+		if (!sectionCache.containsKey(key(col, row))) {
+			sectionCache.put(key(col, row), new SectionNode(key(col, row)));
+			taskQueue.enqueue("loadTB" + key(col, row), new LoadTerrainBlockTask(col, row));
+			taskQueue.enqueue("loadSectionObjects" + key(col, row), new CreateSectionObjectsTask(
 					col, row));
 		}
 	}
@@ -139,7 +158,18 @@ public class SectionController {
 	 * @param row
 	 */
 	void removeSection(int col, int row) {
-		sectionCache.remove(col + "_" + row);
+		sectionCache.remove(key(col, row));
 	}
 
+	SectionNode getSection(int col, int row) {
+		return sectionCache.get(key(col, row));
+	}
+
+	Iterator<SectionNode> sectionIterator() {
+		return sectionCache.values().iterator();
+	}
+
+	boolean contains(int col, int row) {
+		return sectionCache.containsKey(key(col, row));
+	}
 }

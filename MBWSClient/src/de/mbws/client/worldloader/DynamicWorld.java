@@ -1,8 +1,9 @@
 package de.mbws.client.worldloader;
 
 import java.io.IOException;
-import java.util.*;
-import java.util.Map.Entry;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
@@ -43,16 +44,17 @@ public class DynamicWorld extends Node {
 	float sectionWidth = spatialScale * (sectionResolution - 1);
 	float visibilityRadius = 3f * sectionWidth;
 	float prefetchRadius = 4.5f * sectionWidth;
-	float unloadRadius = 6.f * sectionWidth;
+	float unloadRadius = 4.7f * sectionWidth;
 	float visibilityRadius2;
 	float unloadRadius2;
 	float prefetchRadius2;
 
-	Map<String, TerrainBlock> sectionCache = new HashMap<String, TerrainBlock>();
-	Set<TerrainBlock> visibleSections = new HashSet<TerrainBlock>();
+	// Map<String, TerrainBlock> sectionCache = new HashMap<String, TerrainBlock>();
+	Set<SectionController.SectionNode> visibleSections = new HashSet<SectionController.SectionNode>();
 	ObjectRepository modelRepository;
 	AbstractTaskQueue taskQueue;
 	ObjectLoader loader;
+	SectionController sectionController;
 	DisplaySystem display;
 	Dome skydome;
 
@@ -72,6 +74,7 @@ public class DynamicWorld extends Node {
 		this.worldPath = pathForWorldDescription;
 		this.display = display;
 		this.loader = new ObjectLoader(this);
+		sectionController = new SectionController(taskQueue, loader, worldPath);
 		loader.loadWorldDescription(worldPath + ".wld");
 		visibilityRadius2 = visibilityRadius * visibilityRadius;
 		prefetchRadius2 = prefetchRadius * prefetchRadius;
@@ -85,7 +88,7 @@ public class DynamicWorld extends Node {
 		fs.setDensity(0.5f);
 		fs.setEnabled(true);
 		fs.setColor(new ColorRGBA(0.8f, 0.8f, 0.8f, 0.8f));
-		fs.setStart(1000);
+		fs.setStart(500);
 		fs.setEnd(2000);
 		fs.setDensityFunction(FogState.DF_LINEAR);
 		fs.setApplyFunction(FogState.AF_PER_VERTEX);
@@ -94,17 +97,17 @@ public class DynamicWorld extends Node {
 		skydome = new Dome("Skydome", 5, 24, 2200);
 		skydome.setModelBound(new BoundingSphere());
 		skydome.updateModelBound();
-        LightState lightState = display.getRenderer().createLightState();
-        lightState.setEnabled(false);
-        skydome.setRenderState(lightState);
-        skydome.setLightCombineMode(LightState.REPLACE);
-		Texture domeTexture = TextureManager.loadTexture(
-				"..\\MBWSClient\\data\\images\\wolken_16.jpg",
-				Texture.MM_LINEAR, Texture.FM_LINEAR);
+		LightState lightState = display.getRenderer().createLightState();
+		lightState.setEnabled(false);
+		skydome.setRenderState(lightState);
+		skydome.setLightCombineMode(LightState.REPLACE);
+		Texture domeTexture = TextureManager
+				.loadTexture("..\\MBWSClient\\data\\images\\wolken_16.jpg", Texture.MM_LINEAR,
+						Texture.FM_LINEAR);
 		TextureState ts = display.getRenderer().createTextureState();
 		ts.setTexture(domeTexture);
 		skydome.setRenderState(ts);
-        skydome.setTextureCombineMode(TextureState.REPLACE);
+		skydome.setTextureCombineMode(TextureState.REPLACE);
 		attachChild(skydome);
 		updateRenderState();
 	}
@@ -123,83 +126,70 @@ public class DynamicWorld extends Node {
 				sectionColumns - 1);
 		int ystart = Math.max((int) ((position.z - prefetchRadius) / sectionWidth), 0);
 		int yend = Math.min((int) ((position.z + prefetchRadius) / sectionWidth), sectionRows - 1);
-		for (int x = xstart; x < xend; x++) {
-			for (int y = ystart; y < yend; y++) {
-				String key = x + "_" + y;
+		for (int col = xstart; col < xend; col++) {
+			for (int row = ystart; row < yend; row++) {
 				// preloadSection
-				Vector3f terrainMidPoint = new Vector3f(x * sectionWidth + sectionWidth / 2, 0, y
-						* sectionWidth + sectionWidth / 2);
-				preloadSection(position, x, y, key, terrainMidPoint);
+				Vector3f terrainMidPoint = new Vector3f(col * sectionWidth + sectionWidth / 2, 0,
+						row * sectionWidth + sectionWidth / 2);
+				preloadSection(position, col, row, terrainMidPoint);
 				// addVisibleSection
-				addVisibleSection(position, key, terrainMidPoint);
+				addVisibleSection(position, col, row, terrainMidPoint);
 			}
 		}
 
 	}
 
-	private void addVisibleSection(Vector3f position, String key, Vector3f terrainMidPoint) {
-		TerrainBlock tb = sectionCache.get(key);
-		if (isInRange(position, terrainMidPoint, visibilityRadius2) && tb != null
-				&& !visibleSections.contains(tb)) {
+	private void addVisibleSection(Vector3f position, int col, int row, Vector3f terrainMidPoint) {
+		SectionController.SectionNode sectionNode = sectionController.getSection(col, row);
+		if (isInRange(position, terrainMidPoint, visibilityRadius2) && sectionNode != null
+				&& !visibleSections.contains(sectionNode)) {
 			// if (!sectionCache.containsKey(key)) {
 			// taskQueue.waitForTask(key);
 			// }
-			attachChild(tb);
-			visibleSections.add(tb);
-			// System.err.println("attaching "+terrainMidPoint+" view:
-			// "+position);
+			logger.debug("Attach visible section " + sectionNode.getName());
+			attachChild(sectionNode);
+			visibleSections.add(sectionNode);
 		}
 	}
 
-	private class BlockLoader implements Runnable {
-		int x, z;
-
-		public BlockLoader(int x, int z) {
-			this.x = x;
-			this.z = z;
-		}
-
-		public void run() {
-			try {
-				sectionCache.put(x + "_" + z, loader.loadTerrainBlock(x, z));
-			}
-			catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	private void preloadSection(Vector3f position, int x, int z, String key,
-			Vector3f terrainMidPoint) {
-		if (!sectionCache.containsKey(key)) {
+	private void preloadSection(Vector3f position, int col, int row, Vector3f terrainMidPoint) {
+		if (!sectionController.contains(col, row)) {
 			if (isInRange(position, terrainMidPoint, prefetchRadius2)) {
-				taskQueue.enqueue(key, new BlockLoader(x, z));
+				sectionController.preloadSection(col, row);
 			}
 		}
 	}
 
 	private void removeInvisibleSections(Vector3f position) {
-		Iterator<TerrainBlock> it = visibleSections.iterator();
+		Iterator<SectionController.SectionNode> it = visibleSections.iterator();
 		while (it.hasNext()) {
-			TerrainBlock tb = it.next();
-			Vector3f terrainMidPoint = new Vector3f(tb.getLocalTranslation().x + sectionWidth / 2,
-					0, tb.getLocalTranslation().z + sectionWidth / 2);
-			if (!isInRange(terrainMidPoint, position, visibilityRadius2)) {
-				it.remove();
-				logger.debug("removing from world cache " + tb);
-				tb.removeFromParent();
+			SectionController.SectionNode node = it.next();
+			if (node.getTerrainBlock() != null) {
+				Vector3f terrainMidPoint = new Vector3f(node.getTerrainBlock()
+						.getLocalTranslation().x
+						+ sectionWidth / 2, 0, node.getTerrainBlock().getLocalTranslation().z
+						+ sectionWidth / 2);
+				if (!isInRange(terrainMidPoint, position, visibilityRadius2)) {
+					it.remove();
+					logger.debug("Removing invisible section " + node.getName());
+					node.removeFromParent();
+				}
 			}
 		}
 	}
 
 	private void unloadDistantSections(Vector3f position) {
-		Iterator<Entry<String, TerrainBlock>> it = sectionCache.entrySet().iterator();
+		Iterator<SectionController.SectionNode> it = sectionController.sectionIterator();
 		while (it.hasNext()) {
-			Vector3f terrainOrig = it.next().getValue().getLocalTranslation();
-			Vector3f terrainMidPoint = new Vector3f(terrainOrig.x + sectionWidth / 2, 0,
-					terrainOrig.z + sectionWidth / 2);
-			if (!isInRange(terrainMidPoint, position, unloadRadius2)) {
-				it.remove();
+			SectionController.SectionNode node = it.next();
+			if (node.getTerrainBlock() != null) {
+				Vector3f terrainOrig = node.getTerrainBlock().getLocalTranslation();
+				Vector3f terrainMidPoint = new Vector3f(terrainOrig.x + sectionWidth / 2, 0,
+						terrainOrig.z + sectionWidth / 2);
+				if (!isInRange(terrainMidPoint, position, unloadRadius2)) {
+					it.remove();
+					logger.debug("Removing from cache " + node.getName());
+				}
 			}
 		}
 	}
@@ -220,7 +210,7 @@ public class DynamicWorld extends Node {
 	public void update(Camera cam) {
 		((SyncTaskQueue) taskQueue).process(15);
 		Vector3f location = cam.getLocation();
-		skydome.setLocalTranslation(new Vector3f(location.x, location.y-1000, location.z));
+		skydome.setLocalTranslation(new Vector3f(location.x, location.y - 1000, location.z));
 		unloadDistantSections(location);
 		removeInvisibleSections(location);
 		preloadAndAddSections(location);
@@ -229,9 +219,9 @@ public class DynamicWorld extends Node {
 
 	}
 
-	private TerrainBlock getSectionAt(float x, float z) {
-		String key = (int) (x / sectionWidth) + "_" + (int) (z / sectionWidth);
-		return sectionCache.get(key);
+	private TerrainBlock getTerrainAt(float x, float z) {
+		return sectionController.getSection((int) (x / sectionWidth), (int) (z / sectionWidth))
+				.getTerrainBlock();
 	}
 
 	/**
@@ -243,7 +233,7 @@ public class DynamicWorld extends Node {
 	 */
 	public float getHeight(Vector3f location) {
 		try {
-			float ret = getSectionAt(location.x, location.z).getHeight(location.x % sectionWidth,
+			float ret = getTerrainAt(location.x, location.z).getHeight(location.x % sectionWidth,
 					location.z % sectionWidth);
 			return ret;
 		}
@@ -263,7 +253,7 @@ public class DynamicWorld extends Node {
 	public float getSteepness(Vector3f location) {
 		Vector3f normal = new Vector3f();
 		try {
-			getSectionAt(location.x, location.z).getSurfaceNormal(location, normal);
+			getTerrainAt(location.x, location.z).getSurfaceNormal(location, normal);
 		}
 		catch (Exception e) {
 			// do nothing

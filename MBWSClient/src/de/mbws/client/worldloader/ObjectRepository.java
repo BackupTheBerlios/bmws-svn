@@ -25,7 +25,7 @@ public class ObjectRepository {
 	private Map<String, Blueprint> blueprintMap = new HashMap<String, Blueprint>();
 	private ObjectLoader objectLoader;
 	private String objectRepositoryPath;
-	private SyncTaskQueue taskQueue;
+	private AbstractTaskQueue taskQueue;
 
 	/**
 	 * BluePrint represents the blueprint of a JME-object.
@@ -112,7 +112,7 @@ public class ObjectRepository {
 	 *            which are not yet contained in the repository.
 	 * @param taskQueue The TaskQueue which should be used for time consuming load jobs.
 	 */
-	ObjectRepository(ObjectLoader objectLoader, SyncTaskQueue taskQueue) {
+	ObjectRepository(ObjectLoader objectLoader, AbstractTaskQueue taskQueue) {
 		this.objectLoader = objectLoader;
 		this.taskQueue = taskQueue;
 	}
