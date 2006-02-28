@@ -65,12 +65,12 @@ public class TerrainPersistence {
 
 	private void writeSection(int x, int y, int[] heightfield) {
 		try {
-			ByteBuffer buffer = ByteBuffer.allocate(4*heightfield.length);
+			ByteBuffer buffer = ByteBuffer.allocate(4 * heightfield.length);
 			for (int i = 0; i < heightfield.length; i++) {
 				buffer.putInt(heightfield[i]);
 			}
 			buffer.flip();
-			String filename = worldName+"_"+x+"_"+y+".ter";
+			String filename = worldName + "_" + x + "_" + y + ".ter";
 			FileOutputStream fo = new FileOutputStream(filename);
 			fo.write(buffer.array());
 			Element sectionElement = document.createElement("Section");
@@ -78,29 +78,30 @@ public class TerrainPersistence {
 			sectionElement.setAttribute("column", Integer.toString(x));
 			sectionElement.setAttribute("row", Integer.toString(y));
 			worldElement.appendChild(sectionElement);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void writeWorld(String name, int cols, int rows, int resolution) {
 		sectionColumns = cols;
 		sectionRows = rows;
 		sectionResolution = resolution;
 		createWorldDescription();
-		for (int x=0; x<sectionColumns; x++) {
-			for (int y=0; y<sectionRows; y++) {
+		for (int x = 0; x < sectionColumns; x++) {
+			for (int y = 0; y < sectionRows; y++) {
 				writeSection(x, y, sections[x][y]);
 			}
 		}
 		try {
-			FileWriter fw = new FileWriter(worldName+".wld");
+			FileWriter fw = new FileWriter(worldName + ".wld");
 			write(document, fw);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 		}
-	
-	}
 
+	}
 
 }

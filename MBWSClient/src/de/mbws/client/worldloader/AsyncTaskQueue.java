@@ -9,16 +9,6 @@ public class AsyncTaskQueue extends AbstractTaskQueue {
 
 	protected volatile boolean stopping;
 
-	private class QueueEntry {
-		Object identifier;
-		Runnable task;
-
-		public QueueEntry(Object taskIdentifier, Runnable task) {
-			this.task = task;
-			this.identifier = taskIdentifier;
-		}
-	}
-
 	LinkedList<QueueEntry> queue = new LinkedList<QueueEntry>();
 
 	public AsyncTaskQueue() {

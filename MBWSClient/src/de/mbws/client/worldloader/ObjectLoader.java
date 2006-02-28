@@ -46,7 +46,7 @@ public class ObjectLoader {
 			// spatial size, spatial scale...
 		}
 		catch (ParserConfigurationException e) {
-			logger.error(e+": "+e.getMessage());
+			logger.error("loadWorldDescription() "+e);
 		}
 	}
 	
@@ -69,7 +69,7 @@ public class ObjectLoader {
 			logger.debug("Read descriptions for "+nodeList.getLength()+" objects");
 		}
 		catch (Exception e) {
-			logger.error(e+": "+e.getMessage());
+			logger.error("loadSectionObjectList() "+e);
 		}
 		return objectList;
 	}
@@ -78,7 +78,8 @@ public class ObjectLoader {
 		Node objectNode = null;
 		try {
 			FileInputStream fi = new FileInputStream(new File(objectRepositoryPath +"/model/"+ objectName));
-			URL urlOfTexture = new URL("file://" + objectRepositoryPath + "/textures/" + objectName);
+			File file = new File(objectRepositoryPath + "/textures/" + objectName);
+			URL urlOfTexture = new URL("file:///" + file.getAbsolutePath());
 			JmeBinaryReader jbr = new JmeBinaryReader();
 			jbr.setProperty("texurl", urlOfTexture);
 			jbr.setProperty("bound", "box"); // Doesnt work ?
@@ -88,7 +89,7 @@ public class ObjectLoader {
 					+ (System.currentTimeMillis() - time));
 		}
 		catch (Exception e) {
-			logger.error(e + ": " + e.getMessage());
+			logger.error("loadObject() "+e);
 		}
 		return objectNode;
 	}

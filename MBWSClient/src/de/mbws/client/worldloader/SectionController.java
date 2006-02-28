@@ -88,7 +88,7 @@ public class SectionController {
 				getSection().addTerrain(loader.loadTerrainBlock(col, row));
 			}
 			catch (IOException e) {
-				logger.error(e);
+				logger.error("LoadTerrainBlockTask "+e);
 			}
 		}
 	}
