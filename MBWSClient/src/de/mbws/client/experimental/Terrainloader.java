@@ -31,7 +31,7 @@ public class Terrainloader extends BaseGame {
 	// the timer
 	protected Timer timer;
 
-	private DynamicWorld terrain ;
+	private DynamicWorld terrain;
 	public GameDesktop gd;
 	// Our camera object for viewing the scene
 	private Camera cam;
@@ -46,6 +46,8 @@ public class Terrainloader extends BaseGame {
 	// to allow the user to change them
 	private int width, height, depth, freq;
 	private boolean fullscreen;
+	
+	private Water w;
 
 	/**
 	 * Main entry point of the application
@@ -64,22 +66,23 @@ public class Terrainloader extends BaseGame {
 	 * @see com.jme.app.SimpleGame#update()
 	 */
 	protected void update(float interpolation) {
-//		 if ( jmeDesktop.getFocusOwner() == null ) {
-//	            lookHandler.setEnabled( true );
-//	        }
-//	        else {
-//	            lookHandler.setEnabled( false );
-//	        }
+		// if ( jmeDesktop.getFocusOwner() == null ) {
+		// lookHandler.setEnabled( true );
+		// }
+		// else {
+		// lookHandler.setEnabled( false );
+		// }
 		// update the time to get the framerate
 		timer.update();
 		interpolation = timer.getTimePerFrame();
 
 		input.update(interpolation);
-		 c.setAngle(testAngle++);
-		 c.updateGeometricState(interpolation, true);
+		c.setAngle(testAngle++);
+		c.updateGeometricState(interpolation, true);
 
-		 terrain.update(cam);
-		 
+		terrain.update(cam);
+
+		w.update(interpolation);
 		// if escape was pressed, we exit
 		if (KeyBindingManager.getKeyBindingManager().isValidCommand("exit")) {
 			finished = true;
@@ -170,7 +173,7 @@ public class Terrainloader extends BaseGame {
 		// Light the world
 		buildLighting();
 		// add the tree
-		 buildEnvironment();
+		buildEnvironment();
 		addGameDesktop();
 		MouseInput.get().setCursorVisible(true);
 
@@ -182,34 +185,38 @@ public class Terrainloader extends BaseGame {
 	private void addGameDesktop() {
 		PlayerCharacterData dummyCharacterData = new PlayerCharacterData();
 		dummyCharacterData.setName("DUMMY_PLAYER");
-		ClientPlayerData.getInstance().setSelectedCharacterData(dummyCharacterData);
-		
-		 gd = new GameDesktop("name", input);
-		 gd.getLocalTranslation().set( display.getWidth() / 2, display.getHeight() / 2, 0 );
-		 gd.updateGeometricState(0, true);
-		 gd.updateRenderState();
-			if (rootNode != null)
-				rootNode.attachChild(gd);
-		
+		ClientPlayerData.getInstance().setSelectedCharacterData(
+				dummyCharacterData);
+
+		gd = new GameDesktop("name", input);
+		gd.getLocalTranslation().set(display.getWidth() / 2,
+				display.getHeight() / 2, 0);
+		gd.updateGeometricState(0, true);
+		gd.updateRenderState();
+		if (rootNode != null)
+			rootNode.attachChild(gd);
+
 	}
 
 	private void buildInput() {
 		input = new FirstPersonHandler(cam, 30, 15);// player,
 		// properties.getRenderer());
-		((FirstPersonHandler)input).removeFromAttachedHandlers(((FirstPersonHandler)input).getMouseLookHandler());
+		((FirstPersonHandler) input)
+				.removeFromAttachedHandlers(((FirstPersonHandler) input)
+						.getMouseLookHandler());
 		KeyBindingManager keyboard = KeyBindingManager.getKeyBindingManager();
 
 		// TODO make this cleaner later
 		keyboard.set("chat", KeyInput.KEY_C);
-		input.addAction( new ChatAction(), "chat", false);
+		input.addAction(new ChatAction(), "chat", false);
 	}
-	private  class ChatAction extends InputAction {
+	private class ChatAction extends InputAction {
 		public void performAction(InputActionEvent evt) {
 			gd.getChatWindow().setVisible(true);
-			//gd.getChatWindow().se
-//			gd.getChatWindow().repaint();
-//			gd.getChatWindow().revalidate();
-			
+			// gd.getChatWindow().se
+			// gd.getChatWindow().repaint();
+			// gd.getChatWindow().revalidate();
+
 		}
 	}
 
@@ -232,19 +239,18 @@ public class Terrainloader extends BaseGame {
 	// * create geometry and shared this geometry. Normally, you wouldn't build
 	// * your models by hand as it is too much of a trial and error process.
 	// */
-	 private void buildEnvironment() {
-	
-	 c = new Compass("compass");
-	 c.setLocalTranslation(new Vector3f(200, 200, 0));
-	 c.updateGeometricState(0, true);
-	 c.updateRenderState();
-	
-	 rootNode.attachChild(c);
-	 // } catch (IOException e) {
-	 // System.out.println("Damn exceptions:" + e);
-	 // e.printStackTrace();
-	 // }
-	 }
+	private void buildEnvironment() {
+
+		c = new Compass("compass");
+		c.setLocalTranslation(new Vector3f(200, 200, 0));
+		c.updateGeometricState(0, true);
+		c.updateRenderState();
+
+		rootNode.attachChild(c);
+
+		w = new Water("water", 1000, 1000, new Vector3f(500, 4, 500), rootNode);
+		
+	}
 
 	/**
 	 * creates a light for the terrain.
@@ -268,17 +274,15 @@ public class Terrainloader extends BaseGame {
 	 * build the height map and terrain block.
 	 */
 	private void buildTerrain() {
-		 terrain = new DynamicWorld();
-		
+		terrain = new DynamicWorld();
+
 		rootNode.attachChild(terrain);
 		try {
 			terrain.init(rootNode, display, "data\\world\\world");
-		}
-		catch (SAXException e) {
+		} catch (SAXException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
