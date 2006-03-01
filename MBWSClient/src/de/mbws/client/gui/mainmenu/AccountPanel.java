@@ -23,6 +23,7 @@ import de.mbws.client.data.ClientGlobals;
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.state.handler.MainMenuHandler;
 import de.mbws.common.events.data.generated.AccountData;
+import de.mbws.common.utils.StringUtils;
 
 /**
  * Description:
@@ -197,9 +198,10 @@ public class AccountPanel extends JPanel {
 						if (password.equals(passwordVerification)) {
 							AccountData account = new AccountData();
 							account.setUserName(username);
-							account.setPassword(password);
+                            try {                            
+							account.setPassword(StringUtils.hashAndHex(password));
 							account.setEmailAddress(emailAddress);
-							try {
+
 								ClientNetworkController
 										.getInstance()
 										.connect(
@@ -208,7 +210,7 @@ public class AccountPanel extends JPanel {
 												MBWSClient.mbwsConfiguration
 														.getInt(ClientGlobals.ACCOUNT_SERVER_PORT));
 							} catch (Exception ex) {
-
+                                // FIXME should handle this
 							}
 							ClientNetworkController
 									.getInstance()

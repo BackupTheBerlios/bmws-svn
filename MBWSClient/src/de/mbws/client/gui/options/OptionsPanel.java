@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileWriter;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -25,6 +26,7 @@ import de.mbws.client.MBWSClient;
 import de.mbws.client.ValueMapper;
 import de.mbws.client.data.ClientGlobals;
 import de.mbws.client.state.handler.MainMenuHandler;
+import de.mbws.common.utils.StringUtils;
 
 public class OptionsPanel extends JPanel {
 
@@ -41,9 +43,8 @@ public class OptionsPanel extends JPanel {
 	private JCheckBox useDefaultAccount = new JCheckBox(ValueMapper
 			.getText(ClientGlobals.OPTIONS_STORE_ACCOUNT));
 	private JTextField accountName = new JTextField();
-	private JTextField accountPass = new JTextField();
+	private JPasswordField accountPass = new JPasswordField();
 	private JCheckBox fullScreen = new JCheckBox("Fullscreen(language!)");
-	private JList resolution;
 	private JComboBox resolutionCb;
 	
 	public JScrollPane pane;
@@ -188,21 +189,25 @@ public class OptionsPanel extends JPanel {
 		if (optionsHaveChanged) {
 			PropertiesConfiguration pc = (PropertiesConfiguration) MBWSClient.mbwsConfiguration;
 			pc.setProperty(ClientGlobals.LOGIN, accountName.getText());
-			pc.setProperty(ClientGlobals.PASSWORD, accountPass.getText());
-
+            try {
+                pc.setProperty(ClientGlobals.PASSWORD, StringUtils.hashAndHex(accountPass.getPassword()) );    
+            } catch (NoSuchAlgorithmException e) {
+                logger.error("Error during building hash for password", e);
+                //should alert the user somehow
+            }
 			pc.setProperty(ClientGlobals.OPTIONS_ENABLE_SOUND,
 					enableSoundEffects.isSelected() ? "true" : "false");
 			pc.setProperty(ClientGlobals.OPTIONS_ENABLE_MUSIC, enableMusic
 					.isSelected() ? "true" : "false");
-			int selectedResolution = resolution.getSelectedIndex();
+			int selectedResolution = resolutionCb.getSelectedIndex();
 			if (selectedResolution != -1) {
-				pc.setProperty(ClientGlobals.WIDTH, modes[resolution
+				pc.setProperty(ClientGlobals.WIDTH, modes[resolutionCb
 						.getSelectedIndex()].getWidth());
-				pc.setProperty(ClientGlobals.HEIGHT, modes[resolution
+				pc.setProperty(ClientGlobals.HEIGHT, modes[resolutionCb
 						.getSelectedIndex()].getHeight());
-				pc.setProperty(ClientGlobals.DEPTH, modes[resolution
+				pc.setProperty(ClientGlobals.DEPTH, modes[resolutionCb
 						.getSelectedIndex()].getBitsPerPixel());
-				pc.setProperty(ClientGlobals.FREQUENCY, modes[resolution
+				pc.setProperty(ClientGlobals.FREQUENCY, modes[resolutionCb
 						.getSelectedIndex()].getFrequency());
 				pc.setProperty(ClientGlobals.FULLSCREEN, fullScreen
 						.isSelected() ? "true" : "false");
