@@ -248,7 +248,7 @@ public class Terrainloader extends BaseGame {
 
 		rootNode.attachChild(c);
 
-		w = new Water("water", 1000, 1000, new Vector3f(500, 4, 500), rootNode);
+		w = new Water("water", 256, 256, 16,16, new Vector3f(500, 1, 75), rootNode);
 		
 	}
 
