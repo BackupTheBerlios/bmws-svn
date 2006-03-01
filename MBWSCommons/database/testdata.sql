@@ -9,7 +9,7 @@
 # Dumping data for table 'account'
 #
 INSERT INTO account VALUES('minisack','minisack','minisack@sack.de');
-INSERT INTO account VALUES('sack','sack','sack@sack.de');
+INSERT INTO account VALUES('sack','085c1e1d567b177d80f9b42c2b99442bf40a1690','sack@sack.de');
 
 
 #
