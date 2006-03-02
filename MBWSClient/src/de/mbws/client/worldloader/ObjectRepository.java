@@ -92,6 +92,7 @@ public class ObjectRepository {
 		}
 
 		public void run() {
+			long time = System.currentTimeMillis();
 			Blueprint blueprint = blueprintMap.get(descr.name);
 			Spatial spatial;
 			spatial = blueprint.cloneCreator.createCopy();
@@ -104,6 +105,8 @@ public class ObjectRepository {
 			blueprint.referenceCount++;
 			section.attachChild(spatial);
 			section.complete = true;
+			logger.debug("Created clone for " + descr.name + " in "
+					+ (System.currentTimeMillis() - time) + " ms");
 		}
 	}
 
@@ -135,7 +138,7 @@ public class ObjectRepository {
 		}
 		// enqueue task to create a clone (the blueprint entry will be processed first and the
 		// factory will be finished when this taks begins
-		taskQueue.enqueue("instance_" + descr.name+uid++, new CreateCloneTask(descr, section));
+		taskQueue.enqueue("instance_" + descr.name + uid++, new CreateCloneTask(descr, section));
 	}
 
 	/**

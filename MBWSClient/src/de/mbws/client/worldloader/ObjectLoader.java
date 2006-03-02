@@ -26,6 +26,8 @@ import com.jme.scene.state.TextureState;
 import com.jme.util.TextureManager;
 import com.jmex.model.XMLparser.JmeBinaryReader;
 import com.jmex.terrain.TerrainBlock;
+import com.jmex.terrain.util.AbstractHeightMap;
+import com.jmex.terrain.util.ProceduralTextureGenerator;
 
 public class ObjectLoader {
 	private DynamicWorld dynamicWorld;
@@ -106,9 +108,12 @@ public class ObjectLoader {
 
 		TextureState ts = dynamicWorld.display.getRenderer().createTextureState();
 		// TODO use the commented line instead
+		//ProceduralTextureGenerator proctex = new ProceduralTextureGenerator(new AbstractHeightMap())
 		Texture texture = TextureManager.loadTexture(
-				"..\\MBWSClient\\data\\images\\IntroAndMainMenu\\Background.jpg",
+				"../MBWSClient/data/images/grassc.jpg",
 				Texture.MM_LINEAR, Texture.FM_LINEAR);
+		texture.setWrap(Texture.WM_WRAP_S_WRAP_T);
+		texture.setScale(new Vector3f(20,20,20));
 		// texture.setScale(new Vector3f(10,10,10));
 		ts.setTexture(texture);
 		// ts.setTexture(TextureManager.loadTexture(sectionPath+".png",
