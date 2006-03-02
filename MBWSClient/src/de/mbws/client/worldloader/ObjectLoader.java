@@ -9,6 +9,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -45,6 +46,7 @@ public class ObjectLoader {
 			NamedNodeMap attributes = document.getFirstChild().getAttributes();
 			dynamicWorld.sectionColumns = readIntAttribute(attributes, "columns");
 			dynamicWorld.sectionRows = readIntAttribute(attributes, "rows");
+			dynamicWorld.sectionResolution = readIntAttribute(attributes, "resolution");
 			// spatial size, spatial scale...
 		}
 		catch (ParserConfigurationException e) {
@@ -98,7 +100,7 @@ public class ObjectLoader {
 
 	public TerrainBlock loadTerrainBlock(int column, int row) throws IOException {
 		String sectionPath = dynamicWorld.worldPath + "_" + column + "_" + row;
-		int[] heightMap = readIntArrayFromFile(column, row, sectionPath + ".ter");
+		final int[] heightMap = readIntArrayFromFile(column, row, sectionPath + ".ter");
 		Vector3f scale = new Vector3f(dynamicWorld.spatialScale, dynamicWorld.heightScale,
 				dynamicWorld.spatialScale);
 		Vector3f origin = new Vector3f(column * dynamicWorld.sectionWidth, 0, row
@@ -108,13 +110,25 @@ public class ObjectLoader {
 
 		TextureState ts = dynamicWorld.display.getRenderer().createTextureState();
 		// TODO use the commented line instead
-		//ProceduralTextureGenerator proctex = new ProceduralTextureGenerator(new AbstractHeightMap())
+//		AbstractHeightMap hm = new AbstractHeightMap() {
+//			public boolean load() {
+//				heightData = heightMap;
+//				size = dynamicWorld.sectionResolution;
+//				return true;
+//			}};
+//		hm.load();
+//		ProceduralTextureGenerator ptg = new ProceduralTextureGenerator(hm);
+//		ptg.addTexture(new ImageIcon("../MBWSClient/data/images/meadow.jpg"), -1000,10, 50);
+//		ptg.addTexture(new ImageIcon("../MBWSClient/data/images/stone.jpg"), 30,90, 1000);
+//		ptg.createTexture(512);
+//		ptg.saveTexture("../MBWSClient/data/world/world_0_0.ter");
+//		Texture texture = TextureManager.loadTexture(ptg.getImageIcon().getImage(),Texture.MM_LINEAR, Texture.FM_LINEAR, true);
+//
 		Texture texture = TextureManager.loadTexture(
-				"../MBWSClient/data/images/grassc.jpg",
+				"../MBWSClient/data/world/world_0_0.png",
 				Texture.MM_LINEAR, Texture.FM_LINEAR);
 		texture.setWrap(Texture.WM_WRAP_S_WRAP_T);
-		texture.setScale(new Vector3f(20,20,20));
-		// texture.setScale(new Vector3f(10,10,10));
+		//texture.setScale(new Vector3f(20,20,20));
 		ts.setTexture(texture);
 		// ts.setTexture(TextureManager.loadTexture(sectionPath+".png",
 		// Texture.MM_LINEAR,
