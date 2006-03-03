@@ -9,7 +9,6 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.ImageIcon;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -27,8 +26,6 @@ import com.jme.scene.state.TextureState;
 import com.jme.util.TextureManager;
 import com.jmex.model.XMLparser.JmeBinaryReader;
 import com.jmex.terrain.TerrainBlock;
-import com.jmex.terrain.util.AbstractHeightMap;
-import com.jmex.terrain.util.ProceduralTextureGenerator;
 
 public class ObjectLoader {
 	private DynamicWorld dynamicWorld;
@@ -118,10 +115,10 @@ public class ObjectLoader {
 //			}};
 //		hm.load();
 //		ProceduralTextureGenerator ptg = new ProceduralTextureGenerator(hm);
-//		ptg.addTexture(new ImageIcon("../MBWSClient/data/images/meadow.jpg"), -1000,10, 50);
+//		ptg.addTexture(new ImageIcon("../MBWSClient/data/images/grassc.jpg"), -1000,10, 50);
 //		ptg.addTexture(new ImageIcon("../MBWSClient/data/images/stone.jpg"), 30,90, 1000);
 //		ptg.createTexture(512);
-//		ptg.saveTexture("../MBWSClient/data/world/world_0_0.ter");
+//		ptg.saveTexture("../MBWSClient/data/world/world_0_0");
 //		Texture texture = TextureManager.loadTexture(ptg.getImageIcon().getImage(),Texture.MM_LINEAR, Texture.FM_LINEAR, true);
 //
 		Texture texture = TextureManager.loadTexture(

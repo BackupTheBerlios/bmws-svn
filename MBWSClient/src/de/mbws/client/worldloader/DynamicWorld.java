@@ -79,7 +79,7 @@ public class DynamicWorld extends Node {
 		visibilityRadius2 = visibilityRadius * visibilityRadius;
 		prefetchRadius2 = prefetchRadius * prefetchRadius;
 		unloadRadius2 = unloadRadius * unloadRadius;
-
+		sectionWidth = spatialScale * (sectionResolution - 1);
 		createSky(root, display);
 	}
 
@@ -88,7 +88,7 @@ public class DynamicWorld extends Node {
 		fs.setDensity(0.5f);
 		fs.setEnabled(true);
 		fs.setColor(new ColorRGBA(0.8f, 0.8f, 0.8f, 0.8f));
-		fs.setStart(500);
+		fs.setStart(50);
 		fs.setEnd(2000);
 		fs.setDensityFunction(FogState.DF_LINEAR);
 		fs.setApplyFunction(FogState.AF_PER_VERTEX);
