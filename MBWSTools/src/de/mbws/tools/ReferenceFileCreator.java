@@ -46,7 +46,6 @@ public class ReferenceFileCreator {
 				RaceElement r = new RaceElement();
                 r.setId(element.getId());
                 r.setPlayable(Boolean.valueOf(Byte.toString(element.getIsplayable())));
-                r.setDescription(element.getDescription());
                 finalRaces.addRaceElement(r);
 			}
             finalRaces.marshal(new FileWriter("../MBWSClient/config/Races.xml"));
