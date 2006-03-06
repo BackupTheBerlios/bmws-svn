@@ -59,6 +59,8 @@ public class DynamicWorld extends Node {
 
 	public DynamicWorld() {
 		super("DynamicWorld");
+		// start the async task queue
+		AsyncTaskQueue.getInstance();
 	}
 
 	/**

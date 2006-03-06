@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -22,6 +22,7 @@ import com.jme.bounding.BoundingBox;
 import com.jme.image.Texture;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
+import com.jme.scene.Spatial;
 import com.jme.scene.state.TextureState;
 import com.jme.util.TextureManager;
 import com.jmex.model.XMLparser.JmeBinaryReader;
@@ -30,6 +31,37 @@ import com.jmex.terrain.TerrainBlock;
 public class ObjectLoader {
 	private DynamicWorld dynamicWorld;
 	private static Logger logger = Logger.getLogger(ObjectLoader.class);
+
+	private class ApplyTextureTask implements Runnable {
+		private String texturePath;
+		private Spatial spatial;
+
+		public ApplyTextureTask(String texturePath, Spatial applyToObject) {
+			this.texturePath = texturePath;
+			this.spatial = applyToObject;
+		}
+
+		public void run() {
+			if (spatial instanceof Node) {
+				Node node = (Node) spatial;
+				Iterator it = ((Node)node.getChild(0)).getChildren().iterator();
+				while (it.hasNext()) {
+					Spatial spat = (Spatial) it.next();
+					logger.debug("Texture for child: "+spat.getName());
+				}
+			}
+			TextureState ts = dynamicWorld.display.getRenderer().createTextureState();
+			Texture texture = TextureManager.loadTexture(texturePath, Texture.MM_LINEAR,
+					Texture.FM_LINEAR);
+			texture.setWrap(Texture.WM_WRAP_S_WRAP_T);
+			// texture.setScale(new Vector3f(20,20,20));
+			ts.setTexture(texture);
+			// ts.setTexture(TextureManager.loadTexture(sectionPath+".png",
+			// Texture.MM_LINEAR,
+			// Texture.FM_LINEAR));
+			spatial.setRenderState(ts);
+		}
+	}
 
 	ObjectLoader(DynamicWorld dynamicTerrain) {
 		this.dynamicWorld = dynamicTerrain;
@@ -47,17 +79,17 @@ public class ObjectLoader {
 			// spatial size, spatial scale...
 		}
 		catch (ParserConfigurationException e) {
-			logger.error("loadWorldDescription() "+e);
+			logger.error("loadWorldDescription() " + e);
 		}
 	}
-	
+
 	public List<ObjectDescription> loadSectionObjectList(String path) {
 		List<ObjectDescription> objectList = new ArrayList<ObjectDescription>();
 		try {
 			Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
 					new File(path));
 			NodeList nodeList = document.getElementsByTagName("Object");
-			for (int i=0; i<nodeList.getLength(); i++) {
+			for (int i = 0; i < nodeList.getLength(); i++) {
 				ObjectDescription descr = new ObjectDescription();
 				NamedNodeMap objectAttrs = nodeList.item(i).getAttributes();
 				descr.name = objectAttrs.getNamedItem("name").getNodeValue();
@@ -67,10 +99,10 @@ public class ObjectLoader {
 				descr.scale = readFloatAttribute(objectAttrs, "scale");
 				objectList.add(descr);
 			}
-			logger.debug("Read descriptions for "+nodeList.getLength()+" objects");
+			logger.debug("Read descriptions for " + nodeList.getLength() + " objects");
 		}
 		catch (Exception e) {
-			logger.error("loadSectionObjectList() "+e);
+			logger.error("loadSectionObjectList() " + e);
 		}
 		return objectList;
 	}
@@ -78,19 +110,22 @@ public class ObjectLoader {
 	public Node loadObject(String objectRepositoryPath, String objectName) {
 		Node objectNode = null;
 		try {
-			FileInputStream fi = new FileInputStream(new File(objectRepositoryPath +"/model/"+ objectName));
-			File file = new File(objectRepositoryPath + "/textures/" + objectName);
-			URL urlOfTexture = new URL("file:///" + file.getAbsolutePath());
+			FileInputStream fi = new FileInputStream(new File(objectRepositoryPath + "/model/"
+					+ objectName));
+			String texturePath = objectRepositoryPath + "/textures/" + objectName;
+			texturePath = texturePath.replaceFirst(".jme", ".jpg");
 			JmeBinaryReader jbr = new JmeBinaryReader();
-			jbr.setProperty("texurl", urlOfTexture);
+			// jbr.setProperty("texurl", urlOfTexture);
 			jbr.setProperty("bound", "box"); // Doesnt work ?
 			long time = System.currentTimeMillis();
 			objectNode = jbr.loadBinaryFormat(fi);
+			SyncTaskQueue.getInstance().enqueue("loadObjectTex_" + objectName,
+					new ApplyTextureTask(texturePath, objectNode));
 			logger.info("Time to convert from .jme to SceneGraph:"
 					+ (System.currentTimeMillis() - time));
 		}
 		catch (Exception e) {
-			logger.error("loadObject() "+e);
+			logger.error("loadObject() " + e);
 		}
 		return objectNode;
 	}
@@ -105,32 +140,26 @@ public class ObjectLoader {
 		TerrainBlock terrainBlock = new TerrainBlock("terrain(" + column + ", " + row + ")",
 				dynamicWorld.sectionResolution, scale, heightMap, origin, false);
 
-		TextureState ts = dynamicWorld.display.getRenderer().createTextureState();
 		// TODO use the commented line instead
-//		AbstractHeightMap hm = new AbstractHeightMap() {
-//			public boolean load() {
-//				heightData = heightMap;
-//				size = dynamicWorld.sectionResolution;
-//				return true;
-//			}};
-//		hm.load();
-//		ProceduralTextureGenerator ptg = new ProceduralTextureGenerator(hm);
-//		ptg.addTexture(new ImageIcon("../MBWSClient/data/images/grassc.jpg"), -1000,10, 50);
-//		ptg.addTexture(new ImageIcon("../MBWSClient/data/images/stone.jpg"), 30,90, 1000);
-//		ptg.createTexture(512);
-//		ptg.saveTexture("../MBWSClient/data/world/world_0_0");
-//		Texture texture = TextureManager.loadTexture(ptg.getImageIcon().getImage(),Texture.MM_LINEAR, Texture.FM_LINEAR, true);
-//
-		Texture texture = TextureManager.loadTexture(
-				"../MBWSClient/data/images/grassb.png",
-				Texture.MM_LINEAR, Texture.FM_LINEAR);
-		texture.setWrap(Texture.WM_WRAP_S_WRAP_T);
-		//texture.setScale(new Vector3f(20,20,20));
-		ts.setTexture(texture);
-		// ts.setTexture(TextureManager.loadTexture(sectionPath+".png",
-		// Texture.MM_LINEAR,
-		// Texture.FM_LINEAR));
-		terrainBlock.setRenderState(ts);
+		// AbstractHeightMap hm = new AbstractHeightMap() {
+		// public boolean load() {
+		// heightData = heightMap;
+		// size = dynamicWorld.sectionResolution;
+		// return true;
+		// }};
+		// hm.load();
+		// ProceduralTextureGenerator ptg = new ProceduralTextureGenerator(hm);
+		// ptg.addTexture(new ImageIcon("../MBWSClient/data/images/grassc.jpg"), -1000,10, 50);
+		// ptg.addTexture(new ImageIcon("../MBWSClient/data/images/stone.jpg"), 30,90, 1000);
+		// ptg.createTexture(512);
+		// ptg.saveTexture("../MBWSClient/data/world/world_0_0");
+		// Texture texture =
+		// TextureManager.loadTexture(ptg.getImageIcon().getImage(),Texture.MM_LINEAR,
+		// Texture.FM_LINEAR, true);
+		//
+
+		SyncTaskQueue.getInstance().enqueue("loadSectionTex" + column + "_" + row,
+				new ApplyTextureTask("../MBWSClient/data/images/grassb.png", terrainBlock));
 		terrainBlock.setModelBound(new BoundingBox());
 		terrainBlock.updateModelBound();
 		return terrainBlock;
@@ -158,7 +187,7 @@ public class ObjectLoader {
 		int value = Integer.parseInt(attributes.getNamedItem(attrName).getNodeValue());
 		return value;
 	}
-	
+
 	private static float readFloatAttribute(NamedNodeMap attributes, String attrName) {
 		float value = Float.parseFloat(attributes.getNamedItem(attrName).getNodeValue());
 		return value;

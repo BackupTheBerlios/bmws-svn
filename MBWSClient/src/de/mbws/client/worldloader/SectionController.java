@@ -122,7 +122,7 @@ public class SectionController {
 			int number = 0;
 			Iterator<ObjectDescription> it = list.iterator();
 			while (it.hasNext()) {
-				SyncTaskQueue.getInstance().enqueue("LoadObject" + col + "_" + row + "_" + number,
+				AsyncTaskQueue.getInstance().enqueue("LoadObject" + col + "_" + row + "_" + number,
 						new CreateSpatialTask(col, row, it.next()));
 				number++;
 			}
@@ -143,8 +143,8 @@ public class SectionController {
 	void preloadSection(int col, int row) {
 		if (!sectionCache.containsKey(key(col, row))) {
 			sectionCache.put(key(col, row), new SectionNode(key(col, row)));
-			SyncTaskQueue.getInstance().enqueue("loadTB" + key(col, row), new LoadTerrainBlockTask(col, row));
-			SyncTaskQueue.getInstance().enqueue("loadSectionObjects" + key(col, row), new CreateSectionObjectsTask(
+			AsyncTaskQueue.getInstance().enqueue("loadTB" + key(col, row), new LoadTerrainBlockTask(col, row));
+			AsyncTaskQueue.getInstance().enqueue("loadSectionObjects" + key(col, row), new CreateSectionObjectsTask(
 					col, row));
 		}
 	}

@@ -130,12 +130,12 @@ public class ObjectRepository {
 		// first check for a blueprint
 		if (!blueprintMap.containsKey(descr.name)) {
 			blueprintMap.put(descr.name, new Blueprint(descr.name));
-			SyncTaskQueue.getInstance().enqueue("blueprint_" + descr.name, new CreateCloneFactoryTask(
+			AsyncTaskQueue.getInstance().enqueue("blueprint_" + descr.name, new CreateCloneFactoryTask(
 					objectRepositoryPath, descr.name));
 		}
 		// enqueue task to create a clone (the blueprint entry will be processed first and the
 		// factory will be finished when this taks begins
-		SyncTaskQueue.getInstance().enqueue("instance_" + descr.name + uid++, new CreateCloneTask(descr, section));
+		AsyncTaskQueue.getInstance().enqueue("instance_" + descr.name + uid++, new CreateCloneTask(descr, section));
 	}
 
 	/**
