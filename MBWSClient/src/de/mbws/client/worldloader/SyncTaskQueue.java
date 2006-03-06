@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 public class SyncTaskQueue extends AbstractTaskQueue {
 	private static SyncTaskQueue instance;
+	private long uid;
 	
 	public static SyncTaskQueue getInstance() {
 		if (instance == null) {
@@ -11,7 +12,7 @@ public class SyncTaskQueue extends AbstractTaskQueue {
 		}
 		return instance;
 	}
-	
+
 	private SyncTaskQueue() {
 	}
 
@@ -29,9 +30,26 @@ public class SyncTaskQueue extends AbstractTaskQueue {
 	public void process(int millis) {
 		long starttime = System.currentTimeMillis();
 		while (queue.size() > 0 && starttime + millis > System.currentTimeMillis()) {
-			Runnable task = queue.getFirst().task;
+			QueueEntry entry = queue.getFirst();
+			Runnable task = entry.task;
 			task.run();
 			queue.removeFirst();
+			synchronized (entry.identifier) {
+				entry.identifier.notifyAll();
+			}
+		}
+	}
+
+	public void executeSynchronously(Runnable task) {
+		String taskIdentifier = String.valueOf(uid++);
+		enqueue(taskIdentifier, task);
+		synchronized (taskIdentifier) {
+			try {
+				taskIdentifier.wait();
+			}
+			catch (InterruptedException e) {
+				logger.error(e.getMessage());
+			}
 		}
 	}
 

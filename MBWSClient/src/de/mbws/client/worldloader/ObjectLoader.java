@@ -51,6 +51,7 @@ public class ObjectLoader {
 				}
 			}
 			TextureState ts = dynamicWorld.display.getRenderer().createTextureState();
+			logger.debug("load texture "+texturePath);
 			Texture texture = TextureManager.loadTexture(texturePath, Texture.MM_LINEAR,
 					Texture.FM_LINEAR);
 			texture.setWrap(Texture.WM_WRAP_S_WRAP_T);
@@ -59,8 +60,26 @@ public class ObjectLoader {
 			// ts.setTexture(TextureManager.loadTexture(sectionPath+".png",
 			// Texture.MM_LINEAR,
 			// Texture.FM_LINEAR));
+			logger.debug("Texture loaded");
 			spatial.setRenderState(ts);
+			logger.debug("Successfully applied texture "+texturePath);
 		}
+	}
+	
+	private class CreateTextureStateTask implements Runnable {
+		TextureState textureState;
+		public void run() {
+			textureState = dynamicWorld.display.getRenderer().createTextureState();
+		}
+		public TextureState getTextureState() {
+			return textureState;
+		}
+	}
+
+	public TextureState createSyncTextureState() {
+		CreateTextureStateTask task = new CreateTextureStateTask();
+		SyncTaskQueue.getInstance().executeSynchronously(task);
+		return task.getTextureState();
 	}
 
 	ObjectLoader(DynamicWorld dynamicTerrain) {
@@ -119,7 +138,7 @@ public class ObjectLoader {
 			jbr.setProperty("bound", "box"); // Doesnt work ?
 			long time = System.currentTimeMillis();
 			objectNode = jbr.loadBinaryFormat(fi);
-			SyncTaskQueue.getInstance().enqueue("loadObjectTex_" + objectName,
+			SyncTaskQueue.getInstance().executeSynchronously(
 					new ApplyTextureTask(texturePath, objectNode));
 			logger.info("Time to convert from .jme to SceneGraph:"
 					+ (System.currentTimeMillis() - time));

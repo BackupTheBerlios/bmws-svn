@@ -39,7 +39,7 @@ public class DynamicWorld extends Node {
 	int sectionColumns;
 	String worldPath;
 	float spatialScale = 12;
-	float heightScale = 0.3f;
+	float heightScale = 0.5f;
 	int sectionResolution = 65;
 	float sectionWidth = spatialScale * (sectionResolution - 1);
 	float visibilityRadius = 3f * sectionWidth;

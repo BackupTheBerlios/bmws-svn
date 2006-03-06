@@ -17,7 +17,7 @@ public abstract class AbstractTaskQueue {
 		}
 	}
 
-	protected static Logger logger;
+	protected Logger logger;
 	protected LinkedList<QueueEntry> queue = new LinkedList<QueueEntry>();
 
 	public AbstractTaskQueue() {
