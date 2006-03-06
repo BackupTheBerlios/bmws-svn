@@ -52,7 +52,6 @@ public class DynamicWorld extends Node {
 	// Map<String, TerrainBlock> sectionCache = new HashMap<String, TerrainBlock>();
 	Set<SectionController.SectionNode> visibleSections = new HashSet<SectionController.SectionNode>();
 	ObjectRepository modelRepository;
-	AbstractTaskQueue taskQueue;
 	ObjectLoader loader;
 	SectionController sectionController;
 	DisplaySystem display;
@@ -60,7 +59,6 @@ public class DynamicWorld extends Node {
 
 	public DynamicWorld() {
 		super("DynamicWorld");
-		taskQueue = new SyncTaskQueue();
 	}
 
 	/**
@@ -74,7 +72,7 @@ public class DynamicWorld extends Node {
 		this.worldPath = pathForWorldDescription;
 		this.display = display;
 		this.loader = new ObjectLoader(this);
-		sectionController = new SectionController(taskQueue, loader, worldPath);
+		sectionController = new SectionController(loader, worldPath);
 		loader.loadWorldDescription(worldPath + ".wld");
 		visibilityRadius2 = visibilityRadius * visibilityRadius;
 		prefetchRadius2 = prefetchRadius * prefetchRadius;
@@ -208,7 +206,7 @@ public class DynamicWorld extends Node {
 	 * @param cam
 	 */
 	public void update(Camera cam) {
-		((SyncTaskQueue) taskQueue).process(15);
+		SyncTaskQueue.getInstance().process(15);
 		Vector3f location = cam.getLocation();
 		skydome.setLocalTranslation(new Vector3f(location.x, location.y - 1000, location.z));
 		unloadDistantSections(location);

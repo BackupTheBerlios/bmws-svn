@@ -17,7 +17,6 @@ public class SectionController {
 	private static Logger logger = Logger.getLogger(SectionController.class);
 
 	private String worldPath;
-	private AbstractTaskQueue taskQueue;
 	private ObjectLoader loader;
 	private Map<String, SectionNode> sectionCache = new HashMap<String, SectionNode>();
 	private ObjectRepository objectRepository;
@@ -52,11 +51,10 @@ public class SectionController {
 		}
 	}
 
-	SectionController(AbstractTaskQueue taskQueue, ObjectLoader loader, String worldPath) {
-		this.taskQueue = taskQueue;
+	SectionController(ObjectLoader loader, String worldPath) {
 		this.loader = loader;
 		this.worldPath = worldPath;
-		objectRepository = new ObjectRepository(loader, taskQueue);
+		objectRepository = new ObjectRepository(loader);
 	}
 
 	/**
@@ -124,7 +122,7 @@ public class SectionController {
 			int number = 0;
 			Iterator<ObjectDescription> it = list.iterator();
 			while (it.hasNext()) {
-				taskQueue.enqueue("LoadObject" + col + "_" + row + "_" + number,
+				SyncTaskQueue.getInstance().enqueue("LoadObject" + col + "_" + row + "_" + number,
 						new CreateSpatialTask(col, row, it.next()));
 				number++;
 			}
@@ -145,8 +143,8 @@ public class SectionController {
 	void preloadSection(int col, int row) {
 		if (!sectionCache.containsKey(key(col, row))) {
 			sectionCache.put(key(col, row), new SectionNode(key(col, row)));
-			taskQueue.enqueue("loadTB" + key(col, row), new LoadTerrainBlockTask(col, row));
-			taskQueue.enqueue("loadSectionObjects" + key(col, row), new CreateSectionObjectsTask(
+			SyncTaskQueue.getInstance().enqueue("loadTB" + key(col, row), new LoadTerrainBlockTask(col, row));
+			SyncTaskQueue.getInstance().enqueue("loadSectionObjects" + key(col, row), new CreateSectionObjectsTask(
 					col, row));
 		}
 	}

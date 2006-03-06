@@ -3,6 +3,17 @@ package de.mbws.client.worldloader;
 import java.util.Iterator;
 
 public class SyncTaskQueue extends AbstractTaskQueue {
+	private static SyncTaskQueue instance;
+	
+	public static SyncTaskQueue getInstance() {
+		if (instance == null) {
+			instance = new SyncTaskQueue();
+		}
+		return instance;
+	}
+	
+	private SyncTaskQueue() {
+	}
 
 	public void enqueue(Object taskIdentifier, Runnable task) {
 		Iterator<QueueEntry> it = queue.iterator();

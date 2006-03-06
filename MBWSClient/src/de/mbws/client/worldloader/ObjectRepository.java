@@ -25,7 +25,6 @@ public class ObjectRepository {
 	private Map<String, Blueprint> blueprintMap = new HashMap<String, Blueprint>();
 	private ObjectLoader objectLoader;
 	private String objectRepositoryPath = "../MBWSClient/data/characters/generic/1/M";
-	private AbstractTaskQueue taskQueue;
 
 	/**
 	 * BluePrint represents the blueprint of a JME-object.
@@ -115,11 +114,9 @@ public class ObjectRepository {
 	 * 
 	 * @param objectLoader The instance of the ObjectLoader will be used to read needed objects,
 	 *            which are not yet contained in the repository.
-	 * @param taskQueue The TaskQueue which should be used for time consuming load jobs.
 	 */
-	ObjectRepository(ObjectLoader objectLoader, AbstractTaskQueue taskQueue) {
+	ObjectRepository(ObjectLoader objectLoader) {
 		this.objectLoader = objectLoader;
-		this.taskQueue = taskQueue;
 	}
 
 	/**
@@ -133,12 +130,12 @@ public class ObjectRepository {
 		// first check for a blueprint
 		if (!blueprintMap.containsKey(descr.name)) {
 			blueprintMap.put(descr.name, new Blueprint(descr.name));
-			taskQueue.enqueue("blueprint_" + descr.name, new CreateCloneFactoryTask(
+			SyncTaskQueue.getInstance().enqueue("blueprint_" + descr.name, new CreateCloneFactoryTask(
 					objectRepositoryPath, descr.name));
 		}
 		// enqueue task to create a clone (the blueprint entry will be processed first and the
 		// factory will be finished when this taks begins
-		taskQueue.enqueue("instance_" + descr.name + uid++, new CreateCloneTask(descr, section));
+		SyncTaskQueue.getInstance().enqueue("instance_" + descr.name + uid++, new CreateCloneTask(descr, section));
 	}
 
 	/**

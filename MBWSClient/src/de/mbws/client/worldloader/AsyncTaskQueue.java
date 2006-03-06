@@ -6,12 +6,18 @@ import java.util.LinkedList;
 import org.apache.log4j.BasicConfigurator;
 
 public class AsyncTaskQueue extends AbstractTaskQueue {
-
+	private static AsyncTaskQueue instance;
 	protected volatile boolean stopping;
-
 	LinkedList<QueueEntry> queue = new LinkedList<QueueEntry>();
 
-	public AsyncTaskQueue() {
+	public static AsyncTaskQueue getInstance() {
+		if (instance == null) {
+			instance = new AsyncTaskQueue();
+		}
+		return instance;
+	}
+	
+	private AsyncTaskQueue() {
 		logger.info("Starting queue processor thread");
 		Thread tr = new Thread(new Runnable() {
 			public void run() {

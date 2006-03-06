@@ -122,7 +122,7 @@ public class ObjectLoader {
 //		Texture texture = TextureManager.loadTexture(ptg.getImageIcon().getImage(),Texture.MM_LINEAR, Texture.FM_LINEAR, true);
 //
 		Texture texture = TextureManager.loadTexture(
-				"../MBWSClient/data/world/world_0_0.png",
+				"../MBWSClient/data/images/grassb.png",
 				Texture.MM_LINEAR, Texture.FM_LINEAR);
 		texture.setWrap(Texture.WM_WRAP_S_WRAP_T);
 		//texture.setScale(new Vector3f(20,20,20));
