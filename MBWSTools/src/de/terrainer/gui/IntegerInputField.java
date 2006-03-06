@@ -26,13 +26,12 @@ public class IntegerInputField extends JTextField {
 		setText(Integer.toString(val));
 	}
 
-	@Override
 	protected Document createDefaultModel() {
 		return new IntegerDocument();
 	}
 
 	public int getValue() {
-		return Integer.valueOf(getText());
+		return Integer.valueOf(getText()).intValue();
 	}
 	protected void checkRange() {
 		String content = getText();
@@ -52,7 +51,6 @@ public class IntegerInputField extends JTextField {
 	}
 
 	public class IntegerDocument extends PlainDocument {
-		@Override
 		public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
 			if (str.matches("[0-9]*")) {
 				super.insertString(offs, str, a);
@@ -62,7 +60,6 @@ public class IntegerInputField extends JTextField {
 				// }
 			}
 		}
-		@Override
 		public void remove(int offs,int len) throws BadLocationException {
 			super.remove(offs, len);
 			checkRange();

@@ -22,7 +22,6 @@ public class TextureGenerator extends AbstractGenerator {
 		super(hmc);
 	}
 
-	@Override
 	public void generate() {
 		HeightMap heightMap = getHeightMap();
 		int picWidth = (heightMap.getWidth() - 1) * resolutionPerField;
@@ -44,13 +43,11 @@ public class TextureGenerator extends AbstractGenerator {
 		}
 	}
 
-	@Override
 	public void setMask(int[][] mask) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
 		return "Texture Generator";

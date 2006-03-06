@@ -16,7 +16,6 @@ public class HeightMapComponent extends JComponent {
 		repaint();
 	}
 
-	@Override
 	public void paint(Graphics g) {
 		if (heightMap == null) {
 			g.setColor(Color.RED);
@@ -42,7 +41,6 @@ public class HeightMapComponent extends JComponent {
 		}
 	}
 	
-	@Override
 	public Dimension getPreferredSize() {
 		return new Dimension(620, 620);
 	}
