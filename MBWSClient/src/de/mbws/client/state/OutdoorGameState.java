@@ -165,7 +165,7 @@ public class OutdoorGameState extends BaseGameState {
 		terrain = new DynamicWorld();
 		rootNode.attachChild(terrain);
 		try {
-			terrain.init(rootNode, display, "data\\world\\world");
+			terrain.init(rootNode, display, "data/world/world", "data/characters/generic/1/M");
 		} catch (SAXException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

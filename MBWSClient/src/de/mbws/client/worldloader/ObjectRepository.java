@@ -24,7 +24,6 @@ public class ObjectRepository {
 
 	private Map<String, Blueprint> blueprintMap = new HashMap<String, Blueprint>();
 	private ObjectLoader objectLoader;
-	private String objectRepositoryPath = "../MBWSClient/data/characters/generic/1/M";
 
 	/**
 	 * BluePrint represents the blueprint of a JME-object.
@@ -64,16 +63,14 @@ public class ObjectRepository {
 	}
 
 	private class CreateCloneFactoryTask implements Runnable {
-		String path;
 		String name;
 
-		public CreateCloneFactoryTask(String path, String name) {
-			this.path = path;
+		public CreateCloneFactoryTask(String name) {
 			this.name = name;
 		}
 
 		public void run() {
-			Node object = objectLoader.loadObject(path, name);
+			Node object = objectLoader.loadObject(name);
 			Blueprint blueprint = blueprintMap.get(name);
 			blueprint.createCloneCreator(object);
 			blueprint.setCompleted();
@@ -130,12 +127,13 @@ public class ObjectRepository {
 		// first check for a blueprint
 		if (!blueprintMap.containsKey(descr.name)) {
 			blueprintMap.put(descr.name, new Blueprint(descr.name));
-			AsyncTaskQueue.getInstance().enqueue("blueprint_" + descr.name, new CreateCloneFactoryTask(
-					objectRepositoryPath, descr.name));
+			AsyncTaskQueue.getInstance().enqueue("blueprint_" + descr.name,
+					new CreateCloneFactoryTask(descr.name));
 		}
 		// enqueue task to create a clone (the blueprint entry will be processed first and the
 		// factory will be finished when this taks begins
-		AsyncTaskQueue.getInstance().enqueue("instance_" + descr.name + uid++, new CreateCloneTask(descr, section));
+		AsyncTaskQueue.getInstance().enqueue("instance_" + descr.name + uid++,
+				new CreateCloneTask(descr, section));
 	}
 
 	/**
@@ -157,14 +155,6 @@ public class ObjectRepository {
 		else {
 			logger.error("Cannot destroy unknown object '" + name + "'");
 		}
-	}
-
-	public String getObjectRepositoryPath() {
-		return objectRepositoryPath;
-	}
-
-	public void setObjectRepositoryPath(String objectRepositoryPath) {
-		this.objectRepositoryPath = objectRepositoryPath;
 	}
 
 }

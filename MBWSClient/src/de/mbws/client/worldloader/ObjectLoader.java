@@ -30,6 +30,8 @@ import com.jmex.terrain.TerrainBlock;
 
 public class ObjectLoader {
 	private DynamicWorld dynamicWorld;
+	private String worldPath;
+	private String objectPath;
 	private static Logger logger = Logger.getLogger(ObjectLoader.class);
 
 	private class ApplyTextureTask implements Runnable {
@@ -126,12 +128,12 @@ public class ObjectLoader {
 		return objectList;
 	}
 
-	public Node loadObject(String objectRepositoryPath, String objectName) {
+	public Node loadObject(String objectName) {
 		Node objectNode = null;
 		try {
-			FileInputStream fi = new FileInputStream(new File(objectRepositoryPath + "/model/"
+			FileInputStream fi = new FileInputStream(new File(objectPath + "/model/"
 					+ objectName));
-			String texturePath = objectRepositoryPath + "/textures/" + objectName;
+			String texturePath = objectPath + "/textures/" + objectName;
 			texturePath = texturePath.replaceFirst(".jme", ".jpg");
 			JmeBinaryReader jbr = new JmeBinaryReader();
 			// jbr.setProperty("texurl", urlOfTexture);
@@ -150,7 +152,7 @@ public class ObjectLoader {
 	}
 
 	public TerrainBlock loadTerrainBlock(int column, int row) throws IOException {
-		String sectionPath = dynamicWorld.worldPath + "_" + column + "_" + row;
+		String sectionPath = worldPath + "_" + column + "_" + row;
 		final int[] heightMap = readIntArrayFromFile(column, row, sectionPath + ".ter");
 		Vector3f scale = new Vector3f(dynamicWorld.spatialScale, dynamicWorld.heightScale,
 				dynamicWorld.spatialScale);
@@ -210,6 +212,14 @@ public class ObjectLoader {
 	private static float readFloatAttribute(NamedNodeMap attributes, String attrName) {
 		float value = Float.parseFloat(attributes.getNamedItem(attrName).getNodeValue());
 		return value;
+	}
+
+	public void setObjectPath(String objectPath) {
+		this.objectPath = objectPath;
+	}
+
+	public void setWorldPath(String worldPath) {
+		this.worldPath = worldPath;
 	}
 
 }

@@ -37,7 +37,6 @@ public class DynamicWorld extends Node {
 
 	int sectionRows;
 	int sectionColumns;
-	String worldPath;
 	float spatialScale = 12;
 	float heightScale = 0.5f;
 	int sectionResolution = 65;
@@ -49,7 +48,6 @@ public class DynamicWorld extends Node {
 	float unloadRadius2;
 	float prefetchRadius2;
 
-	// Map<String, TerrainBlock> sectionCache = new HashMap<String, TerrainBlock>();
 	Set<SectionController.SectionNode> visibleSections = new HashSet<SectionController.SectionNode>();
 	ObjectRepository modelRepository;
 	ObjectLoader loader;
@@ -69,13 +67,14 @@ public class DynamicWorld extends Node {
 	 * @throws IOException
 	 * @throws SAXException
 	 */
-	public void init(Node root, DisplaySystem display, String pathForWorldDescription)
+	public void init(Node root, DisplaySystem display, String pathToWorldDescription, String pathToModels)
 			throws SAXException, IOException {
-		this.worldPath = pathForWorldDescription;
 		this.display = display;
 		this.loader = new ObjectLoader(this);
-		sectionController = new SectionController(loader, worldPath);
-		loader.loadWorldDescription(worldPath + ".wld");
+		loader.setObjectPath(pathToModels);
+		loader.setWorldPath(pathToWorldDescription);
+		sectionController = new SectionController(loader, pathToWorldDescription);
+		loader.loadWorldDescription(pathToWorldDescription + ".wld");
 		visibilityRadius2 = visibilityRadius * visibilityRadius;
 		prefetchRadius2 = prefetchRadius * prefetchRadius;
 		unloadRadius2 = unloadRadius * unloadRadius;

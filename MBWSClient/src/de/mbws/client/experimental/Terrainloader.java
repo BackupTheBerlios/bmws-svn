@@ -278,7 +278,7 @@ public class Terrainloader extends BaseGame {
 
 		rootNode.attachChild(terrain);
 		try {
-			terrain.init(rootNode, display, "data\\world\\world");
+			terrain.init(rootNode, display, "data/world/world", "data/characters/generic/1/M");
 		} catch (SAXException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
