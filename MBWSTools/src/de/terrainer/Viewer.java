@@ -29,7 +29,7 @@ public class Viewer extends SimpleGame {
 		world = new DynamicWorld();
 		rootNode.attachChild(world);
 		try {
-			world.init(rootNode, display, "..\\MBWSClient\\data\\world\\world");
+			world.init(rootNode, display, "..\\MBWSClient\\data\\world\\world", "../MBWSClient/data/characters/generic/1/M");
 		} catch (SAXException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

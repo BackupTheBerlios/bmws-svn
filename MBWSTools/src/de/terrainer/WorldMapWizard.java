@@ -17,8 +17,8 @@ import de.terrainer.gui.IntegerInputField;
 
 public class WorldMapWizard extends JDialog {
 	WorldMap world;
-	IntegerInputField widthField = new IntegerInputField(10, 1, 10000);
-	IntegerInputField heightField = new IntegerInputField(10, 1, 10000);
+	IntegerInputField widthField = new IntegerInputField(64, 1, 10000);
+	IntegerInputField heightField = new IntegerInputField(64, 1, 10000);
 	IntegerInputField resolutionField = new IntegerInputField(6, 5, 10);
 	boolean cancelled  = true;
 

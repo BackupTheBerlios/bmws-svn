@@ -22,6 +22,7 @@ import javax.swing.JToolBar;
 
 import org.apache.log4j.BasicConfigurator;
 
+import de.mbws.client.worldloader.TerrainPersistence;
 import de.terrainer.generators.PerlinNoise;
 import de.terrainer.generators.RandomMidpointDisplacement;
 import de.terrainer.gui.HeightMapComponent;
@@ -125,15 +126,15 @@ public class TerrainerGUI extends JFrame {
 
 	protected void save() {
 		int size = 12;
-//		TerrainPersistence tp = new TerrainPersistence(
-//				"..\\MBWSClient\\data\\world\\world", size, size);
-//		// TODO for the timebeing we save one terrain x times
-//		for (int x = 0; x < size; x++) {
-//			for (int y = 0; y < size; y++) {
-//				tp.addSection(x, y, currentHeightMap.getLinearMap());
-//			}
-//		}
-//		tp.writeWorld("world", size, size, currentHeightMap.getWidth());
+		TerrainPersistence tp = new TerrainPersistence(
+				"..\\MBWSClient\\data\\world\\world", size, size);
+		// TODO for the timebeing we save one terrain x times
+		for (int x = 0; x < size; x++) {
+			for (int y = 0; y < size; y++) {
+				tp.addSection(x, y, currentHeightMap.getLinearMap());
+			}
+		}
+		tp.writeWorld("world", size, size, currentHeightMap.getWidth());
 	}
 
 	private JPanel createHeightMapPanel() {
