@@ -130,17 +130,7 @@ public class ObjectManager {
 		object.setModel(player2);
 		rootNode.attachChild(player2);
 
-		// TODO Remove above
-		// STEP1: Load
-		// Node n = ....
-		// object.setModel(n);
-		// STEP2: Set coordinates and attach
-		// m_rootNode.attachChild(n);
-		// STEP 3: UPDATE STATES
-		// ((Node) (n)).setLocalScale(15F);
-		// ((Node) (n)).updateGeometricState(10F, true);
-		// ((Node) (n)).updateRenderState();
-
+		
 		// object.initialize(map);
 		synchronized (objects) {
 			objects.put(object.getObjectID(), object);
@@ -186,10 +176,10 @@ public class ObjectManager {
 
 		int race = ClientPlayerData.getInstance().getSelectedCharacterData()
 				.getRace();
-		char gender = ClientPlayerData.getInstance()
-				.getSelectedCharacterData().getGender();
+		char gender = ClientPlayerData.getInstance().getSelectedCharacterData()
+				.getGender();
 
-        CharacterVisualAppearance appearance = ClientPlayerData.getInstance()
+		CharacterVisualAppearance appearance = ClientPlayerData.getInstance()
 				.getSelectedCharacterData().getVisualAppearance();
 
 		try {
@@ -296,9 +286,83 @@ public class ObjectManager {
 		}
 	}
 
+	public static Node loadNode(CharacterData ocd) {
+		int race = ocd.getRace();
+		char gender = ocd.getGender();
+		try {
+			MovableObject object = new MovableObject("SelectionScreenModel");
+			URL urlOfTexture = new File(BASE_PATH + GENERIC_CHARACTER_PATH
+					+ race + "/" + gender + TEXTURE_BASE_PATH).toURL();
+
+			URL urlOfModel = new File(BASE_PATH + GENERIC_CHARACTER_PATH + race
+					+ "/" + gender + BASE_MODEL).toURL();
+
+			URL urlOfPropertyFile = new File(BASE_PATH + GENERIC_CHARACTER_PATH
+					+ race + "/" + gender + "/model/model.properties").toURL();
+
+			Configuration modelConfiguration = new PropertiesConfiguration(
+					new File(urlOfPropertyFile.getFile()));// urlOfPropertyFile.getFile()));
+			float scaling = modelConfiguration.getFloat("scale", 1.0f);
+			float rotateAroundY = modelConfiguration.getFloat("rotate.y", 0.0f);
+			float animationSpeed = modelConfiguration.getFloat(
+					"animation.speed", 1f);
+
+			object.getAnimationData().setAnimationSpeed(animationSpeed);
+			object.getAnimationData().setStandStartTime(
+					modelConfiguration.getInt("animation.stand.start", 292));
+			object.getAnimationData().setStandEndTime(
+					modelConfiguration.getInt("animation.stand.end", 325));
+
+			FileInputStream fi = new FileInputStream(
+					new File(BASE_PATH + GENERIC_CHARACTER_PATH + race + "/"
+							+ gender + BASE_MODEL));// urlOfModel.getFile()));
+
+			Node modelNode = null;
+
+			JmeBinaryReader jbr = new JmeBinaryReader();
+			jbr.setProperty("texurl", urlOfTexture);
+			jbr.setProperty("bound", "box"); // Doesnt work ?
+			try {
+				long time = System.currentTimeMillis();
+				modelNode = jbr.loadBinaryFormat(fi);
+				logger.info("Time to convert from .jme to SceneGraph:"
+						+ (System.currentTimeMillis() - time));
+			} catch (IOException e) {
+				logger.error("damn exceptions:" + e.getMessage());
+			}
+
+			modelNode.setLocalScale(scaling);
+			if (rotateAroundY != 0) {
+				Matrix3f localRotate = new Matrix3f();
+				localRotate.fromAxisAngle(new Vector3f(0.0F, 1.0F, 0.0F),
+						-(rotateAroundY * 0.5f * FastMath.PI));
+				modelNode.setLocalRotation(localRotate);
+			}
+			
+			Controller c = modelNode.getChild(0).getController(0);
+			if (c instanceof KeyframeController) {
+				object.setKeyframeController((KeyframeController) c);
+				object.getKeyframeController().setSpeed(animationSpeed);
+				object.getKeyframeController().setNewAnimationTimes(
+						object.getAnimationData().getStandStartTime(),
+						object.getAnimationData().getStandEndTime());
+			} else {
+				object.setJointController((JointController) c);
+				object.getJointController().setSpeed(animationSpeed);
+				object.getJointController().setTimes(
+						object.getAnimationData().getStandStartTime(),
+						object.getAnimationData().getStandEndTime());
+			}
+			return modelNode;
+		} catch (Exception e) {
+			logger.error(e);
+		}
+		return null;
+	}
+
 	public static Node createMovableObject(CharacterData ocd) {
-		
-		//TODO: See if we have set all variables (we have not !)
+
+		// TODO: See if we have set all variables (we have not !)
 		MovableObject object = new MovableObject(ocd.getCharacterID());
 		object.setAlive(true);
 		object.setMovespeed(30);
@@ -307,7 +371,7 @@ public class ObjectManager {
 		object.setName(ocd.getName());
 		int race = ocd.getRace();
 		char gender = ocd.getGender();
-        CharacterVisualAppearance appearance = ocd.getVisualAppearance();
+		CharacterVisualAppearance appearance = ocd.getVisualAppearance();
 
 		try {
 			URL urlOfTexture = new File(BASE_PATH + GENERIC_CHARACTER_PATH
@@ -353,7 +417,7 @@ public class ObjectManager {
 			} catch (IOException e) {
 				logger.error("damn exceptions:" + e.getMessage());
 			}
-
+			modelNode.updateRenderState();
 			modelNode.setLocalScale(scaling);
 			if (rotateAroundY != 0) {
 				Matrix3f localRotate = new Matrix3f();
@@ -379,8 +443,9 @@ public class ObjectManager {
 			Vector3f location = new Vector3f(ocd.getLocation().getX(), ocd
 					.getLocation().getY(), ocd.getLocation().getZ());
 			objectNode.setLocalTranslation(location);
-			
+
 			rootNode.attachChild(objectNode);
+			
 			objectNode.attachChild(modelNode);
 			objectNode.updateWorldBound();
 			object.setModel(objectNode);

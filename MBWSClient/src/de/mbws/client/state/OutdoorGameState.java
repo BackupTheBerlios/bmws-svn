@@ -8,6 +8,7 @@ import java.util.HashMap;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
+import com.jme.bounding.BoundingBox;
 import com.jme.image.Image;
 import com.jme.image.Texture;
 import com.jme.input.AbsoluteMouse;
@@ -16,13 +17,17 @@ import com.jme.input.InputHandler;
 import com.jme.input.thirdperson.ThirdPersonMouseLook;
 import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
+import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import com.jme.scene.Skybox;
 import com.jme.scene.Spatial;
+import com.jme.scene.shape.Box;
 import com.jme.scene.state.AlphaState;
 import com.jme.scene.state.TextureState;
+import com.jme.scene.state.ZBufferState;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
+import com.jmex.effects.ParticleManager;
 
 import de.mbws.client.MBWSClient;
 import de.mbws.client.data.ObjectManager;
@@ -61,45 +66,46 @@ public class OutdoorGameState extends BaseGameState {
 		ObjectManager.initialize(rootNode, display);
 
 		createCustomCursor();
-
+		buildTestBox();
 		buildEnvironment();
 		buildPlayer();
 		buildCamera();
-		//buildSky();
+		// buildSky();
+		createRain();
 
 		rootNode.updateGeometricState(0.0f, true);
 		rootNode.updateRenderState();
 
 	}
 
-//	private void buildSky() {
-//		// TODO: size seems a problem, use skydome anyway ?
-//		skybox = new Skybox("skybox", 600, 200, 600);
-//
-//		Texture texture = TextureManager.loadTexture(OutdoorGameState.class
-//				.getClassLoader().getResource("resources/textures/top.jpg"),
-//				Texture.MM_LINEAR, Texture.FM_LINEAR);
-//
-//		skybox.setTexture(Skybox.NORTH, texture);
-//		skybox.setTexture(Skybox.WEST, texture);
-//		skybox.setTexture(Skybox.SOUTH, texture);
-//		skybox.setTexture(Skybox.EAST, texture);
-//		skybox.setTexture(Skybox.UP, texture);
-//		skybox.setTexture(Skybox.DOWN, texture);
-//		skybox.preloadTextures();
-//		skybox.setLocalTranslation(player.getLocalTranslation());
-//
-//		// TODO: Uh this is bad ... we dont want to have it attached to the
-//		// player
-//		// player.attachChild(skybox);
-//		rootNode.attachChild(skybox);
-//
-//	}
+	// private void buildSky() {
+	// // TODO: size seems a problem, use skydome anyway ?
+	// skybox = new Skybox("skybox", 600, 200, 600);
+	//
+	// Texture texture = TextureManager.loadTexture(OutdoorGameState.class
+	// .getClassLoader().getResource("resources/textures/top.jpg"),
+	// Texture.MM_LINEAR, Texture.FM_LINEAR);
+	//
+	// skybox.setTexture(Skybox.NORTH, texture);
+	// skybox.setTexture(Skybox.WEST, texture);
+	// skybox.setTexture(Skybox.SOUTH, texture);
+	// skybox.setTexture(Skybox.EAST, texture);
+	// skybox.setTexture(Skybox.UP, texture);
+	// skybox.setTexture(Skybox.DOWN, texture);
+	// skybox.preloadTextures();
+	// skybox.setLocalTranslation(player.getLocalTranslation());
+	//
+	// // TODO: Uh this is bad ... we dont want to have it attached to the
+	// // player
+	// // player.attachChild(skybox);
+	// rootNode.attachChild(skybox);
+	//
+	// }
 
 	protected void initJMEDesktop() {
 		desktopNode = new GameDesktop("Desktop", input);
-		//jmeDesktop = ((GameDesktop)desktopNode).getDesktop();
-		((MainGameStateHandler)playerInputHandler).gd = (GameDesktop)desktopNode;
+		// jmeDesktop = ((GameDesktop)desktopNode).getDesktop();
+		((MainGameStateHandler) playerInputHandler).gd = (GameDesktop) desktopNode;
 		guiRootNode.attachChild(desktopNode);
 	}
 
@@ -134,8 +140,8 @@ public class OutdoorGameState extends BaseGameState {
 		chaserProps.put(ThirdPersonMouseLook.PROP_ROTATETARGET, "false");
 
 		// Amount of rotation around figure
-		chaserProps.put(ThirdPersonMouseLook.PROP_MOUSEXMULT, "40.0");
-		chaserProps.put(ThirdPersonMouseLook.PROP_MOUSEYMULT, "40.0");
+		chaserProps.put(ThirdPersonMouseLook.PROP_MOUSEXMULT, "20.0");
+		chaserProps.put(ThirdPersonMouseLook.PROP_MOUSEYMULT, "20.0");
 		// only rotate when mousebutton is pressed
 		chaserProps.put(ThirdPersonMouseLook.PROP_MOUSEBUTTON_FOR_LOOKING, "1");
 
@@ -158,14 +164,16 @@ public class OutdoorGameState extends BaseGameState {
 	private void buildPlayer() {
 		player = ObjectManager.getPlayer();
 		((MainGameStateHandler) playerInputHandler).setPlayer(player);
-		playerInputHandler.addAction(new MousePick(cam,rootNode,cursor,display));
+		playerInputHandler.addAction(new MousePick(cam, rootNode, cursor,
+				display));
 	}
 
 	private void buildEnvironment() {
 		terrain = new DynamicWorld();
 		rootNode.attachChild(terrain);
 		try {
-			terrain.init(rootNode, display, "data/world/world", "data/characters/generic/1/M");
+			terrain.init(rootNode, display, "data/world/world",
+					"data/characters/generic/1/M");
 		} catch (SAXException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -187,7 +195,12 @@ public class OutdoorGameState extends BaseGameState {
 		// update the chase camera to handle the player moving around.
 
 		chaseCam.update(tpf);
-		//skybox.setLocalTranslation(cam.getLocation());
+		Vector3f camlocation = cam.getLocation();
+		if (terrain.getHeight(camlocation) > camlocation.y) {
+			camlocation.y = terrain.getHeight(camlocation);
+			cam.setLocation(camlocation);
+		}
+		// skybox.setLocalTranslation(cam.getLocation());
 		// }
 		// heightAtPoint = terrain.
 		// // TODO Fix the height and set it somewhere else !!
@@ -206,9 +219,11 @@ public class OutdoorGameState extends BaseGameState {
 		}
 		ObjectManager.update(tpf);
 		Vector3f location = player.getLocalTranslation();
-		location.y = terrain.getHeight(location);
-		player.setLocalTranslation(location);
-		
+		if (location.y < terrain.getHeight(location)) {
+			location.y = terrain.getHeight(location);
+			player.setLocalTranslation(location);
+		}
+
 		rootNode.updateGeometricState(tpf, true);
 
 	}
@@ -217,7 +232,7 @@ public class OutdoorGameState extends BaseGameState {
 	protected void initInputHandler() {
 		input = new BaseInputHandler(this);
 		playerInputHandler = new MainGameStateHandler(null, this);
-		
+
 		input.addToAttachedHandlers(playerInputHandler);
 	}
 
@@ -262,6 +277,86 @@ public class OutdoorGameState extends BaseGameState {
 		} catch (Exception e) {
 			logger.error("Couldnt load cursor: ", e);
 		}
+	}
+
+	private void buildTestBox() {
+		Node boxNode = new Node("Box");
+		 Box box = new Box("box", new Vector3f(), 100, 10, 100);
+		 box.setModelBound(new BoundingBox());
+		 box.updateModelBound();
+		 
+		boxNode.attachChild(box);
+		boxNode.getLocalTranslation().y = +4;
+				rootNode.attachChild(boxNode);
+	}
+
+	private void createRain() {
+		// Vector3f[] lines = new Vector3f[260];
+		// int count = 0;
+		// float pointZ = 140.0f;
+		// for (int j = 0; j < 6; j++) {
+		// float pointX = -50.0f;
+		// for (int i = 0; i < 26; i++) {
+		// lines[count++] = new Vector3f(pointX, 50.0f, pointZ);
+		// pointX += 4;
+		// }
+		// pointZ += 10.0f;
+		// }
+		// Line line = new Line("Line", lines, null, null, null);
+		ParticleManager manager = new ParticleManager(400);// ,
+		manager.setGravityForce(new Vector3f(0.0f, -0.0030f, 0.0f));
+		manager.setEmissionDirection(new Vector3f(0.0f, -1.0f, 0.0f));
+		manager.setEmissionMaximumAngle(2.1816616f);
+		manager.setEmissionMinimumAngle(0.0f);
+		manager.setSpeed(1f);
+		manager.setParticlesMinimumLifeTime(1626.0f);
+		manager.setStartSize(1f);
+		manager.setEndSize(1f);
+
+		manager.setStartColor(new ColorRGBA(0.16078432f, 0.16078432f, 1.0f,
+				1.0f));
+		manager.setEndColor(new ColorRGBA(0.16078432f, 0.16078432f, 1.0f,
+				0.15686275f));
+		manager.setRandomMod(0.0f);
+		manager.setControlFlow(false);
+		manager.setReleaseRate(400);
+		manager.setReleaseVariance(0.0f);
+		manager.setInitialVelocity(1.0f);
+		manager.setParticleSpinSpeed(0.0f);
+
+		manager.warmUp(1000);
+		manager.getParticles().addController(manager);
+		AlphaState as1 = display.getRenderer().createAlphaState();
+		as1.setBlendEnabled(true);
+		as1.setSrcFunction(AlphaState.SB_SRC_ALPHA);
+		as1.setDstFunction(AlphaState.DB_ONE);
+		as1.setTestEnabled(true);
+		as1.setTestFunction(AlphaState.TF_GREATER);
+		as1.setEnabled(true);
+		TextureState ts = display.getRenderer().createTextureState();
+		try {
+			ts.setTexture(TextureManager.loadTexture(new File(
+
+			"data/images/rain.png").toURL(), Texture.MM_LINEAR_LINEAR,
+					Texture.FM_LINEAR));
+		} catch (Exception e) {
+			logger.error(e);
+		}
+		ts.setEnabled(true);
+
+		// manager.setGeometry(line);
+
+		Node myNode = new Node("Particle Nodes");
+
+		myNode.setRenderState(as1);
+		myNode.setRenderState(ts);
+		myNode.attachChild(manager.getParticles());
+		ZBufferState zstate = DisplaySystem.getDisplaySystem().getRenderer()
+				.createZBufferState();
+		zstate.setEnabled(false);
+		manager.getParticles().setRenderState(zstate);
+		myNode.setLocalTranslation(new Vector3f(0, 200, 0));
+		player.attachChild(myNode);
 	}
 
 	// TODO TAKE jmeDesktop AWAY from the basegamestate

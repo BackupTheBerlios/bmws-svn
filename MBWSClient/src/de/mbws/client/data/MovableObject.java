@@ -2,8 +2,12 @@ package de.mbws.client.data;
 
 import org.apache.log4j.Logger;
 
+import com.jme.intersection.BoundingPickResults;
+import com.jme.intersection.PickResults;
 import com.jme.math.Matrix3f;
+import com.jme.math.Ray;
 import com.jme.math.Vector3f;
+import com.jme.scene.Node;
 import com.jmex.model.animation.JointController;
 import com.jmex.model.animation.KeyframeController;
 
@@ -15,6 +19,7 @@ public class MovableObject extends GameObject {
 		super(id);
 		moveStatus = Globals.STANDING;
 		turnStatus = Globals.NO_TURN;
+		results.setCheckDistance(true);
 	}
 
 	public MovableObject(String id, KeyframeController kc) {
@@ -22,6 +27,7 @@ public class MovableObject extends GameObject {
 		moveStatus = Globals.STANDING;
 		turnStatus = Globals.NO_TURN;
 		keyframeController = kc;
+		results.setCheckDistance(true);
 	}
 
 	private KeyframeController keyframeController;
@@ -34,6 +40,7 @@ public class MovableObject extends GameObject {
 	protected long timeOfDeath;
 	protected boolean isPlayer = false;
 	protected String name;
+	private PickResults results = new BoundingPickResults();
 	// Animations
 	protected AnimationData animationData = new AnimationData();
 
@@ -86,6 +93,7 @@ public class MovableObject extends GameObject {
 						loc.addLocal(model.getLocalRotation()
 								.getRotationColumn(2, tempVa).multLocal(
 										movespeed * f));
+						loc.subtractLocal(0, getHeight(), 0);
 						model.setLocalTranslation(loc);
 					} else if (moveStatus == Globals.WALKING_BACKWARD) {
 						Vector3f tempVa = new Vector3f();
@@ -93,6 +101,7 @@ public class MovableObject extends GameObject {
 						loc.subtractLocal(model.getLocalRotation()
 								.getRotationColumn(2, tempVa).multLocal(
 										movespeed * f));
+						// loc.subtractLocal(0, getHeight(), 0);
 						model.setLocalTranslation(loc);
 					}
 					if (turnStatus == Globals.TURN_RIGHT
@@ -121,6 +130,48 @@ public class MovableObject extends GameObject {
 				}
 			}
 		}
+	}
+
+	private float getHeight() {
+		Vector3f origin = model.getWorldTranslation();
+		Vector3f destination = new Vector3f(origin.x, origin.y - 20, origin.z);
+		results.clear();
+		Ray r = new Ray(origin, destination);
+
+		results.setCheckDistance(true);
+		model.getParent().findPick(r, results);
+		// rootNode.findPick(r, results);
+		if (results.getNumber() > 0) {
+			System.out.println("Found: " + results.getNumber() + "results");
+
+			for (int i = 0; i < results.getNumber(); i++) {
+				String str = findNodeName(results.getPickData(i)
+						.getTargetMesh().getParent());
+				if (!str.equals(model.getName()) && !str.equals("state rootNode")) {
+					System.out.println(str);
+					System.out.println(results.getPickData(i).getDistance());
+				}
+			}
+			// PickData pd = results.getPickData(0);// results.getNumber() - 1);
+			// if (!pd.getTargetMesh().getParent().getName()
+			// .equals("DynamicWorld")) {
+			//
+			// System.out.println(" " + pd.getDistance());
+			// }
+			return 0.0f;
+		}
+		return 0.0f;
+	}
+
+	private String findNodeName(Node node) {
+		// state rootNode
+		if (node.getParent() != null) {
+			// TODO: change that fix name !
+			while (!node.getParent().getName().equals("state rootNode")) {
+				node = node.getParent();
+			}
+		}
+		return node.getName();
 	}
 
 	public int getMovespeed() {

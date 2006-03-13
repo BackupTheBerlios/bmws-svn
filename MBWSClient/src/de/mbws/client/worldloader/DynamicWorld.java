@@ -101,7 +101,7 @@ public class DynamicWorld extends Node {
 		skydome.setRenderState(lightState);
 		skydome.setLightCombineMode(LightState.REPLACE);
 		Texture domeTexture = TextureManager
-				.loadTexture("..\\MBWSClient\\data\\images\\wolken_16.jpg", Texture.MM_LINEAR,
+				.loadTexture("data/images/wolken_16.jpg", Texture.MM_LINEAR,
 						Texture.FM_LINEAR);
 		TextureState ts = display.getRenderer().createTextureState();
 		ts.setTexture(domeTexture);

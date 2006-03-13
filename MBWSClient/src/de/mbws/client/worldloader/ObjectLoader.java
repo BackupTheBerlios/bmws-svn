@@ -180,7 +180,7 @@ public class ObjectLoader {
 		//
 
 		SyncTaskQueue.getInstance().enqueue("loadSectionTex" + column + "_" + row,
-				new ApplyTextureTask("../MBWSClient/data/images/grassb.png", terrainBlock));
+				new ApplyTextureTask(worldPath+"_0_0.png", terrainBlock));
 		terrainBlock.setModelBound(new BoundingBox());
 		terrainBlock.updateModelBound();
 		return terrainBlock;

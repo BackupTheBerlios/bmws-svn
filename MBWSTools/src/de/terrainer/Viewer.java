@@ -9,7 +9,6 @@ import com.jme.light.DirectionalLight;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.state.CullState;
-import com.jme.scene.state.FogState;
 
 import de.mbws.client.worldloader.DynamicWorld;
 
@@ -48,7 +47,7 @@ public class Viewer extends SimpleGame {
 		lightState.attach(dr);
 
 		CullState cs = display.getRenderer().createCullState();
-		cs.setCullMode(CullState.CS_BACK);
+		cs.setCullMode(CullState.CS_NONE);
 		cs.setEnabled(true);
 		rootNode.setRenderState(cs);
 

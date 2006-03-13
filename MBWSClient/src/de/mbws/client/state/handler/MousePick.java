@@ -21,7 +21,7 @@ public class MousePick extends MouseInputAction {
 
 	// private float intevall = 0f;
 
-	 private Mouse mouse;
+	private Mouse mouse;
 
 	public MousePick(Camera cam, Node node, Mouse aMouse, DisplaySystem aDisplay) {
 		super();
@@ -39,7 +39,8 @@ public class MousePick extends MouseInputAction {
 
 			Vector2f screenPos = new Vector2f();
 			// Get the position that the mouse is pointing to
-			screenPos.set(mouse.getHotSpotPosition().x, mouse.getHotSpotPosition().y);
+			screenPos.set(mouse.getHotSpotPosition().x, mouse
+					.getHotSpotPosition().y);
 			// Get the world location of that X,Y value
 			Vector3f worldCoords = display.getWorldCoordinates(screenPos, 0);
 			Ray ray = new Ray(camera.getLocation(), worldCoords
@@ -54,8 +55,8 @@ public class MousePick extends MouseInputAction {
 				// System.out.println(results.getPickData(i).getTargetMesh()
 				// .getParent().getName());
 				//
-				//				}
-				System.out.println("Last one is "+ findNodeName(results));
+				// }
+				System.out.println("Last one is " + findNodeName(results));
 				System.out.println("HIT: ");
 			}
 
@@ -64,14 +65,18 @@ public class MousePick extends MouseInputAction {
 		}
 
 	}
-	
+
 	private String findNodeName(PickResults results) {
-		//state rootNode
-	     Node node = results.getPickData(results.getNumber()-1).getTargetMesh().getParent();
-		 while (!node.getParent().getName().equals(rootNode.getName())) {
-			 node = node.getParent();
-		 }
-	     return node.getName();
+		// state rootNode
+		Node node = results.getPickData(results.getNumber() - 1)
+				.getTargetMesh().getParent();
+		if (node.getParent() != null) {
+			while (!node.getParent().getName().equals(rootNode.getName())) {
+
+				node = node.getParent();
+			}
+		}
+		return node.getName();
 	}
 
 }

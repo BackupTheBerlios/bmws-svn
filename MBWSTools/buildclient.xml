@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<project name="MBWS" default="dist" basedir=".">
+
+	<property name="base.client.dir" value="../MBWSClient" />
+	<property name="base.common.dir" value="../MBWSCommons" />
+	<property name="common.lib.dir" value="${base.common.dir}/lib" />
+	<property name="client.lib.dir" value="${base.client.dir}/lib" />
+	<property name="build.common-src.dir" value="${base.common.dir}/src" />
+	<property name="build.client-src.dir" value="${base.client.dir}/src" />
+
+	<property name="dist" value="${base.client.dir}/dist" />
+	<!--<property name="name" value="de.mbws.common.data.generated" />
+   -->
+	<path id="lib.class.path">
+		<pathelement path="${basedir}" />
+		<fileset dir="${common.lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${client.lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${dist}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<target name="prepare">
+		<delete dir="${basedir}/temp" />
+		<mkdir dir="${basedir}/temp" />
+		<mkdir dir="${basedir}/temp/commons-bin" />
+		<mkdir dir="${basedir}/temp/client-bin" />
+		<delete dir="${dist}" />
+		<mkdir dir="${dist}" />
+		<mkdir dir="${dist}/lib" />
+	</target>
+
+	<target name="buildCommons" depends="prepare">
+		<javac srcdir="${build.common-src.dir}" classpathref="lib.class.path" destdir="temp/commons-bin" source="1.5" />
+		<copy todir="temp/commons-bin">
+			<fileset dir="${build.common-src.dir}" includes="**/*.xml" />
+		</copy>
+		<jar destfile="${dist}/mbws-commons.jar" basedir="temp/commons-bin" />
+	</target>
+
+	<target name="buildClient" depends="buildCommons">
+		<javac srcdir="${build.client-src.dir}" classpathref="lib.class.path" destdir="temp/client-bin" source="1.5" />
+		<copy todir="temp/client-bin">
+			<fileset dir="${build.client-src.dir}" includes="**/*.xml" />
+		</copy>
+		<jar destfile="${dist}/mbws-client.jar" basedir="temp/client-bin" />
+	</target>
+
+	<target name="packClient" depends="buildClient">
+		<copy todir="${dist}/lib">
+			<fileset dir="${common.lib.dir}" />
+		</copy>
+		<copy todir="${dist}/lib">
+			<fileset dir="${client.lib.dir}" />
+		</copy>
+		<copy todir="${dist}" file="cp.bat" />
+		<copy todir="${dist}" file="startClient.bat" />
+		<copy todir="${dist}" file="${base.client.dir}/log4j.properties" />
+		<copy todir="${dist}" file="${base.client.dir}/clientremote.properties" />
+		<copy todir="${dist}" file="startClient.sh" />
+		<copy todir="${dist}/config">
+			<fileset dir="${base.client.dir}/config" />
+		</copy>
+		<copy todir="${dist}/data">
+			<fileset dir="${base.client.dir}/data" />
+		</copy>
+		<zip destfile="${dist}/mbws-client.zip" basedir="${dist}" />
+	</target>
+
+	<target name="dist" depends="packClient" />
+</project>
