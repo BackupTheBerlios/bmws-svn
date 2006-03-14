@@ -84,7 +84,7 @@ public class AccountController {
         } else if (loginEvent.getEventType() == EventTypes.S2C_LOGIN_OK) {
             // Updating the local client data:
             ClientPlayerData.getInstance().setSessionId(loginEvent.getPlayer().getSessionId());
-            ClientPlayerData.getInstance().setAccount(loginEvent.getPlayer().getAccount());
+//            ClientPlayerData.getInstance().setAccount(loginEvent.getPlayer().getAccount());
             if (logger.isDebugEnabled()) {
                 logger.debug("Session id =" + loginEvent.getPlayer().getSessionId());
                 logger.debug("Login ok, trying to receive character data");
