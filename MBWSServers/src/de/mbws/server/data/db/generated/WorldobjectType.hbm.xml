@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.2
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="de.mbws.server.data.db.generated.WorldobjectType" 
+    table="worldobject_type"
+    lazy="false"
+>
+
+    <id
+        name="id"
+        type="java.lang.Integer"
+        column="id"
+    >
+    
+        <generator class="assigned" />
+    </id>
+
+    <property
+        name="name"
+        type="java.lang.String"
+        column="name"
+        not-null="true"
+        length="255"
+    />
+    <property
+        name="moveable"
+        type="byte"
+        column="moveable"
+        not-null="true"
+        length="1"
+    />
+    <property
+        name="maxspeed"
+        type="java.lang.Integer"
+        column="maxspeed"
+        length="10"
+    />
+    <property
+        name="stamina"
+        type="java.lang.Integer"
+        column="stamina"
+        length="10"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional one-to-many association to Worldobject -->
+
+    <set
+        name="worldobjects"
+        lazy="true"
+        inverse="true"
+		cascade="all"
+
+    >
+        <key>
+            <column name="worldobject_type_id" />
+        </key>
+        
+        <one-to-many 
+            class="de.mbws.server.data.db.generated.Worldobject"
+        />
+    </set>
+
+</class>
+</hibernate-mapping>

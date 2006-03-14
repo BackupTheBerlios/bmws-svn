@@ -8,7 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
 
-import de.mbws.common.data.db.generated.Account;
+import de.mbws.server.data.db.generated.Account;
 import de.mbws.server.exceptions.DuplicateKeyException;
 import de.mbws.server.exceptions.PersistenceException;
 import de.mbws.server.persistence.BasePersistenceManager;

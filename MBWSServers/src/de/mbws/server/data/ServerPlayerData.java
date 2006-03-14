@@ -2,8 +2,9 @@ package de.mbws.server.data;
 
 import de.mbws.common.Globals;
 import de.mbws.common.data.AbstractPlayerData;
-import de.mbws.common.data.db.generated.Characterdata;
 import de.mbws.common.events.data.generated.CharacterData;
+import de.mbws.server.data.db.generated.Account;
+import de.mbws.server.data.db.generated.Characterdata;
 
 /**
  * Description:
@@ -12,7 +13,7 @@ import de.mbws.common.events.data.generated.CharacterData;
  * 
  */
 public class ServerPlayerData extends AbstractPlayerData {
-
+    private Account account;
 	private Characterdata activeCharacter;
 	private CharacterData movementInformation;
 
@@ -35,4 +36,12 @@ public class ServerPlayerData extends AbstractPlayerData {
 	public String getActiveCharacterAsObjectID() {
 		return Globals.OBJECT_ID_PREFIX_CHARACTER + activeCharacter;
 	}
+    
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
 }

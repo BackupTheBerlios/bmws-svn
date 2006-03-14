@@ -1,8 +1,6 @@
 package de.mbws.server.account.controller;
 
 import de.mbws.common.MessageKeys;
-import de.mbws.common.data.AbstractPlayerData;
-import de.mbws.common.data.db.generated.Account;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.AccountEvent;
 import de.mbws.common.events.EventTypes;
@@ -10,6 +8,7 @@ import de.mbws.common.events.data.generated.SystemErrorData;
 import de.mbws.server.account.AccountServer;
 import de.mbws.server.account.persistence.AccountPersistenceManager;
 import de.mbws.server.data.ServerPlayerData;
+import de.mbws.server.data.db.generated.Account;
 import de.mbws.server.exceptions.DuplicateKeyException;
 
 /**
@@ -40,7 +39,7 @@ public class AccountEventController extends AccountServerBaseEventController {
             account.setUsername(l.getAccountData().getUserName());
             try {
                 AccountPersistenceManager.getInstance().createAccount(account);
-                AbstractPlayerData p = new ServerPlayerData();
+                ServerPlayerData p = new ServerPlayerData();
                 p.setAccount(account);
                 Integer sessionId = getAccountServer().nextSessionId();
                 p.setSessionId(sessionId);

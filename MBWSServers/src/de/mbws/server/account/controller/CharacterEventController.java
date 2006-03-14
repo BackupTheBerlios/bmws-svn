@@ -8,8 +8,6 @@ import org.apache.commons.beanutils.BeanUtils;
 
 import de.mbws.common.Globals;
 import de.mbws.common.MessageKeys;
-import de.mbws.common.data.db.generated.*;
-import de.mbws.common.data.db.generated.CharacterStatus;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.CharacterEvent;
 import de.mbws.common.events.EventTypes;
@@ -19,6 +17,7 @@ import de.mbws.server.account.AccountServer;
 import de.mbws.server.account.persistence.CharacterPersistenceManager;
 import de.mbws.server.data.ServerCommunicationData;
 import de.mbws.server.data.ServerPlayerData;
+import de.mbws.server.data.db.generated.*;
 import de.mbws.server.exceptions.DuplicateKeyException;
 
 /**
@@ -72,7 +71,7 @@ public class CharacterEventController extends AccountServerBaseEventController {
 		} else if (event.getEventType() == EventTypes.C2S_CHARACTER_LIST_RECEIVE_REQUEST) {
 			List chars = CharacterPersistenceManager
 					.getInstance()
-					.getAllCharacters(ce.getPlayer().getAccount().getUsername());
+					.getAllCharacters(((ServerPlayerData) ce.getPlayer()).getAccount().getUsername());
 			LinkedList<PlayerCharacterData> charsToSend = new LinkedList<PlayerCharacterData>();
 			for (Iterator iter = chars.iterator(); iter.hasNext();) {
 				Characterdata element = (Characterdata) iter.next();

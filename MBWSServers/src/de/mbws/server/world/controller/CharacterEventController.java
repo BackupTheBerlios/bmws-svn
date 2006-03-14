@@ -7,9 +7,6 @@ import java.util.Map;
 import org.apache.commons.beanutils.BeanUtils;
 
 import de.mbws.common.Globals;
-import de.mbws.common.data.db.generated.CharacterStatus;
-import de.mbws.common.data.db.generated.CharacterVisualappearance;
-import de.mbws.common.data.db.generated.Characterdata;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.CharacterEvent;
 import de.mbws.common.events.EventTypes;
@@ -17,6 +14,9 @@ import de.mbws.common.events.PCEvent;
 import de.mbws.common.events.data.generated.*;
 import de.mbws.server.account.persistence.CharacterPersistenceManager;
 import de.mbws.server.data.ServerPlayerData;
+import de.mbws.server.data.db.generated.CharacterStatus;
+import de.mbws.server.data.db.generated.CharacterVisualappearance;
+import de.mbws.server.data.db.generated.Characterdata;
 import de.mbws.server.utils.IdHelper;
 import de.mbws.server.world.WorldServer;
 
@@ -39,7 +39,6 @@ public class CharacterEventController extends WorldServerBaseEventController {
 	@Override
 	public void handleEvent(AbstractGameEvent event) {
 		CharacterEvent ce = (CharacterEvent) event;
-
 		if (event.getEventType() == EventTypes.S2S_CHARACTER_NEW_CHARACTER_ENTERS_WORLD) {
 			CharacterWorldServerInformation cwsi = (CharacterWorldServerInformation) event
 					.getEventData();
@@ -105,6 +104,7 @@ public class CharacterEventController extends WorldServerBaseEventController {
 			result.setPlayer(ce.getPlayer());
 			sendEvent(result);
 
+            //inform other players about current one
 			ArrayList<Integer> receivers = (ArrayList<Integer>) getWorldServer()
 					.getSessionIDOfAllPlayers().clone();
 			if (receivers.size() > 1) {
@@ -116,7 +116,7 @@ public class CharacterEventController extends WorldServerBaseEventController {
 						.toArray(new Integer[receivers.size()]));
 				sendEvent(oe);
 			}
-
+            //inform current player about the others
 			Map players = getWorldServer().getAllPlayers();
 			for (Iterator iter = receivers.iterator(); iter.hasNext();) {
 				Integer element = (Integer) iter.next();

@@ -7,9 +7,9 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
 
-import de.mbws.common.data.db.generated.Characterdata;
-import de.mbws.common.data.db.generated.Map;
-import de.mbws.common.data.db.generated.Race;
+import de.mbws.server.data.db.generated.Characterdata;
+import de.mbws.server.data.db.generated.Map;
+import de.mbws.server.data.db.generated.Race;
 import de.mbws.server.exceptions.DuplicateKeyException;
 import de.mbws.server.exceptions.PersistenceException;
 import de.mbws.server.persistence.BasePersistenceManager;
@@ -28,7 +28,7 @@ public class CharacterPersistenceManager extends BasePersistenceManager {
         return instance;
     }
 
-    public Characterdata getCharacter(String userName, long charId) {
+    public de.mbws.server.data.db.generated.Characterdata getCharacter(String userName, long charId) {
         org.hibernate.Session session = null;
         Characterdata cdata = null;
         try {
