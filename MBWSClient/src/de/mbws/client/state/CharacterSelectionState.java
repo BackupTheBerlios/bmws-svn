@@ -42,6 +42,7 @@ public class CharacterSelectionState extends BaseGameState implements
 			.getLogger(CharacterSelectionState.class);
 
 	private CharacterData characterToShow;
+	private String characterToDelete;
 	private boolean showNewModel = false;
 
 	// /** THE CURSOR NODE WHICH HOLDS THE MOUSE GOTTEN FROM INPUT. */
@@ -65,7 +66,7 @@ public class CharacterSelectionState extends BaseGameState implements
 
 		rootNode.setLightCombineMode(LightState.OFF);
 		rootNode.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
-		//rootNode.setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
+		// rootNode.setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
 		// rootNode.setRenderQueueMode(Renderer.QUEUE_ORTHO);
 		rootNode.updateRenderState();
 		rootNode.updateGeometricState(0, true);
@@ -79,8 +80,7 @@ public class CharacterSelectionState extends BaseGameState implements
 		int x = (desktopPane.getWidth() / 2) - (actionPanel.getWidth() / 2);
 		int y = desktopPane.getHeight() - actionPanel.getHeight();
 		actionPanel.setLocation(0, y);
-		
-		
+
 		desktopPane.add(actionPanel);
 
 		CharacterListPanel clp = new CharacterListPanel(ClientPlayerData
@@ -92,7 +92,7 @@ public class CharacterSelectionState extends BaseGameState implements
 		clp.setSize(200, desktopPane.getHeight()
 				- (desktopPane.getHeight() / 4));
 		clp.setLocation(desktopPane.getWidth() - clp.getWidth(), 0);
-		
+
 		desktopPane.add(clp);
 
 		desktopPane.repaint();
@@ -156,7 +156,11 @@ public class CharacterSelectionState extends BaseGameState implements
 
 		CharacterData cd = new CharacterData();
 		cd.setGender(selectedCharacter.getGender());
+		cd.setCharacterID(selectedCharacter.getCharacterID());
 		cd.setRace(selectedCharacter.getRace());
+		if (characterToShow != null) {
+			characterToDelete = characterToShow.getCharacterID();
+		}
 		characterToShow = cd;
 		showNewModel = true;
 
@@ -166,15 +170,21 @@ public class CharacterSelectionState extends BaseGameState implements
 		if (showNewModel == true) {
 			Node n = ObjectManager.loadNode(characterToShow);
 			if (n != null) {
+				if (characterToDelete != null) {
+					rootNode.detachChildNamed(characterToDelete);
+					characterToDelete = null;
+				}
 				// n.setLocalTranslation(new Vector3f(display.getWidth() / 2,
 				// display
 				// .getHeight() / 2, -30));
 				n.setLocalTranslation(new Vector3f(0, 0, 0));
 				n.setLocalScale(0.1f);
+				n.setName(characterToShow.getCharacterID());
 				rootNode.attachChild(n);
 				rootNode.updateRenderState();
 				rootNode.updateGeometricState(0, true);
 				showNewModel = false;
+
 			} else {
 				logger.warn("node = null");
 
