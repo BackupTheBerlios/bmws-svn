@@ -3,6 +3,7 @@ package de.mbws.client.data;
 import org.apache.log4j.Logger;
 
 import com.jme.intersection.BoundingPickResults;
+import com.jme.intersection.PickData;
 import com.jme.intersection.PickResults;
 import com.jme.math.Matrix3f;
 import com.jme.math.Ray;
@@ -41,6 +42,7 @@ public class MovableObject extends GameObject {
 	protected boolean isPlayer = false;
 	protected String name;
 	private PickResults results = new BoundingPickResults();
+	//private PickResults results = new TrianglePickResults();
 	// Animations
 	protected AnimationData animationData = new AnimationData();
 
@@ -93,7 +95,7 @@ public class MovableObject extends GameObject {
 						loc.addLocal(model.getLocalRotation()
 								.getRotationColumn(2, tempVa).multLocal(
 										movespeed * f));
-						loc.subtractLocal(0, getHeight(), 0);
+						loc.subtractLocal(0, getHeight(f), 0);
 						model.setLocalTranslation(loc);
 					} else if (moveStatus == Globals.WALKING_BACKWARD) {
 						Vector3f tempVa = new Vector3f();
@@ -132,36 +134,133 @@ public class MovableObject extends GameObject {
 		}
 	}
 
-	private float getHeight() {
+	//BOUNDING (not good !)
+	private float getHeight(float f) {
 		Vector3f origin = model.getWorldTranslation();
-		Vector3f destination = new Vector3f(origin.x, origin.y - 20, origin.z);
+		Vector3f origin2 =(Vector3f)origin.clone();
+		//Vector3f origin2 = model.getWorldBound().getCenter();
+		//origin2.y+=80;
+		
+		//origin2.x = worldBound.x;
+		//origin2.z = worldBound.z;
+		//float midHeight = model.getWorldBound().distanceTo(origin2);
+		//System.out.println(midHeight);
+		Vector3f destination = new Vector3f(origin2.x, origin2.y - 200, origin2.z);
+		//origin.y += midHeight;
+		origin2.y+=20;
 		results.clear();
-		Ray r = new Ray(origin, destination);
+		Ray r = new Ray(origin2, destination);
 
 		results.setCheckDistance(true);
 		model.getParent().findPick(r, results);
 		// rootNode.findPick(r, results);
 		if (results.getNumber() > 0) {
+			float distance = 50;
 			System.out.println("Found: " + results.getNumber() + "results");
-
+			Vector3f loc = null;
 			for (int i = 0; i < results.getNumber(); i++) {
 				String str = findNodeName(results.getPickData(i)
 						.getTargetMesh().getParent());
-				if (!str.equals(model.getName()) && !str.equals("state rootNode")) {
+				if (!str.equals(model.getName())
+						&& !str.equals("state rootNode")
+						&& !str.equals("DynamicWorld")) {
 					System.out.println(str);
-					System.out.println(results.getPickData(i).getDistance());
+					float distance2 = results.getPickData(i).getDistance();
+					PickData pd = results.getPickData(i);
+					
+					System.out.println("stored distance: " + distance);
+					System.out.println("distance2: " + distance2);
+					if (distance2 < 800 && distance2 != 0.0f && distance2 > -800) {// &&
+																					// distance2
+																					// > 0)
+																					// { //
+						if (distance2 < distance) {
+							loc = pd.getTargetMesh().getWorldTranslation();
+							distance = distance2;
+							System.out.println("new distance: " + distance2);
+						}
+					}
+
 				}
 			}
-			// PickData pd = results.getPickData(0);// results.getNumber() - 1);
-			// if (!pd.getTargetMesh().getParent().getName()
-			// .equals("DynamicWorld")) {
-			//
-			// System.out.println(" " + pd.getDistance());
-			// }
-			return 0.0f;
+			if (distance != 50) {
+				System.out.println("huhu");
+				System.out.println("mm: "+(origin2.y-loc.y));
+			return distance-20;//origin2.y-loc.y;
+			}
+			return 10f;
 		}
 		return 0.0f;
 	}
+	
+//	private float getHeight(float f) {
+//		Vector3f origin = model.getWorldTranslation();
+//		Vector3f origin2 =(Vector3f)origin.clone();
+//		Vector3f worldBound = model.getWorldBound().getCenter();
+//		origin2.x = worldBound.x;
+//		//origin2.x = worldBound.x;
+//		origin2.z = worldBound.z;
+//		float midHeight = model.getWorldBound().distanceTo(origin2);
+//		System.out.println(midHeight);
+//		Vector3f destination = new Vector3f(origin.x, origin.y - 200, origin.z);
+//		origin.y += midHeight;
+//		results.clear();
+//		Ray r = new Ray(origin, destination);
+//
+//		results.setCheckDistance(true);
+//		model.getParent().findPick(r, results);
+//		// rootNode.findPick(r, results);
+//		if (results.getNumber() > 0) {
+//			float distance = 50;
+//			System.out.println("Found: " + results.getNumber() + "results");
+//			Vector3f loc = null;
+//			for (int i = 0; i < results.getNumber(); i++) {
+//				String str = findNodeName(results.getPickData(i)
+//						.getTargetMesh().getParent());
+//				if (!str.equals(model.getName())
+//						&& !str.equals("state rootNode")
+//						&& !str.equals("DynamicWorld")) {
+//					System.out.println(str);
+//					float distance2 = results.getPickData(i).getDistance();
+//					PickData pd = results.getPickData(i);
+//					
+//					//System.out.println("stored distance: " + distance);
+//					//System.out.println("distance2: " + distance2);
+//					if (distance2 < 800 && distance2 != 0.0f && distance2 > -800) {// &&
+//																					// distance2
+//																					// > 0)
+//																					// { //
+//						if (distance2 < distance) {
+//							loc = pd.getTargetMesh().getWorldTranslation();
+//							distance = distance2;
+//							System.out.println("new distance: " + distance2);
+//						}
+//					}
+//
+//				}
+//			}
+//			if (loc != null) {
+//				System.out.println("huhu");
+//				System.out.println("mm: "+(origin2.y-loc.y));
+//			return origin2.y-loc.y;
+//			}
+//			return 0.0f;
+//			// FALLING ? (too slow)
+////			if (distance > 20) {
+////				System.out.println("huhu");
+////				return 0;
+////			} else
+////				return distance;
+//			// PickData pd = results.getPickData(0);// results.getNumber() - 1);
+//			// if (!pd.getTargetMesh().getParent().getName()
+//			// .equals("DynamicWorld")) {
+//			//
+//			// System.out.println(" " + pd.getDistance());
+//			// }
+//
+//		}
+//		return 0.0f;
+//	}
 
 	private String findNodeName(Node node) {
 		// state rootNode

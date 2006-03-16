@@ -2,6 +2,7 @@ package de.mbws.client.state;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
@@ -11,6 +12,7 @@ import org.xml.sax.SAXException;
 import com.jme.bounding.BoundingBox;
 import com.jme.image.Image;
 import com.jme.image.Texture;
+import com.jme.input.*;
 import com.jme.input.AbsoluteMouse;
 import com.jme.input.ChaseCamera;
 import com.jme.input.InputHandler;
@@ -18,6 +20,7 @@ import com.jme.input.thirdperson.ThirdPersonMouseLook;
 import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
+import com.jme.renderer.Renderer;
 import com.jme.scene.Node;
 import com.jme.scene.Skybox;
 import com.jme.scene.Spatial;
@@ -27,6 +30,7 @@ import com.jme.scene.state.TextureState;
 import com.jme.scene.state.ZBufferState;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
+import com.jme.util.geom.Debugger;
 import com.jmex.effects.ParticleManager;
 
 import de.mbws.client.MBWSClient;
@@ -49,6 +53,8 @@ public class OutdoorGameState extends BaseGameState {
 	private DisplaySystem display;
 	private AbsoluteMouse cursor;
 	private Skybox skybox;
+	//TODO: remove that later
+	private boolean showBounds = true;
 
 	private DynamicWorld terrain;
 	private static Logger logger = Logger.getLogger(OutdoorGameState.class);
@@ -67,6 +73,7 @@ public class OutdoorGameState extends BaseGameState {
 
 		createCustomCursor();
 		buildTestBox();
+		buildTestBox2();
 		buildEnvironment();
 		buildPlayer();
 		buildCamera();
@@ -184,6 +191,12 @@ public class OutdoorGameState extends BaseGameState {
 
 	// TODO PUT THAT IN UPDATE
 	public void update(float tpf) {
+		/** If toggle_bounds is a valid command (via key B), change bounds. */
+        if (KeyBindingManager.getKeyBindingManager().isValidCommand(
+                "toggle_bounds", false)) {
+            showBounds = !showBounds;
+        }
+        
 		if (((GameDesktop) desktopNode).getDesktop().getFocusOwner() != null) {
 			playerInputHandler.setEnabled(false);
 		} else {
@@ -234,6 +247,9 @@ public class OutdoorGameState extends BaseGameState {
 		playerInputHandler = new MainGameStateHandler(null, this);
 
 		input.addToAttachedHandlers(playerInputHandler);
+		//TODO: remove testcode !
+		KeyBindingManager.getKeyBindingManager().set("toggle_bounds",
+                KeyInput.KEY_B);
 	}
 
 	private void createCustomCursor() {
@@ -281,13 +297,58 @@ public class OutdoorGameState extends BaseGameState {
 
 	private void buildTestBox() {
 		Node boxNode = new Node("Box");
-		 Box box = new Box("box", new Vector3f(), 100, 10, 100);
-		 box.setModelBound(new BoundingBox());
-		 box.updateModelBound();
-		 
+		Box box = new Box("box", new Vector3f(), 200, 10, 50);
+		box.setModelBound(new BoundingBox(new Vector3f(330,9,190 ),200, 10, 50));
+		box.updateModelBound();
+
+		TextureState ts = display.getRenderer().createTextureState();
+		URL imageLoc;
+		try {
+			imageLoc = new File("./data/images/stone.jpg").toURL();
+		
+		Texture t = TextureManager.loadTexture(imageLoc, Texture.MM_LINEAR,
+				Texture.FM_LINEAR);
+		ts.setTexture(t);
+		box.setRenderState(ts);
+		box.updateRenderState();
+		
 		boxNode.attachChild(box);
 		boxNode.getLocalTranslation().y = +4;
-				rootNode.attachChild(boxNode);
+		boxNode.getLocalTranslation().x = +230;
+		boxNode.getLocalTranslation().z = +330;
+		rootNode.attachChild(boxNode);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private void buildTestBox2() {
+		Node boxNode = new Node("Box2");
+		Box box = new Box("box2", new Vector3f(), 50, 10, 200);
+		box.setModelBound(new BoundingBox());
+		box.updateModelBound();
+		TextureState ts = display.getRenderer().createTextureState();
+		URL imageLoc;
+		try {
+			imageLoc = new File("./data/images/moss.jpg").toURL();
+		
+		Texture t = TextureManager.loadTexture(imageLoc, Texture.MM_LINEAR,
+				Texture.FM_LINEAR);
+		ts.setTexture(t);
+		box.setRenderState(ts);
+		box.updateRenderState();
+
+		boxNode.attachChild(box);
+		boxNode.getLocalTranslation().y = +6;
+		boxNode.getLocalTranslation().x = +230;
+		boxNode.getLocalTranslation().z = +330;
+		rootNode.attachChild(boxNode);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	private void createRain() {
@@ -370,6 +431,12 @@ public class OutdoorGameState extends BaseGameState {
 		// super.setActive(active);
 		this.active = active;
 
+	}
+	public void render(float tpf) {
+		Renderer r = display.getRenderer();
+		if (showBounds)
+            Debugger.drawBounds(rootNode, r, true);
+		super.render(tpf);
 	}
 
 }
