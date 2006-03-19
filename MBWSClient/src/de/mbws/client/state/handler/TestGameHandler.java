@@ -19,14 +19,13 @@ import com.jme.scene.Spatial;
 import de.mbws.client.MBWSClient;
 import de.mbws.client.controller.CharacterController;
 import de.mbws.client.controller.ClientNetworkController;
+import de.mbws.client.data.ClientGlobals;
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.common.Globals;
 import de.mbws.common.events.EventTypes;
 
 public class TestGameHandler extends ThirdPersonHandler {
 
-
-	
 	/**
 	 * Supply the node to control and the api that will handle input creation.
 	 * 
@@ -36,14 +35,13 @@ public class TestGameHandler extends ThirdPersonHandler {
 	 *            the library that will handle creation of the input.
 	 */
 	public TestGameHandler(Spatial target, Camera cam, HashMap props) {
-		super(target,cam,props);
+		super(target, cam, props);
 		player = target;
 		updateKeyBindings(null);
 
 	}
-	
-	private Spatial player;
 
+	private Spatial player;
 
 	/**
 	 * creates the keyboard object, allowing us to obtain the values of a
@@ -58,20 +56,23 @@ public class TestGameHandler extends ThirdPersonHandler {
 
 		// TODO make this cleaner later
 		keyboard.set("exit", KeyInput.KEY_ESCAPE);
-		
+
 	}
 
 	protected void setActions() {
-        addAction( new ThirdPersonForwardAction( this, 30f ), PROP_KEY_FORWARD, true );
-        addAction( new ThirdPersonBackwardAction( this, 15f ), PROP_KEY_BACKWARD, true );
-        addAction( new ThirdPersonRightAction( this, 5f ), PROP_KEY_RIGHT, true );
-        addAction( new ThirdPersonLeftAction( this, 5f ), PROP_KEY_LEFT, true );
-        addAction( new ThirdPersonStrafeRightAction( this, 5f ), PROP_KEY_STRAFERIGHT, true );
-        addAction( new ThirdPersonStrafeLeftAction( this, 5f ), PROP_KEY_STRAFELEFT, true );
-        addAction( new ExitAction(), "exit", false);
-    }
-	
-	
+		addAction(new ThirdPersonForwardAction(this, 30f), PROP_KEY_FORWARD,
+				true);
+		addAction(new ThirdPersonBackwardAction(this, 15f), PROP_KEY_BACKWARD,
+				true);
+		addAction(new ThirdPersonRightAction(this, 5f), PROP_KEY_RIGHT, true);
+		addAction(new ThirdPersonLeftAction(this, 5f), PROP_KEY_LEFT, true);
+		addAction(new ThirdPersonStrafeRightAction(this, 5f),
+				PROP_KEY_STRAFERIGHT, true);
+		addAction(new ThirdPersonStrafeLeftAction(this, 5f),
+				PROP_KEY_STRAFELEFT, true);
+		addAction(new ExitAction(), "exit", false);
+	}
+
 	public void update(float time) {
 		// //TODO: We only take care of walking at the moment
 		// 2 events ?? why ?
@@ -151,7 +152,7 @@ public class TestGameHandler extends ThirdPersonHandler {
 
 	private static class ExitAction extends InputAction {
 		public void performAction(InputActionEvent evt) {
-			MBWSClient.exit();
+			MBWSClient.exit(ClientGlobals.EXIT_NORMAL);
 		}
 	}
 

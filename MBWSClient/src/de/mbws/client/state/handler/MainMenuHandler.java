@@ -32,59 +32,67 @@ import de.mbws.common.utils.StringUtils;
  */
 
 public class MainMenuHandler extends BaseInputHandler {
-    // Mouse mouse;
+	// Mouse mouse;
 
-    public MainMenuHandler(MainMenuState myState) {
-        super(myState);
-        // setKeyBindings();
-        // setUpMouse();
-    }
+	public MainMenuHandler(MainMenuState myState) {
+		super(myState);
+		// setKeyBindings();
+		// setUpMouse();
+	}
 
-    private void setKeyBindings() {
-        KeyBindingManager.getKeyBindingManager().set("exit", KeyInput.KEY_ESCAPE);
-        addAction(new ExitAction(), "exit", false);
-    }
+	private void setKeyBindings() {
+		KeyBindingManager.getKeyBindingManager().set("exit",
+				KeyInput.KEY_ESCAPE);
+		addAction(new ExitAction(), "exit", false);
+	}
 
-    private void setUpMouse() {
-        DisplaySystem display = DisplaySystem.getDisplaySystem();
-        Mouse mouse = new AbsoluteMouse("Mouse Input", display.getWidth(), display.getHeight());
-        setMouse(mouse);
-    }
+	private void setUpMouse() {
+		DisplaySystem display = DisplaySystem.getDisplaySystem();
+		Mouse mouse = new AbsoluteMouse("Mouse Input", display.getWidth(),
+				display.getHeight());
+		setMouse(mouse);
+	}
 
-    public void login(String login, String pass) {
-        LoggingSystem.getLogger().log(Level.INFO, "trying to log in with login: " + login + " pass: " + pass);
-        AccountData accountData = new AccountData();
-        accountData.setUserName(login);
+	public void login(String login, String pass) {
+		LoggingSystem.getLogger().log(Level.INFO,
+				"trying to log in with login: " + login + " pass: " + pass);
+		AccountData accountData = new AccountData();
+		accountData.setUserName(login);
 
-        if (!MBWSClient.mbwsConfiguration.getString(ClientGlobals.PASSWORD, "").equals(pass)) {
-            try {
-                pass = StringUtils.hashAndHex(pass);
-            } catch (Exception e) {
-                // TODO: handle exception
-            }
-        }
+		if (!MBWSClient.mbwsConfiguration.getString(ClientGlobals.PASSWORD, "")
+				.equals(pass)) {
+			try {
+				pass = StringUtils.hashAndHex(pass);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
 
-        accountData.setPassword(pass);
-        AbstractGameEvent event = AccountController.getInstance().createLoginEvent(accountData, ClientPlayerData.getInstance());
-        try {
+		accountData.setPassword(pass);
+		AbstractGameEvent event = AccountController.getInstance()
+				.createLoginEvent(accountData, ClientPlayerData.getInstance());
+		try {
 
-            ClientNetworkController.getInstance().connect(MBWSClient.mbwsConfiguration.getString(ClientGlobals.ACCOUNT_SERVER_IP),
-                    MBWSClient.mbwsConfiguration.getInt(ClientGlobals.ACCOUNT_SERVER_PORT));
+			ClientNetworkController.getInstance().connect(
+					MBWSClient.mbwsConfiguration
+							.getString(ClientGlobals.ACCOUNT_SERVER_IP),
+					MBWSClient.mbwsConfiguration
+							.getInt(ClientGlobals.ACCOUNT_SERVER_PORT));
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        ClientNetworkController.getInstance().handleOutgoingEvent(event);
-    }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		ClientNetworkController.getInstance().handleOutgoingEvent(event);
+	}
 
-    private static class ExitAction extends InputAction {
-        public void performAction(InputActionEvent evt) {
-            MBWSClient.exit();
-        }
-    }
+	private static class ExitAction extends InputAction {
+		public void performAction(InputActionEvent evt) {
+			MBWSClient.exit(ClientGlobals.EXIT_NORMAL);
+		}
+	}
 
-    public MainMenuState getState() {
-        return (MainMenuState) state;
-    }
+	public MainMenuState getState() {
+		return (MainMenuState) state;
+	}
 
 }

@@ -177,7 +177,8 @@ public class LoginPanel extends JPanel {
 							getInputHandler()
 									.getState()
 									.showComponentCenteredOnScreenOnLayer(
-											new OptionsPanel(getInputHandler()),JLayeredPane.MODAL_LAYER);
+											new OptionsPanel(getInputHandler()),
+											10);
 							// TODO
 							// Auto-generated
 							// Event stub
@@ -204,7 +205,7 @@ public class LoginPanel extends JPanel {
 			exitButton.setContentAreaFilled(false);
 			exitButton.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
-					MBWSClient.exit();
+					MBWSClient.exit(ClientGlobals.EXIT_NORMAL);
 				}
 			});
 		}

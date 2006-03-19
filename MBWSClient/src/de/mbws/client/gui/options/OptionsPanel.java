@@ -32,7 +32,6 @@ public class OptionsPanel extends JPanel {
 
 	private static Logger logger = Logger.getLogger(OptionsPanel.class);
 
-	
 	private InputHandler inputHandler;
 
 	private DisplayMode[] modes = new DisplayMode[0];
@@ -46,7 +45,7 @@ public class OptionsPanel extends JPanel {
 	private JPasswordField accountPass = new JPasswordField();
 	private JCheckBox fullScreen = new JCheckBox("Fullscreen(language!)");
 	private JComboBox resolutionCb;
-	
+
 	public JScrollPane pane;
 
 	private boolean optionsHaveChanged = false;
@@ -189,12 +188,13 @@ public class OptionsPanel extends JPanel {
 		if (optionsHaveChanged) {
 			PropertiesConfiguration pc = (PropertiesConfiguration) MBWSClient.mbwsConfiguration;
 			pc.setProperty(ClientGlobals.LOGIN, accountName.getText());
-            try {
-                pc.setProperty(ClientGlobals.PASSWORD, StringUtils.hashAndHex(accountPass.getPassword()) );    
-            } catch (NoSuchAlgorithmException e) {
-                logger.error("Error during building hash for password", e);
-                //should alert the user somehow
-            }
+			try {
+				pc.setProperty(ClientGlobals.PASSWORD, StringUtils
+						.hashAndHex(accountPass.getPassword()));
+			} catch (NoSuchAlgorithmException e) {
+				logger.error("Error during building hash for password", e);
+				// should alert the user somehow
+			}
 			pc.setProperty(ClientGlobals.OPTIONS_ENABLE_SOUND,
 					enableSoundEffects.isSelected() ? "true" : "false");
 			pc.setProperty(ClientGlobals.OPTIONS_ENABLE_MUSIC, enableMusic
@@ -220,7 +220,7 @@ public class OptionsPanel extends JPanel {
 			}
 			if (screenOptionsHaveChanged) {
 				// TODO: Do a reboot
-				MBWSClient.exit();
+				MBWSClient.exit(ClientGlobals.EXIT_WITH_REBOOT);
 			}
 		}
 		getInputHandler().getState()
@@ -240,10 +240,15 @@ public class OptionsPanel extends JPanel {
 			info[i] = getResolutionEntry(modes[i]);
 		}
 		resolutionCb = new JComboBox(info);
-		
+		resolutionCb.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				optionsHaveChanged = true;
+				screenOptionsHaveChanged = true;
+			}
+		});
 		resolutionCb.setSelectedIndex(getSelectedResolution());
-		
-		//resolutionCb.setPopupVisible(true);
+
+		// resolutionCb.setPopupVisible(true);
 		JPanel p = getDefaultPanel();
 		p.add(new JLabel("Resolution(lang)"));
 		p.add("tab", resolutionCb);
@@ -251,33 +256,34 @@ public class OptionsPanel extends JPanel {
 		return p;
 	}
 
-//	private JPanel getVideoPanel() {
-//		String[] info = new String[modes.length];
-//		for (int i = 0; i < modes.length; i++) {
-//			info[i] = getResolutionEntry(modes[i]);
-//		}
-//		resolution = new JList(info);
-//		pane = new JScrollPane(resolution);
-//		resolution.setSelectedIndex(getSelectedResolution());
-//		resolution.addListSelectionListener(new ListSelectionListener() {
-//			public void valueChanged(ListSelectionEvent e) {
-//				screenOptionsHaveChanged = true;
-//				optionsHaveChanged = true;
-//			}
-//		});
-//		//TODO:See if we can get rid of that
-//		 // note: the listener added here is only a fix for JDK1.4 - when your app is Java5 you don't need that one
-//		pane.getViewport().addChangeListener( new ChangeListener() {
-//            public void stateChanged( ChangeEvent e ) {
-//            	pane.getViewport().repaint();
-//            }
-//        } );
-//		JPanel p = getDefaultPanel();
-//		p.add(new JLabel("Resolution(lang)"));
-//		p.add("tab", pane);
-//		p.add("br", fullScreen);
-//		return p;
-//	}
+	// private JPanel getVideoPanel() {
+	// String[] info = new String[modes.length];
+	// for (int i = 0; i < modes.length; i++) {
+	// info[i] = getResolutionEntry(modes[i]);
+	// }
+	// resolution = new JList(info);
+	// pane = new JScrollPane(resolution);
+	// resolution.setSelectedIndex(getSelectedResolution());
+	// resolution.addListSelectionListener(new ListSelectionListener() {
+	// public void valueChanged(ListSelectionEvent e) {
+	// screenOptionsHaveChanged = true;
+	// optionsHaveChanged = true;
+	// }
+	// });
+	// //TODO:See if we can get rid of that
+	// // note: the listener added here is only a fix for JDK1.4 - when your app
+	// is Java5 you don't need that one
+	// pane.getViewport().addChangeListener( new ChangeListener() {
+	// public void stateChanged( ChangeEvent e ) {
+	// pane.getViewport().repaint();
+	// }
+	// } );
+	// JPanel p = getDefaultPanel();
+	// p.add(new JLabel("Resolution(lang)"));
+	// p.add("tab", pane);
+	// p.add("br", fullScreen);
+	// return p;
+	// }
 
 	private int getSelectedResolution() {
 		int width = MBWSClient.mbwsConfiguration.getInt(ClientGlobals.WIDTH,

@@ -50,6 +50,9 @@ public class ClientGlobals {
 	public static final String FREQUENCY="FREQUENCY";
 	public static final String FULLSCREEN = "FULLSCREEN";
     
+	
+	public static final int EXIT_NORMAL = 0;
+	public static final int EXIT_WITH_REBOOT =99;
     
 
 }

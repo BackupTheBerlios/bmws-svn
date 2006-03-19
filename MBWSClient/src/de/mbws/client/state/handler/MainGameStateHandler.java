@@ -15,6 +15,7 @@ import com.jme.scene.Spatial;
 import de.mbws.client.MBWSClient;
 import de.mbws.client.controller.CharacterController;
 import de.mbws.client.controller.ClientNetworkController;
+import de.mbws.client.data.ClientGlobals;
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.gui.ingame.GameDesktop;
 import de.mbws.client.state.BaseGameState;
@@ -192,7 +193,7 @@ public class MainGameStateHandler extends BaseInputHandler {
 
 	private static class ExitAction extends InputAction {
 		public void performAction(InputActionEvent evt) {
-			MBWSClient.exit();
+			MBWSClient.exit(ClientGlobals.EXIT_NORMAL);
 		}
 	}
 	

@@ -52,6 +52,7 @@ public class MBWSClient extends BaseGame {
 
 	/** Simply an easy way to get at timer.getTimePerFrame(). */
 	private float timePerFrame;
+	private static int exitCode = 0;
 
 	public static final String CLIENT = "MBWSClient";
 	public static ValueMapper languageResources;
@@ -212,7 +213,8 @@ public class MBWSClient extends BaseGame {
 	/**
 	 * Static method to finish this application.
 	 */
-	public static void exit() {
+	public static void exit(int exitCode) {
+		MBWSClient.exitCode = exitCode;
 		instance.finish();
 	}
 
@@ -227,7 +229,7 @@ public class MBWSClient extends BaseGame {
 	@Override
 	protected void quit() {
 		super.quit();
-		System.exit(0);
+		System.exit(exitCode);
 	}
 
 }
