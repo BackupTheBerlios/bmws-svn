@@ -34,16 +34,11 @@ import com.jmex.terrain.TerrainBlock;
 public class DynamicWorld extends Node {
 
 	private static Logger logger = Logger.getLogger(DynamicWorld.class);
-
-	int sectionRows;
-	int sectionColumns;
-	float spatialScale = 12;
-	float heightScale = 0.5f;
-	int sectionResolution = 65;
-	float sectionWidth = spatialScale * (sectionResolution - 1);
-	float visibilityRadius = 3f * sectionWidth;
-	float prefetchRadius = 4.5f * sectionWidth;
-	float unloadRadius = 4.7f * sectionWidth;
+	
+	WorldDescription worldDescr;
+	float visibilityRadius;
+	float prefetchRadius;
+	float unloadRadius;
 	float visibilityRadius2;
 	float unloadRadius2;
 	float prefetchRadius2;
@@ -70,15 +65,16 @@ public class DynamicWorld extends Node {
 	public void init(Node root, DisplaySystem display, String pathToWorldDescription, String pathToModels)
 			throws SAXException, IOException {
 		this.display = display;
-		this.loader = new ObjectLoader(this);
+		loader = new ObjectLoader();
 		loader.setObjectPath(pathToModels);
-		loader.setWorldPath(pathToWorldDescription);
 		sectionController = new SectionController(loader, pathToWorldDescription);
-		loader.loadWorldDescription(pathToWorldDescription + ".wld");
+		worldDescr = loader.loadWorldDescription(pathToWorldDescription);
+		visibilityRadius = 3f * worldDescr.getSectionWidth();
+		prefetchRadius = 4.5f * worldDescr.getSectionWidth();
+		unloadRadius = 4.7f * worldDescr.getSectionWidth();
 		visibilityRadius2 = visibilityRadius * visibilityRadius;
 		prefetchRadius2 = prefetchRadius * prefetchRadius;
 		unloadRadius2 = unloadRadius * unloadRadius;
-		sectionWidth = spatialScale * (sectionResolution - 1);
 		createSky(root, display);
 	}
 
@@ -120,11 +116,12 @@ public class DynamicWorld extends Node {
 	}
 
 	private void preloadAndAddSections(Vector3f position) {
+		float sectionWidth = worldDescr.getSectionWidth();
 		int xstart = Math.max((int) ((position.x - prefetchRadius) / sectionWidth), 0);
 		int xend = Math.min((int) ((position.x + prefetchRadius) / sectionWidth),
-				sectionColumns - 1);
+				worldDescr.sectionColumns - 1);
 		int ystart = Math.max((int) ((position.z - prefetchRadius) / sectionWidth), 0);
-		int yend = Math.min((int) ((position.z + prefetchRadius) / sectionWidth), sectionRows - 1);
+		int yend = Math.min((int) ((position.z + prefetchRadius) / sectionWidth), worldDescr.sectionRows - 1);
 		for (int col = xstart; col < xend; col++) {
 			for (int row = ystart; row < yend; row++) {
 				// preloadSection
@@ -160,6 +157,7 @@ public class DynamicWorld extends Node {
 	}
 
 	private void removeInvisibleSections(Vector3f position) {
+		float sectionWidth = worldDescr.getSectionWidth();
 		Iterator<SectionController.SectionNode> it = visibleSections.iterator();
 		while (it.hasNext()) {
 			SectionController.SectionNode node = it.next();
@@ -178,6 +176,7 @@ public class DynamicWorld extends Node {
 	}
 
 	private void unloadDistantSections(Vector3f position) {
+		float sectionWidth = worldDescr.getSectionWidth();
 		Iterator<SectionController.SectionNode> it = sectionController.sectionIterator();
 		while (it.hasNext()) {
 			SectionController.SectionNode node = it.next();
@@ -219,6 +218,7 @@ public class DynamicWorld extends Node {
 	}
 
 	private TerrainBlock getTerrainAt(float x, float z) {
+		float sectionWidth = worldDescr.getSectionWidth();
 		return sectionController.getSection((int) (x / sectionWidth), (int) (z / sectionWidth))
 				.getTerrainBlock();
 	}
@@ -231,6 +231,7 @@ public class DynamicWorld extends Node {
 	 * @return
 	 */
 	public float getHeight(Vector3f location) {
+		float sectionWidth = worldDescr.getSectionWidth();
 		try {
 			float ret = getTerrainAt(location.x, location.z).getHeight(location.x % sectionWidth,
 					location.z % sectionWidth);
