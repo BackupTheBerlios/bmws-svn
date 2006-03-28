@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,43 +20,52 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.jme.bounding.BoundingBox;
+import com.jme.image.Image;
 import com.jme.image.Texture;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 import com.jme.scene.state.TextureState;
+import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 import com.jmex.model.XMLparser.JmeBinaryReader;
 import com.jmex.terrain.TerrainBlock;
 
 public class ObjectLoader {
-	private DynamicWorld dynamicWorld;
-	private String worldPath;
-	private String objectPath;
 	private static Logger logger = Logger.getLogger(ObjectLoader.class);
 
+	private String worldPath;
+	private String objectPath;
+	private WorldDescription worldDescription;
+
 	private class ApplyTextureTask implements Runnable {
-		private String texturePath;
+		private Image textureImage;
 		private Spatial spatial;
 
-		public ApplyTextureTask(String texturePath, Spatial applyToObject) {
-			this.texturePath = texturePath;
+		public ApplyTextureTask(Image texturePath, Spatial applyToObject) {
+			this.textureImage = texturePath;
 			this.spatial = applyToObject;
 		}
 
 		public void run() {
 			if (spatial instanceof Node) {
 				Node node = (Node) spatial;
-				Iterator it = ((Node)node.getChild(0)).getChildren().iterator();
+				Iterator it = ((Node) node.getChild(0)).getChildren().iterator();
 				while (it.hasNext()) {
 					Spatial spat = (Spatial) it.next();
-					logger.debug("Texture for child: "+spat.getName());
+					logger.debug("Texture for child: " + spat.getName());
 				}
 			}
-			TextureState ts = dynamicWorld.display.getRenderer().createTextureState();
-			logger.debug("load texture "+texturePath);
-			Texture texture = TextureManager.loadTexture(texturePath, Texture.MM_LINEAR,
-					Texture.FM_LINEAR);
+			TextureState ts = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
+			logger.debug("apply texture " + textureImage);
+			Texture texture = new Texture(1.0f);
+			texture.setCorrection(Texture.CM_PERSPECTIVE);
+			texture.setFilter(Texture.FM_LINEAR);
+			texture.setImage(textureImage);
+			texture.setMipmapState(Texture.MM_LINEAR);
+
+			// Texture texture = TextureManager.loadTexture(textureImage, Texture.MM_LINEAR,
+			// Texture.FM_LINEAR, false);
 			texture.setWrap(Texture.WM_WRAP_S_WRAP_T);
 			// texture.setScale(new Vector3f(20,20,20));
 			ts.setTexture(texture);
@@ -64,44 +74,27 @@ public class ObjectLoader {
 			// Texture.FM_LINEAR));
 			logger.debug("Texture loaded");
 			spatial.setRenderState(ts);
-			logger.debug("Successfully applied texture "+texturePath);
-		}
-	}
-	
-	private class CreateTextureStateTask implements Runnable {
-		TextureState textureState;
-		public void run() {
-			textureState = dynamicWorld.display.getRenderer().createTextureState();
-		}
-		public TextureState getTextureState() {
-			return textureState;
+			logger.debug("Successfully applied texture " + textureImage);
 		}
 	}
 
-	public TextureState createSyncTextureState() {
-		CreateTextureStateTask task = new CreateTextureStateTask();
-		SyncTaskQueue.getInstance().executeSynchronously(task);
-		return task.getTextureState();
-	}
-
-	ObjectLoader(DynamicWorld dynamicTerrain) {
-		this.dynamicWorld = dynamicTerrain;
-	}
-
-	public void loadWorldDescription(String path) throws SAXException, IOException {
+	public WorldDescription loadWorldDescription(String worldPath) throws SAXException, IOException {
+		worldDescription = new WorldDescription();
+		this.worldPath = worldPath;
 		// TODO add a Schema or DTD validation
 		try {
 			Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
-					new File(path));
+					new File(worldPath + ".wld"));
 			NamedNodeMap attributes = document.getFirstChild().getAttributes();
-			dynamicWorld.sectionColumns = readIntAttribute(attributes, "columns");
-			dynamicWorld.sectionRows = readIntAttribute(attributes, "rows");
-			dynamicWorld.sectionResolution = readIntAttribute(attributes, "resolution");
+			worldDescription.sectionColumns = readIntAttribute(attributes, "columns");
+			worldDescription.sectionRows = readIntAttribute(attributes, "rows");
+			worldDescription.sectionResolution = readIntAttribute(attributes, "resolution");
 			// spatial size, spatial scale...
 		}
 		catch (ParserConfigurationException e) {
 			logger.error("loadWorldDescription() " + e);
 		}
+		return worldDescription;
 	}
 
 	public List<ObjectDescription> loadSectionObjectList(String path) {
@@ -131,8 +124,7 @@ public class ObjectLoader {
 	public Node loadObject(String objectName) {
 		Node objectNode = null;
 		try {
-			FileInputStream fi = new FileInputStream(new File(objectPath + "/model/"
-					+ objectName));
+			FileInputStream fi = new FileInputStream(new File(objectPath + "/model/" + objectName));
 			String texturePath = objectPath + "/textures/" + objectName;
 			texturePath = texturePath.replaceFirst(".jme", ".jpg");
 			JmeBinaryReader jbr = new JmeBinaryReader();
@@ -140,8 +132,9 @@ public class ObjectLoader {
 			jbr.setProperty("bound", "box"); // Doesnt work ?
 			long time = System.currentTimeMillis();
 			objectNode = jbr.loadBinaryFormat(fi);
+			Image textureImage = TextureManager.loadImage(new URL("file:"+texturePath), true);
 			SyncTaskQueue.getInstance().executeSynchronously(
-					new ApplyTextureTask(texturePath, objectNode));
+					new ApplyTextureTask(textureImage, objectNode));
 			logger.info("Time to convert from .jme to SceneGraph:"
 					+ (System.currentTimeMillis() - time));
 		}
@@ -154,12 +147,12 @@ public class ObjectLoader {
 	public TerrainBlock loadTerrainBlock(int column, int row) throws IOException {
 		String sectionPath = worldPath + "_" + column + "_" + row;
 		final int[] heightMap = readIntArrayFromFile(column, row, sectionPath + ".ter");
-		Vector3f scale = new Vector3f(dynamicWorld.spatialScale, dynamicWorld.heightScale,
-				dynamicWorld.spatialScale);
-		Vector3f origin = new Vector3f(column * dynamicWorld.sectionWidth, 0, row
-				* dynamicWorld.sectionWidth);
+		Vector3f scale = new Vector3f(worldDescription.spatialScale, worldDescription.heightScale,
+				worldDescription.spatialScale);
+		Vector3f origin = new Vector3f(column * worldDescription.getSectionWidth(), 0, row
+				* worldDescription.getSectionWidth());
 		TerrainBlock terrainBlock = new TerrainBlock("terrain(" + column + ", " + row + ")",
-				dynamicWorld.sectionResolution, scale, heightMap, origin, false);
+				worldDescription.sectionResolution, scale, heightMap, origin, false);
 
 		// TODO use the commented line instead
 		// AbstractHeightMap hm = new AbstractHeightMap() {
@@ -178,9 +171,11 @@ public class ObjectLoader {
 		// TextureManager.loadTexture(ptg.getImageIcon().getImage(),Texture.MM_LINEAR,
 		// Texture.FM_LINEAR, true);
 		//
+		Image textureImage = TextureManager.loadImage(new URL(
+				"file:../MBWSClient/data/images/grassb.png"), false);
 
-		SyncTaskQueue.getInstance().enqueue("loadSectionTex" + column + "_" + row,
-				new ApplyTextureTask(worldPath+"_0_0.png", terrainBlock));
+		SyncTaskQueue.getInstance().enqueue("applySectionTex" + column + "_" + row,
+				new ApplyTextureTask(textureImage, terrainBlock));
 		terrainBlock.setModelBound(new BoundingBox());
 		terrainBlock.updateModelBound();
 		return terrainBlock;
@@ -188,7 +183,7 @@ public class ObjectLoader {
 
 	private int[] readIntArrayFromFile(int column, int row, String path)
 			throws FileNotFoundException, IOException {
-		int terrainSize = dynamicWorld.sectionResolution * dynamicWorld.sectionResolution;
+		int terrainSize = worldDescription.sectionResolution * worldDescription.sectionResolution;
 		byte[] bytes = new byte[terrainSize * 4];
 		FileInputStream fis = new FileInputStream(path);
 		int nr = 0;
