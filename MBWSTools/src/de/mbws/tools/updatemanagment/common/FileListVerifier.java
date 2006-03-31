@@ -1,4 +1,4 @@
-package de.mbws.tools.updatemanagment;
+package de.mbws.tools.updatemanagment.common;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -38,6 +38,16 @@ public class FileListVerifier {
 		assembleListToDownload();
 	}
 
+	public FileListVerifier(String theRootPath, File theServerFile) {
+		rootPath = theRootPath;
+
+		assembleClientDocument(rootPath);
+
+		readInFileList(theServerFile);
+		assembleListToDelete();
+		assembleListToDownload();
+	}
+
 	private void assembleClientDocument(String rootPath2) {
 		FileListAssembler fla = new FileListAssembler(rootPath, true);
 		SAXBuilder builder = new SAXBuilder();
@@ -58,11 +68,22 @@ public class FileListVerifier {
 			FileEntry fe = new FileEntry(e.getAttributeValue("name"), Long
 					.parseLong(e.getAttributeValue("size")), Long.parseLong(e
 					.getAttributeValue("checksum")));
-			File f = new File(rootPath + fe.getFileName());
-			if (f.exists() && f.length() == fe.getSize()
-					&& fe.getChecksum() == assembleCheckSumForFile(f)) {
-				continue;
+			String fileString = rootPath + fe.getFileName();
+			// if (f.exists()&& f.length() == fe.getSize()
+			// && fe.getChecksum() == assembleCheckSumForFile(f)) {
+			// continue;
+			// }
+			if (File.separator.equals("\\")) {
+				fileString = fileString.replace("/", File.separator);
+			} else {
+				fileString = fileString.replace("\\", File.separator);
 			}
+			File f = new File(fileString);
+			if (f.exists())
+				if (f.length() == fe.getSize())
+					if (fe.getChecksum() == assembleCheckSumForFile(f))
+						continue;
+
 			filesToDownload.add(fe.getFileName());
 		}
 	}
@@ -117,10 +138,21 @@ public class FileListVerifier {
 	}
 
 	// TODO: change that to a bytearray after we got the file from the server !
+	private void readInFileList(File theClientFile) {
+		SAXBuilder builder = new SAXBuilder();
+		try {
+			serverDocument = builder.build(theClientFile);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	// TODO: change that to a bytearray after we got the file from the server !
 	private void readInFileList(String theClientFile) {
 		SAXBuilder builder = new SAXBuilder();
 		try {
-			serverDocument = builder.build(new File(theClientFile));
+			serverDocument = builder.build(new StringReader(theClientFile));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -150,5 +182,13 @@ public class FileListVerifier {
 	private void start() {
 		// TODO Auto-generated method stub
 
+	}
+
+	public ArrayList<String> getFilesToDelete() {
+		return filesToDelete;
+	}
+
+	public ArrayList<String> getFilesToDownload() {
+		return filesToDownload;
 	}
 }

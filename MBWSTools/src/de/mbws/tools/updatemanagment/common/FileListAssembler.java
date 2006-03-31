@@ -1,4 +1,4 @@
-package de.mbws.tools.updatemanagment;
+package de.mbws.tools.updatemanagment.common;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -64,6 +64,11 @@ public class FileListAssembler {
 	public String getFileList() {
 		scanFiles(rootDirToScan);
 		return toString();
+	}
+	
+	public FileEntry[] getFileEntries() {
+		scanFiles(rootDirToScan);
+		return asArray();
 	}
 
 	private void scanFiles(String pathToScan) {
@@ -142,4 +147,15 @@ public class FileListAssembler {
 		return stringBuffer.toString();
 	}
 
+	public FileEntry[] asArray() {
+		FileEntry[] fe = new FileEntry[allFiles.size()];
+		Set allKeys = allFiles.keySet();
+		Iterator iter = allKeys.iterator();
+		int i = 0;
+		while (iter.hasNext()) {
+			String key = (String) iter.next();
+			fe[i] = (FileEntry) allFiles.get(key);
+		}
+		return fe;
+	}
 }

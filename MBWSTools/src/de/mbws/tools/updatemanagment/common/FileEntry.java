@@ -1,4 +1,4 @@
-package de.mbws.tools.updatemanagment;
+package de.mbws.tools.updatemanagment.common;
 
 import java.io.File;
 import java.io.FileInputStream;
