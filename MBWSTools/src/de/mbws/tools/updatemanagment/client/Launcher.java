@@ -8,7 +8,6 @@ import java.awt.event.KeyListener;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.ListResourceBundle;
@@ -32,13 +31,11 @@ public class Launcher extends JFrame {
 
 	private ListResourceBundle resourceBundle;
 	private Properties properties;
-	// private Properties languageProperties;
 	private JButton playBtn;
 	private ProgressPanel progressPanel;
 	private static String baseURL = "localhost";
 	private static int basePort = 8080;
 	private SocketChannel channel;
-	private ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
 	private HttpClient client;
 
 	public Launcher() throws HeadlessException {
@@ -50,7 +47,7 @@ public class Launcher extends JFrame {
 		System
 				.setProperty(
 						"org.apache.commons.logging.simplelog.log.org.apache.commons.httpclient",
-						"debug");
+						"error");
 		BasicConfigurator.configure();
 		PropertyConfigurator.configure("log4j.properties");
 		client = new HttpClient();
@@ -75,7 +72,8 @@ public class Launcher extends JFrame {
 					(Toolkit.getDefaultToolkit().getScreenSize().height - sizeX) / 2);
 			setSize(new Dimension(sizeX, sizeY));
 			setVisible(true);
-			startUpdate(properties.getProperty("GAME_DIR"), distributionFiles);
+			String rootPath = properties.getProperty("GAME_DIR");
+			startUpdate(rootPath, distributionFiles);
 			disconnect();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
@@ -109,7 +107,7 @@ public class Launcher extends JFrame {
 			progressPanel.setTotalNumberOfFiles(filesToDownload.size());
 			for (int i = 0; i < filesToDownload.size(); i++) {
 				try {
-					getFile(filesToDownload.get(i));
+					getFile(rootPath, filesToDownload.get(i));
 				} catch (IOException e) {
 					logger.error("URL Error: ", e);
 					progressPanel.setVisible(false);
@@ -123,34 +121,25 @@ public class Launcher extends JFrame {
 		// if (filesToDelete != null && filesToDelete.size() != 0) {
 		// deleteFile(files)
 		// }
-
+		progressPanel.finished();
 		playBtn.setEnabled(true);
 	}
 
 	private JScrollPane getNewsPanel() throws IOException {
-		// JScrollPane p = new JScrollPane();
-		HttpMethod method = new GetMethod("http://www.codeboje.de/mbws");
-		logger.info("Status Code for GET Request:" + client.executeMethod(method));
-		String response = method.getResponseBodyAsString();
+		JEditorPane je = new JEditorPane(new URL(
+				"http://www.dpunkt.de/java/Referenz/Das_Paket_javax.swing/80.html"));// http://www.codeboje.de/mbws"));
 
-		JEditorPane je = new JEditorPane(new URL("http://www.dpunkt.de/java/Referenz/Das_Paket_javax.swing/80.html"));//http://www.codeboje.de/mbws"));
-		
-		// p.setLayout(new GridBagLayout());
-		// GridBagConstraints gbc = new GridBagConstraints();
-		// Insets i = new Insets(2, 2, 2, 2);
-		// gbc.insets = i;
-		// gbc.gridx = 0;
-		// gbc.gridy = 0;
-		// gbc.fill = GridBagConstraints.HORIZONTAL;
+		je.setEditable(false);
 		JScrollPane p = new JScrollPane(je);
-	p.setPreferredSize(new Dimension(780,400));
-		// p.add(je, gbc);
+		p.setPreferredSize(new Dimension(780, 400));
+
 		return p;
 	}
 
-	private void getFile(String fileToDownload) throws IOException {
+	private void getFile(String rootPath, String fileToDownload)
+			throws IOException {
 
-		String fileString = "d:/test/" + fileToDownload;
+		String fileString = rootPath + fileToDownload;
 		if (File.separator.equals("\\")) {
 			fileString = fileString.replace("/", File.separator);
 		} else {
@@ -162,7 +151,9 @@ public class Launcher extends JFrame {
 
 		HttpMethod method = new GetMethod("http://" + baseURL + ":" + basePort
 				+ "/" + fileToDownload);
-		logger.info("Status Code for GET Request:" + client.executeMethod(method));
+		logger.info("Status Code for GET Request " + "http://" + baseURL + ":"
+				+ basePort + "/" + fileToDownload + " : "
+				+ client.executeMethod(method));
 		progressPanel.setCurrentFile(fileToDownload);
 		InputStream input = method.getResponseBodyAsStream();
 		File file = new File(fileString);
@@ -209,12 +200,13 @@ public class Launcher extends JFrame {
 			InputStream in = new FileInputStream(f);
 			properties.load(in);
 		} else {
-			logger
-					.info("didnt find config file, creating one and installing game anew....");
-			f.createNewFile();
+			throw new IOException("Fatal ERROR: Propertyfile not found");
+		}
+		logger.info("loaded config file, checking for game path....");
+		if (properties.getProperty("GAME_DIR") == null) {
+			logger.info("no game path found, ergo new install....");
 			showStorageLocationDialog(f);
 		}
-
 	}
 
 	/**
@@ -228,7 +220,7 @@ public class Launcher extends JFrame {
 
 		logger.info("getting filelist from server");
 		// Create a URL for the desired page
-		URL url = new URL("http://localhost:8080/files.xml");
+		URL url = new URL(properties.getProperty("FILELIST_LOCATION"));
 
 		// Read all the text returned by the server
 		BufferedReader in = new BufferedReader(new InputStreamReader(url
@@ -258,6 +250,9 @@ public class Launcher extends JFrame {
 		success = dir.mkdirs();
 		while (!success) {
 			logger.info("Failed to Create the directory");
+			JOptionPane.showMessageDialog(this, resourceBundle
+					.getString("FAILED_CREATE_DIRECTORY"), resourceBundle
+					.getString("ERROR"), JOptionPane.INFORMATION_MESSAGE);
 			df.setVisible(true);
 			dir = new File(df.getDirectory());
 			logger.info("new selected dir: " + df.getDirectory());
@@ -285,8 +280,24 @@ public class Launcher extends JFrame {
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		p.setLayout(new GridBagLayout());
 		playBtn = new JButton(resourceBundle.getString("PLAY"));
+		playBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Process p = Runtime.getRuntime().exec(
+							properties.getProperty("EXEC_COMMAND"));
+					System.exit(0);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 		playBtn.setEnabled(false);
 		JButton exit = new JButton(resourceBundle.getString("QUIT"));
+		exit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
 		p.add(playBtn, gbc);
 		gbc.gridx += 1;
 		p.add(exit, gbc);
@@ -323,8 +334,6 @@ public class Launcher extends JFrame {
 			JPanel p = new JPanel(new GridBagLayout());
 			GridBagConstraints gbc = new GridBagConstraints();
 			gbc.insets = new Insets(1, 2, 1, 2);
-			// gbc.weightx = 1.0;
-			// gbc.gridwidth = 1;
 			gbc.gridx = 0;
 			gbc.gridy = 0;
 			gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -336,24 +345,19 @@ public class Launcher extends JFrame {
 					if (e.getKeyChar() == KeyEvent.VK_ENTER) {
 						actionPerformed(null);
 					} else
-						System.out.println(e.getKeyCode());
+						System.out.println(e.getKeyChar());
 				}
 
 				public void keyPressed(KeyEvent e) {
-					// TODO Auto-generated method stub
-
 				}
 
 				public void keyReleased(KeyEvent e) {
-					// TODO Auto-generated method stub
-
 				}
 
 			});
 			gbc.gridwidth = 1;
 			gbc.gridy += 1;
 			p.add(dirLb, gbc);
-			// gbc.weightx = 1.0;
 			gbc.gridwidth = 4;
 			gbc.gridx += 1;
 			p.add(dirTf, gbc);
@@ -377,16 +381,7 @@ public class Launcher extends JFrame {
 			gbc.fill = GridBagConstraints.HORIZONTAL;
 			JButton okBtn = new JButton("OK");
 			okBtn.addActionListener(this);
-			okBtn.setEnabled(false);
-			// new ActionListener() {
-			// public void actionPerformed(ActionEvent event) {
-			// if (dirTf.getText() != null
-			// && !dirTf.getText().trim().equals("")) {
-			// dir = dirTf.getText().trim();
-			// setVisible(false);
-			// }
-			// }
-			// });
+			okBtn.setEnabled(true);
 			// okBtn.requestFocus();
 			p.add(okBtn, gbc);
 			return p;
@@ -395,6 +390,14 @@ public class Launcher extends JFrame {
 		public void actionPerformed(ActionEvent event) {
 			if (dirTf.getText() != null && !dirTf.getText().trim().equals("")) {
 				dir = dirTf.getText().trim();
+				if (File.separator.equals("\\")) {
+					dir = dir.replace("/", File.separator);
+				} else {
+					dir = dir.replace("\\", File.separator);
+				}
+				if (!dir.endsWith(File.separator)) {
+					dir += File.separator;
+				}
 				setVisible(false);
 			}
 		}

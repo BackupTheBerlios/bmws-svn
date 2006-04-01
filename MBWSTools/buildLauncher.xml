@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<project name="MBWS" default="dist" basedir=".">
+
+
+	<property name="base.tools.dir" value="../MBWSTools" />
+	<property name="tools.lib.dir" value="${base.tools.dir}/lib" />
+	<property name="build.tools-src.dir" value="${base.tools.dir}/src" />
+
+
+	<property name="base.common.dir" value="../MBWSCommons" />
+	<property name="common.lib.dir" value="${base.common.dir}/lib" />
+
+	<property name="dist" value="${base.tools.dir}/dist" />
+	<property name="jar" value="${dist}/Launcher.jar" />
+	<!--<property name="obfjar"         value="${dist}/mbws-client_obf.jar"/> -->
+	<!--<property name="name" value="de.mbws.common.data.generated" />
+   -->
+	<path id="lib.class.path">
+		<pathelement path="${basedir}" />
+		<fileset dir="${tools.lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+		<!--<fileset dir="${common.lib.dir}">
+					<include name="*.jar" />
+				</fileset>-->
+		<fileset dir="${dist}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<target name="prepare">
+		<delete dir="${basedir}/temp" />
+		<mkdir dir="${basedir}/temp" />
+		<mkdir dir="${basedir}/temp/tools-bin" />
+		<mkdir dir="${basedir}/temp/tools-src" />
+		<delete dir="${dist}" />
+		<mkdir dir="${dist}" />
+		<mkdir dir="${dist}/lib" />
+	</target>
+
+
+
+	<target name="buildLauncher" depends="prepare">
+		<copy todir="temp/tools-src">
+			<fileset dir="${build.tools-src.dir}" includes="de/mbws/tools/upd*/c*/*.*" />
+		</copy>
+		<javac srcdir="temp/tools-src" classpathref="lib.class.path" destdir="temp/tools-bin" source="1.5" />
+		<copy todir="temp/tools-bin">
+			<fileset dir="${build.tools-src.dir}" includes="**/*.xml" />
+		</copy>
+		<copy todir="${dist}/lib">
+					<fileset dir="${tools.lib.dir}" />
+				</copy>
+		<pathconvert property="jarclasspathlibs" pathsep=" " dirsep="/">
+			<path>
+				<fileset dir="${dist}/lib">
+					<include name="*.jar" />
+				</fileset>
+			</path>
+			<mapper type="regexp" from=".*(lib.*)" to="\1" />
+		</pathconvert>
+		<!--<pathconvert property="jarclasspathrelease" pathsep=" " dirsep="/">
+			<path>
+				<fileset dir="${jars}">
+					<include name="*.jar" />
+					<exclude name="jmetest.jar" />
+				</fileset>
+			</path>
+			<mapper type="regexp" from=".*target.(.*)" to="\1" />
+		</pathconvert>-->
+		<echo>${jarclasspathlibs} </echo>
+<!--		${jarclasspathrelease}-->
+
+		<jar destfile="${dist}/Launcher.jar" basedir="temp/tools-bin">
+			<manifest>
+				<attribute name="Implementation-Title" value="MBWS Launcher" />
+				<attribute name="Implementation-Vendor" value="SMD Team" />
+				<attribute name="Version" value="0.1" />
+				<attribute name="Class-Path" value="${jarclasspathlibs} ${jarclasspathrelease}" />
+				<attribute name="Main-Class" value="de.mbws.tools.updatemanagment.client.Launcher" />
+			</manifest>
+		</jar>
+	</target>
+
+	<!--	<target name="obfuscate" depends="buildLauncher">
+	    <taskdef name="obfuscate" 
+	        classname="com.yworks.yguard.ObfuscatorTask" 
+	        classpath="yguard.jar"/>
+	    <obfuscate mainclass="de.mbws.client.MBWSClient" logfile="obfuscation.log"
+            replaceclassnamestrings="true">
+		 <inoutpair in="${jar}" out="${obfjar}"/>
+	    	-->
+	<!-- modify obfuscate element attributes and 
+	             insert your statements here -->
+	<!--</obfuscate>
+	  </target>
+	-->
+	<target name="packLauncher" depends="buildLauncher">
+		
+		<copy todir="${dist}" file="${base.tools.dir}/log4j.properties" />
+		<copy todir="${dist}" file="${base.tools.dir}/config.properties" />
+		
+		<!--	<copy todir="${dist}/config">
+			<fileset dir="${base.client.dir}/config" />
+		</copy>-->
+	</target>
+
+	<target name="dist" depends="packLauncher" />
+	<!--<target name="disto" depends="obfuscate" />-->
+
+</project>

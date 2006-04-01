@@ -22,7 +22,7 @@ public class ProgressPanel extends JPanel {
 	public ProgressPanel(ListResourceBundle resource) {
 		super();
 		languageResource = resource;
-		setLayout(new GridBagLayout());//new RiverLayout());
+		setLayout(new GridBagLayout());// new RiverLayout());
 		totalProgress = new JProgressBar(0, 100);
 		// fileProgress = new JProgressBar(0, 100);
 		initPanel();
@@ -32,16 +32,16 @@ public class ProgressPanel extends JPanel {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		activityText = new String (languageResource.getString(("DOWNLOADTEXT")));
+		activityText = new String(languageResource.getString(("ASSEMBLE_FILE")));
 		acticityLabel = new JLabel(activityText);
 		gbc.gridwidth = 4;
 		add(acticityLabel, gbc);
-		gbc.gridy+=1;
+		gbc.gridy += 1;
 		gbc.gridwidth = 1;
-//		JLabel totalProgressLb = new JLabel(languageResource
-//				.getString("TOTALPROGRESS"));
-//		add(totalProgressLb, gbc);
-		//gbc.gridx += 1;
+		// JLabel totalProgressLb = new JLabel(languageResource
+		// .getString("TOTALPROGRESS"));
+		// add(totalProgressLb, gbc);
+		// gbc.gridx += 1;
 		gbc.gridwidth = 4;
 		add(totalProgress, gbc);
 	}
@@ -52,9 +52,9 @@ public class ProgressPanel extends JPanel {
 	}
 
 	public void setCurrentFile(String file) {
-		acticityLabel.setText(activityText+file);
+		acticityLabel.setText(activityText + file);
 	}
-	
+
 	public void addFileProgress(int amount) {
 		int realAmount = 100 * amount / currentFileSize;
 		fileProgress.setValue(realAmount);
@@ -68,11 +68,16 @@ public class ProgressPanel extends JPanel {
 	}
 
 	public void setTotalNumberOfFiles(int size) {
+		activityText = new String(languageResource.getString(("DOWNLOADTEXT")));
 		totalNumberOfFile = size;
 	}
 
 	public void setCurrentFileSize(int size) {
 		currentFileSize = size;
+	}
+
+	public void finished() {
+		acticityLabel.setText(languageResource.getString("READY"));
 	}
 
 }
