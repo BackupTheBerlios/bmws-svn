@@ -83,33 +83,40 @@ public class TerrainPan {
 
 class BoundPanControllerExample extends GraphixPaneController implements KeyListener {
     private int pageModifyer = 0;
+    private int maxPanX;
+    private int maxPanY;
 
     public BoundPanControllerExample(GraphixPane pane) {
         super(pane);
+        Dimension imageDim = pane.getImageDimensions();
+        maxPanX = imageDim.width - pane.getPanSize().width;
+        maxPanY = imageDim.height - pane.getPanSize().height;
     }
 
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
         pageModifyer = e.getModifiers() & KeyEvent.SHIFT_MASK;
         for (int p = 0; p < 1 + (pageModifyer * pane.getPreferredSize().width); ++p) {
+            int offX = getCurrentX();
+            int offY = getCurrentY();
             switch (keyCode) {
             case KeyEvent.VK_RIGHT:
-                if (offsetX > 0) {
+                if (offX > 0) {
                     panRight();
                 }
                 break;
             case KeyEvent.VK_LEFT:
-                if (offsetX < maxPanX) {
+                if (offX < maxPanX) {
                     panLeft();
                 }
                 break;
             case KeyEvent.VK_DOWN:
-                if (offsetY > 0) {
+                if (offY > 0) {
                     panDown();
                 }
                 break;
             case KeyEvent.VK_UP: 
-                if (offsetY < maxPanY) {
+                if (offY < maxPanY) {
                     panUp();
                 }
                 break;
