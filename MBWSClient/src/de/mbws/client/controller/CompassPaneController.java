@@ -26,13 +26,15 @@ public class CompassPaneController {
         pane.updateDisplay();
     }
 
-    public void turnLeft(double degree) {
+    protected void turnLeft(double degree) {
         orientation.turnLeft(degree);
         pane.updateDisplay();
     }
 
-    public void turnRight(double degree) {
+    protected void turnRight(double degree) {
         orientation.turnRight(degree);
         pane.updateDisplay();
     }
+
+    
 }
