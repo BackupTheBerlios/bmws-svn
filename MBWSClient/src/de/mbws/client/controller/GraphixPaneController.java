@@ -1,7 +1,5 @@
 package de.mbws.client.controller;
 
-import java.awt.Dimension;
-
 import de.mbws.client.gui.ingame.GraphixPane;
 
 /**
@@ -12,40 +10,55 @@ import de.mbws.client.gui.ingame.GraphixPane;
  */
 public abstract class GraphixPaneController {
     protected GraphixPane pane;
-    protected int offsetX;
-    protected int offsetY;
-    protected int maxPanX;
-    protected int maxPanY;
 
     public GraphixPaneController(GraphixPane pane) {
         this.pane = pane;
-        Dimension imageDim = pane.getImageDimensions();
-        maxPanX = imageDim.width - pane.getPreferredSize().width;
-        maxPanY = imageDim.height - pane.getPreferredSize().height;
-        offsetX = maxPanX;
-        offsetY = maxPanY;
     }
 
+    /**
+     * Return the current X offset.
+     * @return x
+     */
+    protected int getCurrentX() {
+        return pane.getCurrentX();
+    }
+
+    /**
+     * Return the current Y offset.
+     * @return y
+     */
+    protected int getCurrentY() {
+        return pane.getCurrentY();
+    }
+
+    /**
+     * Move the pan up and repaint. This will wrap.
+     */
     protected void panUp() {
-        offsetY++;
         pane.panUp();
         pane.updateDisplay();
     }
 
+    /**
+     * Move the pan down and repaint. This will wrap.
+     */
     protected void panDown() {
-        offsetY--;
         pane.panDown();
         pane.updateDisplay();
     }
 
+    /**
+     * Move the pan left and repaint. This will wrap.
+     */
     protected void panLeft() {
-        offsetX++;
         pane.panLeft();
         pane.updateDisplay();
     }
 
+    /**
+     * Move the pan right and repaint. This will wrap.
+     */
     protected void panRight() {
-        offsetX--;
         pane.panRight();
         pane.updateDisplay();
     }

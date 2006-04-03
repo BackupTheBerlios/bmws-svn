@@ -57,14 +57,17 @@ public class CompassPane extends JComponent {
         g2.dispose();
     }
 
+    /**
+     * Force a repaint of this component through its parent. The repaint is be queued.
+     */
     public void updateDisplay() {
         getParent().repaint();
     }
-    
-    public Dimension getImageDimensions() {
-        return terrainPanel.getImageDimensions();
-    }
 
+    /**
+     * Return the current orientation of this compass.
+     * @return orientation
+     */
     public Orientation getOrientation() {
         return direction;
     }
