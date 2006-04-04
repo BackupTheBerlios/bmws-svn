@@ -33,10 +33,10 @@ public class IntegerInputField extends JTextField {
 	public int getValue() {
 		return Integer.valueOf(getText()).intValue();
 	}
+
 	protected void checkRange() {
 		String content = getText();
 		if (!content.equals("")) {
-			System.out.println("checking '" + content + "' in [" + minVal + "," + maxVal + "]");
 			int val = Integer.parseInt(content);
 			if (val > maxVal || val < minVal) {
 				setForeground(Color.RED);
@@ -60,7 +60,8 @@ public class IntegerInputField extends JTextField {
 				// }
 			}
 		}
-		public void remove(int offs,int len) throws BadLocationException {
+
+		public void remove(int offs, int len) throws BadLocationException {
 			super.remove(offs, len);
 			checkRange();
 		}
