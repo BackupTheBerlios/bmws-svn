@@ -9,8 +9,10 @@ import de.terrainer.TerrainerGUI;
 import de.terrainer.gui.HeightMapComponent;
 
 public class RandomMidpointDisplacement extends AbstractGenerator {
-	private int steepnes = 250;
+	private int steepness = 250;
 	private int radius = 3;
+	private int keepAveraging = 50;
+	private int scaleAveraging = 50;
 
 	public RandomMidpointDisplacement(HeightMapComponent hmc) {
 		super(hmc);
@@ -35,7 +37,7 @@ public class RandomMidpointDisplacement extends AbstractGenerator {
 	public void generate1(int x, int y, int width, int steepness, int depth) {
 		if (width <= 1)
 			return;
-		steepness = width * steepnes / 100;
+		steepness = width * steepness / 100;
 		// steepness = steepfactor/(depth);
 		// if (depth>6)
 		// steepness = 1;
@@ -85,8 +87,8 @@ public class RandomMidpointDisplacement extends AbstractGenerator {
 		for (int x = 1; x < heightMap.getWidth() - 1; x++) {
 			for (int y = 1; y < heightMap.getWidth() - 1; y++) {
 				int radius2 = radius;
-				if (heightMap.getHeightAt(x, y) > 50)
-					radius2 = (radius * 50) / (heightMap.getHeightAt(x, y));
+				if (heightMap.getHeightAt(x, y) > keepAveraging)
+					radius2 = (radius * scaleAveraging) / (heightMap.getHeightAt(x, y));
 				int count = 0;
 				int val = 0;
 				for (int x1 = x - radius2; x1 <= x + radius2; x1++) {
@@ -106,13 +108,19 @@ public class RandomMidpointDisplacement extends AbstractGenerator {
 	}
 
 	public MetaInfo[] getMetaInfo() {
-		MetaInfo[] mi = new MetaInfo[2];
+		MetaInfo[] mi = new MetaInfo[4];
 		mi[0] = new MetaInfo();
 		mi[0].displayName = "Steepness";
 		mi[0].codeName = "Steepness";
 		mi[1] = new MetaInfo();
 		mi[1].displayName = "Radius";
 		mi[1].codeName = "Radius";
+		mi[2] = new MetaInfo();
+		mi[2].displayName = "Keep avg. until";
+		mi[2].codeName = "KeepAveraging";
+		mi[3] = new MetaInfo();
+		mi[3].displayName = "Reduce avg. every";
+		mi[3].codeName = "ScaleAveraging";
 		return mi;
 	}
 
@@ -121,11 +129,11 @@ public class RandomMidpointDisplacement extends AbstractGenerator {
 	}
 
 	public int getSteepness() {
-		return steepnes;
+		return steepness;
 	}
 
 	public void setSteepness(int steepness) {
-		this.steepnes = steepness;
+		this.steepness = steepness;
 	}
 
 	public int getRadius() {
@@ -134,6 +142,22 @@ public class RandomMidpointDisplacement extends AbstractGenerator {
 
 	public void setRadius(int radius) {
 		this.radius = radius;
+	}
+
+	public void setKeepAveraging(int keepAveraging) {
+		this.keepAveraging = keepAveraging;
+	}
+
+	public void setScaleAveraging(int scaleAveraging) {
+		this.scaleAveraging = scaleAveraging;
+	}
+
+	public int getKeepAveraging() {
+		return keepAveraging;
+	}
+
+	public int getScaleAveraging() {
+		return scaleAveraging;
 	}
 
 }
