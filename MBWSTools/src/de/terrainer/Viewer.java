@@ -27,8 +27,10 @@ public class Viewer extends SimpleGame {
 		// createTerrainFromMap();
 		world = new DynamicWorld();
 		rootNode.attachChild(world);
+		cam.setFrustumFar(2000);
 		try {
 			world.init(rootNode, display, "..\\MBWSClient\\data\\world\\world", "../MBWSClient/data/characters/generic/1/M");
+			world.setVisibilityRadius(cam.getFrustumFar());
 		} catch (SAXException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -53,7 +55,6 @@ public class Viewer extends SimpleGame {
 
 		rootNode.updateWorldData(0);
 		
-		cam.setFrustumFar(2000);
 	}
 
 	@Override

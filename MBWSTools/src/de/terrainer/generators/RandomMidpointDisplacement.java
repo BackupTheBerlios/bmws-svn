@@ -84,10 +84,13 @@ public class RandomMidpointDisplacement extends AbstractGenerator {
 		// TODO better with FFT and gaussian shape
 		for (int x = 1; x < heightMap.getWidth() - 1; x++) {
 			for (int y = 1; y < heightMap.getWidth() - 1; y++) {
+				int radius2 = radius;
+				if (heightMap.getHeightAt(x, y) > 50)
+					radius2 = (radius * 50) / (heightMap.getHeightAt(x, y));
 				int count = 0;
 				int val = 0;
-				for (int x1 = x - radius; x1 <= x + radius; x1++) {
-					for (int y1 = y - radius; y1 <= y + radius; y1++) {
+				for (int x1 = x - radius2; x1 <= x + radius2; x1++) {
+					for (int y1 = y - radius2; y1 <= y + radius2; y1++) {
 						count++;
 						val += heightMap.getHeightAt(x1, y1);
 					}
