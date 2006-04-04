@@ -39,15 +39,17 @@ public class DynamicWorld extends Node {
 	float visibilityRadius;
 	float prefetchRadius;
 	float unloadRadius;
-	float visibilityRadius2;
+	float attachRadius2;
 	float unloadRadius2;
 	float prefetchRadius2;
+	float skyHeightOffset;
 
 	Set<SectionController.SectionNode> visibleSections = new HashSet<SectionController.SectionNode>();
 	ObjectRepository modelRepository;
 	ObjectLoader loader;
 	SectionController sectionController;
 	DisplaySystem display;
+	Node root;
 	Dome skydome;
 
 	public DynamicWorld() {
@@ -65,32 +67,21 @@ public class DynamicWorld extends Node {
 	public void init(Node root, DisplaySystem display, String pathToWorldDescription,
 			String pathToModels) throws SAXException, IOException {
 		this.display = display;
+		this.root = root;
 		loader = new ObjectLoader();
 		loader.setObjectPath(pathToModels);
 		sectionController = new SectionController(loader, pathToWorldDescription);
 		worldDescr = loader.loadWorldDescription(pathToWorldDescription);
-//		visibilityRadius = 3f * worldDescr.getSectionWidth();
-		visibilityRadius = 5000;
-		prefetchRadius = 1.5f * visibilityRadius;
-		unloadRadius = 1.2f * prefetchRadius;
-		visibilityRadius2 = visibilityRadius * visibilityRadius;
-		prefetchRadius2 = prefetchRadius * prefetchRadius;
-		unloadRadius2 = unloadRadius * unloadRadius;
-		createSky(root, display);
+		setVisibilityRadius(2000);
+		createSky();
+		createFog();
 	}
 
-	private void createSky(Node root, DisplaySystem display) {
-		FogState fs = display.getRenderer().createFogState();
-		fs.setDensity(0.5f);
-		fs.setEnabled(true);
-		fs.setColor(new ColorRGBA(0.8f, 0.8f, 0.8f, 0.8f));
-		fs.setStart(50);
-		fs.setEnd(2000);
-		fs.setDensityFunction(FogState.DF_LINEAR);
-		fs.setApplyFunction(FogState.AF_PER_VERTEX);
-		root.setRenderState(fs);
-
-		skydome = new Dome("Skydome", 5, 24, 2200);
+	private void createSky() {
+		detachChildNamed("Skydome");
+		float skyRadius = visibilityRadius * 1.1f;
+		skydome = new Dome("Skydome", 5, 24, skyRadius);
+		skyHeightOffset = skyRadius / 2;
 		skydome.setModelBound(new BoundingSphere());
 		skydome.updateModelBound();
 		LightState lightState = display.getRenderer().createLightState();
@@ -105,6 +96,18 @@ public class DynamicWorld extends Node {
 		skydome.setTextureCombineMode(TextureState.REPLACE);
 		attachChild(skydome);
 		updateRenderState();
+	}
+
+	private void createFog() {
+		FogState fs = display.getRenderer().createFogState();
+		fs.setDensity(0.5f);
+		fs.setEnabled(true);
+		fs.setColor(new ColorRGBA(0.8f, 0.8f, 0.8f, 0.8f));
+		fs.setStart(50);
+		fs.setEnd(visibilityRadius);
+		fs.setDensityFunction(FogState.DF_LINEAR);
+		fs.setApplyFunction(FogState.AF_PER_VERTEX);
+		root.setRenderState(fs);
 	}
 
 	/**
@@ -138,7 +141,7 @@ public class DynamicWorld extends Node {
 
 	private void addVisibleSection(Vector3f position, int col, int row, Vector3f terrainMidPoint) {
 		SectionController.SectionNode sectionNode = sectionController.getSection(col, row);
-		if (isInRange(position, terrainMidPoint, visibilityRadius2) && sectionNode != null
+		if (isInRange(position, terrainMidPoint, attachRadius2) && sectionNode != null
 				&& !visibleSections.contains(sectionNode)) {
 			// if (!sectionCache.containsKey(key)) {
 			// taskQueue.waitForTask(key);
@@ -167,7 +170,7 @@ public class DynamicWorld extends Node {
 						.getLocalTranslation().x
 						+ sectionWidth / 2, 0, node.getTerrainBlock().getLocalTranslation().z
 						+ sectionWidth / 2);
-				if (!isInRange(terrainMidPoint, position, visibilityRadius2)) {
+				if (!isInRange(terrainMidPoint, position, attachRadius2)) {
 					it.remove();
 					logger.debug("Removing invisible section " + node.getName());
 					node.removeFromParent();
@@ -210,7 +213,8 @@ public class DynamicWorld extends Node {
 		long time = System.currentTimeMillis();
 		SyncTaskQueue.getInstance().process(15);
 		Vector3f location = cam.getLocation();
-		skydome.setLocalTranslation(new Vector3f(location.x, location.y - 1000, location.z));
+		skydome.setLocalTranslation(new Vector3f(location.x, location.y - skyHeightOffset,
+				location.z));
 		unloadDistantSections(location);
 		removeInvisibleSections(location);
 		preloadAndAddSections(location);
@@ -273,6 +277,14 @@ public class DynamicWorld extends Node {
 	}
 
 	public void setVisibilityRadius(float visibilityRadius) {
-		this.visibilityRadius = visibilityRadius + 1.5f * worldDescr.getSectionWidth();
+		this.visibilityRadius = visibilityRadius;
+		prefetchRadius = 1.5f * visibilityRadius;
+		unloadRadius = 1.2f * prefetchRadius;
+		attachRadius2 = (visibilityRadius + 1.5f * worldDescr.getSectionWidth())
+				* (visibilityRadius + 1.5f * worldDescr.getSectionWidth());
+		prefetchRadius2 = prefetchRadius * prefetchRadius;
+		unloadRadius2 = unloadRadius * unloadRadius;
+		createSky();
+		createFog();
 	}
 }
