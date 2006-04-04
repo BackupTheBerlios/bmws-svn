@@ -5,7 +5,7 @@ import java.util.Iterator;
 public class SyncTaskQueue extends AbstractTaskQueue {
 	private static SyncTaskQueue instance;
 	private long uid;
-	
+
 	public static SyncTaskQueue getInstance() {
 		if (instance == null) {
 			instance = new SyncTaskQueue();
@@ -28,8 +28,8 @@ public class SyncTaskQueue extends AbstractTaskQueue {
 	}
 
 	public void process(int millis) {
-		long starttime = System.currentTimeMillis();
-		while (queue.size() > 0 && starttime + millis > System.currentTimeMillis()) {
+		long breaktime = System.currentTimeMillis() + millis;
+		while (queue.size() > 0 && breaktime > System.currentTimeMillis()) {
 			QueueEntry entry = queue.getFirst();
 			Runnable task = entry.task;
 			task.run();
@@ -37,6 +37,10 @@ public class SyncTaskQueue extends AbstractTaskQueue {
 			synchronized (entry.identifier) {
 				entry.identifier.notifyAll();
 			}
+		}
+		if (breaktime < System.currentTimeMillis()) {
+			logger.warn("Overrun processing time limit by "
+					+ (System.currentTimeMillis() - breaktime) + " ms");
 		}
 	}
 

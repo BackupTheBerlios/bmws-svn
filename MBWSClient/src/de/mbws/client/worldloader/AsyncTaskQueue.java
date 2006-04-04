@@ -16,33 +16,38 @@ public class AsyncTaskQueue extends AbstractTaskQueue {
 		}
 		return instance;
 	}
-	
+
 	private AsyncTaskQueue() {
 		logger.info("Starting queue processor thread");
 		Thread tr = new Thread(new Runnable() {
 			public void run() {
 				while (!stopping) {
-					QueueEntry entry = peek();
-					if (entry != null) {
-						logger.debug("Processing task: "+entry.identifier);
-						entry.task.run();
-						dequeue();
-						logger.debug("Finished task: "+entry.identifier);
-						synchronized (entry) {
-							entry.notifyAll();
+					try {
+						QueueEntry entry = peek();
+						if (entry != null) {
+							logger.debug("Processing task: " + entry.identifier);
+							entry.task.run();
+							dequeue();
+							logger.debug("Finished task: " + entry.identifier);
+							synchronized (entry) {
+								entry.notifyAll();
+							}
+						}
+						else {
+							// nothing to do, go to sleep
+							synchronized (AsyncTaskQueue.this) {
+								try {
+									logger.info("Task processor is going to sleep");
+									AsyncTaskQueue.this.wait();
+									logger.info("Task processor woke up");
+								}
+								catch (InterruptedException e) {
+								}
+							}
 						}
 					}
-					else {
-						// nothing to do, go to sleep
-						synchronized (AsyncTaskQueue.this) {
-							try {
-								logger.info("Task processor is going to sleep");
-								AsyncTaskQueue.this.wait();
-								logger.info("Task processor woke up");
-							}
-							catch (InterruptedException e) {
-							}
-						}
+					catch (Exception e) {
+						logger.error(e);
 					}
 				}
 				logger.info("Task queue finished");
@@ -64,7 +69,7 @@ public class AsyncTaskQueue extends AbstractTaskQueue {
 				// logger.debug("Task "+taskIdentifier+" ignored (already in queue)");
 				return;
 		}
-		logger.info("Enqueue task: "+taskIdentifier);
+		logger.info("Enqueue task: " + taskIdentifier);
 		queue.addLast(new QueueEntry(taskIdentifier, task));
 		notify();
 	}
@@ -79,9 +84,10 @@ public class AsyncTaskQueue extends AbstractTaskQueue {
 	protected synchronized void dequeue() {
 		queue.removeFirst();
 	}
-	
-	/** 
+
+	/**
 	 * Waits for the first entry in the queue matching the identifier.
+	 * 
 	 * @param taskIdentifier
 	 */
 	public void waitForTask(Object taskIdentifier) {
@@ -99,7 +105,7 @@ public class AsyncTaskQueue extends AbstractTaskQueue {
 				return;
 			}
 		}
-		throw new RuntimeException("Unknown task identifier: "+taskIdentifier);
+		throw new RuntimeException("Unknown task identifier: " + taskIdentifier);
 	}
 
 	public static void main(String[] args) {
@@ -107,13 +113,13 @@ public class AsyncTaskQueue extends AbstractTaskQueue {
 		AsyncTaskQueue queue = new AsyncTaskQueue();
 		for (int j = 0; j < 2; j++) {
 			for (int i = 0; i < 10; i++) {
-				//System.out.println("adding task");
-				queue.enqueue("test"+i, new Runnable() {
+				// System.out.println("adding task");
+				queue.enqueue("test" + i, new Runnable() {
 					public void run() {
 						try {
-							//System.out.println("task started");
+							// System.out.println("task started");
 							Thread.sleep(1000);
-							//System.out.println("task finished");
+							// System.out.println("task finished");
 						}
 						catch (InterruptedException e) {
 							// TODO Auto-generated catch block

@@ -34,7 +34,7 @@ import com.jmex.terrain.TerrainBlock;
 public class DynamicWorld extends Node {
 
 	private static Logger logger = Logger.getLogger(DynamicWorld.class);
-	
+
 	WorldDescription worldDescr;
 	float visibilityRadius;
 	float prefetchRadius;
@@ -62,16 +62,17 @@ public class DynamicWorld extends Node {
 	 * @throws IOException
 	 * @throws SAXException
 	 */
-	public void init(Node root, DisplaySystem display, String pathToWorldDescription, String pathToModels)
-			throws SAXException, IOException {
+	public void init(Node root, DisplaySystem display, String pathToWorldDescription,
+			String pathToModels) throws SAXException, IOException {
 		this.display = display;
 		loader = new ObjectLoader();
 		loader.setObjectPath(pathToModels);
 		sectionController = new SectionController(loader, pathToWorldDescription);
 		worldDescr = loader.loadWorldDescription(pathToWorldDescription);
-		visibilityRadius = 3f * worldDescr.getSectionWidth();
-		prefetchRadius = 4.5f * worldDescr.getSectionWidth();
-		unloadRadius = 4.7f * worldDescr.getSectionWidth();
+//		visibilityRadius = 3f * worldDescr.getSectionWidth();
+		visibilityRadius = 5000;
+		prefetchRadius = 1.5f * visibilityRadius;
+		unloadRadius = 1.2f * prefetchRadius;
 		visibilityRadius2 = visibilityRadius * visibilityRadius;
 		prefetchRadius2 = prefetchRadius * prefetchRadius;
 		unloadRadius2 = unloadRadius * unloadRadius;
@@ -96,9 +97,8 @@ public class DynamicWorld extends Node {
 		lightState.setEnabled(false);
 		skydome.setRenderState(lightState);
 		skydome.setLightCombineMode(LightState.REPLACE);
-		Texture domeTexture = TextureManager
-				.loadTexture("data/images/wolken_16.jpg", Texture.MM_LINEAR,
-						Texture.FM_LINEAR);
+		Texture domeTexture = TextureManager.loadTexture("../MBWSClient/data/images/wolken_16.jpg",
+				Texture.MM_LINEAR, Texture.FM_LINEAR);
 		TextureState ts = display.getRenderer().createTextureState();
 		ts.setTexture(domeTexture);
 		skydome.setRenderState(ts);
@@ -110,9 +110,9 @@ public class DynamicWorld extends Node {
 	/**
 	 * Destroys all background processes initiated by DynamicTerain.
 	 * 
-	 * @deprecated Unnecessary at the moment.
 	 */
 	public void destroy() {
+		AsyncTaskQueue.getInstance().shutdownQueueProcessor();
 	}
 
 	private void preloadAndAddSections(Vector3f position) {
@@ -121,7 +121,8 @@ public class DynamicWorld extends Node {
 		int xend = Math.min((int) ((position.x + prefetchRadius) / sectionWidth),
 				worldDescr.sectionColumns - 1);
 		int ystart = Math.max((int) ((position.z - prefetchRadius) / sectionWidth), 0);
-		int yend = Math.min((int) ((position.z + prefetchRadius) / sectionWidth), worldDescr.sectionRows - 1);
+		int yend = Math.min((int) ((position.z + prefetchRadius) / sectionWidth),
+				worldDescr.sectionRows - 1);
 		for (int col = xstart; col < xend; col++) {
 			for (int row = ystart; row < yend; row++) {
 				// preloadSection
@@ -206,6 +207,7 @@ public class DynamicWorld extends Node {
 	 * @param cam
 	 */
 	public void update(Camera cam) {
+		long time = System.currentTimeMillis();
 		SyncTaskQueue.getInstance().process(15);
 		Vector3f location = cam.getLocation();
 		skydome.setLocalTranslation(new Vector3f(location.x, location.y - 1000, location.z));
@@ -214,6 +216,11 @@ public class DynamicWorld extends Node {
 		preloadAndAddSections(location);
 		updateGeometricState(0.0f, true);
 		updateRenderState();
+		final long limit = 20;
+		long cycletime = System.currentTimeMillis() - time;
+		if (cycletime > limit) {
+			logger.warn("Update overrun limit of " + limit + " ms: " + cycletime + " ms");
+		}
 
 	}
 
@@ -259,5 +266,13 @@ public class DynamicWorld extends Node {
 			// do nothing
 		}
 		return 1 - normal.y;
+	}
+
+	public float getVisibilityRadius() {
+		return visibilityRadius;
+	}
+
+	public void setVisibilityRadius(float visibilityRadius) {
+		this.visibilityRadius = visibilityRadius + 1.5f * worldDescr.getSectionWidth();
 	}
 }

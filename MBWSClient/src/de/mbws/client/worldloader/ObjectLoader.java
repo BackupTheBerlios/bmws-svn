@@ -58,22 +58,22 @@ public class ObjectLoader {
 			}
 			TextureState ts = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
 			logger.debug("apply texture " + textureImage);
-			Texture texture = new Texture(1.0f);
+			Texture texture = new Texture(ts.getMaxAnisotropic());
 			texture.setCorrection(Texture.CM_PERSPECTIVE);
 			texture.setFilter(Texture.FM_LINEAR);
 			texture.setImage(textureImage);
-			texture.setMipmapState(Texture.MM_LINEAR);
+			texture.setMipmapState(Texture.MM_LINEAR_LINEAR);
 
 			// Texture texture = TextureManager.loadTexture(textureImage, Texture.MM_LINEAR,
 			// Texture.FM_LINEAR, false);
 			texture.setWrap(Texture.WM_WRAP_S_WRAP_T);
-			// texture.setScale(new Vector3f(20,20,20));
+			 texture.setScale(new Vector3f(5,5,5));
 			ts.setTexture(texture);
 			// ts.setTexture(TextureManager.loadTexture(sectionPath+".png",
 			// Texture.MM_LINEAR,
 			// Texture.FM_LINEAR));
-			logger.debug("Texture loaded");
 			spatial.setRenderState(ts);
+			spatial.updateRenderState();
 			logger.debug("Successfully applied texture " + textureImage);
 		}
 	}
