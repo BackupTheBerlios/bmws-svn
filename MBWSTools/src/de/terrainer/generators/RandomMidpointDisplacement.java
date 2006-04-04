@@ -29,15 +29,15 @@ public class RandomMidpointDisplacement extends AbstractGenerator {
 			}
 		}
 
-		generate1(0, 0, heightMap.getWidth() - 1, 300, 1);
+		generate1(0, 0, heightMap.getWidth() - 1, steepness, 1);
 		average();
 		heightMap.init();
 	}
 
-	public void generate1(int x, int y, int width, int steepness, int depth) {
+	public void generate1(int x, int y, int width, int asteepness, int depth) {
 		if (width <= 1)
 			return;
-		steepness = width * steepness / 100;
+		asteepness = width * asteepness / 100;
 		// steepness = steepfactor/(depth);
 		// if (depth>6)
 		// steepness = 1;
@@ -53,21 +53,21 @@ public class RandomMidpointDisplacement extends AbstractGenerator {
 		Point northeast = new Point(x + width, y);
 		if (TerrainerGUI.random.nextInt(2) > 0)
 			generateRandomizedAverageHeight(center, southeast, northwest, southeast, northwest,
-					steepness);
+					asteepness);
 		else
 			generateRandomizedAverageHeight(center, southwest, northeast, southwest, northeast,
-					steepness);
+					asteepness);
 		generateRandomizedAverageHeight(north, northwest, northeast, northwest, northeast,
-				steepness);
-		generateRandomizedAverageHeight(west, southwest, northwest, southwest, northwest, steepness);
+				asteepness);
+		generateRandomizedAverageHeight(west, southwest, northwest, southwest, northwest, asteepness);
 		generateRandomizedAverageHeight(south, southwest, southeast, southwest, southeast,
-				steepness);
-		generateRandomizedAverageHeight(east, southeast, northeast, southeast, northeast, steepness);
+				asteepness);
+		generateRandomizedAverageHeight(east, southeast, northeast, southeast, northeast, asteepness);
 		// recurse
-		generate1(x, y, halfwidth, steepness, depth + 1);
-		generate1(x + halfwidth, y, halfwidth, steepness, depth + 1);
-		generate1(x, y + halfwidth, halfwidth, steepness, depth + 1);
-		generate1(x + halfwidth, y + halfwidth, halfwidth, steepness, depth + 1);
+		generate1(x, y, halfwidth, asteepness, depth + 1);
+		generate1(x + halfwidth, y, halfwidth, asteepness, depth + 1);
+		generate1(x, y + halfwidth, halfwidth, asteepness, depth + 1);
+		generate1(x + halfwidth, y + halfwidth, halfwidth, asteepness, depth + 1);
 	}
 
 	private void generateRandomizedAverageHeight(Point pt, Point ref1, Point ref2, Point ref3,
