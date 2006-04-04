@@ -59,10 +59,12 @@ public class RandomMidpointDisplacement extends AbstractGenerator {
 					asteepness);
 		generateRandomizedAverageHeight(north, northwest, northeast, northwest, northeast,
 				asteepness);
-		generateRandomizedAverageHeight(west, southwest, northwest, southwest, northwest, asteepness);
+		generateRandomizedAverageHeight(west, southwest, northwest, southwest, northwest,
+				asteepness);
 		generateRandomizedAverageHeight(south, southwest, southeast, southwest, southeast,
 				asteepness);
-		generateRandomizedAverageHeight(east, southeast, northeast, southeast, northeast, asteepness);
+		generateRandomizedAverageHeight(east, southeast, northeast, southeast, northeast,
+				asteepness);
 		// recurse
 		generate1(x, y, halfwidth, asteepness, depth + 1);
 		generate1(x + halfwidth, y, halfwidth, asteepness, depth + 1);
@@ -88,7 +90,8 @@ public class RandomMidpointDisplacement extends AbstractGenerator {
 			for (int y = 1; y < heightMap.getWidth() - 1; y++) {
 				int radius2 = radius;
 				if (heightMap.getHeightAt(x, y) > keepAveraging)
-					radius2 = (radius * scaleAveraging) / (heightMap.getHeightAt(x, y));
+					radius2 = Math.min(0, radius - (heightMap.getHeightAt(x, y) - keepAveraging)
+							/ (radius * scaleAveraging));
 				int count = 0;
 				int val = 0;
 				for (int x1 = x - radius2; x1 <= x + radius2; x1++) {
