@@ -63,15 +63,9 @@ public class ObjectLoader {
 			texture.setFilter(Texture.FM_LINEAR);
 			texture.setImage(textureImage);
 			texture.setMipmapState(Texture.MM_LINEAR_LINEAR);
-
-			// Texture texture = TextureManager.loadTexture(textureImage, Texture.MM_LINEAR,
-			// Texture.FM_LINEAR, false);
 			texture.setWrap(Texture.WM_WRAP_S_WRAP_T);
-			 texture.setScale(new Vector3f(5,5,5));
+			// texture.setScale(new Vector3f(5,5,5));
 			ts.setTexture(texture);
-			// ts.setTexture(TextureManager.loadTexture(sectionPath+".png",
-			// Texture.MM_LINEAR,
-			// Texture.FM_LINEAR));
 			spatial.setRenderState(ts);
 			spatial.updateRenderState();
 			logger.debug("Successfully applied texture " + textureImage);
@@ -133,7 +127,8 @@ public class ObjectLoader {
 			long time = System.currentTimeMillis();
 			objectNode = jbr.loadBinaryFormat(fi);
 			Image textureImage = TextureManager.loadImage(new URL("file:"+texturePath), true);
-			SyncTaskQueue.getInstance().enqueue("loadTex"+textureImage,
+//			SyncTaskQueue.getInstance().enqueue("applyTexForObject"+textureImage,
+			SyncTaskQueue.getInstance().executeSynchronously(
 					new ApplyTextureTask(textureImage, objectNode));
 			logger.info("Time to convert from .jme to SceneGraph:"
 					+ (System.currentTimeMillis() - time));

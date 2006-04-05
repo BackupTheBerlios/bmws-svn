@@ -113,7 +113,8 @@ public class AsyncTaskQueue extends AbstractTaskQueue {
 			QueueEntry entry = queue.getLast();
 			synchronized (entry) {
 				try {
-					entry.wait();
+					entry.wait(100);
+					SyncTaskQueue.getInstance().process(1000);
 				}
 				catch (InterruptedException e) {
 				}

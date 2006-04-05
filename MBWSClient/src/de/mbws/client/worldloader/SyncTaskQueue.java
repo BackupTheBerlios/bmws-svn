@@ -27,7 +27,8 @@ public class SyncTaskQueue extends AbstractTaskQueue {
 		queue.addLast(new QueueEntry(taskIdentifier, task));
 	}
 
-	public void process(int millis) {
+	public boolean process(int millis) {
+		boolean ret = false;
 		long breaktime = System.currentTimeMillis() + millis;
 		while (queue.size() > 0 && breaktime > System.currentTimeMillis()) {
 			QueueEntry entry = queue.getFirst();
@@ -37,11 +38,13 @@ public class SyncTaskQueue extends AbstractTaskQueue {
 			synchronized (entry.identifier) {
 				entry.identifier.notifyAll();
 			}
+			ret = true;
 		}
 		if (breaktime < System.currentTimeMillis()) {
 			logger.warn("Overrun processing time limit by "
 					+ (System.currentTimeMillis() - breaktime) + " ms");
 		}
+		return ret;
 	}
 
 	public void executeSynchronously(Runnable task) {
