@@ -29,7 +29,7 @@ public class Viewer extends SimpleGame {
 		rootNode.attachChild(world);
 		cam.setFrustumFar(2000);
 		try {
-			world.init(rootNode, display, "..\\MBWSClient\\data\\world\\world", "../MBWSClient/data/characters/generic/1/M");
+			world.init(rootNode, cam,  display, "..\\MBWSClient\\data\\world\\world", "../MBWSClient/data/characters/generic/1/M");
 			world.setVisibilityRadius(cam.getFrustumFar());
 		} catch (SAXException e) {
 			// TODO Auto-generated catch block

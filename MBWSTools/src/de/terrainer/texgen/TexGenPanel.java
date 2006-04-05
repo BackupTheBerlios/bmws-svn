@@ -17,14 +17,18 @@ import javax.swing.JPanel;
 
 public class TexGenPanel extends JPanel {
 	private static final int SIZE = 128;
-	private float[][] texture = new float[SIZE][SIZE];
-	private float[][] picture = new float[SIZE][SIZE];
+	private static final int TRES = 20;
+	private static final int ITER = 300;
+	private float[][][] texture = new float[SIZE][SIZE][TRES];
+	private float[][][] picture = new float[SIZE][SIZE][TRES];
 	private Random rand = new Random(System.currentTimeMillis());
+	private TextureView texView;
 
 	public TexGenPanel() {
+		texView = new TextureView();
 		setBorder(BorderFactory.createEtchedBorder());
 		setLayout(new BorderLayout());
-		add(new TextureView(), BorderLayout.CENTER);
+		add(texView, BorderLayout.CENTER);
 		add(createControls(), BorderLayout.SOUTH);
 	}
 
@@ -33,53 +37,74 @@ public class TexGenPanel extends JPanel {
 		JButton newBut = new JButton("new");
 		newBut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				texture = new float[SIZE][SIZE];
+				texture = new float[SIZE][SIZE][TRES];
 				generate();
 				normalize();
 				repaint();
 			}
 		});
 		pan.add(newBut);
+		JButton animBut = new JButton("animate");
+		animBut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				animate();
+			}
+		});
+		pan.add(animBut);
 		return pan;
 	}
-	
+
 	public void normalize() {
 		float max = Float.MIN_VALUE;
 		float min = Float.MAX_VALUE;
-		for (int y = 0; y < texture.length; y++) {
-			for (int x = 0; x < texture[0].length; x++) {
-				if (texture[x][y] < min)
-					min = texture[x][y];
-				if (texture[x][y] > max)
-					max = texture[x][y];
+		for (int t = 0; t < TRES; t++) {
+			for (int y = 0; y < texture.length; y++) {
+				for (int x = 0; x < texture[0].length; x++) {
+					if (texture[x][y][t] < min)
+						min = texture[x][y][t];
+					if (texture[x][y][t] > max)
+						max = texture[x][y][t];
+				}
 			}
 		}
 		if (max - min == 0)
 			return;
-		for (int y = 0; y < texture.length; y++) {
-			for (int x = 0; x < texture[0].length; x++) {
-				picture[x][y] = (texture[x][y] - min) / (max - min);
+		for (int t = 0; t < TRES; t++) {
+			for (int y = 0; y < texture.length; y++) {
+				for (int x = 0; x < texture[0].length; x++) {
+					picture[x][y][t] = (texture[x][y][t] - min) / (max - min);
+				}
 			}
 		}
 	}
 
 	public void generate() {
-		float t = 0;
 		float c = 10;
-		int nmax = 15;
+		int nmax = 5;
 
-		for (int i = 0; i < 500; i++) {
+		float A[] = new float[ITER];
+		float phi[] = new float[ITER];
+		float kx[] = new float[ITER];
+		float ky[] = new float[ITER];
+		int d = texture.length;
 
-			float A = rand.nextFloat();
-			float phi = 2 * (float) Math.PI * rand.nextFloat();
-			int d = texture.length;
-			
-			float kx = (float) (2*Math.PI / d *(rand.nextInt(2*nmax)-nmax));
-			float ky = (float) (2*Math.PI / d *(rand.nextInt(2*nmax)-nmax));
-			float w = (float) Math.sqrt(kx*kx+ky*ky)*c;
-			for (int y = 0; y < texture.length; y++) {
-				for (int x = 0; x < texture[0].length; x++) {
-					texture[x][y] += A * (float) Math.cos(x * kx + y * ky + w * t + phi);
+		for (int i = 0; i < ITER; i++) {
+
+			A[i] = rand.nextFloat();
+			phi[i] = 2 * (float) Math.PI * rand.nextFloat();
+
+			kx[i] = (float) (2 * Math.PI / d * (rand.nextInt(2 * nmax) - nmax));
+			ky[i] = (float) (2 * Math.PI / d * (rand.nextInt(2 * nmax) - nmax));
+		}
+		for (int ti = 0; ti < TRES; ti++) {
+			float t = ti * 2 * (float) Math.PI / TRES;
+			for (int i = 0; i < ITER; i++) {
+				float w = (float) Math.sqrt(kx[i] * kx[i] + ky[i] * ky[i]) * c;
+				for (int y = 0; y < texture.length; y++) {
+					for (int x = 0; x < texture[0].length; x++) {
+						texture[x][y][ti] += A[i]
+								* (float) Math.cos(x * kx[i] + y * ky[i] + w * t + phi[i]);
+					}
 				}
 			}
 		}
@@ -88,15 +113,32 @@ public class TexGenPanel extends JPanel {
 	private class TextureView extends JComponent {
 		@Override
 		public void paint(Graphics g) {
-			float elementWidth = getSize().width / picture.length;
-			float elementHeight = getSize().height / picture[0].length;
+			paintTex(g, 0);
+		}
+
+		public void paintTex(Graphics g, int t) {
+			float elementWidth = ((float) getSize().width) / picture.length;
+			float elementHeight = ((float) getSize().height) / picture[0].length;
 			for (int y = 0; y < picture.length; y++) {
 				for (int x = 0; x < picture[0].length; x++) {
-					float greyVal = picture[x][y];
+					float greyVal = picture[x][y][t];
 					g.setColor(new Color(greyVal, greyVal, greyVal));
 					g.fillRect(Math.round(x * elementWidth), Math.round(y * elementHeight), Math
-							.round(elementWidth), Math.round(elementHeight));
+							.round(elementWidth + 1), Math.round(elementHeight + 1));
 				}
+			}
+
+		}
+	}
+
+	public void animate() {
+		Graphics g = texView.getGraphics();
+		for (int t=0; t<TRES; t++) {
+			texView.paintTex(g, t);
+			try {
+				Thread.sleep(100);
+			}
+			catch (InterruptedException never) {
 			}
 		}
 	}
