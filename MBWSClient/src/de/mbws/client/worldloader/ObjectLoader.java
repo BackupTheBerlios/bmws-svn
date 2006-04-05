@@ -133,7 +133,7 @@ public class ObjectLoader {
 			long time = System.currentTimeMillis();
 			objectNode = jbr.loadBinaryFormat(fi);
 			Image textureImage = TextureManager.loadImage(new URL("file:"+texturePath), true);
-			SyncTaskQueue.getInstance().executeSynchronously(
+			SyncTaskQueue.getInstance().enqueue("loadTex"+textureImage,
 					new ApplyTextureTask(textureImage, objectNode));
 			logger.info("Time to convert from .jme to SceneGraph:"
 					+ (System.currentTimeMillis() - time));

@@ -108,6 +108,19 @@ public class AsyncTaskQueue extends AbstractTaskQueue {
 		throw new RuntimeException("Unknown task identifier: " + taskIdentifier);
 	}
 
+	public void waitForEmptyQueue() {
+		while (queue.size() > 0) {
+			QueueEntry entry = queue.getLast();
+			synchronized (entry) {
+				try {
+					entry.wait();
+				}
+				catch (InterruptedException e) {
+				}
+			}
+		}
+	}
+
 	public static void main(String[] args) {
 		BasicConfigurator.configure();
 		AsyncTaskQueue queue = new AsyncTaskQueue();
@@ -138,4 +151,5 @@ public class AsyncTaskQueue extends AbstractTaskQueue {
 		}
 		queue.shutdownQueueProcessor();
 	}
+
 }

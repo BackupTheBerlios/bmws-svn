@@ -36,7 +36,7 @@ public class DynamicWorld extends Node {
 	private static Logger logger = Logger.getLogger(DynamicWorld.class);
 
 	WorldDescription worldDescr;
-	float visibilityRadius;
+	float visibilityRadius = -1;
 	float prefetchRadius;
 	float unloadRadius;
 	float attachRadius2;
@@ -64,7 +64,7 @@ public class DynamicWorld extends Node {
 	 * @throws IOException
 	 * @throws SAXException
 	 */
-	public void init(Node root, DisplaySystem display, String pathToWorldDescription,
+	public void init(Node root, Camera cam, DisplaySystem display, String pathToWorldDescription,
 			String pathToModels) throws SAXException, IOException {
 		this.display = display;
 		this.root = root;
@@ -72,7 +72,15 @@ public class DynamicWorld extends Node {
 		loader.setObjectPath(pathToModels);
 		sectionController = new SectionController(loader, pathToWorldDescription);
 		worldDescr = loader.loadWorldDescription(pathToWorldDescription);
-		setVisibilityRadius(2000);
+		if (visibilityRadius<0)
+			setVisibilityRadius(2000);
+		preloadAndAddSections(cam.getLocation());
+		AsyncTaskQueue.getInstance().waitForEmptyQueue();
+		try {
+			Thread.sleep(100);
+		}
+		catch (InterruptedException never) {
+		}
 		createSky();
 		createFog();
 	}

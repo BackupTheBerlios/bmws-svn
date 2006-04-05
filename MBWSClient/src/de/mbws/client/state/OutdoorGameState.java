@@ -52,7 +52,6 @@ public class OutdoorGameState extends BaseGameState {
 	private InputHandler playerInputHandler;
 	private DisplaySystem display;
 	private AbsoluteMouse cursor;
-	private Skybox skybox;
 	//TODO: remove that later
 	private boolean showBounds = true;
 
@@ -179,8 +178,8 @@ public class OutdoorGameState extends BaseGameState {
 		terrain = new DynamicWorld();
 		rootNode.attachChild(terrain);
 		try {
-			terrain.init(rootNode, display, "data/world/world",
-					"data/characters/generic/1/M");
+			terrain.setVisibilityRadius(1500);
+			terrain.init(rootNode, cam, display, "data/world/world", "data/characters/generic/1/M");
 		} catch (SAXException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
