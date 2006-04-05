@@ -3,10 +3,12 @@ package de.terrainer.texgen;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.ImageObserver;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
@@ -17,8 +19,8 @@ import javax.swing.JPanel;
 
 public class TexGenPanel extends JPanel {
 	private static final int SIZE = 128;
-	private static final int TRES = 20;
-	private static final int ITER = 300;
+	private static final int TRES = 50;
+	private static final int ITER = 30;
 	private float[][][] texture = new float[SIZE][SIZE][TRES];
 	private float[][][] picture = new float[SIZE][SIZE][TRES];
 	private Random rand = new Random(System.currentTimeMillis());
@@ -97,7 +99,7 @@ public class TexGenPanel extends JPanel {
 			ky[i] = (float) (2 * Math.PI / d * (rand.nextInt(2 * nmax) - nmax));
 		}
 		for (int ti = 0; ti < TRES; ti++) {
-			float t = ti * 2 * (float) Math.PI / TRES;
+			float t = ti * 4 * (float) Math.PI / TRES;
 			for (int i = 0; i < ITER; i++) {
 				float w = (float) Math.sqrt(kx[i] * kx[i] + ky[i] * ky[i]) * c;
 				for (int y = 0; y < texture.length; y++) {
@@ -113,10 +115,11 @@ public class TexGenPanel extends JPanel {
 	private class TextureView extends JComponent {
 		@Override
 		public void paint(Graphics g) {
-			paintTex(g, 0);
+			paintTex(g, createBuffer(), 0);
 		}
 
-		public void paintTex(Graphics g, int t) {
+		public void paintTex(Graphics gr, Image background, int t) {
+			Graphics g = background.getGraphics();
 			float elementWidth = ((float) getSize().width) / picture.length;
 			float elementHeight = ((float) getSize().height) / picture[0].length;
 			for (int y = 0; y < picture.length; y++) {
@@ -127,18 +130,31 @@ public class TexGenPanel extends JPanel {
 							.round(elementWidth + 1), Math.round(elementHeight + 1));
 				}
 			}
+			gr.drawImage(background, 0, 0, new ImageObserver() {
+				public boolean imageUpdate(Image img, int infoflags, int x, int y, int width,
+						int height) {
+					return false;
+				}
 
+			});
+		}
+
+		public Image createBuffer() {
+			return createImage(getWidth(), getHeight());
 		}
 	}
 
 	public void animate() {
 		Graphics g = texView.getGraphics();
-		for (int t=0; t<TRES; t++) {
-			texView.paintTex(g, t);
-			try {
-				Thread.sleep(100);
-			}
-			catch (InterruptedException never) {
+		Image background = texView.createBuffer();
+		for (int i = 0; i < 3; i++) {
+			for (int t = 0; t < TRES; t++) {
+				texView.paintTex(g, background, t);
+				try {
+					Thread.sleep(60);
+				}
+				catch (InterruptedException never) {
+				}
 			}
 		}
 	}
