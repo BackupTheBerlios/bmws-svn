@@ -1,69 +1,33 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC
     "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
-    
+
 <hibernate-mapping>
-<!-- 
-    Created by the Middlegen Hibernate plugin 2.2
+	<class name="de.mbws.server.data.db.generated.SkillRaceMapping" table="skill_race_mapping" lazy="false">
+		<composite-id name="comp_id" class="de.mbws.server.data.db.generated.SkillRaceMappingPK">
+			<key-property name="raceId" column="race_id" type="java.lang.Integer" length="10" />
+			<key-property name="skillId" column="skill_id" type="java.lang.Integer" length="10" />
+		</composite-id>
 
-    http://boss.bekk.no/boss/middlegen/
-    http://www.hibernate.org/
--->
+		<property name="available" type="boolean" column="available" not-null="true" />
+		<property name="availableAtStartup" type="boolean" column="availableatstartup" not-null="true" />
+		<property name="autoGainAtStartup" type="boolean" column="autogainatstartup" not-null="true" />
+		<property name="maxCategory" type="short" column="max_category" />
+		<property name="onetimeModifier" type="int" column="onetime_modifier" />
+		<property name="enhancementModifier" type="int" column="enhancement_modifier" />
 
-<class 
-    name="de.mbws.server.data.db.generated.SkillRaceMapping" 
-    table="skill_race_mapping"
-    lazy="false"
->
+		<!-- derived association(s) for compound key -->
+		<!-- bi-directional many-to-one association to Skill -->
+		<many-to-one name="skill" class="de.mbws.server.data.db.generated.Skill" update="false" insert="false">
+			<column name="skill_id" />
+		</many-to-one>
 
-    <composite-id name="comp_id" class="de.mbws.server.data.db.generated.SkillRaceMappingPK">
-        <key-property 
-            name="raceId" 
-            column="race_id" 
-            type="java.lang.Integer"
-            length="10"
-        />
-        <key-property 
-            name="skillId" 
-            column="skill_id" 
-            type="java.lang.Integer"
-            length="10"
-        />
-    </composite-id>    
+		<!-- bi-directional many-to-one association to Race -->
+		<many-to-one name="race" class="de.mbws.server.data.db.generated.Race" update="false" insert="false">
+			<column name="race_id" />
+		</many-to-one>
 
-    <property
-        name="hasonstartup"
-        type="byte"
-        column="hasonstartup"
-        not-null="true"
-        length="1"
-    />
-
-    <!-- Associations -->
-    <!-- derived association(s) for compound key -->
-    <!-- bi-directional many-to-one association to Skill -->
-    <many-to-one
-        name="skill"
-	    class="de.mbws.server.data.db.generated.Skill"
-	    update="false"
-	    insert="false"
-	>
-    	<column name="skill_id" />
-	</many-to-one>
-	
-    <!-- bi-directional many-to-one association to Race -->
-    <many-to-one
-        name="race"
-	    class="de.mbws.server.data.db.generated.Race"
-	    update="false"
-	    insert="false"
-	>
-    	<column name="race_id" />
-	</many-to-one>
-	
-    <!-- end of derived association(s) -->
-  
-
-</class>
+		<!-- end of derived association(s) -->
+	</class>
 </hibernate-mapping>

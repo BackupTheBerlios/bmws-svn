@@ -1,116 +1,47 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC
     "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
-    
+
 <hibernate-mapping>
-<!-- 
-    Created by the Middlegen Hibernate plugin 2.2
+	<class name="de.mbws.server.data.db.generated.Map" table="map" lazy="false">
+		<id name="id" type="java.lang.Integer" column="id">
+			<generator class="assigned" />
+		</id>
 
-    http://boss.bekk.no/boss/middlegen/
-    http://www.hibernate.org/
--->
+		<property name="name" type="java.lang.String" column="name" not-null="true" length="45" />
+		<property name="filename" type="java.lang.String" column="filename" not-null="true" length="255" />
 
-<class 
-    name="de.mbws.server.data.db.generated.Map" 
-    table="map"
-    lazy="false"
->
+		<!-- bi-directional one-to-many association to CharacterStatus -->
+		<set name="characterStatuses" lazy="true" inverse="true" cascade="all">
+			<key>
+				<column name="map_id" />
+			</key>
+			<one-to-many class="de.mbws.server.data.db.generated.CharacterStatus" />
+		</set>
 
-    <id
-        name="id"
-        type="java.lang.Integer"
-        column="id"
-    >
-    
-        <generator class="assigned" />
-    </id>
+		<!-- bi-directional one-to-many association to ZoneserverMapMapping -->
+		<set name="zoneserverMapMappings" lazy="true" inverse="true" cascade="all">
+			<key>
+				<column name="map_id" />
+			</key>
+			<one-to-many class="de.mbws.server.data.db.generated.ZoneserverMapMapping" />
+		</set>
 
-    <property
-        name="name"
-        type="java.lang.String"
-        column="name"
-        not-null="true"
-        length="45"
-    />
-    <property
-        name="filename"
-        type="java.lang.String"
-        column="filename"
-        not-null="true"
-        length="255"
-    />
+		<!-- bi-directional one-to-many association to NpcStatus -->
+		<set name="npcStatuses" lazy="true" inverse="true" cascade="all">
+			<key>
+				<column name="map_id" />
+			</key>
+			<one-to-many class="de.mbws.server.data.db.generated.NpcStatus" />
+		</set>
 
-    <!-- Associations -->
-  
-    <!-- bi-directional one-to-many association to CharacterStatus -->
-
-    <set
-        name="characterStatuses"
-        lazy="true"
-        inverse="true"
-		cascade="all"
-
-    >
-        <key>
-            <column name="map_id" />
-        </key>
-        
-        <one-to-many 
-            class="de.mbws.server.data.db.generated.CharacterStatus"
-        />
-    </set>
-    <!-- bi-directional one-to-many association to ZoneserverMapMapping -->
-
-    <set
-        name="zoneserverMapMappings"
-        lazy="true"
-        inverse="true"
-		cascade="all"
-
-    >
-        <key>
-            <column name="map_id" />
-        </key>
-        
-        <one-to-many 
-            class="de.mbws.server.data.db.generated.ZoneserverMapMapping"
-        />
-    </set>
-    <!-- bi-directional one-to-many association to NpcStatus -->
-
-    <set
-        name="npcStatuses"
-        lazy="true"
-        inverse="true"
-		cascade="all"
-
-    >
-        <key>
-            <column name="map_id" />
-        </key>
-        
-        <one-to-many 
-            class="de.mbws.server.data.db.generated.NpcStatus"
-        />
-    </set>
-    <!-- bi-directional one-to-many association to Worldobject -->
-
-    <set
-        name="worldobjects"
-        lazy="true"
-        inverse="true"
-		cascade="all"
-
-    >
-        <key>
-            <column name="map_id" />
-        </key>
-        
-        <one-to-many 
-            class="de.mbws.server.data.db.generated.Worldobject"
-        />
-    </set>
-
-</class>
+		<!-- bi-directional one-to-many association to Worldobject -->
+		<set name="worldobjects" lazy="true" inverse="true" cascade="all">
+			<key>
+				<column name="map_id" />
+			</key>
+			<one-to-many class="de.mbws.server.data.db.generated.Worldobject" />
+		</set>
+	</class>
 </hibernate-mapping>

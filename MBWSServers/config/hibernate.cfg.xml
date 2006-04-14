@@ -6,7 +6,7 @@
 		<property name="show_sql">true</property>
 		<!-- local connection properties -->
 		<property name="hibernate.connection.url">
-			jdbc:mysql://localhost:3306/fuckingtest
+			jdbc:mysql://localhost:3306/mbws
 		</property>
 		<property name="hibernate.connection.driver_class">
 			com.mysql.jdbc.Driver
@@ -60,7 +60,5 @@
 		<mapping resource="WorldobjectType.hbm.xml" />
 		<mapping resource="Zoneserver.hbm.xml" />
 		<mapping resource="ZoneserverMapMapping.hbm.xml" />
-		<mapping resource="Language.hbm.xml" />
-		<mapping resource="LanguageTextMapping.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>

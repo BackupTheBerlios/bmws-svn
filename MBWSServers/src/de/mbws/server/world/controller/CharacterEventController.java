@@ -16,7 +16,7 @@ import de.mbws.server.account.persistence.CharacterPersistenceManager;
 import de.mbws.server.data.ServerPlayerData;
 import de.mbws.server.data.db.generated.CharacterStatus;
 import de.mbws.server.data.db.generated.CharacterVisualappearance;
-import de.mbws.server.data.db.generated.Characterdata;
+import de.mbws.server.data.db.generated.CharacterData;
 import de.mbws.server.utils.IdHelper;
 import de.mbws.server.world.WorldServer;
 
@@ -43,7 +43,7 @@ public class CharacterEventController extends WorldServerBaseEventController {
 			CharacterWorldServerInformation cwsi = (CharacterWorldServerInformation) event
 					.getEventData();
 			ServerPlayerData spd = new ServerPlayerData();
-			Characterdata cdata = CharacterPersistenceManager.getInstance()
+            CharacterData cdata = CharacterPersistenceManager.getInstance()
 					.getCharacterByID(
 							IdHelper.removePrefix(cwsi.getCharacter()
 									.getCharacterID()));
@@ -58,7 +58,7 @@ public class CharacterEventController extends WorldServerBaseEventController {
 			sendEvent(result);
 		} else if (event.getEventType() == EventTypes.C2S_CHARACTER_ENTERS_WORLD_REQUEST) {
 			CharacterSelection csel = (CharacterSelection) event.getEventData();
-			Characterdata cdata = ((ServerPlayerData) event.getPlayer())
+            CharacterData cdata = ((ServerPlayerData) event.getPlayer())
 					.getActiveCharacter();
 			if (IdHelper.removePrefix(csel.getCharacterID()) != cdata.getId()) {
 				return;
@@ -66,7 +66,7 @@ public class CharacterEventController extends WorldServerBaseEventController {
 			CharacterStatus cs = cdata.getCharacterStatus();
 			PlayerCharacterDetails charDetails = new PlayerCharacterDetails();
 
-			CharacterData ocd = new CharacterData();
+			de.mbws.common.events.data.generated.CharacterData ocd = new de.mbws.common.events.data.generated.CharacterData();
 			ocd.setName(cdata.getCharactername());
 			ocd.setGender(cdata.getGender().charAt(0));
             //FIXME define rule for wounded level
@@ -74,7 +74,11 @@ public class CharacterEventController extends WorldServerBaseEventController {
             //           
 			ocd.setWoundLevel(woundLevel);
 			ocd.setRace(cdata.getRace().getId().intValue());
-			ocd.setPvp(Byte.valueOf(cs.getPvp()));
+            if (cs.isPvp()){
+                ocd.setPvp(Globals.ON);    
+            } else {
+                ocd.setPvp(Globals.OFF);
+            }
 			CharacterVisualAppearance cva = new CharacterVisualAppearance();
 			ocd.setVisualAppearance(cva);
 			// TODO clean up above
@@ -132,7 +136,7 @@ public class CharacterEventController extends WorldServerBaseEventController {
 		}
 	}
 
-	private PlayerCharacterShortDescription getPlayerCharacterShortDescription(Characterdata cdata) {
+	private PlayerCharacterShortDescription getPlayerCharacterShortDescription(CharacterData cdata) {
         PlayerCharacterShortDescription csd = new PlayerCharacterShortDescription();
 		csd.setGender(cdata.getGender().charAt(0));
 		csd.setLocation(cdata.getCharacterStatus().getMap().getName());

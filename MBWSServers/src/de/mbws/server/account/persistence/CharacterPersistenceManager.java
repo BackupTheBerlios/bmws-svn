@@ -7,7 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
 
-import de.mbws.server.data.db.generated.Characterdata;
+import de.mbws.server.data.db.generated.CharacterData;
 import de.mbws.server.data.db.generated.Map;
 import de.mbws.server.data.db.generated.Race;
 import de.mbws.server.exceptions.DuplicateKeyException;
@@ -28,12 +28,12 @@ public class CharacterPersistenceManager extends BasePersistenceManager {
         return instance;
     }
 
-    public de.mbws.server.data.db.generated.Characterdata getCharacter(String userName, long charId) {
+    public CharacterData getCharacter(String userName, long charId) {
         org.hibernate.Session session = null;
-        Characterdata cdata = null;
+        CharacterData cdata = null;
         try {
             session = getSessionFactory().openSession();
-            cdata = (Characterdata) session.createQuery("from Characterdata as cd where cd.account.username = ? and cd.id = ?")
+            cdata = (CharacterData) session.createQuery("from CharacterData as cd where cd.account.username = ? and cd.id = ?")
                     .setString(0, userName).setLong(1, charId).uniqueResult();
 
         } catch (Exception e) {
@@ -50,12 +50,12 @@ public class CharacterPersistenceManager extends BasePersistenceManager {
 
         return cdata;
     }
-    public Characterdata getCharacterByID(long charId) {
+    public CharacterData getCharacterByID(long charId) {
         org.hibernate.Session session = null;
-        Characterdata cdata = null;
+        CharacterData cdata = null;
         try {
             session = getSessionFactory().openSession();
-            cdata = (Characterdata) session.createQuery("from Characterdata as cd where cd.id = ?")
+            cdata = (CharacterData) session.createQuery("from CharacterData as cd where cd.id = ?")
                     .setLong(0, charId).uniqueResult();
 
         } catch (Exception e) {
@@ -77,7 +77,7 @@ public class CharacterPersistenceManager extends BasePersistenceManager {
         org.hibernate.Session session = null;
         try {
             session = getSessionFactory().openSession();
-            List list = session.createQuery("from Characterdata as cd where " + "cd.account.username = ?").setString(0, userName).list();
+            List list = session.createQuery("from CharacterData as cd where " + "cd.account.username = ?").setString(0, userName).list();
 
             return list;
 
@@ -95,7 +95,7 @@ public class CharacterPersistenceManager extends BasePersistenceManager {
         return null;
     }
     
-    public void createCharacter(Characterdata character) throws PersistenceException, DuplicateKeyException {
+    public void createCharacter(CharacterData character) throws PersistenceException, DuplicateKeyException {
         Session session = null;
         try {
             session = getSessionFactory().openSession(); 

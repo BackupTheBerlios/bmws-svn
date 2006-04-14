@@ -1,167 +1,34 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC
     "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
-    
+
 <hibernate-mapping>
-<!-- 
-    Created by the Middlegen Hibernate plugin 2.2
+	<class name="de.mbws.server.data.db.generated.CharacterVisualappearance" table="character_visualappearance" lazy="false">
+		<id name="id" type="java.lang.Long" column="id">
+			<generator class="identity" />
+		</id>
 
-    http://boss.bekk.no/boss/middlegen/
-    http://www.hibernate.org/
--->
+		<property name="height" type="int" column="height" not-null="true" length="10" />
+		<property name="skinColor" type="int" column="skin_color" not-null="true" length="10" />
+		<property name="faceType" type="int" column="face_type" not-null="true" length="10" />
+		<property name="hairColor" type="int" column="hair_color" not-null="true" length="10" />
+		<property name="hairStyle" type="int" column="hair_style" not-null="true" length="10" />
+		<property name="hairFacial" type="int" column="hair_facial" not-null="true" length="10" />
+		<property name="itemHead" type="int" column="item_head" not-null="true" length="10" />
+		<property name="itemShoulders" type="int" column="item_shoulders" not-null="true" length="10" />
+		<property name="itemShirt" type="int" column="item_shirt" not-null="true" length="10" />
+		<property name="itemChest" type="int" column="item_chest" not-null="true" length="10" />
+		<property name="itemBelt" type="int" column="item_belt" not-null="true" length="10" />
+		<property name="itemLegs" type="int" column="item_legs" not-null="true" length="10" />
+		<property name="itemBoots" type="int" column="item_boots" not-null="true" length="10" />
+		<property name="itemBracers" type="int" column="item_bracers" not-null="true" length="10" />
+		<property name="itemGloves" type="int" column="item_gloves" not-null="true" length="10" />
+		<property name="itemCape" type="int" column="item_cape" not-null="true" length="10" />
+		<property name="itemHandLeft" type="int" column="item_hand_left" not-null="true" length="10" />
+		<property name="itemHandRight" type="int" column="item_hand_right" not-null="true" length="10" />
 
-<class 
-    name="de.mbws.server.data.db.generated.CharacterVisualappearance" 
-    table="character_visualappearance"
-    lazy="false"
->
-
-    <id
-        name="id"
-        type="java.lang.Long"
-        column="id"
-    >
-    
-        <generator class="assigned" />
-    </id>
-
-    <property
-        name="height"
-        type="int"
-        column="height"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="skinColor"
-        type="int"
-        column="skin_color"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="faceType"
-        type="int"
-        column="face_type"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="hairColor"
-        type="int"
-        column="hair_color"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="hairStyle"
-        type="int"
-        column="hair_style"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="hairFacial"
-        type="int"
-        column="hair_facial"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="itemHead"
-        type="int"
-        column="item_head"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="itemShoulders"
-        type="int"
-        column="item_shoulders"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="itemShirt"
-        type="int"
-        column="item_shirt"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="itemChest"
-        type="int"
-        column="item_chest"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="itemBelt"
-        type="int"
-        column="item_belt"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="itemLegs"
-        type="int"
-        column="item_legs"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="itemBoots"
-        type="int"
-        column="item_boots"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="itemBracers"
-        type="int"
-        column="item_bracers"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="itemGloves"
-        type="int"
-        column="item_gloves"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="itemCape"
-        type="int"
-        column="item_cape"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="itemHandLeft"
-        type="int"
-        column="item_hand_left"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="itemHandRight"
-        type="int"
-        column="item_hand_right"
-        not-null="true"
-        length="10"
-    />
-
-    <!-- Associations -->
-  
-    <!-- bi-directional one-to-one association to Characterdata -->
-    <one-to-one
-        name="characterdata"
-        class="de.mbws.server.data.db.generated.Characterdata"
-        outer-join="auto"
-        constrained="true"
-    />
-
-</class>
+		<!-- bi-directional one-to-one association to Characterdata -->
+		<one-to-one name="characterdata" class="de.mbws.server.data.db.generated.CharacterData" outer-join="auto" constrained="true" />
+	</class>
 </hibernate-mapping>

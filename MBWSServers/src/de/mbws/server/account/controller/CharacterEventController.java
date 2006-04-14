@@ -18,6 +18,7 @@ import de.mbws.server.account.persistence.CharacterPersistenceManager;
 import de.mbws.server.data.ServerCommunicationData;
 import de.mbws.server.data.ServerPlayerData;
 import de.mbws.server.data.db.generated.*;
+import de.mbws.server.data.db.generated.CharacterData;
 import de.mbws.server.exceptions.DuplicateKeyException;
 
 /**
@@ -74,7 +75,7 @@ public class CharacterEventController extends AccountServerBaseEventController {
 					.getAllCharacters(((ServerPlayerData) ce.getPlayer()).getAccount().getUsername());
 			LinkedList<PlayerCharacterData> charsToSend = new LinkedList<PlayerCharacterData>();
 			for (Iterator iter = chars.iterator(); iter.hasNext();) {
-				Characterdata element = (Characterdata) iter.next();
+                CharacterData element = (CharacterData) iter.next();
 				charsToSend.add(getPlayerCharacterData(element));
 			}
 			CharactersOfPlayer cop = new CharactersOfPlayer();
@@ -95,7 +96,7 @@ public class CharacterEventController extends AccountServerBaseEventController {
 		} else if (event.getEventType() == EventTypes.C2S_CHARACTER_CREATE_REQUEST) {
 			ServerPlayerData spd = (ServerPlayerData) event.getPlayer();
 			CreateCharacter character = (CreateCharacter) event.getEventData();
-			Characterdata cdata = new Characterdata();
+			CharacterData cdata = new CharacterData();
 			cdata.setCharactername(character.getName());
 			cdata.setGender(String.valueOf(character.getGender()));
 			Race r = CharacterPersistenceManager.getInstance().getRace(
@@ -106,8 +107,8 @@ public class CharacterEventController extends AccountServerBaseEventController {
 			status.setCoordinateX(1);
 			status.setCoordinateY(1);
 			status.setCoordinateZ(1);
-			status.setCharstatus("A");
-			status.setPvp("0");
+			status.setCharStatus("A");
+			status.setPvp(false);
 			status.setGamestatus("0");
 			CharacterVisualappearance cva = new CharacterVisualappearance();
 			cva.setCharacterdata(cdata);
@@ -138,7 +139,7 @@ public class CharacterEventController extends AccountServerBaseEventController {
 		}
 	}
 
-	private PlayerCharacterData getPlayerCharacterData(Characterdata cdata) {
+	private PlayerCharacterData getPlayerCharacterData(CharacterData cdata) {
         PlayerCharacterData playerData = new PlayerCharacterData();
 		playerData.setGender(cdata.getGender().charAt(0));
 		playerData.setName(cdata.getCharactername());
@@ -150,7 +151,7 @@ public class CharacterEventController extends AccountServerBaseEventController {
 		de.mbws.common.events.data.generated.PlayerCharacterStatus clientPlayerStatus = new de.mbws.common.events.data.generated.PlayerCharacterStatus();
 		CharacterStatus serverCharacterStatus = cdata.getCharacterStatus();
 		clientPlayerStatus.setGamestatus(serverCharacterStatus.getGamestatus());
-		clientPlayerStatus.setPvp(serverCharacterStatus.getPvp());
+		clientPlayerStatus.setPvp(String.valueOf(serverCharacterStatus.isPvp()));
 
 		// TODO: Kerim 26.12.2005: should we store heading/location in status or
 		// in data ?
@@ -171,28 +172,17 @@ public class CharacterEventController extends AccountServerBaseEventController {
 		playerData.setHeading(heading);
 
 		PlayerCharacterAttributes clientNormalValues = new PlayerCharacterAttributes();
-		clientNormalValues.setConstitution(cdata.getConstitution());
-		clientNormalValues.setDexterity(cdata.getDexterity());
 		clientNormalValues.setHealth(cdata.getHealth());
-		clientNormalValues.setIntelligence(cdata.getIntelligence());
 		clientNormalValues.setMana(cdata.getMana());
 		clientNormalValues.setStamina(cdata.getStamina());
-		clientNormalValues.setStrength(cdata.getStrength());
 		playerData.setNormalValues(clientNormalValues);
 
         PlayerCharacterAttributes clientcurrentValues = new PlayerCharacterAttributes();
-		clientcurrentValues.setConstitution(serverCharacterStatus
-				.getCurrentconstitution());
-		clientcurrentValues.setDexterity(serverCharacterStatus
-				.getCurrentdexterity());
-		clientcurrentValues.setHealth(serverCharacterStatus.getCurrenthealth());
-		clientcurrentValues.setIntelligence(serverCharacterStatus
-				.getCurrentinteligence());
-		clientcurrentValues.setMana(serverCharacterStatus.getCurrentmana());
+		clientcurrentValues.setHealth(serverCharacterStatus.getCurrentHealth());
+
+		clientcurrentValues.setMana(serverCharacterStatus.getCurrentMana());
 		clientcurrentValues.setStamina(serverCharacterStatus
-				.getCurrentstamina());
-		clientcurrentValues.setStrength(serverCharacterStatus
-				.getCurrentstrength());
+				.getCurrentStamina());
 		clientPlayerStatus.setCurrentAttributes(clientcurrentValues);
 
 		playerData.setStatus(clientPlayerStatus);

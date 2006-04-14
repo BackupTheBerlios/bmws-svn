@@ -1,152 +1,43 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC
     "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
-    
+
 <hibernate-mapping>
-<!-- 
-    Created by the Middlegen Hibernate plugin 2.2
+	<class name="de.mbws.server.data.db.generated.Npc" table="npc" lazy="false">
+		<id name="id" type="java.lang.Long" column="id">
+			<generator class="identity" />
+		</id>
 
-    http://boss.bekk.no/boss/middlegen/
-    http://www.hibernate.org/
--->
+		<property name="name" type="java.lang.String" column="name" not-null="true" length="40" />
+		<property name="health" type="int" column="health" not-null="true" length="10" />
+		<property name="mana" type="int" column="mana" not-null="true" length="10" />
+		<property name="stamina" type="int" column="stamina" not-null="true" length="10" />
+		<property name="age" type="int" column="age" not-null="true" length="10" />
+		<property name="special" type="boolean" column="isspecial" not-null="true" />
 
-<class 
-    name="de.mbws.server.data.db.generated.Npc" 
-    table="npc"
-    lazy="false"
->
+		<!-- bi-directional many-to-one association to Race -->
+		<many-to-one name="race" class="de.mbws.server.data.db.generated.Race" not-null="true">
+			<column name="race_id" />
+		</many-to-one>
 
-    <id
-        name="id"
-        type="java.lang.Long"
-        column="id"
-    >
-    
-        <generator class="assigned" />
-    </id>
+		<!-- bi-directional one-to-one association to NpcStatus -->
+		<one-to-one name="npcStatus" class="de.mbws.server.data.db.generated.NpcStatus" outer-join="auto" />
 
-    <property
-        name="name"
-        type="java.lang.String"
-        column="name"
-        not-null="true"
-        length="255"
-    />
-    <property
-        name="health"
-        type="int"
-        column="health"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="mana"
-        type="int"
-        column="mana"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="stamina"
-        type="int"
-        column="stamina"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="age"
-        type="int"
-        column="age"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="strength"
-        type="int"
-        column="strength"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="intelligence"
-        type="int"
-        column="intelligence"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="dexterity"
-        type="int"
-        column="dexterity"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="constitution"
-        type="int"
-        column="constitution"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="isspecial"
-        type="byte"
-        column="isspecial"
-        not-null="true"
-        length="1"
-    />
+		<!-- bi-directional one-to-many association to NpcWorldobjectMapping -->
+		<set name="npcWorldobjectMappings" lazy="true" inverse="true" cascade="all">
+			<key>
+				<column name="npc_id" />
+			</key>
+			<one-to-many class="de.mbws.server.data.db.generated.NpcWorldobjectMapping" />
+		</set>
 
-    <!-- Associations -->
-  
-    <!-- bi-directional many-to-one association to Race -->
-    <many-to-one
-        name="race"
-        class="de.mbws.server.data.db.generated.Race"
-        not-null="true"
-    >
-        <column name="race_id" />
-    </many-to-one>
-    <!-- bi-directional one-to-one association to NpcStatus -->
-    <one-to-one
-        name="npcStatus"
-        class="de.mbws.server.data.db.generated.NpcStatus"
-        outer-join="auto"
-    />
-    <!-- bi-directional one-to-many association to NpcWorldobjectMapping -->
-
-    <set
-        name="npcWorldobjectMappings"
-        lazy="true"
-        inverse="true"
-		cascade="all"
-
-    >
-        <key>
-            <column name="npc_id" />
-        </key>
-        
-        <one-to-many 
-            class="de.mbws.server.data.db.generated.NpcWorldobjectMapping"
-        />
-    </set>
-    <!-- bi-directional one-to-many association to NpcSkillMapping -->
-
-    <set
-        name="npcSkillMappings"
-        lazy="true"
-        inverse="true"
-		cascade="all"
-
-    >
-        <key>
-            <column name="npc_id" />
-        </key>
-        
-        <one-to-many 
-            class="de.mbws.server.data.db.generated.NpcSkillMapping"
-        />
-    </set>
-
-</class>
+		<!-- bi-directional one-to-many association to NpcSkillMapping -->
+		<set name="npcSkillMappings" lazy="true" inverse="true" cascade="all">
+			<key>
+				<column name="npc_id" />
+			</key>
+			<one-to-many class="de.mbws.server.data.db.generated.NpcSkillMapping" />
+		</set>
+	</class>
 </hibernate-mapping>

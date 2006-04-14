@@ -4,7 +4,6 @@ import de.mbws.common.Globals;
 import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.events.data.generated.CharacterData;
 import de.mbws.server.data.db.generated.Account;
-import de.mbws.server.data.db.generated.Characterdata;
 
 /**
  * Description:
@@ -14,14 +13,14 @@ import de.mbws.server.data.db.generated.Characterdata;
  */
 public class ServerPlayerData extends AbstractPlayerData {
     private Account account;
-	private Characterdata activeCharacter;
+	private de.mbws.server.data.db.generated.CharacterData activeCharacter;
 	private CharacterData movementInformation;
 
-	public Characterdata getActiveCharacter() {
+	public de.mbws.server.data.db.generated.CharacterData getActiveCharacter() {
 		return activeCharacter;
 	}
 
-	public void setActiveCharacter(Characterdata activeCharacter) {
+	public void setActiveCharacter(de.mbws.server.data.db.generated.CharacterData activeCharacter) {
 		this.activeCharacter = activeCharacter;
 	}
 

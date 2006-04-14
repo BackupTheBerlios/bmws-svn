@@ -38,7 +38,7 @@
     <!-- bi-directional many-to-one association to Characterdata -->
     <many-to-one
         name="characterdata"
-	    class="de.mbws.server.data.db.generated.Characterdata"
+	    class="de.mbws.server.data.db.generated.CharacterData"
 	    update="false"
 	    insert="false"
 	>

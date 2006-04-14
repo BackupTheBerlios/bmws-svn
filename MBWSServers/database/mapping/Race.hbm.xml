@@ -1,155 +1,44 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC
     "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
-    
+
 <hibernate-mapping>
-<!-- 
-    Created by the Middlegen Hibernate plugin 2.2
 
-    http://boss.bekk.no/boss/middlegen/
-    http://www.hibernate.org/
--->
+	<class name="de.mbws.server.data.db.generated.Race" table="race" lazy="false">
+		<id name="id" type="java.lang.Integer" column="id">
+			<generator class="identity" />
+		</id>
 
-<class 
-    name="de.mbws.server.data.db.generated.Race" 
-    table="race"
-    lazy="false"
->
+		<property name="name" type="java.lang.String" column="name" not-null="true" length="45" />
+		<property name="basehealth" type="int" column="basehealth" not-null="true" length="10" />
+		<property name="basemana" type="int" column="basemana" not-null="true" length="10" />
+		<property name="basestamina" type="int" column="basestamina" not-null="true" length="10" />
+		<property name="playable" type="boolean" column="isplayable" not-null="true" />
 
-    <id
-        name="id"
-        type="java.lang.Integer"
-        column="id"
-    >
-    
-        <generator class="assigned" />
-    </id>
+		<!-- bi-directional one-to-many association to SkillRaceMapping -->
+		<set name="skillRaceMappings" lazy="true" inverse="true" cascade="all">
+			<key>
+				<column name="race_id" />
+			</key>
+			<one-to-many class="de.mbws.server.data.db.generated.SkillRaceMapping" />
+		</set>
 
-    <property
-        name="name"
-        type="java.lang.String"
-        column="name"
-        not-null="true"
-        length="45"
-    />
-    <property
-        name="basehealth"
-        type="int"
-        column="basehealth"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="basemana"
-        type="int"
-        column="basemana"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="basestamina"
-        type="int"
-        column="basestamina"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="modifierStrength"
-        type="int"
-        column="modifier_strength"
-        not-null="true"
-        length="11"
-    />
-    <property
-        name="modifierIntelligence"
-        type="int"
-        column="modifier_intelligence"
-        not-null="true"
-        length="11"
-    />
-    <property
-        name="modifierDexterity"
-        type="int"
-        column="modifier_dexterity"
-        not-null="true"
-        length="11"
-    />
-    <property
-        name="modifierConstitution"
-        type="int"
-        column="modifier_constitution"
-        not-null="true"
-        length="11"
-    />
-    <property
-        name="isplayable"
-        type="byte"
-        column="isplayable"
-        not-null="true"
-        length="1"
-    />
-    <property
-        name="description"
-        type="java.lang.String"
-        column="description"
-        not-null="true"
-        length="65535"
-    />
+		<!-- bi-directional one-to-many association to Characterdata -->
+		<set name="characterdatas" lazy="true" inverse="true" cascade="all">
+			<key>
+				<column name="race_id" />
+			</key>
+			<one-to-many class="de.mbws.server.data.db.generated.CharacterData" />
+		</set>
 
-    <!-- Associations -->
-  
-    <!-- bi-directional one-to-many association to SkillRaceMapping -->
+		<!-- bi-directional one-to-many association to Npc -->
+		<set name="npcs" lazy="true" inverse="true" cascade="none">
+			<key>
+				<column name="race_id" />
+			</key>
+			<one-to-many class="de.mbws.server.data.db.generated.Npc" />
+		</set>
 
-    <set
-        name="skillRaceMappings"
-        lazy="true"
-        inverse="true"
-		cascade="all"
-
-    >
-        <key>
-            <column name="race_id" />
-        </key>
-        
-        <one-to-many 
-            class="de.mbws.server.data.db.generated.SkillRaceMapping"
-        />
-    </set>
-    <!-- bi-directional one-to-many association to Characterdata -->
-
-    <set
-        name="characterdatas"
-        lazy="true"
-        inverse="true"
-		cascade="all"
-
-    >
-        <key>
-            <column name="race_id" />
-        </key>
-        
-        <one-to-many 
-            class="de.mbws.server.data.db.generated.Characterdata"
-        />
-    </set>
-    <!-- bi-directional one-to-many association to Npc -->
-
-    <set
-        name="npcs"
-        lazy="true"
-        inverse="true"
-		cascade="all"
-
-    >
-        <key>
-            <column name="race_id" />
-        </key>
-        
-        <one-to-many 
-            class="de.mbws.server.data.db.generated.Npc"
-        />
-    </set>
-
-</class>
+	</class>
 </hibernate-mapping>

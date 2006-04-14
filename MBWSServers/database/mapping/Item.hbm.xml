@@ -1,106 +1,44 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC
     "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
-    
+
 <hibernate-mapping>
-<!-- 
-    Created by the Middlegen Hibernate plugin 2.2
+	<class name="de.mbws.server.data.db.generated.Item" table="item" lazy="false">
+		<id name="id" type="java.lang.Long" column="id">
+			<generator class="identity" />
+		</id>
 
-    http://boss.bekk.no/boss/middlegen/
-    http://www.hibernate.org/
--->
+		<property name="name" type="java.lang.String" column="name" not-null="true" length="45" />
+		<property name="maxCondition" type="int" column="max_condition" not-null="true" length="10" />
+		<property name="weight" type="long" column="weight" not-null="true" length="10" />
+		<property name="size" type="long" column="item_size" not-null="true" length="10" />
+		<property name="containerSize" type="int" column="containersize" not-null="true" length="10" />	
+       	
+		<!-- bi-directional one-to-many association to CharacterItemMapping -->
+		<set name="characterItemMappings" lazy="true" inverse="true" cascade="none">
+			<key>
+				<column name="item_id" />
+			</key>
+			<one-to-many class="de.mbws.server.data.db.generated.CharacterItemMapping" />
+		</set>
 
-<class 
-    name="de.mbws.server.data.db.generated.Item" 
-    table="item"
-    lazy="false"
->
+		<!-- bi-directional many-to-one association to ItemType -->
+		<many-to-one name="itemType" class="de.mbws.server.data.db.generated.ItemType" not-null="true">
+			<column name="item_type_id" />
+		</many-to-one>
+		
+		<joined-subclass name="de.mbws.server.data.db.generated.Weapon" table="weapon">
+        	<key column="id"/>
+	        <property name="damageFactor" type="int" not-null="true" column="damage_factor"/>
+	        <property name="minSkillValue" type="int" not-null="true" column="min_skill_value"/>
+	        <property name="range" type="int" column="range"/>
+    	</joined-subclass>
 
-    <id
-        name="id"
-        type="java.lang.Long"
-        column="id"
-    >
-    
-        <generator class="assigned" />
-    </id>
-
-    <property
-        name="name"
-        type="java.lang.String"
-        column="name"
-        not-null="true"
-        length="45"
-    />
-    <property
-        name="maxCondition"
-        type="int"
-        column="max_condition"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="weight"
-        type="long"
-        column="weight"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="size"
-        type="long"
-        column="size"
-        not-null="true"
-        length="10"
-    />
-    <property
-        name="description"
-        type="java.lang.String"
-        column="description"
-        not-null="true"
-        length="65535"
-    />
-    <property
-        name="modelName"
-        type="java.lang.String"
-        column="model_name"
-        length="65535"
-    />
-    <property
-        name="iconName"
-        type="java.lang.String"
-        column="icon_name"
-        length="65535"
-    />
-
-    <!-- Associations -->
-  
-    <!-- bi-directional one-to-many association to CharacterItemMapping -->
-
-    <set
-        name="characterItemMappings"
-        lazy="true"
-        inverse="true"
-		cascade="all"
-
-    >
-        <key>
-            <column name="item_id" />
-        </key>
-        
-        <one-to-many 
-            class="de.mbws.server.data.db.generated.CharacterItemMapping"
-        />
-    </set>
-    <!-- bi-directional many-to-one association to ItemType -->
-    <many-to-one
-        name="itemType"
-        class="de.mbws.server.data.db.generated.ItemType"
-        not-null="true"
-    >
-        <column name="item_type_id" />
-    </many-to-one>
-
-</class>
+		<joined-subclass name="de.mbws.server.data.db.generated.Armor" table="armor">
+        	<key column="id"/>
+	        <property name="damageReducing" type="int" not-null="true" column="damage_reducing"/>
+	        <property name="minSkillValue" type="int" not-null="true" column="min_skill_value"/>
+    	</joined-subclass>
+	</class>
 </hibernate-mapping>

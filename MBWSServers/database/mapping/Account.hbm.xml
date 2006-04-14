@@ -1,65 +1,25 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC
     "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
-    
+
 <hibernate-mapping>
-<!-- 
-    Created by the Middlegen Hibernate plugin 2.2
+	<class name="de.mbws.server.data.db.generated.Account" table="account" lazy="false">
+		<id name="username" type="java.lang.String" column="username">
+			<generator class="assigned" />
+		</id>
 
-    http://boss.bekk.no/boss/middlegen/
-    http://www.hibernate.org/
--->
+		<property name="password" type="java.lang.String" column="password" not-null="true" length="200" />
+		<property name="emailaddress" type="java.lang.String" column="emailaddress" not-null="true" length="200" />
+		<property name="active" type="boolean" column="active" not-null="true" />
+		<property name="accesslevel" type="short" column="accesslevel" not-null="true" length="1" />
 
-<class 
-    name="de.mbws.server.data.db.generated.Account" 
-    table="account"
-    lazy="false"
->
-
-    <id
-        name="username"
-        type="java.lang.String"
-        column="username"
-    >
-    
-        <generator class="assigned" />
-    </id>
-
-    <property
-        name="password"
-        type="java.lang.String"
-        column="password"
-        not-null="true"
-        length="200"
-    />
-    <property
-        name="emailaddress"
-        type="java.lang.String"
-        column="emailaddress"
-        not-null="true"
-        length="45"
-    />
-
-    <!-- Associations -->
-  
-    <!-- bi-directional one-to-many association to Characterdata -->
-
-    <set
-        name="characterdatas"
-        lazy="true"
-        inverse="true"
-		cascade="all"
-
-    >
-        <key>
-            <column name="account_username" />
-        </key>
-        
-        <one-to-many 
-            class="de.mbws.server.data.db.generated.Characterdata"
-        />
-    </set>
-
-</class>
+		<!-- bi-directional one-to-many association to Characterdata -->
+		<set name="characterdatas" lazy="true" inverse="true" cascade="none" sort="natural">
+			<key>
+				<column name="account_username" />
+			</key>
+			<one-to-many class="de.mbws.server.data.db.generated.CharacterData" />
+		</set>
+	</class>
 </hibernate-mapping>
