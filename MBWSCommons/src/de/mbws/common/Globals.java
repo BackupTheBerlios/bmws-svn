@@ -50,7 +50,8 @@ public class Globals {
     public static final char GENDER_MALE = 'M';
     public static final char GENDER_FEMALE = 'F';
     
-    
+    public static final byte ON = 1;
+    public static final byte OFF = 0;
 }
 
 
