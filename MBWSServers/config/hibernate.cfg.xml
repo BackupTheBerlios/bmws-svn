@@ -6,7 +6,7 @@
 		<property name="show_sql">true</property>
 		<!-- local connection properties -->
 		<property name="hibernate.connection.url">
-			jdbc:mysql://localhost:3306/game?autoReconnect=true
+			jdbc:mysql://localhost:3306/fuckingtest
 		</property>
 		<property name="hibernate.connection.driver_class">
 			com.mysql.jdbc.Driver
@@ -18,9 +18,6 @@
 		<property name="dialect">
 			org.hibernate.dialect.MySQLInnoDBDialect
 		</property>
-		<property name="dialect">
-			org.hibernate.dialect.MySQLDialect
-		</property>		
 
 		<property name="hibernate.show_sql">false</property>
 		<property name="hibernate.transaction.factory_class">
@@ -40,30 +37,30 @@
 
 
 
-		<mapping resource="de/mbws/server/data/db/generated/Account.hbm.xml" />
-		<mapping resource="de/mbws/server/data/db/generated/Characterdata.hbm.xml" />
-		<mapping resource="de/mbws/server/data/db/generated/CharacterItemMapping.hbm.xml" />
-		<mapping resource="de/mbws/server/data/db/generated/CharacterSkillMapping.hbm.xml" />
-		<mapping resource="de/mbws/server/data/db/generated/CharacterStatus.hbm.xml" />
-		<mapping resource="de/mbws/server/data/db/generated/CharacterVisualappearance.hbm.xml" />
-		<mapping resource="de/mbws/server/data/db/generated/CharacterWorldobjectMapping.hbm.xml" />
-		<mapping resource="de/mbws/server/data/db/generated/Configuration.hbm.xml" />
-		<mapping resource="de/mbws/server/data/db/generated/Item.hbm.xml" />
-		<mapping resource="de/mbws/server/data/db/generated/ItemType.hbm.xml" />
-		<mapping resource="de/mbws/server/data/db/generated/Map.hbm.xml" />
-		<mapping resource="de/mbws/server/data/db/generated/Npc.hbm.xml" />
-		<mapping resource="de/mbws/server/data/db/generated/NpcSkillMapping.hbm.xml" />
-		<mapping resource="de/mbws/server/data/db/generated/NpcStatus.hbm.xml" />
-		<mapping resource="de/mbws/server/data/db/generated/NpcWorldobjectMapping.hbm.xml" />
-		<mapping resource="de/mbws/server/data/db/generated/Race.hbm.xml" />
-		<mapping resource="de/mbws/server/data/db/generated/Skill.hbm.xml" />
-		<mapping resource="de/mbws/server/data/db/generated/SkillGroup.hbm.xml" />
-		<mapping resource="de/mbws/server/data/db/generated/SkillRaceMapping.hbm.xml" />
-		<mapping resource="de/mbws/server/data/db/generated/Worldobject.hbm.xml" />
-		<mapping resource="de/mbws/server/data/db/generated/WorldobjectType.hbm.xml" />
-		<mapping resource="de/mbws/server/data/db/generated/Zoneserver.hbm.xml" />
-		<mapping resource="de/mbws/server/data/db/generated/ZoneserverMapMapping.hbm.xml" />
-		<mapping resource="de/mbws/server/data/db/generated/Language.hbm.xml" />
-		<mapping resource="de/mbws/server/data/db/generated/LanguageTextMapping.hbm.xml" />
+		<mapping resource="Account.hbm.xml" />
+		<mapping resource="Characterdata.hbm.xml" />
+		<mapping resource="CharacterItemMapping.hbm.xml" />
+		<mapping resource="CharacterSkillMapping.hbm.xml" />
+		<mapping resource="CharacterStatus.hbm.xml" />
+		<mapping resource="CharacterVisualappearance.hbm.xml" />
+		<mapping resource="CharacterWorldobjectMapping.hbm.xml" />
+		<mapping resource="Configuration.hbm.xml" />
+		<mapping resource="Item.hbm.xml" />
+		<mapping resource="ItemType.hbm.xml" />
+		<mapping resource="Map.hbm.xml" />
+		<mapping resource="Npc.hbm.xml" />
+		<mapping resource="NpcSkillMapping.hbm.xml" />
+		<mapping resource="NpcStatus.hbm.xml" />
+		<mapping resource="NpcWorldobjectMapping.hbm.xml" />
+		<mapping resource="Race.hbm.xml" />
+		<mapping resource="Skill.hbm.xml" />
+		<mapping resource="SkillGroup.hbm.xml" />
+		<mapping resource="SkillRaceMapping.hbm.xml" />
+		<mapping resource="Worldobject.hbm.xml" />
+		<mapping resource="WorldobjectType.hbm.xml" />
+		<mapping resource="Zoneserver.hbm.xml" />
+		<mapping resource="ZoneserverMapMapping.hbm.xml" />
+		<mapping resource="Language.hbm.xml" />
+		<mapping resource="LanguageTextMapping.hbm.xml" />
 	</session-factory>
 </hibernate-configuration>
