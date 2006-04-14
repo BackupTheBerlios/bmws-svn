@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<project name="MBWS Hibernate Generation" default="gen-hibernate" basedir=".">
+
+	<property name="common_lib.dir" value="../../MBWSCommons/lib" />
+	<property name="schema_dest.dir" value="../database" />
+	<property name="objects_dest.dir" value="../src/" />
+	<property name="mapping_and_classes.dir" value="../bin/" />
+	<property name="hibernate_config.file" value="../config/hibernate.cfg.xml" />
+
+	<target name="init-hibernate">
+		<path id="class.path">
+			<fileset dir="${common_lib.dir}" includes="*.jar" />
+			<fileset dir="../lib">
+				<include name="**/*.jar" />
+			</fileset>
+		</path>
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="class.path" />
+	</target>
+
+	<target name="gen-ddl" depends="init-hibernate">
+		<hibernatetool destdir="${schema_dest.dir}">
+			<classpath location="${mapping_and_classes.dir}" />
+			<configuration configurationfile="${hibernate_config.file}" />
+			<hbm2ddl drop="false" create="true" export="false" update="false" outputfilename="schema.sql" format="true" />
+		</hibernatetool>
+	</target>
+
+	<target name="gen-java" depends="init-hibernate">
+		<hibernatetool destdir="${schema_dest.dir}">
+			<classpath location="${mapping_and_classes.dir}" />
+			<configuration configurationfile="${hibernate_config.file}" />
+			<hbm2java jdk5="true" destdir="${objects_dest.dir}" />
+		</hibernatetool>
+	</target>
+
+	<target name="gen-hibernate" depends="gen-ddl, gen-java" />
+</project>
