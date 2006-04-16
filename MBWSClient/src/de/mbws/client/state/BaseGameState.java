@@ -19,8 +19,8 @@ import com.jmex.awt.swingui.JMEDesktop;
 import de.mbws.client.state.handler.BaseInputHandler;
 
 /**
- * BaseGameState for MBWS; We add a second node for the gui system (using JMEDesktop),
- * which is drawn separatly after rootNode! 
+ * BaseGameState for MBWS; We add a second node for the gui system (using
+ * JMEDesktop), which is drawn separatly after rootNode!
  * 
  * @author Azarai
  */
@@ -48,7 +48,7 @@ public abstract class BaseGameState extends BasicGameState {
 		initInputHandler();
 		initJMEDesktop();
 		fullScreen();
-      
+
 		// Update geometric and rendering information for the rootNode.
 		rootNode.updateGeometricState(0.0f, true);
 		rootNode.updateRenderState();
@@ -59,11 +59,12 @@ public abstract class BaseGameState extends BasicGameState {
 	@Override
 	public void update(float tpf) {
 		super.update(tpf);
-		//        if (jmeDesktop.getFocusOwner() == null || jmeDesktop.getFocusOwner() == jmeDesktop.getJDesktop()) {
-		//            input.setEnabled(true);
-		//        } else {
-		//            input.setEnabled(false);
-		//        }
+		// if (jmeDesktop.getFocusOwner() == null || jmeDesktop.getFocusOwner() ==
+		// jmeDesktop.getJDesktop()) {
+		// input.setEnabled(true);
+		// } else {
+		// input.setEnabled(false);
+		// }
 		if (input != null && isActive()) {
 			input.update(tpf);
 		}
@@ -79,7 +80,6 @@ public abstract class BaseGameState extends BasicGameState {
 					getInputHandler());
 			jmeDesktop.setLightCombineMode(LightState.OFF);
 		}
-        
 
 		desktopNode = new Node("desktop node");
 		desktopNode.attachChild(jmeDesktop);
@@ -150,6 +150,7 @@ public abstract class BaseGameState extends BasicGameState {
 
 	/**
 	 * Shows a JPanel centered on the jmeDesktop
+	 * 
 	 * @param panel
 	 */
 	public void showComponentCenteredOnScreen(JComponent panel) {
@@ -158,7 +159,7 @@ public abstract class BaseGameState extends BasicGameState {
 		int y = (desktopPane.getHeight() / 2) - (panel.getHeight() / 2);
 		panel.setLocation(x, y);
 		desktopPane.add(panel);
-		//        desktopPane.revalidate();
+		// desktopPane.revalidate();
 	}
 
 	public void showComponentCenteredOnScreenOnTop(JComponent panel) {
@@ -170,17 +171,16 @@ public abstract class BaseGameState extends BasicGameState {
 		desktopPane.add(panel);
 		desktopPane.revalidate();
 	}
-	
+
 	public void showComponentCenteredOnScreenOnLayer(JComponent panel, int layer) {
 		JDesktopPane desktopPane = jmeDesktop.getJDesktop();
 		int x = (desktopPane.getWidth() / 2) - (panel.getWidth() / 2);
 		int y = (desktopPane.getHeight() / 2) - (panel.getHeight() / 2);
 		panel.setLocation(x, y);
-		
+
 		desktopPane.add(panel, new Integer(layer));
 		desktopPane.revalidate();
 	}
-	
 
 	public void removeMe(JPanel panel) {
 		panel.setVisible(false);
@@ -199,7 +199,7 @@ public abstract class BaseGameState extends BasicGameState {
 
 	private void displayOptionPane(String message, int type) {
 		final JDesktopPane desktopPane = jmeDesktop.getJDesktop();
-		final JInternalFrame modalDialog = new JInternalFrame("Dialog");
+		final JInternalFrame modalDialog = new JInternalFrame("");
 
 		JOptionPane optionPane = new JOptionPane(message, type);
 		modalDialog.getContentPane().add(optionPane);
@@ -208,10 +208,10 @@ public abstract class BaseGameState extends BasicGameState {
 		desktopPane.add(modalDialog, 0);
 		modalDialog.setVisible(true);
 		modalDialog.setSize(modalDialog.getPreferredSize());
-		modalDialog.setLocation((desktopPane.getWidth() - modalDialog
-				.getWidth()) / 2, (desktopPane.getHeight() - modalDialog
-				.getHeight()) / 2);
-		//        jmeDesktop.setFocusOwner( optionPane );
+		modalDialog.setLocation(
+				(desktopPane.getWidth() - modalDialog.getWidth()) / 2, (desktopPane
+						.getHeight() - modalDialog.getHeight()) / 2);
+		// jmeDesktop.setFocusOwner( optionPane );
 
 		optionPane.addPropertyChangeListener(JOptionPane.VALUE_PROPERTY,
 				new PropertyChangeListener() {
@@ -228,15 +228,15 @@ public abstract class BaseGameState extends BasicGameState {
 	@Override
 	public void cleanup() {
 		super.cleanup();
-        if (jmeDesktop != null) {
-            jmeDesktop.getJDesktop().removeAll();
-            jmeDesktop.dispose();
-            jmeDesktop = null;            
-        }
-        desktopNode = null;
-//		input.clearActions();
-        guiRootNode.detachAllChildren();
-        input = null;
+		if (jmeDesktop != null) {
+			jmeDesktop.getJDesktop().removeAll();
+			jmeDesktop.dispose();
+			jmeDesktop = null;
+		}
+		desktopNode = null;
+		// input.clearActions();
+		guiRootNode.detachAllChildren();
+		input = null;
 		cam = null;
 	}
 }

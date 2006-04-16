@@ -9,7 +9,6 @@ import java.net.URL;
 import java.util.logging.Level;
 
 import javax.swing.UIManager;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
@@ -17,6 +16,9 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.jvnet.substance.SubstanceLookAndFeel;
+import org.jvnet.substance.button.ClassicButtonShaper;
+import org.jvnet.substance.theme.SubstanceBrownTheme;
 
 import com.jme.app.AbstractGame;
 import com.jme.app.BaseGame;
@@ -31,6 +33,7 @@ import com.jme.util.Timer;
 
 import de.mbws.client.controller.ClientNetworkController;
 import de.mbws.client.net.ActionQueue;
+import de.mbws.client.sound.SoundManager;
 import de.mbws.client.state.MainMenuState;
 
 /**
@@ -63,7 +66,7 @@ public class MBWSClient extends BaseGame {
 	 * This is called every frame in BaseGame.start()
 	 * 
 	 * @param interpolation
-	 *            unused in this implementation
+	 *          unused in this implementation
 	 * @see AbstractGame#update(float interpolation)
 	 */
 	protected final void update(float interpolation) {
@@ -79,7 +82,7 @@ public class MBWSClient extends BaseGame {
 	 * This is called every frame in BaseGame.start(), after update()
 	 * 
 	 * @param interpolation
-	 *            unused in this implementation
+	 *          unused in this implementation
 	 * @see AbstractGame#render(float interpolation)
 	 */
 	protected final void render(float interpolation) {
@@ -90,19 +93,33 @@ public class MBWSClient extends BaseGame {
 	}
 
 	/**
-	 * Creates display, sets up camera, and binds keys. Called in
-	 * BaseGame.start() directly after the dialog box.
+	 * Creates display, sets up camera, and binds keys. Called in BaseGame.start()
+	 * directly after the dialog box.
 	 * 
 	 * @see AbstractGame#initSystem()
 	 */
 	protected final void initSystem() {
 		try {
 			languageResources = new ValueMapper();
-			UIManager.setLookAndFeel(new MetalLookAndFeel());
+			// SubstanceLookAndFeel.setCurrentTheme(new SubstanceEbonyTheme());
+			SubstanceLookAndFeel slf = new SubstanceLookAndFeel();
+			// Map<String, ButtonShaperInfo> allShapers = SubstanceLookAndFeel
+			// .getAllButtonShapers();
+			//
+			// UIManager.put(SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, allShapers
+			// .get("Classic").getShaperClassName());// ENABLE_INVERTED_THEMES,
+			// // Boolean.TRUE);
+			SubstanceLookAndFeel.setCurrentButtonShaper(new ClassicButtonShaper());
+			UIManager.setLookAndFeel(slf);// MetalLookAndFeel());
+			SubstanceLookAndFeel.setCurrentTheme(new SubstanceBrownTheme());
+			// SwingUtilities.updateComponentTreeUI(Frame.getFrames()[0]);
+			// SubstanceLookAndFeel.setCurrentWatermark(new
+			// SubstanceStripeWatermark());
+			// SubstanceEbonyTheme.getGray(ThemeKind.DARK).getForegroundColor();
 
 			/**
-			 * Get a DisplaySystem acording to the renderer selected in the
-			 * startup box.
+			 * Get a DisplaySystem acording to the renderer selected in the startup
+			 * box.
 			 */
 			// display =
 			// DisplaySystem.getDisplaySystem(properties.getRenderer());
@@ -111,13 +128,12 @@ public class MBWSClient extends BaseGame {
 			// properties.getDepth(), properties.getFreq(), properties
 			// .getFullscreen());
 			//			
-			display = DisplaySystem.getDisplaySystem(mbwsConfiguration
-					.getString("RENDERER", "LWJGL"));
+			display = DisplaySystem.getDisplaySystem(mbwsConfiguration.getString(
+					"RENDERER", "LWJGL"));
 			display.createWindow(mbwsConfiguration.getInt("WIDTH", 640),
-					mbwsConfiguration.getInt("HEIGHT", 480), mbwsConfiguration
-							.getInt("DEPTH", 16), mbwsConfiguration.getInt(
-							"FREQ", 60), mbwsConfiguration.getBoolean(
-							"FULLSCREEN", false));
+					mbwsConfiguration.getInt("HEIGHT", 480), mbwsConfiguration.getInt(
+							"DEPTH", 16), mbwsConfiguration.getInt("FREQ", 60),
+					mbwsConfiguration.getBoolean("FULLSCREEN", false));
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -125,8 +141,7 @@ public class MBWSClient extends BaseGame {
 		}
 
 		/** Get a high resolution timer for FPS updates. */
-		timer = Timer
-				.getTimer(mbwsConfiguration.getString("RENDERER", "LWJGL"));
+		timer = Timer.getTimer(mbwsConfiguration.getString("RENDERER", "LWJGL"));
 		// timer = Timer.getTimer(properties.getRenderer());
 
 	}
@@ -135,8 +150,8 @@ public class MBWSClient extends BaseGame {
 	 * Called in BaseGame.start() after initSystem(). We only create the
 	 * GameStateManager and add to it two states (intro and menu). Then we
 	 * activate the first one in order to have it rendered. New states should be
-	 * added by other states and not here. Keep in mind to clean up however.
-	 * Also we start the Networkcontroller.
+	 * added by other states and not here. Keep in mind to clean up however. Also
+	 * we start the Networkcontroller.
 	 * 
 	 * @see AbstractGame#initGame()
 	 */
@@ -144,6 +159,7 @@ public class MBWSClient extends BaseGame {
 		instance = this;
 		display.setTitle(CLIENT);
 		ClientNetworkController.getInstance().start();
+		SoundManager.getInstance();
 		GameStateManager.create();
 		// TODO: Kerim : Reactivate introstate later
 		// GameState intro = new IntroState("intro");

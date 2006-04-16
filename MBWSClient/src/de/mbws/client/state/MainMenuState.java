@@ -21,9 +21,9 @@ import com.jme.scene.state.LightState;
 import com.jme.scene.state.TextureState;
 import com.jme.util.LoggingSystem;
 import com.jme.util.TextureManager;
-import com.jmex.sound.openAL.SoundSystem;
 
 import de.mbws.client.gui.mainmenu.LoginPanel;
+import de.mbws.client.sound.SoundManager;
 import de.mbws.client.state.handler.MainMenuHandler;
 
 /**
@@ -34,16 +34,11 @@ public class MainMenuState extends BaseGameState {
 
 	// /** THE CURSOR NODE WHICH HOLDS THE MOUSE GOTTEN FROM INPUT. */
 	// private Node cursor;
-    LoginPanel loginPanel;
-	private int musicID;
+	LoginPanel loginPanel;
 
 	public MainMenuState(String name) {
 		super(name);
-		SoundSystem.init(null, SoundSystem.OUTPUT_DEFAULT);
-		musicID = SoundSystem.createStream("data/audio/music/intro.ogg", false);
-		if (SoundSystem.isStreamOpened(musicID)) {
-//			SoundSystem.playStream(musicID);
-		}
+		SoundManager.getInstance().startMusic(SoundManager.INTRO, false);
 		// initGUI();
 		// initCursor();
 
@@ -59,13 +54,13 @@ public class MainMenuState extends BaseGameState {
 	private void setupMenu() {
 		// jmeDesktop.getJDesktop().setBackground(new Color(1, 1, 1, 0.2f));
 		JDesktopPane desktopPane = jmeDesktop.getJDesktop();
-//		desktopPane.removeAll();
-        loginPanel = new LoginPanel(getInputHandler());
+		// desktopPane.removeAll();
+		loginPanel = new LoginPanel(getInputHandler());
 		int x = (desktopPane.getWidth() / 2) - (loginPanel.getWidth() / 2);
 		int y = (desktopPane.getHeight() / 2) - (loginPanel.getHeight() / 2);
 		loginPanel.setLocation(x, y);
-		desktopPane.add(loginPanel,JLayeredPane.DEFAULT_LAYER);
-		//desktopPane.setLayer(loginPanel, JLayeredPane.DEFAULT_LAYER);
+		desktopPane.add(loginPanel, JLayeredPane.DEFAULT_LAYER);
+		// desktopPane.setLayer(loginPanel, JLayeredPane.DEFAULT_LAYER);
 		desktopPane.repaint();
 		desktopPane.revalidate();
 	}
@@ -115,8 +110,8 @@ public class MainMenuState extends BaseGameState {
 	private void initGUI() {
 		Quad backgroundQuad = new Quad("background");
 		backgroundQuad.initialize(display.getWidth(), display.getHeight());
-		backgroundQuad.setLocalTranslation((new Vector3f(
-				display.getWidth() / 2, display.getHeight() / 2, 0)));
+		backgroundQuad.setLocalTranslation((new Vector3f(display.getWidth() / 2,
+				display.getHeight() / 2, 0)));
 
 		LoggingSystem.getLogger().log(
 				Level.INFO,
@@ -127,8 +122,7 @@ public class MainMenuState extends BaseGameState {
 		try {
 			ts.setTexture(TextureManager.loadTexture(new File(
 					"data/images/IntroAndMainMenu/Background.jpg").toURL(),
-					Texture.MM_LINEAR, Texture.FM_LINEAR, ts
-							.getMaxAnisotropic(), true));
+					Texture.MM_LINEAR, Texture.FM_LINEAR, ts.getMaxAnisotropic(), true));
 		} catch (MalformedURLException e) {
 			logger.warn("Background image not found");
 			e.printStackTrace();
@@ -150,9 +144,9 @@ public class MainMenuState extends BaseGameState {
 		input = new MainMenuHandler(this);
 	}
 
-    @Override
-    public void cleanup() {
-        loginPanel = null;
-        super.cleanup();
-    }
+	@Override
+	public void cleanup() {
+		loginPanel = null;
+		super.cleanup();
+	}
 }

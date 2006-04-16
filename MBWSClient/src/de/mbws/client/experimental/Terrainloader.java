@@ -312,8 +312,9 @@ public class Terrainloader extends BaseSimpleGame {
 
 		rootNode.attachChild(terrain);
 		try {
-			terrain.init(rootNode, display, "data/world/world",
+			terrain.init(rootNode, cam, display, "data/world/world",
 					"./data/objects");// "data/characters/generic/1/M");
+			terrain.setVisibilityRadius(1000);
 		} catch (SAXException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

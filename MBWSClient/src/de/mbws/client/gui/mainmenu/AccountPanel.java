@@ -1,18 +1,14 @@
 package de.mbws.client.gui.mainmenu;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import javax.swing.border.BevelBorder;
+import javax.swing.*;
 
-import se.datadosen.component.RiverLayout;
-
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
 import com.jme.input.InputHandler;
 
 import de.mbws.client.MBWSClient;
@@ -25,240 +21,168 @@ import de.mbws.client.state.handler.MainMenuHandler;
 import de.mbws.common.events.data.generated.AccountData;
 import de.mbws.common.utils.StringUtils;
 
-/**
- * Description:
- * 
- * @author Azarai
- */
-public class AccountPanel extends JPanel {
+public class AccountPanel extends JPanel implements ActionListener {
 
-	private JLabel usernameLabel = null;
-
-	private JTextField usernameTextField = null;
-
-	private JLabel passwordLabel = null;
-
-	private JPasswordField passwordTextField = null;
-
-	private JLabel verifyPasswordLabel = null;
-
-	private JPasswordField verifyPasswordTextField = null;
-
-	private JLabel emailAddressLabel = null;
-
-	private JTextField emailAddressTextField = null;
-
-	private JButton createButton = null;
-
-	private JButton cancelButton = null;
-
-	private JLabel titleLabel = null;
-
+	private JLabel emailLb;
+	private JLabel passwordLb;
+	private JLabel passwordVerificationLb;
+	private JLabel loginLb;
+	private JTextField loginTf;
+	private JTextField emailTf;
+	private JPasswordField passwordTf;
+	private JButton okBtn;
+	private JButton cancelBtn;
 	private InputHandler inputHandler;
-
-	// private Image backgroundImage = null;
+	private JPasswordField passwordVerificationTf;
 
 	/**
-	 * This is the default constructor
+	 * test Constructor.
 	 */
+	public AccountPanel() {
+		this.initialize();
+	}
+
 	public AccountPanel(InputHandler inputHandler) {
 		super();
 		this.inputHandler = inputHandler;
 		initialize();
+		setSize(640, 480);
+
+	}
+
+	/**
+	 * Initialize method.
+	 */
+	private void initialize() {
+
+		String rowDef = "100dlu,p,20dlu,p,20dlu,p,20dlu,p,20dlu,p,25dlu,p,20dlu,p";
+		String colDef = "20dlu,left:40dlu:grow,2dlu,60dlu:grow,2dlu,left:40dlu,20dlu";
+
+		FormLayout layout = new FormLayout(colDef, rowDef);
+		this.setLayout(layout);
+		// setBackground(Color.GRAY);
+		createLabels();
+		createTextFields();
+		createButtons();
+
+		CellConstraints cons = new CellConstraints();
+
+		add(loginLb, cons.xywh(2, 2, 1, 1));
+		add(loginTf, cons.xywh(4, 2, 1, 1));
+		add(passwordLb, cons.xywh(2, 4, 1, 1));
+		add(passwordTf, cons.xywh(4, 4, 1, 1));
+		add(passwordVerificationLb, cons.xywh(2, 5, 1, 1));
+		add(passwordVerificationTf, cons.xywh(4, 5, 1, 1));
+		add(emailLb, cons.xywh(2, 6, 1, 1));
+		add(emailTf, cons.xywh(4, 6, 3, 1));
+
+		add(okBtn, cons.xywh(5, 14, 2, 1));
+		add(cancelBtn, cons.xywh(2, 14, 1, 1));
+		okBtn.setEnabled(false);
+	}
+
+	private void createLabels() {
+		loginLb = new JLabel();
+		loginLb.setText(ValueMapper.getText(ClientGlobals.MENU_LABEL_USERNAME));
+
+		passwordLb = new JLabel();
+		passwordLb.setText(ValueMapper.getText(ClientGlobals.MENU_LABEL_PASSWORD));
+
+		passwordVerificationLb = new JLabel();
+		passwordVerificationLb.setText(ValueMapper
+				.getText(ClientGlobals.ACCOUNT_CREATION_LABEL_PASSWORDVERIFICATION));
+
+		emailLb = new JLabel();
+		emailLb.setText(ValueMapper
+				.getText(ClientGlobals.ACCOUNT_CREATION_LABEL_EMAILADRESS));
+	}
+
+	private void createTextFields() {
+		loginTf = new JTextField();
+		loginTf.addActionListener(this);
+
+		passwordTf = new JPasswordField();
+		passwordTf.addActionListener(this);
+
+		passwordVerificationTf = new JPasswordField();
+		passwordVerificationTf.addActionListener(this);
+
+		emailTf = new JTextField();
+		emailTf.addActionListener(this);
+	}
+
+	private void createButtons() {
+		okBtn = new JButton();
+		okBtn.setText(ValueMapper
+				.getText(ClientGlobals.CHARACTER_CREATION_BUTTON_CREATE_CHARACTER));
+		okBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AccountData account = new AccountData();
+				account.setUserName(loginTf.getText().trim());
+				try {
+					String pass = new String(passwordTf.getPassword());
+					account.setPassword(StringUtils.hashAndHex(pass.trim()));
+					account.setEmailAddress(emailTf.getText().trim());
+
+					ClientNetworkController.getInstance().connect(
+							MBWSClient.mbwsConfiguration
+									.getString(ClientGlobals.ACCOUNT_SERVER_IP),
+							MBWSClient.mbwsConfiguration
+									.getInt(ClientGlobals.ACCOUNT_SERVER_PORT));
+				} catch (Exception ex) {
+					// FIXME should handle this
+				}
+				ClientNetworkController.getInstance().handleOutgoingEvent(
+						AccountController.getInstance().createRegisterEvent(account,
+								ClientPlayerData.getInstance()));
+			}
+		});
+
+		cancelBtn = new JButton();
+		cancelBtn.setText(ValueMapper.getText(ClientGlobals.GENERIC_BUTTON_BACK));
+		cancelBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				getInputHandler().getState().removeMe((JPanel) cancelBtn.getParent());
+			}
+		});
+
 	}
 
 	private MainMenuHandler getInputHandler() {
 		return (MainMenuHandler) inputHandler;
 	}
 
-	/**
-	 * This method initializes this
-	 * 
-	 * @return void
-	 */
-	private void initialize() {
-		// backgroundImage = new
-		// ImageIcon("data/images/menu/background.png").getImage();
-		titleLabel = new JLabel();
-		titleLabel.setText(ValueMapper
-				.getText(ClientGlobals.MENU_BUTTON_CREATE_ACCOUNT));
-		emailAddressLabel = new JLabel();
-		emailAddressLabel.setText(ValueMapper
-				.getText(ClientGlobals.ACCOUNT_CREATION_LABEL_EMAILADRESS));
-		emailAddressLabel.setForeground(Color.WHITE);
-		verifyPasswordLabel = new JLabel();
-		verifyPasswordLabel
-				.setText(ValueMapper
-						.getText(ClientGlobals.ACCOUNT_CREATION_LABEL_PASSWORDVERIFICATION));
-		verifyPasswordLabel.setForeground(Color.WHITE);
-		passwordLabel = new JLabel();
-		passwordLabel.setText(ValueMapper
-				.getText(ClientGlobals.MENU_LABEL_PASSWORD));
-		passwordLabel.setForeground(Color.WHITE);
-		usernameLabel = new JLabel();
-		usernameLabel.setText(ValueMapper
-				.getText(ClientGlobals.MENU_LABEL_USERNAME));
-		usernameLabel.setForeground(Color.WHITE);
-		this.setLayout(new RiverLayout());
-		// this.setSize(backgroundImage.getWidth(null),
-		// backgroundImage.getHeight(null));
-		this.setSize(300, 300);
-		// this.setOpaque(false);
-		this.setBackground(new Color(180, 180, 180));
-		this.setBorder(new BevelBorder(BevelBorder.RAISED));
-		this.add("center", titleLabel);
-		this.add("p left", usernameLabel);
-		this.add("tab hfill", getUsernameTextField());
-
-		this.add("br", passwordLabel);
-		this.add("tab hfill", getPasswordTextField());
-
-		this.add("br", verifyPasswordLabel);
-		this.add("tab hfill", getVerifyPasswordTextField());
-		this.add("br", emailAddressLabel);
-		this.add("tab hfill", getEmailAddressTextField());
-
-		this.add("p center", getCreateButton());
-		this.add("tab", getCancelButton());
-		this.setVisible(true);
-
-	}
-
-	/**
-	 * This method initializes usernameTextField
-	 * 
-	 * @return javax.swing.JTextField
-	 */
-	private JTextField getUsernameTextField() {
-		if (usernameTextField == null) {
-			usernameTextField = new JTextField();
+	public void actionPerformed(ActionEvent e) {
+		if ((!loginTf.getText().trim().equals(""))
+				&& (!emailTf.getText().trim().equals(""))
+				&& (passwordTf.getPassword() != null)
+				&& (passwordVerificationTf.getPassword() != null)) {
+			String p = new String(passwordTf.getPassword());
+			String p2 = new String(passwordVerificationTf.getPassword());
+			if (p.trim().equals(p2.trim())) {
+				okBtn.setEnabled(true);
+			} else {
+				// TODO: replace String here !
+				getInputHandler().getState().displayError("Passwords are not equal");
+			}
+		} else {
+			okBtn.setEnabled(false);
 		}
-		return usernameTextField;
 	}
 
 	/**
-	 * This method initializes passwordTextField
-	 * 
-	 * @return javax.swing.JTextField
+	 * Test main method.
 	 */
-	private JPasswordField getPasswordTextField() {
-		if (passwordTextField == null) {
-			passwordTextField = new JPasswordField();
-		}
-		return passwordTextField;
+	public static void main(String args[]) {
+
+		JFrame test = new JFrame("Test for CreateAccountDialog");
+		test.setContentPane(new AccountPanel());
+		test.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+			}
+		});
+		test.pack();
+		test.setVisible(true);
 	}
-
-	/**
-	 * This method initializes verifyPasswordTextField
-	 * 
-	 * @return javax.swing.JTextField
-	 */
-	private JPasswordField getVerifyPasswordTextField() {
-		if (verifyPasswordTextField == null) {
-			verifyPasswordTextField = new JPasswordField();
-		}
-		return verifyPasswordTextField;
-	}
-
-	/**
-	 * This method initializes emailAddressTextField
-	 * 
-	 * @return javax.swing.JTextField
-	 */
-	private JTextField getEmailAddressTextField() {
-		if (emailAddressTextField == null) {
-			emailAddressTextField = new JTextField();
-		}
-		return emailAddressTextField;
-	}
-
-	/**
-	 * This method initializes createButton
-	 * 
-	 * @return javax.swing.JButton
-	 */
-	private JButton getCreateButton() {
-		if (createButton == null) {
-			createButton = new JButton();
-			createButton.setText(ValueMapper
-					.getText(ClientGlobals.ACCOUNT_CREATION_BUTTON_CREATE));
-			createButton.addActionListener(new ActionListener() {
-
-				public void actionPerformed(ActionEvent e) {
-					String password = String.valueOf(getPasswordTextField()
-							.getPassword());
-					String username = getUsernameTextField().getText();
-					String passwordVerification = String
-							.valueOf(getVerifyPasswordTextField().getPassword());
-					String emailAddress = getEmailAddressTextField().getText();
-
-					if (username != null && password != null
-							&& passwordVerification != null
-							&& emailAddress != null) {
-						if (password.equals(passwordVerification)) {
-							AccountData account = new AccountData();
-							account.setUserName(username);
-                            try {                            
-							account.setPassword(StringUtils.hashAndHex(password));
-							account.setEmailAddress(emailAddress);
-
-								ClientNetworkController
-										.getInstance()
-										.connect(
-												MBWSClient.mbwsConfiguration
-														.getString(ClientGlobals.ACCOUNT_SERVER_IP),
-												MBWSClient.mbwsConfiguration
-														.getInt(ClientGlobals.ACCOUNT_SERVER_PORT));
-							} catch (Exception ex) {
-                                // FIXME should handle this
-							}
-							ClientNetworkController
-									.getInstance()
-									.handleOutgoingEvent(
-											AccountController
-													.getInstance()
-													.createRegisterEvent(
-															account,
-															ClientPlayerData
-																	.getInstance()));
-						} else {
-							// error
-							getInputHandler().getState().displayError(
-									"Passwords are not equal");
-						}
-					}
-				}
-			});
-		}
-		return createButton;
-	}
-
-	/**
-	 * This method initializes cancelButton
-	 * 
-	 * @return javax.swing.JButton
-	 */
-	private JButton getCancelButton() {
-		if (cancelButton == null) {
-			cancelButton = new JButton();
-			cancelButton.setText(ValueMapper
-					.getText(ClientGlobals.GENERIC_BUTTON_BACK));
-			cancelButton.addActionListener(new ActionListener() {
-
-				public void actionPerformed(ActionEvent e) {
-					getInputHandler().getState().removeMe(
-							(JPanel) cancelButton.getParent());
-				}
-
-			});
-		}
-		return cancelButton;
-	}
-
-	// @Override
-	// protected void paintComponent(Graphics g) {
-	// g.drawImage(backgroundImage, 0, 0, null);
-	// super.paintComponent(g);
-	// }
-
 }

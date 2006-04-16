@@ -10,6 +10,8 @@ import org.apache.log4j.Logger;
 import com.jme.app.GameStateManager;
 
 import de.mbws.client.MBWSClient;
+import de.mbws.client.ValueMapper;
+import de.mbws.client.data.ClientGlobals;
 import de.mbws.client.data.ClientPlayerData;
 import de.mbws.client.net.NIOEventReader;
 import de.mbws.client.state.MainMenuState;
@@ -63,7 +65,7 @@ public class ClientNetworkController extends Thread {
 			}
 		} catch (Exception e) {
 			logger.error("Error in main loop", e);
-            running = false;
+			running = false;
 		}
 	}
 
@@ -86,7 +88,8 @@ public class ClientNetworkController extends Thread {
 			}
 		} catch (Exception e) {
 			logger.error("Error during server connection", e);
-            ((MainMenuState) GameStateManager.getInstance().getChild("menu")).displayError("Cant connect to server.");
+			((MainMenuState) GameStateManager.getInstance().getChild("menu"))
+					.displayError(ValueMapper.getText(ClientGlobals.ERROR_SERVER_CONNECT));
 		}
 
 	}
@@ -141,11 +144,9 @@ public class ClientNetworkController extends Thread {
 				logger.info("Event +" + event.getEventType() + " dequeued at: "
 						+ System.currentTimeMillis());
 				if (event instanceof LoginEvent) {
-					AccountController.getInstance().handleLoginEvent(
-							(LoginEvent) event);
+					AccountController.getInstance().handleLoginEvent((LoginEvent) event);
 				} else if (event instanceof AccountEvent) {
-					AccountController.getInstance().handleEvent(
-							(AccountEvent) event);
+					AccountController.getInstance().handleEvent((AccountEvent) event);
 				} else if (event instanceof CharacterEvent) {
 					CharacterEvent e = (CharacterEvent) event;
 					CharacterController.getInstance().handleEvent(e);

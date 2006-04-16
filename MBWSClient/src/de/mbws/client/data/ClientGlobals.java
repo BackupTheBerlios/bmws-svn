@@ -28,6 +28,10 @@ public class ClientGlobals {
     public static final String CHARACTER_SELECTION_LABEL_MENUHEADER = "character.selection.label.menuheader";
     
     public static final String CHARACTER_CREATION_BUTTON_CREATE_CHARACTER = "character.creation.button.create";
+    public static final String CHARACTER_RACE = "character.race";
+    public static final String CHARACTER_CLASS = "character.class";
+    public static final String CHARACTER_NAME = "character.name";
+    public static final String CHARACTER_GENDER = "character.gender";
     
     
     public static final String LOADING_SCREEN_LABEL = "loadingscreen.label";
@@ -43,6 +47,7 @@ public class ClientGlobals {
     public static final String ACCOUNT_SERVER_PORT = "accountserver.port";
 	public static final String OPTIONS_ENABLE_SOUND = "options.enable.sound";
 	public static final String OPTIONS_ENABLE_MUSIC = "options.enable.music";
+	public static final String ERROR_SERVER_CONNECT = "error.server.connect";
     
 	public static final String WIDTH="WIDTH";
 	public static final String HEIGHT="HEIGHT";
