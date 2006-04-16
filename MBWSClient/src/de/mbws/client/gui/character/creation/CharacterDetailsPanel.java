@@ -1,13 +1,17 @@
 package de.mbws.client.gui.character.creation;
 
 import java.awt.Component;
-import java.awt.event.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.*;
 
 import com.jgoodies.forms.layout.CellConstraints;
 import com.jgoodies.forms.layout.FormLayout;
 
+import de.mbws.client.ConfigurationData;
 import de.mbws.client.ValueMapper;
 import de.mbws.client.data.ClientGlobals;
 import de.mbws.client.data.Race;
@@ -99,14 +103,13 @@ public class CharacterDetailsPanel extends JPanel  {
 
 	private void createComboBoxes() {
 		raceCb = new JComboBox(new DefaultComboBoxModel());
-		// List races = ConfigurationData.getAllRaces();
-		// for (Iterator iter = races.iterator(); iter.hasNext();) {
-		// Race race = (Race) iter.next();
-		// ((DefaultComboBoxModel) raceCb.getModel()).addElement(race);
-		// }
-		// raceCb.setSelectedIndex(-1);
-		// raceCb.setRenderer(new RaceRenderer());
-		raceCb.addActionListener(inputHandler);
+		 List races = ConfigurationData.getAllRaces();
+		 for (Iterator iter = races.iterator(); iter.hasNext();) {
+		 Race race = (Race) iter.next();
+		 ((DefaultComboBoxModel) raceCb.getModel()).addElement(race);
+		 }
+		 raceCb.setSelectedIndex(-1);
+		 raceCb.setRenderer(new RaceRenderer());
 		raceCb.addItemListener(inputHandler);
 
 		classCb = new JComboBox(new DefaultComboBoxModel());
@@ -196,9 +199,6 @@ public class CharacterDetailsPanel extends JPanel  {
 		cancelBtn.setText(ValueMapper.getText(ClientGlobals.GENERIC_BUTTON_BACK));
 		cancelBtn.addActionListener(inputHandler);
 	}
-
-	
-
 	
 
 	public JButton getCancelBtn() {
