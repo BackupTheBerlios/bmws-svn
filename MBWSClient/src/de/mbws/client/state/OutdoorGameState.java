@@ -172,7 +172,10 @@ public class OutdoorGameState extends BaseGameState {
 		terrain = new DynamicWorld();
 		rootNode.attachChild(terrain);
 		try {
-			terrain.init(rootNode, cam, display, "data/world/world", "data/characters/generic/1/M");
+			// terrain.init(rootNode, cam, display, "data/world/world",
+			// "data/characters/generic/1/M");
+			terrain
+					.init(rootNode, cam, display, "data/world/world", "./data/objects");
 			terrain.setVisibilityRadius(cam.getFrustumFar());
 		} catch (SAXException e) {
 			e.printStackTrace();
