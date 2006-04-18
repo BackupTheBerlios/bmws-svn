@@ -10,7 +10,7 @@ public class PlayerCharacterShortDescription extends AbstractEventData {
 	private String name;
 	private char gender;
 	private int race;
-	private String location;
+	private int map;
 	private CharacterVisualAppearance visualAppearance;
 
 
@@ -46,12 +46,12 @@ public class PlayerCharacterShortDescription extends AbstractEventData {
 		this.race = race;
 	} 
 
-	public String getLocation() {
-		return location;
+	public int getMap() {
+		return map;
 	}
 
-	public void setLocation(String location) {
-		this.location = location;
+	public void setMap(int map) {
+		this.map = map;
 	} 
 
 	public CharacterVisualAppearance getVisualAppearance() {
@@ -68,7 +68,7 @@ public class PlayerCharacterShortDescription extends AbstractEventData {
 		name = readString(payload);
 		gender = payload.getChar();
 		race = payload.getInt();
-		location = readString(payload);
+		map = payload.getInt();
 		visualAppearance = new CharacterVisualAppearance();
 		visualAppearance.deserialize(payload);
 	}
@@ -78,7 +78,7 @@ public class PlayerCharacterShortDescription extends AbstractEventData {
 		writeString(payload, name);
 		payload.putChar(gender);
 		payload.putInt(race);
-		writeString(payload, location);
+		payload.putInt(map);
 		visualAppearance.serialize(payload);
 		return payload.position();
 	}
