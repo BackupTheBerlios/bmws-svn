@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.commons.beanutils.BeanUtils;
-
-import de.mbws.common.Globals;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.CharacterEvent;
 import de.mbws.common.events.EventTypes;
 import de.mbws.common.events.PCEvent;
-import de.mbws.common.events.data.generated.*;
+import de.mbws.common.events.data.generated.CharacterSelection;
+import de.mbws.common.events.data.generated.CharacterWorldServerInformation;
+import de.mbws.common.events.data.generated.NetQuaternion;
+import de.mbws.common.events.data.generated.PlayerCharacterDetails;
 import de.mbws.server.account.persistence.CharacterPersistenceManager;
+import de.mbws.server.data.Character;
+import de.mbws.server.data.CharacterHelper;
 import de.mbws.server.data.ServerPlayerData;
-import de.mbws.server.data.db.generated.CharacterStatus;
-import de.mbws.server.data.db.generated.CharacterVisualappearance;
 import de.mbws.server.data.db.generated.CharacterData;
 import de.mbws.server.utils.IdHelper;
 import de.mbws.server.world.WorldServer;
@@ -27,153 +27,80 @@ import de.mbws.server.world.WorldServer;
  */
 public class CharacterEventController extends WorldServerBaseEventController {
 
-	public CharacterEventController(WorldServer worldServer) {
-		super(worldServer);
-	}
+    public CharacterEventController(WorldServer worldServer) {
+        super(worldServer);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.mbws.server.controller.EventController#handleEvent(de.mbws.common.events.AbstractGameEvent)
-	 */
-	@Override
-	public void handleEvent(AbstractGameEvent event) {
-		CharacterEvent ce = (CharacterEvent) event;
-		if (event.getEventType() == EventTypes.S2S_CHARACTER_NEW_CHARACTER_ENTERS_WORLD) {
-			CharacterWorldServerInformation cwsi = (CharacterWorldServerInformation) event
-					.getEventData();
-			ServerPlayerData spd = new ServerPlayerData();
-            CharacterData cdata = CharacterPersistenceManager.getInstance()
-					.getCharacterByID(
-							IdHelper.removePrefix(cwsi.getCharacter()
-									.getCharacterID()));
-			spd.setActiveCharacter(cdata);
-			getWorldServer().addPlayer(cwsi.getSessionId(), spd);
+    /*
+     * (non-Javadoc)
+     * 
+     * @see de.mbws.server.controller.EventController#handleEvent(de.mbws.common.events.AbstractGameEvent)
+     */
+    @Override
+    public void handleEvent(AbstractGameEvent event) {
+        CharacterEvent ce = (CharacterEvent) event;
+        if (event.getEventType() == EventTypes.S2S_CHARACTER_NEW_CHARACTER_ENTERS_WORLD) {
+            CharacterWorldServerInformation cwsi = (CharacterWorldServerInformation) event.getEventData();
+            ServerPlayerData spd = new ServerPlayerData();
+            CharacterData cdata = CharacterPersistenceManager.getInstance().getCharacterByID(
+                    IdHelper.removePrefix(cwsi.getCharacter().getCharacterID()));
+            Character newCharacter = new Character(cdata.getCharacterStatus(), cdata, cdata.getCharacterVisualappearance());
+            spd.setActiveCharacter(newCharacter);
+            getWorldServer().addPlayer(cwsi.getSessionId(), spd);
 
-			CharacterEvent result = new CharacterEvent(cwsi);
-			result
-					.setEventType(EventTypes.S2S_CHARACTER_NEW_CHARACTER_ENTERS_WORLD_OK);
-			result.setPlayer(getWorldServer().getServerBySessionId(
-					event.getPlayer().getSessionId()));
-			sendEvent(result);
-		} else if (event.getEventType() == EventTypes.C2S_CHARACTER_ENTERS_WORLD_REQUEST) {
-			CharacterSelection csel = (CharacterSelection) event.getEventData();
-            CharacterData cdata = ((ServerPlayerData) event.getPlayer())
-					.getActiveCharacter();
-			if (IdHelper.removePrefix(csel.getCharacterID()) != cdata.getId()) {
-				return;
-			}
-			CharacterStatus cs = cdata.getCharacterStatus();
-			PlayerCharacterDetails charDetails = new PlayerCharacterDetails();
-
-			de.mbws.common.events.data.generated.CharacterData ocd = new de.mbws.common.events.data.generated.CharacterData();
-			ocd.setName(cdata.getCharactername());
-			ocd.setGender(cdata.getGender().charAt(0));
-            //FIXME define rule for wounded level
-                int woundLevel = 0;
-            //           
-			ocd.setWoundLevel(woundLevel);
-			ocd.setRace(cdata.getRace().getId().intValue());
-            if (cs.isPvp()){
-                ocd.setPvp(Globals.ON);    
-            } else {
-                ocd.setPvp(Globals.OFF);
+            CharacterEvent result = new CharacterEvent(cwsi);
+            result.setEventType(EventTypes.S2S_CHARACTER_NEW_CHARACTER_ENTERS_WORLD_OK);
+            result.setPlayer(getWorldServer().getServerBySessionId(event.getPlayer().getSessionId()));
+            sendEvent(result);
+        } else if (event.getEventType() == EventTypes.C2S_CHARACTER_ENTERS_WORLD_REQUEST) {
+            CharacterSelection csel = (CharacterSelection) event.getEventData();
+            Character newCharacter = ((ServerPlayerData) event.getPlayer()).getActiveCharacter();
+            if (IdHelper.removePrefix(csel.getCharacterID()) != newCharacter.getId()) {
+                return;
             }
-			CharacterVisualAppearance cva = new CharacterVisualAppearance();
-			ocd.setVisualAppearance(cva);
-			// TODO clean up above
-			IntVector3D location = new IntVector3D();
-			location.setX(cs.getCoordinateX());
-			location.setY(cs.getCoordinateY());
-			location.setZ(cs.getCoordinateZ());
-			ocd.setLocation(location);
-			NetQuaternion heading = new NetQuaternion();
+
+            PlayerCharacterDetails charDetails = new PlayerCharacterDetails();
+
+            NetQuaternion heading = new NetQuaternion();
+            // FIXME define columns in table
+            heading.setW(0);
+            heading.setX(0);
+            heading.setY(0);
+            heading.setZ(0);
+            newCharacter.setHeading(heading);
             
-            //FIXME define columns in table
-			heading.setW(0);
-			heading.setX(0);
-			heading.setY(0);
-			heading.setZ(0);
-			ocd.setHeading(heading);
+            de.mbws.common.events.data.generated.CharacterData ocd = CharacterHelper.getCharacterData(newCharacter);
 
-			ocd.setCharacterID(((ServerPlayerData) ce.getPlayer())
-					.getActiveCharacterAsObjectID());
-			((ServerPlayerData) ce.getPlayer()).setMovementInformation(ocd);
+            charDetails.setDescription(CharacterHelper.getPlayerCharacterShortDescription(newCharacter));
+            charDetails.setHeading(heading);
+            charDetails.setLocation(ocd.getLocation());
+            CharacterEvent result = new CharacterEvent(charDetails);
+            result.setEventType(EventTypes.S2C_CHARACTER_ENTERS_WORLD);
+            result.setPlayer(ce.getPlayer());
+            sendEvent(result);
 
-			charDetails.setDescription(getPlayerCharacterShortDescription(cdata));
-			charDetails.setHeading(heading);
-			charDetails.setLocation(location);
-			CharacterEvent result = new CharacterEvent(charDetails);
-			result.setEventType(EventTypes.S2C_CHARACTER_ENTERS_WORLD);
-			result.setPlayer(ce.getPlayer());
-			sendEvent(result);
-
-            //inform other players about current one
-			ArrayList<Integer> receivers = (ArrayList<Integer>) getWorldServer()
-					.getSessionIDOfAllPlayers().clone();
-			if (receivers.size() > 1) {
-				PCEvent oe = new PCEvent(ocd);
-				oe.setEventType(EventTypes.S2C_MOVABLE_OBJECT_CREATE);
-				receivers.remove(ce.getPlayer().getSessionId());
-				oe.setPlayer(ce.getPlayer());
-				oe.setRecipients(receivers
-						.toArray(new Integer[receivers.size()]));
-				sendEvent(oe);
-			}
-            //inform current player about the others
-			Map players = getWorldServer().getAllPlayers();
-			for (Iterator iter = receivers.iterator(); iter.hasNext();) {
-				Integer element = (Integer) iter.next();
-				if (!element.equals(ce.getPlayer().getSessionId())) {
-					ServerPlayerData spd = (ServerPlayerData) players
-							.get(element);
-					PCEvent oe = new PCEvent(spd.getMovementInformation());
-					oe.setEventType(EventTypes.S2C_MOVABLE_OBJECT_CREATE);
-					oe.setPlayer(ce.getPlayer());
-					sendEvent(oe);
-				}
-			}
-		}
-	}
-
-	private PlayerCharacterShortDescription getPlayerCharacterShortDescription(CharacterData cdata) {
-        PlayerCharacterShortDescription csd = new PlayerCharacterShortDescription();
-		csd.setGender(cdata.getGender().charAt(0));
-		csd.setLocation(cdata.getCharacterStatus().getMap().getName());
-		csd.setName(cdata.getCharactername());
-		csd.setRace(cdata.getRace().getId());
-		csd.setCharacterID(Globals.OBJECT_ID_PREFIX_CHARACTER + cdata.getId());
-		csd.setVisualAppearance(getCharacterVisualAppearance(cdata
-				.getCharacterVisualappearance()));
-		return csd;
-	}
-
-	private CharacterVisualAppearance getCharacterVisualAppearance(
-			CharacterVisualappearance cdata) {
-        CharacterVisualAppearance cva = new CharacterVisualAppearance();
-		// cva.setFaceType(cdata.getFaceType());
-		// cva.setHairColor(cdata.getHairColor())
-		// cva.setHairFacial(cdata.getHairFacial())
-		// cva.setHairStyle(cdata.getHairStyle())
-		// cva.setHeight(cdata.getHeight())
-		// cva.setItemBelt(cdata.getItemBelt())
-		// cva.setItemBoots(cdata.get)
-		// cva.setItemBracers()
-		// cva.setItemCape()
-		// cva.setItemChest()
-		// cva.setItemGloves()
-		// cva.setItemHandLeft()
-		// cva.setItemHandRight()
-		// cva.setItemHead()
-		// cva.setItemLegs()
-		// cva.setItemShirt()
-		// cva.setItemShoulders()
-		try {
-			BeanUtils.copyProperties(cva, cdata);
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-
-		return cva;
-	}
+            // inform other players about current one
+            ArrayList<Integer> receivers = (ArrayList<Integer>) getWorldServer().getSessionIDOfAllPlayers().clone();
+            if (receivers.size() > 1) {
+                PCEvent oe = new PCEvent(ocd);
+                oe.setEventType(EventTypes.S2C_MOVABLE_OBJECT_CREATE);
+                receivers.remove(ce.getPlayer().getSessionId());
+                oe.setPlayer(ce.getPlayer());
+                oe.setRecipients(receivers.toArray(new Integer[receivers.size()]));
+                sendEvent(oe);
+            }
+            // inform current player about the others
+            Map players = getWorldServer().getAllPlayers();
+            for (Iterator iter = receivers.iterator(); iter.hasNext();) {
+                Integer element = (Integer) iter.next();
+                if (!element.equals(ce.getPlayer().getSessionId())) {
+                    ServerPlayerData spd = (ServerPlayerData) players.get(element);
+                    PCEvent oe = new PCEvent(CharacterHelper.getCharacterData(spd.getActiveCharacter()));
+                    oe.setEventType(EventTypes.S2C_MOVABLE_OBJECT_CREATE);
+                    oe.setPlayer(ce.getPlayer());
+                    sendEvent(oe);
+                }
+            }
+        }
+    }
 }

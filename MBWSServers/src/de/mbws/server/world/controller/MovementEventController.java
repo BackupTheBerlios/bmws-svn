@@ -30,8 +30,8 @@ public class MovementEventController extends WorldServerBaseEventController {
         if (event instanceof MoveEvent) {
             MoveEvent me = (MoveEvent) event;
             ServerPlayerData spd = (ServerPlayerData) me.getPlayer();
-            spd.getMovementInformation().setHeading(me.getMoveData().getHeading());
-            spd.getMovementInformation().setLocation(me.getMoveData().getLocation());
+            spd.getActiveCharacter().setHeading(me.getMoveData().getHeading());
+            spd.getActiveCharacter().setCoordinates(me.getMoveData().getLocation());
             ArrayList<Integer> receivers = (ArrayList<Integer>) getWorldServer().getSessionIDOfAllPlayers().clone();
             if (receivers.size() > 1) {
                 receivers.remove(me.getPlayer().getSessionId());
