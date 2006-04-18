@@ -15,9 +15,6 @@ public abstract class QueueWorker implements Runnable {
     /** log4j logger */
     protected Logger logger;
 
-    /** milliseconds to sleep between processing runs */
-    protected static final long WORKER_SLEEP_MILLIS = 10;
-
     /** incoming event queue */
     protected EventQueue eventQueue;
 
@@ -27,25 +24,21 @@ public abstract class QueueWorker implements Runnable {
     /** our pool of worker threads */
     private Thread workers[];
 
-    /** short Class name of the implementing class */
-    private String shortname;
-
     /**
      * @param numWorkers
      *            number of worker threads to spawn
      */
     public final void initWorker(int numWorkers, EventQueue queue) {
         // setup the log4j Logger
-        shortname = this.getClass().getName().substring(this.getClass().getName().lastIndexOf(".") + 1);
-        logger = Logger.getLogger(shortname);
-        logger.info("initWrap - " + shortname);
+        logger = Logger.getLogger(this.getClass().getName());
+        logger.info("initWrap - " + this.getClass().getName());
 
         eventQueue = queue;
 
         // spawn worker threads
         workers = new Thread[numWorkers];
         for (int i = 0; i < numWorkers; i++) {
-            workers[i] = new Thread(this, shortname + "-" + (i + 1));
+            workers[i] = new Thread(this, this.getClass().getName() + "-" + (i + 1));
             workers[i].setDaemon(true);
             workers[i].start();
         }

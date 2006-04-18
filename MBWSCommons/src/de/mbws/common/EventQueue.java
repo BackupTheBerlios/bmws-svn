@@ -1,62 +1,63 @@
 package de.mbws.common;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.log4j.Logger;
 
 import de.mbws.common.events.AbstractGameEvent;
 
+
 /**
- * EventQueue.java
- * 
- * @version 1.0
+ * Description: EventQueue based on ConcurrentLinkedQueue with additional debug infos
+ * @author Azarai
+ *
  */
 public class EventQueue {
     private Logger logger;
 
-    private ConcurrentLinkedQueue<AbstractGameEvent> events;
-
-    private int count = 0;
+    private LinkedBlockingQueue<AbstractGameEvent> events;
 
     /**
      * Constructor. Initializes the logger and event list
      */
     public EventQueue(String name) {
         logger = Logger.getLogger("EventQueue: " + name);
-        events = new ConcurrentLinkedQueue<AbstractGameEvent>();
+        events = new LinkedBlockingQueue<AbstractGameEvent>();
     }
 
     /**
      * add an event to the queue
      */
-    public synchronized void enQueue(AbstractGameEvent event) {
+    public void enQueue(AbstractGameEvent event) {
         // log.debug("enQueue " + event.hashCode());
         events.add(event);
-        notifyAll();
+        if (logger.isDebugEnabled()) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("enQueued ");
+            sb.append(event);
+            logger.debug(sb.toString());
+        }
     }
 
     /**
      * blocks until an event is available and then removes and returns the first
      * available event
      */
-    public synchronized AbstractGameEvent deQueue() throws InterruptedException {
-        while (events.size() == 0) {
-            count++;
-            // log.debug("waiting, count: " + count);
-            wait();
-            count--;
+    public AbstractGameEvent deQueue() throws InterruptedException {
+        AbstractGameEvent event = events.take();
+        if (logger.isDebugEnabled()) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("deQueued ");
+            sb.append(event);
+            logger.debug(sb.toString());
         }
-
-        AbstractGameEvent e = events.poll();
-        // log.debug("deQueue " + e.hashCode());
-        return e;
+        return event;
     }
 
     /**
      * get the current # of events in the queue
      */
-    public synchronized int size() {
+    public int size() {
         return events.size();
     }
-
 }
