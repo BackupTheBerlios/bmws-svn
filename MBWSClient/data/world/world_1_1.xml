@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section>
-<Object name="basemodel.jme" pos_x="40" pos_y="0" pos_z="50" scale="0.3"/>
-<Object name="basemodel.jme" pos_x="50" pos_y="0" pos_z="50" scale="0.3"/>
+<Object name="CastleSiege.jme" pos_x="40" pos_y="0" pos_z="50" scale="0.3"/>
 </section>

@@ -1,0 +1,67 @@
+#	3dto3d engine by tb-software.com (support@tb-software.com)
+#	Created by WaveFront Export Plugin 1.0 at Tue Mar 07 10:32:07 2006
+#	Alias Wavefront
+newmtl DEFAULT
+	Ns 0
+	d 1.000
+	illum 2
+	Kd 0.600 0.600 0.600
+	Ks 1.000 1.000 1.000
+	Ka 0.300 0.300 0.300
+
+newmtl Wall01
+	Ns 0
+	d 1.000
+	illum 2
+	Kd 0.600 0.600 0.600
+	Ks 1.000 1.000 1.000
+	Ka 0.300 0.300 0.300
+
+newmtl Wood01
+	Ns 0
+	d 1.000
+	illum 2
+	Kd 0.600 0.600 0.600
+	Ks 1.000 1.000 1.000
+	Ka 0.300 0.300 0.300
+
+newmtl Wood02
+	Ns 0
+	d 1.000
+	illum 2
+	Kd 0.600 0.600 0.600
+	Ks 1.000 1.000 1.000
+	Ka 0.300 0.300 0.300
+
+newmtl Wall02
+	Ns 0
+	d 1.000
+	illum 2
+	Kd 0.600 0.600 0.600
+	Ks 1.000 1.000 1.000
+	Ka 0.300 0.300 0.300
+
+newmtl Roof03
+	Ns 0
+	d 1.000
+	illum 2
+	Kd 0.600 0.600 0.600
+	Ks 1.000 1.000 1.000
+	Ka 0.300 0.300 0.300
+
+newmtl Floor02
+	Ns 0
+	d 1.000
+	illum 2
+	Kd 0.600 0.600 0.600
+	Ks 1.000 1.000 1.000
+	Ka 0.300 0.300 0.300
+
+newmtl Floor04
+	Ns 0
+	d 1.000
+	illum 2
+	Kd 0.600 0.600 0.600
+	Ks 1.000 1.000 1.000
+	Ka 0.300 0.300 0.300
+
