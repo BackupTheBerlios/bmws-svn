@@ -280,6 +280,9 @@ public class DynamicWorld extends Node {
 	}
 
 	public void setVisibilityRadius(float visibilityRadius) {
+		if (worldDescr == null) {
+			throw new RuntimeException("World not initialized! You have to use init() before using this method.");
+		}
 		this.visibilityRadius = visibilityRadius;
 		prefetchRadius = 1.5f * visibilityRadius;
 		unloadRadius = 1.2f * prefetchRadius;

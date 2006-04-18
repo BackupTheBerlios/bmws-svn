@@ -31,13 +31,17 @@ public class SyncTaskQueue extends AbstractTaskQueue {
 		boolean ret = false;
 		long breaktime = System.currentTimeMillis() + millis;
 		while (queue.size() > 0 && breaktime > System.currentTimeMillis()) {
+			long tasktime = System.currentTimeMillis();
 			QueueEntry entry = queue.getFirst();
+			logger.debug("Processing sync task "+entry.identifier);
 			Runnable task = entry.task;
 			task.run();
 			queue.removeFirst();
 			synchronized (entry.identifier) {
 				entry.identifier.notifyAll();
 			}
+			logger.debug("Finished sync task " + entry.identifier + " in "
+					+ (System.currentTimeMillis() - tasktime) + " ms");
 			ret = true;
 		}
 		if (breaktime < System.currentTimeMillis()) {

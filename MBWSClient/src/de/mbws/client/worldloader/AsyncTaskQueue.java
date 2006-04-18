@@ -25,10 +25,12 @@ public class AsyncTaskQueue extends AbstractTaskQueue {
 					try {
 						QueueEntry entry = peek();
 						if (entry != null) {
+							long time = System.currentTimeMillis();
 							logger.debug("Processing task: " + entry.identifier);
 							entry.task.run();
 							dequeue();
-							logger.debug("Finished task: " + entry.identifier);
+							logger.debug("Finished task: " + entry.identifier + " in "
+									+ (System.currentTimeMillis() - time) + " ms");
 							synchronized (entry) {
 								entry.notifyAll();
 							}
