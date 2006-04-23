@@ -30,7 +30,7 @@ public class ChatWindow extends JInternalFrame {
 	private JTextPane consoleMessagesTP;
 
 	public ChatWindow(String title) {
-		super(title, true, true, true, true);
+		super(title, true, true, false,false);
 		add(getTabs(), BorderLayout.CENTER);
 		add(createChatTf(), BorderLayout.SOUTH);
 		repaint();

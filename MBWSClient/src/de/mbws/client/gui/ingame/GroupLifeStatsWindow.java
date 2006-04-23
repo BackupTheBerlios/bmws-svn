@@ -40,8 +40,9 @@ public class GroupLifeStatsWindow extends JInternalFrame implements MouseListene
 
 		// this.setBackground(new Color(0, 0, 0, 0.2f));
 		this.setBackground(new Color(0, 0, 0, 1f));
+		setDefaultCloseOperation(JInternalFrame.HIDE_ON_CLOSE);
 		setClosable(true);
-		setVisible(true);
+//		setVisible(true);
 	}
 
 	private void createButtons() {

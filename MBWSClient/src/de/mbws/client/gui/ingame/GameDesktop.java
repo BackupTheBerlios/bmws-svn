@@ -68,6 +68,7 @@ public class GameDesktop extends Node {
 		desktop.setVBOInfo(null);
 		addChatWindow();
 		addGroupWindow();
+		addMenuButton();
 		setFocus("chat");
 		ChatController.getInstance().setChatWindow(chatWindow);
 	}
@@ -112,7 +113,7 @@ public class GameDesktop extends Node {
 
 	protected void addChatWindow() {
 		JDesktopPane desktopPane = desktop.getJDesktop();
-		chatWindow = new ChatWindow("Chat");
+		chatWindow = new ChatWindow(ValueMapper.getText("chat"));
 		chatWindow.setLocation(0, desktopPane.getHeight() - 300);
 		chatWindow.setPreferredSize(new Dimension(450, 230));
 		chatWindow.setVisible(true);
@@ -125,7 +126,7 @@ public class GameDesktop extends Node {
 	protected void addGroupWindow() {
 		JDesktopPane desktopPane = desktop.getJDesktop();
 		groupWindow = new GroupLifeStatsWindow(ValueMapper
-				.getText("groupstatswindow"), 0, new CharacterLifeInfo[0]);
+				.getText("groupstatsframe.title"), 0, new CharacterLifeInfo[0]);
 		groupWindow.setLocation(desktopPane.getWidth() - 150, desktopPane
 				.getHeight() - 300);
 		groupWindow.setPreferredSize(new Dimension(150, 230));
@@ -136,12 +137,28 @@ public class GameDesktop extends Node {
 		desktopPane.revalidate();
 	}
 
+	protected void addMenuButton() {
+		JDesktopPane desktopPane = desktop.getJDesktop();
+		MenuPanel mPanel = new MenuPanel(this);
+		mPanel.setLocation(5, desktopPane.getHeight()-35);// - 100);
+		//mPanel.setPreferredSize(new Dimension(150, 50));
+		//mPanel.setVisible(true);
+		// mPanel.pack();
+		desktopPane.add(mPanel, Integer.MAX_VALUE);
+		desktopPane.repaint();
+		desktopPane.revalidate();
+	}
+
 	public ChatWindow getChatWindow() {
 		return chatWindow;
 	}
 
 	public JMEDesktop getDesktop() {
 		return desktop;
+	}
+
+	public GroupLifeStatsWindow getGroupWindow() {
+		return groupWindow;
 	}
 
 	// public ClickListener getDefaultClickListener() {
