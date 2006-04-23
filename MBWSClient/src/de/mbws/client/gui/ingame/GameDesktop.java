@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
@@ -20,6 +22,7 @@ import com.jme.scene.state.LightState;
 import com.jme.system.DisplaySystem;
 import com.jmex.awt.swingui.JMEDesktop;
 
+import de.mbws.client.ValueMapper;
 import de.mbws.client.controller.ChatController;
 
 public class GameDesktop extends Node {
@@ -29,6 +32,8 @@ public class GameDesktop extends Node {
 	private JMEDesktop desktop;
 
 	private ChatWindow chatWindow;
+	private GroupLifeStatsWindow groupWindow;
+	private List allWindows = new ArrayList();
 
 	private JLabel statusField;
 
@@ -62,14 +67,30 @@ public class GameDesktop extends Node {
 		});
 		desktop.setVBOInfo(null);
 		addChatWindow();
+		addGroupWindow();
 		setFocus("chat");
 		ChatController.getInstance().setChatWindow(chatWindow);
 	}
 
 	public boolean isFocusOwner() {
 		return (desktop.getFocusOwner() != null
-				&& desktop.getFocusOwner() != desktop.getJDesktop() && desktop
-				.getFocusOwner() == chatWindow.getChatTf());
+				&& desktop.getFocusOwner() != desktop.getJDesktop() && checkFocusInWindows());
+		// (desktop
+		// .getFocusOwner().equals(chatWindow.getChatTf()) || desktop);
+	}
+
+	/**
+	 * used to determine if the focus resides in any Window
+	 * 
+	 * @return
+	 */
+	private boolean checkFocusInWindows() {
+		for (int i = 0; i < allWindows.size(); i++) {
+			if (desktop.getFocusOwner().equals(allWindows)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void setFocus(String field) {
@@ -92,11 +113,25 @@ public class GameDesktop extends Node {
 	protected void addChatWindow() {
 		JDesktopPane desktopPane = desktop.getJDesktop();
 		chatWindow = new ChatWindow("Chat");
-		chatWindow.setLocation(0, desktopPane.getHeight() - 230);
+		chatWindow.setLocation(0, desktopPane.getHeight() - 300);
 		chatWindow.setPreferredSize(new Dimension(450, 230));
 		chatWindow.setVisible(true);
 		chatWindow.pack();
 		desktopPane.add(chatWindow);
+		desktopPane.repaint();
+		desktopPane.revalidate();
+	}
+
+	protected void addGroupWindow() {
+		JDesktopPane desktopPane = desktop.getJDesktop();
+		groupWindow = new GroupLifeStatsWindow(ValueMapper
+				.getText("groupstatswindow"), 0, new CharacterLifeInfo[0]);
+		groupWindow.setLocation(desktopPane.getWidth() - 150, desktopPane
+				.getHeight() - 300);
+		groupWindow.setPreferredSize(new Dimension(150, 230));
+		groupWindow.setVisible(true);
+		groupWindow.pack();
+		desktopPane.add(groupWindow);
 		desktopPane.repaint();
 		desktopPane.revalidate();
 	}

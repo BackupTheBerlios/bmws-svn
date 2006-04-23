@@ -41,6 +41,8 @@ public class MovableObject extends GameObject {
 	protected long timeOfDeath;
 	protected boolean isPlayer = false;
 	protected String name;
+	protected int currentHitpoints;
+	protected int maxHitpoints;
 	private PickResults results = new BoundingPickResults();
 	//private PickResults results = new TrianglePickResults();
 	// Animations
@@ -384,6 +386,14 @@ public class MovableObject extends GameObject {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public int getCurrentHitpoints() {
+		return currentHitpoints;
+	}
+
+	public void setCurrentHitpoints(int hitpoints) {
+		this.currentHitpoints = hitpoints;
 	}
 
 }
