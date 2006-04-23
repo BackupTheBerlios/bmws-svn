@@ -1,9 +1,6 @@
 package de.mbws.client.gui.mainmenu;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 
 import javax.swing.*;
 
@@ -105,6 +102,28 @@ public class LoginPanel extends JPanel {
 					loginBtn.setEnabled(false);
 			}
 		});
+		passwordTf.addKeyListener(new KeyListener() {
+
+			public void keyTyped(KeyEvent e) {
+				String pass = new String(passwordTf.getPassword());
+				if (pass.trim().equals("")) {
+					loginBtn.setEnabled(false);
+				} else {
+					loginBtn.setEnabled(true);
+					if (e.getKeyChar() == KeyEvent.VK_ENTER ||e.getKeyChar() == '\r') {
+						login();
+					}
+				}
+
+			}
+
+			public void keyPressed(KeyEvent e) {
+			}
+
+			public void keyReleased(KeyEvent e) {
+			}
+
+		});
 
 		loginTf.setText(MBWSClient.mbwsConfiguration.getString(ClientGlobals.LOGIN,
 				""));
@@ -113,13 +132,17 @@ public class LoginPanel extends JPanel {
 
 	}
 
+	private void login() {
+		getInputHandler().login(loginTf.getText(),
+				String.valueOf(passwordTf.getPassword()));
+	}
+
 	private void createButtons() {
 		loginBtn = new JButton();
 		loginBtn.setText(ValueMapper.getText(ClientGlobals.MENU_BUTTON_LOGIN));
 		loginBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				getInputHandler().login(loginTf.getText(),
-						String.valueOf(passwordTf.getPassword()));
+				login();
 			}
 		});
 
