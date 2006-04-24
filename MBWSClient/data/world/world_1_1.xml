@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section>
-<Object name="CastleSiege.jme" pos_x="40" pos_y="0" pos_z="50" scale="0.3"/>
+<Object name="mausoleum/mausoleum.3DS" pos_x="40" pos_y="0" pos_z="50" rot_x="0" rot_y="0" rot_z="-1.6" scale="0.3"/>
 </section>
