@@ -98,6 +98,7 @@ public class ObjectRepository {
 					+ section.getTerrainBlock().getLocalTranslation().x, descr.y, descr.z
 					+ section.getTerrainBlock().getLocalTranslation().z));
 			spatial.setLocalScale(descr.scale);
+			spatial.rotateUpTo(new Vector3f(descr.rot_x, descr.rot_y, descr.rot_z));
 			blueprint.referenceCount++;
 			section.attachChild(spatial);
 			section.complete = true;

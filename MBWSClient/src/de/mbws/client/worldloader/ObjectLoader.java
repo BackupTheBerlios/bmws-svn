@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -31,6 +30,8 @@ import com.jme.util.TextureManager;
 import com.jmex.model.XMLparser.JmeBinaryReader;
 import com.jmex.terrain.TerrainBlock;
 
+import de.mbws.client.worldloader.reader.ThreeDSReader;
+
 public class ObjectLoader {
 	private static Logger logger = Logger.getLogger(ObjectLoader.class);
 
@@ -48,14 +49,6 @@ public class ObjectLoader {
 		}
 
 		public void run() {
-			if (spatial instanceof Node) {
-				Node node = (Node) spatial;
-				Iterator it = ((Node) node.getChild(0)).getChildren().iterator();
-				while (it.hasNext()) {
-					Spatial spat = (Spatial) it.next();
-					logger.debug("Texture for child: " + spat.getName());
-				}
-			}
 			TextureState ts = DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
 			logger.debug("apply texture " + textureImage);
 			Texture texture = new Texture(ts.getMaxAnisotropic());
@@ -69,6 +62,16 @@ public class ObjectLoader {
 			spatial.setRenderState(ts);
 			spatial.updateRenderState();
 			logger.debug("Successfully applied texture " + textureImage);
+		}
+	}
+	
+	private class CompleteModelTask implements Runnable {
+		ThreeDSReader reader;
+		public CompleteModelTask(ThreeDSReader reader) {
+			this.reader = reader;
+		}
+		public void run() {
+			reader.completeModel();
 		}
 	}
 
@@ -104,6 +107,9 @@ public class ObjectLoader {
 				descr.x = readFloatAttribute(objectAttrs, "pos_x");
 				descr.y = readFloatAttribute(objectAttrs, "pos_y");
 				descr.z = readFloatAttribute(objectAttrs, "pos_z");
+				descr.rot_x = readFloatAttribute(objectAttrs, "rot_x");
+				descr.rot_y = readFloatAttribute(objectAttrs, "rot_y");
+				descr.rot_z = readFloatAttribute(objectAttrs, "rot_z");
 				descr.scale = readFloatAttribute(objectAttrs, "scale");
 				objectList.add(descr);
 			}
@@ -118,20 +124,28 @@ public class ObjectLoader {
 	public Node loadObject(String objectName) {
 		Node objectNode = null;
 		try {
-			FileInputStream fi = new FileInputStream(new File(objectPath + "/model/" + objectName));
-			String texturePath = objectPath + "/textures/" + objectName;
-			texturePath = texturePath.replaceFirst(".jme", ".jpg");
-			JmeBinaryReader jbr = new JmeBinaryReader();
-			// jbr.setProperty("texurl", urlOfTexture);
-			jbr.setProperty("bound", "box"); // Doesnt work ?
-			long time = System.currentTimeMillis();
-			objectNode = jbr.loadBinaryFormat(fi);
-			Image textureImage = TextureManager.loadImage(new URL("file:"+texturePath), true);
-//			SyncTaskQueue.getInstance().enqueue("applyTexForObject"+textureImage,
-			SyncTaskQueue.getInstance().executeSynchronously(
-					new ApplyTextureTask(textureImage, objectNode));
-			logger.info("Time to convert from .jme to SceneGraph:"
-					+ (System.currentTimeMillis() - time));
+			if (objectName.endsWith(".jme")) {
+				FileInputStream fi = new FileInputStream(new File(objectPath + "/model/"
+						+ objectName));
+				String texturePath = objectPath + "/textures/" + objectName;
+				texturePath = texturePath.replaceFirst(".jme", ".jpg");
+				JmeBinaryReader jbr = new JmeBinaryReader();
+				// jbr.setProperty("texurl", urlOfTexture);
+				jbr.setProperty("bound", "box"); // Doesn't work ?
+				long time = System.currentTimeMillis();
+				objectNode = jbr.loadBinaryFormat(fi);
+				Image textureImage = TextureManager.loadImage(new URL("file:" + texturePath), true);
+				// SyncTaskQueue.getInstance().enqueue("applyTexForObject"+textureImage,
+				SyncTaskQueue.getInstance().executeSynchronously(
+						new ApplyTextureTask(textureImage, objectNode));
+				logger.info("Time to convert from .jme to SceneGraph:"
+						+ (System.currentTimeMillis() - time));
+			}
+			else if (objectName.toLowerCase().endsWith(".3ds")) {
+				ThreeDSReader reader = new ThreeDSReader(objectPath+"/"+objectName, objectName);
+				objectNode = reader.preloadMeshesAndTextures();
+				SyncTaskQueue.getInstance().executeSynchronously(new CompleteModelTask(reader));
+			}
 		}
 		catch (Exception e) {
 			logger.error("loadObject() " + e);
@@ -149,23 +163,6 @@ public class ObjectLoader {
 		TerrainBlock terrainBlock = new TerrainBlock("terrain(" + column + ", " + row + ")",
 				worldDescription.sectionResolution, scale, heightMap, origin, false);
 
-		// TODO use the commented line instead
-		// AbstractHeightMap hm = new AbstractHeightMap() {
-		// public boolean load() {
-		// heightData = heightMap;
-		// size = dynamicWorld.sectionResolution;
-		// return true;
-		// }};
-		// hm.load();
-		// ProceduralTextureGenerator ptg = new ProceduralTextureGenerator(hm);
-		// ptg.addTexture(new ImageIcon("../MBWSClient/data/images/grassc.jpg"), -1000,10, 50);
-		// ptg.addTexture(new ImageIcon("../MBWSClient/data/images/stone.jpg"), 30,90, 1000);
-		// ptg.createTexture(512);
-		// ptg.saveTexture("../MBWSClient/data/world/world_0_0");
-		// Texture texture =
-		// TextureManager.loadTexture(ptg.getImageIcon().getImage(),Texture.MM_LINEAR,
-		// Texture.FM_LINEAR, true);
-		//
 		Image textureImage = TextureManager.loadImage(new URL(
 				"file:../MBWSClient/data/images/grassb.png"), false);
 

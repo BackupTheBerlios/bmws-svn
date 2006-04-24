@@ -48,6 +48,7 @@ public class DynamicWorld extends Node {
 	ObjectRepository modelRepository;
 	ObjectLoader loader;
 	SectionController sectionController;
+	DetailTextureManager dtm;
 	DisplaySystem display;
 	Node root;
 	Dome skydome;
@@ -77,7 +78,7 @@ public class DynamicWorld extends Node {
 		preloadAndAddSections(cam.getLocation());
 		AsyncTaskQueue.getInstance().waitForEmptyQueue();
 		createSky();
-		createFog();
+		//createFog();
 	}
 
 	private void createSky() {
@@ -88,15 +89,17 @@ public class DynamicWorld extends Node {
 		skydome.setModelBound(new BoundingSphere());
 		skydome.updateModelBound();
 		LightState lightState = display.getRenderer().createLightState();
-		lightState.setEnabled(false);
+		lightState.setEnabled(true);
+		//lightState.setTwoSidedLighting(true);
+		lightState.setGlobalAmbient(ColorRGBA.white);
 		skydome.setRenderState(lightState);
 		skydome.setLightCombineMode(LightState.REPLACE);
-		Texture domeTexture = TextureManager.loadTexture("../MBWSClient/data/images/wolken_16.jpg",
+		Texture domeTexture = TextureManager.loadTexture("../MBWSClient/data/images/wolken.jpg",
 				Texture.MM_LINEAR, Texture.FM_LINEAR);
 		TextureState ts = display.getRenderer().createTextureState();
 		ts.setTexture(domeTexture);
 		skydome.setRenderState(ts);
-		skydome.setTextureCombineMode(TextureState.REPLACE);
+		//skydome.setTextureCombineMode(TextureState.REPLACE);
 		attachChild(skydome);
 		updateRenderState();
 	}
@@ -231,7 +234,7 @@ public class DynamicWorld extends Node {
 
 	}
 
-	private TerrainBlock getTerrainAt(float x, float z) {
+	TerrainBlock getTerrainAt(float x, float z) {
 		float sectionWidth = worldDescr.getSectionWidth();
 		return sectionController.getSection((int) (x / sectionWidth), (int) (z / sectionWidth))
 				.getTerrainBlock();

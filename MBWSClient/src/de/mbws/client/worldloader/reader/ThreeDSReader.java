@@ -3,15 +3,20 @@ package de.mbws.client.worldloader.reader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 
 import com.jme.bounding.BoundingBox;
+import com.jme.image.Image;
 import com.jme.image.Texture;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
@@ -25,6 +30,31 @@ import com.jme.system.JmeException;
 import com.jme.util.TextureManager;
 import com.jme.util.geom.BufferUtils;
 
+/**
+ * <p>
+ * A native 3DS-Reader. The 3DS format is only partially implemented. This reader reads the meshes
+ * and its textures only and creates a JME node from it. It is prepared for a separation of the
+ * reentryable and synchronized tasks of model loading. The latter must be executed from the main
+ * thread in JME.
+ * </p>
+ * To load a model single threaded use:
+ * 
+ * <pre>
+ * Node model = read(path, nodeName);
+ * </pre>
+ * 
+ * To load a model in the background use:
+ * 
+ * <pre>
+ * // some thread
+ * ThreeDSReader reader = new ThreeDSReader(path, nodeName);
+ * reader.preloadMeshesAndTextures();
+ * // JME main thread
+ * Node model = reader.completeModel();
+ * </pre>
+ * 
+ * @author Axel Sammet
+ */
 public class ThreeDSReader {
 
 	private static class Chunk {
@@ -36,7 +66,8 @@ public class ThreeDSReader {
 	private static class Material {
 		public String name;
 		public ColorRGBA color;
-		public String textureName;
+		public List objectsThatApplyThisTexture = new ArrayList();
+		public Image image;
 	}
 
 	private static final int FILE_MAGIC_3DS = 0x4D4D;
@@ -61,20 +92,62 @@ public class ThreeDSReader {
 	private Vector2f[] textureCoordinates;
 	private Map materials = new HashMap();
 	String path;
+	String fileName;
+	String nodeName;
 
-	public static Node read(String filename, String name) throws FileNotFoundException {
-		File file = new File(filename);
-		FileInputStream is = new FileInputStream(file);
-		return (new ThreeDSReader()).internalRead(is, file.getParent(), name);
+	public static Node read(String fileName, String nodeName) throws FileNotFoundException {
+		ThreeDSReader reader = new ThreeDSReader(fileName, nodeName);
+		reader.preloadMeshesAndTextures();
+		Node objectNode = reader.completeModel();
+		return objectNode;
 	}
 
-	private Node internalRead(InputStream is, String path, String name) {
-		this.path = path;
+	public ThreeDSReader(String fileName, String nodeName) {
+		this.fileName = fileName;
+		this.nodeName = nodeName;
+	}
+
+	/**
+	 * Applys all textures to the according nodes. This method <em> must </em> be called in the JME
+	 * main thread.
+	 */
+	public Node completeModel() {
+		Iterator it = materials.values().iterator();
+		while (it.hasNext()) {
+			Material mat = (Material) it.next();
+			Iterator nodesIt = mat.objectsThatApplyThisTexture.iterator();
+			while (nodesIt.hasNext()) {
+				Spatial spatial = (Spatial) nodesIt.next();
+				TextureState ts = DisplaySystem.getDisplaySystem().getRenderer()
+						.createTextureState();
+				Texture texture = new Texture(ts.getMaxAnisotropic());
+				texture.setCorrection(Texture.CM_PERSPECTIVE);
+				texture.setFilter(Texture.FM_LINEAR);
+				texture.setImage(mat.image);
+				texture.setMipmapState(Texture.MM_LINEAR_LINEAR);
+				texture.setWrap(Texture.WM_WRAP_S_WRAP_T);
+				ts.setTexture(texture);
+				spatial.setRenderState(ts);
+			}
+		}
+		return objectNode;
+	}
+
+	/**
+	 * Returns the preloaded model without textures. This method is <em>threadsafe</em>.
+	 * 
+	 * @return The preloaded model
+	 * @throws FileNotFoundException
+	 */
+	public Node preloadMeshesAndTextures() throws FileNotFoundException {
+		File file = new File(fileName);
+		FileInputStream is = new FileInputStream(file);
+		this.path = file.getParent();
 		reader = new BinaryFileReader(is);
 		Chunk main = readChunkHeader();
 		if (main.type != FILE_MAGIC_3DS)
 			throw new JmeException("Not a 3DS file");
-		objectNode = new Node(name);
+		objectNode = new Node(nodeName);
 		readSubChunks(new AbstractChunkReader[] { new EditorChunk() }, main);
 		return objectNode;
 	}
@@ -106,8 +179,8 @@ public class ThreeDSReader {
 				}
 			}
 			if (!isKnownChunk) {
-				logger.debug("Skipping chunk " + Integer.toHexString(chunk.type) + " of length "
-						+ chunk.length);
+//				logger.debug("Skipping chunk " + Integer.toHexString(chunk.type) + " of length "
+//						+ chunk.length);
 				skipChunk(chunk);
 			}
 		} while (reader.getPos() - superchunk.startingOffset < superchunk.length - 6);
@@ -292,6 +365,10 @@ public class ThreeDSReader {
 		}
 	}
 
+	/**
+	 * Sets a material for a complete submodel. Any detailed information about the triangles, which
+	 * should use this model is ignored.
+	 */
 	private class FacesMaterial extends AbstractChunkReader {
 		Spatial spatial;
 
@@ -307,13 +384,8 @@ public class ThreeDSReader {
 			logger.debug("Material " + materialName + " used for " + noOfAssignedTriangles
 					+ " triangles");
 			Material material = (Material) materials.get(materialName);
-			if (material != null && material.textureName != null) {
-				Texture texture = TextureManager.loadTexture(path + File.separator
-						+ material.textureName, Texture.MM_LINEAR, Texture.FM_LINEAR);
-				TextureState ts = DisplaySystem.getDisplaySystem().getRenderer()
-						.createTextureState();
-				ts.setTexture(texture);
-				spatial.setRenderState(ts);
+			if (material != null && material.image != null) {
+				material.objectsThatApplyThisTexture.add(spatial);
 			}
 			// for (int i = 0; i < noOfAssignedTriangles; i++) {
 			//
@@ -406,8 +478,15 @@ public class ThreeDSReader {
 
 		@Override
 		public void readChunk(Chunk chunk) {
-			material.textureName = reader.readString();
-			logger.debug("Using texture: " + material.textureName);
+			String textureName = reader.readString();
+			logger.debug("Using texture: " + textureName);
+			try {
+				material.image = TextureManager.loadImage(new URL("file:" + path + File.separator
+						+ textureName), false);
+			}
+			catch (MalformedURLException e) {
+				logger.error(e);
+			}
 		}
 	}
 }
