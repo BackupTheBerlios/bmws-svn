@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 
 public class TexGenPanel extends JPanel {
 	private static final int SIZE = 128;
-	private static final int TRES = 50;
+	private static final int TRES = 30;
 	private static final int ITER = 30;
 	private float[][][] texture = new float[SIZE][SIZE][TRES];
 	private float[][][] picture = new float[SIZE][SIZE][TRES];
