@@ -21,6 +21,7 @@ import org.xml.sax.SAXException;
 import com.jme.bounding.BoundingBox;
 import com.jme.image.Image;
 import com.jme.image.Texture;
+import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
@@ -64,12 +65,14 @@ public class ObjectLoader {
 			logger.debug("Successfully applied texture " + textureImage);
 		}
 	}
-	
+
 	private class CompleteModelTask implements Runnable {
 		ThreeDSReader reader;
+
 		public CompleteModelTask(ThreeDSReader reader) {
 			this.reader = reader;
 		}
+
 		public void run() {
 			reader.completeModel();
 		}
@@ -107,9 +110,9 @@ public class ObjectLoader {
 				descr.x = readFloatAttribute(objectAttrs, "pos_x");
 				descr.y = readFloatAttribute(objectAttrs, "pos_y");
 				descr.z = readFloatAttribute(objectAttrs, "pos_z");
-				descr.rot_x = readFloatAttribute(objectAttrs, "rot_x");
-				descr.rot_y = readFloatAttribute(objectAttrs, "rot_y");
-				descr.rot_z = readFloatAttribute(objectAttrs, "rot_z");
+				descr.rot_x = FastMath.TWO_PI / 360 * readFloatAttribute(objectAttrs, "rot_x");
+				descr.rot_y = FastMath.TWO_PI / 360 * readFloatAttribute(objectAttrs, "rot_y");
+				descr.rot_z = FastMath.TWO_PI / 360 * readFloatAttribute(objectAttrs, "rot_z");
 				descr.scale = readFloatAttribute(objectAttrs, "scale");
 				objectList.add(descr);
 			}
@@ -142,7 +145,7 @@ public class ObjectLoader {
 						+ (System.currentTimeMillis() - time));
 			}
 			else if (objectName.toLowerCase().endsWith(".3ds")) {
-				ThreeDSReader reader = new ThreeDSReader(objectPath+"/"+objectName, objectName);
+				ThreeDSReader reader = new ThreeDSReader(objectPath + "/" + objectName, objectName);
 				objectNode = reader.preloadMeshesAndTextures();
 				SyncTaskQueue.getInstance().executeSynchronously(new CompleteModelTask(reader));
 			}

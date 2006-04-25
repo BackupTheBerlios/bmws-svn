@@ -34,7 +34,7 @@ import com.jme.util.geom.BufferUtils;
  * <p>
  * A native 3DS-Reader. The 3DS format is only partially implemented. This reader reads the meshes
  * and its textures only and creates a JME node from it. It is prepared for a separation of the
- * reentryable and synchronized tasks of model loading. The latter must be executed from the main
+ * reentrant and synchronized tasks of model loading. The latter must be executed from the main
  * thread in JME.
  * </p>
  * To load a model single threaded use:
@@ -90,11 +90,21 @@ public class ThreeDSReader {
 	private Node objectNode;
 	private Vector3f[] vertices;
 	private Vector2f[] textureCoordinates;
+	private int[] triangles;
+	private ArrayList textureBlock;
+
 	private Map materials = new HashMap();
 	String path;
 	String fileName;
 	String nodeName;
 
+	/**
+	 * 
+	 * @param fileName
+	 * @param nodeName
+	 * @return
+	 * @throws FileNotFoundException
+	 */
 	public static Node read(String fileName, String nodeName) throws FileNotFoundException {
 		ThreeDSReader reader = new ThreeDSReader(fileName, nodeName);
 		reader.preloadMeshesAndTextures();
@@ -102,6 +112,11 @@ public class ThreeDSReader {
 		return objectNode;
 	}
 
+	/**
+	 * 
+	 * @param fileName
+	 * @param nodeName
+	 */
 	public ThreeDSReader(String fileName, String nodeName) {
 		this.fileName = fileName;
 		this.nodeName = nodeName;
@@ -130,6 +145,7 @@ public class ThreeDSReader {
 				spatial.setRenderState(ts);
 			}
 		}
+		objectNode.updateRenderState();
 		return objectNode;
 	}
 
@@ -179,11 +195,16 @@ public class ThreeDSReader {
 				}
 			}
 			if (!isKnownChunk) {
-//				logger.debug("Skipping chunk " + Integer.toHexString(chunk.type) + " of length "
-//						+ chunk.length);
+				// logger.debug("Skipping chunk " + Integer.toHexString(chunk.type) + " of length "
+				// + chunk.length);
 				skipChunk(chunk);
 			}
 		} while (reader.getPos() - superchunk.startingOffset < superchunk.length - 6);
+	}
+
+	private static class MaterialUsage {
+		public int[] triangles;
+		public Material material;
 	}
 
 	private static abstract class AbstractChunkReader {
@@ -236,25 +257,74 @@ public class ThreeDSReader {
 
 		@Override
 		public void readChunk(Chunk chunk) {
-			TriMesh mesh = new TriMesh(name);
-			mesh.setDefaultColor(ColorRGBA.green);
-			readSubChunks(new AbstractChunkReader[] { new VerticesList(mesh),
-					new FacesDescription(mesh), new FacesMaterial(mesh),
-					new FacesTextureCoordinates() }, chunk);
-			if (mesh.getVertQuantity() > 0) {
-				objectNode.attachChild(mesh);
+			textureBlock = new ArrayList();
+			readSubChunks(new AbstractChunkReader[] { new VerticesList(), new FacesDescription(),
+					new FacesMaterial(), new FacesTextureCoordinates() }, chunk);
+			buildMeshes(objectNode, name);
+		}
+
+		private void buildMeshes(Node node, String name) {
+			Iterator it = textureBlock.iterator();
+			while (it.hasNext()) {
+				MaterialUsage usedMaterial = (MaterialUsage) it.next();
+				Material material = usedMaterial.material;
+				TriMesh mesh = new TriMesh(name+"_"+material.name);
+				int[] usedTriangles = usedMaterial.triangles;
+				int noOfTriangles = usedTriangles.length;
+				int noOfVertices = noOfTriangles*3;
+				IntBuffer trianglesBuffer = BufferUtils.createIntBuffer(noOfVertices);
+				FloatBuffer normalBuffer = BufferUtils.createVector3Buffer(noOfVertices);
+				FloatBuffer vertexBuffer = BufferUtils.createVector3Buffer(noOfVertices);
+				FloatBuffer textureBuffer = BufferUtils.createVector2Buffer(noOfVertices);
+				int vertInd = 0;
+				for (int triInd = 0; triInd < noOfTriangles; triInd++) {
+					// create a new triangle and read indices of the according vertices
+					trianglesBuffer.put(vertInd++).put(vertInd++).put(vertInd++);
+					int t1 = triangles[usedTriangles[triInd]*3];
+					int t2 = triangles[usedTriangles[triInd]*3+1];
+					int t3 = triangles[usedTriangles[triInd]*3+2];
+					logger.debug("Building triangle "+t1+" => "+t2+" => "+t3);
+
+					// create 3 vertices per triangles, do not reuse vertices for other triangles
+					vertexBuffer.put(vertices[t1].x).put(vertices[t1].y).put(vertices[t1].z);
+					vertexBuffer.put(vertices[t2].x).put(vertices[t2].y).put(vertices[t2].z);
+					vertexBuffer.put(vertices[t3].x).put(vertices[t3].y).put(vertices[t3].z);
+					// set texture coordinates
+					if (textureCoordinates != null) {
+						textureBuffer.put(textureCoordinates[t1].x).put(textureCoordinates[t1].y)
+								.put(textureCoordinates[t2].x).put(textureCoordinates[t2].y)
+								.put(textureCoordinates[t3].x).put(textureCoordinates[t3].y);
+					}
+					// calculate normal
+					Vector3f vec2 = vertices[t1].subtract(vertices[t2]);
+					Vector3f vec1 = vertices[t3].subtract(vertices[t2]);
+					Vector3f norm = vec2.cross(vec1).normalize();
+					for (int j = 0; j < 3; j++) {
+						normalBuffer.put(norm.x).put(norm.y).put(norm.z);
+					}
+				}
+				trianglesBuffer.flip();
+				normalBuffer.flip();
+				vertexBuffer.flip();
+				mesh.setIndexBuffer(trianglesBuffer);
+				mesh.setTriangleQuantity(noOfTriangles);
+				mesh.setNormalBuffer(normalBuffer);
+				mesh.setVertexBuffer(vertexBuffer);
+				mesh.setVertQuantity(3 * noOfTriangles);
+				mesh.setTextureBuffer(textureBuffer);
+				mesh.setModelBound(new BoundingBox());
+				mesh.updateModelBound();
+				material.objectsThatApplyThisTexture.add(mesh);
+				node.attachChild(mesh);
 			}
-			mesh.setModelBound(new BoundingBox());
-			mesh.updateModelBound();
+			vertices = null;
+			textureCoordinates = null;
 		}
 	}
 
 	private class VerticesList extends AbstractChunkReader {
-		TriMesh mesh;
-
-		public VerticesList(TriMesh mesh) {
+		public VerticesList() {
 			super(VERTICES_LIST);
-			this.mesh = mesh;
 		}
 
 		@Override
@@ -273,77 +343,55 @@ public class ThreeDSReader {
 	}
 
 	private class FacesDescription extends AbstractChunkReader {
-		TriMesh mesh;
-
-		public FacesDescription(TriMesh mesh) {
+		public FacesDescription() {
 			super(FACES_DESCRIPTION);
-			this.mesh = mesh;
 		}
 
 		@Override
 		public void readChunk(Chunk chunk) {
 			int noOfTriangles = reader.readShort();
-			int noOfVertices = noOfTriangles * 3;
+			triangles = new int[3 * noOfTriangles];
 			logger.debug("Reading " + noOfTriangles + " triangles");
-			IntBuffer trianglesBuffer = BufferUtils.createIntBuffer(noOfVertices);
-			FloatBuffer normalBuffer = BufferUtils.createVector3Buffer(noOfVertices);
-			FloatBuffer vertexBuffer = BufferUtils.createVector3Buffer(noOfVertices);
-			FloatBuffer colorBuffer = BufferUtils.createColorBuffer(noOfVertices);
-			FloatBuffer textureBuffer = BufferUtils.createVector2Buffer(noOfVertices);
 			for (int i = 0; i < noOfTriangles; i++) {
-				// read indices of the triangle
-				int t1 = reader.readShort();
-				int t2 = reader.readShort();
-				int t3 = reader.readShort();
+				for (int j = 0; j < 3; j++) {
+					triangles[3*i+j] = reader.readShort();
+				}
 				reader.readShort(); // properties are ignored for the timebeeing
-				// logger.debug("Index " + i + ": " + t1 + ", " + t2 + ", " + t3 + " => "
-				// + reader.getPos());
-				trianglesBuffer.put(i * 3).put(i * 3 + 1).put(i * 3 + 2);
-				// create 3 vertices per triangles, do not reuse vertices for other triangles
-				vertexBuffer.put(vertices[t1].x).put(vertices[t1].y).put(vertices[t1].z);
-				vertexBuffer.put(vertices[t2].x).put(vertices[t2].y).put(vertices[t2].z);
-				vertexBuffer.put(vertices[t3].x).put(vertices[t3].y).put(vertices[t3].z);
-				// set color for every vertex
-				for (int j = 0; j < 3; j++) {
-					colorBuffer.put(1).put(0.0f).put(0.0f).put(1);
-				}
-				// set texture coordinates
-				if (textureCoordinates != null) {
-					textureBuffer.put(textureCoordinates[t1].x).put(textureCoordinates[t1].y).put(
-							textureCoordinates[t2].x).put(textureCoordinates[t2].y).put(
-							textureCoordinates[t3].x).put(textureCoordinates[t3].y);
-				}
-				// calculate normal
-				Vector3f vec2 = vertices[t1].subtract(vertices[t2]);
-				Vector3f vec1 = vertices[t3].subtract(vertices[t2]);
-				Vector3f norm = vec2.cross(vec1).normalize();
-				for (int j = 0; j < 3; j++) {
-					normalBuffer.put(norm.x).put(norm.y).put(norm.z);
-				}
-				// logger.debug("Index " + i + " normal : " + norm.x + ", " + norm.y + ", " + norm.z
-				// + " => "
-				// + reader.getPos());
 			}
-			vertices = null;
-			textureCoordinates = null;
-			trianglesBuffer.flip();
-			normalBuffer.flip();
-			vertexBuffer.flip();
-			colorBuffer.flip();
-			mesh.setIndexBuffer(trianglesBuffer);
-			mesh.setTriangleQuantity(noOfTriangles);
-			mesh.setNormalBuffer(normalBuffer);
-			mesh.setVertexBuffer(vertexBuffer);
-			mesh.setVertQuantity(3 * noOfTriangles);
-			mesh.setTextureBuffer(textureBuffer);
-			mesh.setColorBuffer(colorBuffer);
-			// mesh.setRandomColors();
 
-			// MaterialState ms =
-			// DisplaySystem.getDisplaySystem().getRenderer().createMaterialState();
-			// ms.setDiffuse(ColorRGBA.blue);
-
-			// mesh.setRenderState(DisplaySystem.getDisplaySystem().getRenderer().createTextureState());
+			/*
+			 * int noOfVertices = noOfTriangles * 3; logger.debug("Reading " + noOfTriangles + "
+			 * triangles"); IntBuffer trianglesBuffer = BufferUtils.createIntBuffer(noOfVertices);
+			 * FloatBuffer normalBuffer = BufferUtils.createVector3Buffer(noOfVertices); FloatBuffer
+			 * vertexBuffer = BufferUtils.createVector3Buffer(noOfVertices); // FloatBuffer
+			 * colorBuffer = BufferUtils.createColorBuffer(noOfVertices); FloatBuffer textureBuffer =
+			 * BufferUtils.createVector2Buffer(noOfVertices); for (int i = 0; i < noOfTriangles;
+			 * i++) { // read indices of the triangle int t1 = reader.readShort(); int t2 =
+			 * reader.readShort(); int t3 = reader.readShort(); reader.readShort(); // properties
+			 * are ignored for the timebeeing // logger.debug("Index " + i + ": " + t1 + ", " + t2 + ", " +
+			 * t3 + " => " // + reader.getPos()); // create triangle trianglesBuffer.put(i *
+			 * 3).put(i * 3 + 1).put(i * 3 + 2); // create 3 vertices per triangles, do not reuse
+			 * vertices for other triangles
+			 * vertexBuffer.put(vertices[t1].x).put(vertices[t1].y).put(vertices[t1].z);
+			 * vertexBuffer.put(vertices[t2].x).put(vertices[t2].y).put(vertices[t2].z);
+			 * vertexBuffer.put(vertices[t3].x).put(vertices[t3].y).put(vertices[t3].z); // // set
+			 * color for every vertex // for (int j = 0; j < 3; j++) { //
+			 * colorBuffer.put(1).put(0.0f).put(0.0f).put(1); // } // set texture coordinates if
+			 * (textureCoordinates != null) {
+			 * textureBuffer.put(textureCoordinates[t1].x).put(textureCoordinates[t1].y).put(
+			 * textureCoordinates[t2].x).put(textureCoordinates[t2].y).put(
+			 * textureCoordinates[t3].x).put(textureCoordinates[t3].y); } // calculate normal
+			 * Vector3f vec2 = vertices[t1].subtract(vertices[t2]); Vector3f vec1 =
+			 * vertices[t3].subtract(vertices[t2]); Vector3f norm = vec2.cross(vec1).normalize();
+			 * for (int j = 0; j < 3; j++) { normalBuffer.put(norm.x).put(norm.y).put(norm.z); } //
+			 * logger.debug("Index " + i + " normal : " + norm.x + ", " + norm.y + ", " + norm.z // + " => " // +
+			 * reader.getPos()); } vertices = null; textureCoordinates = null;
+			 * trianglesBuffer.flip(); normalBuffer.flip(); vertexBuffer.flip(); //
+			 * colorBuffer.flip(); mesh.setIndexBuffer(trianglesBuffer);
+			 * mesh.setTriangleQuantity(noOfTriangles); mesh.setNormalBuffer(normalBuffer);
+			 * mesh.setVertexBuffer(vertexBuffer); mesh.setVertQuantity(3 * noOfTriangles);
+			 * mesh.setTextureBuffer(textureBuffer);
+			 */
 		}
 	}
 
@@ -370,11 +418,8 @@ public class ThreeDSReader {
 	 * should use this model is ignored.
 	 */
 	private class FacesMaterial extends AbstractChunkReader {
-		Spatial spatial;
-
-		public FacesMaterial(Spatial spatial) {
+		public FacesMaterial() {
 			super(FACES_MATERIAL);
-			this.spatial = spatial;
 		}
 
 		@Override
@@ -383,13 +428,14 @@ public class ThreeDSReader {
 			int noOfAssignedTriangles = reader.readShort();
 			logger.debug("Material " + materialName + " used for " + noOfAssignedTriangles
 					+ " triangles");
-			Material material = (Material) materials.get(materialName);
-			if (material != null && material.image != null) {
-				material.objectsThatApplyThisTexture.add(spatial);
+			MaterialUsage usedMaterial = new MaterialUsage();
+			usedMaterial.triangles = new int[noOfAssignedTriangles];
+			usedMaterial.material = (Material) materials.get(materialName);
+			for (int i = 0; i < noOfAssignedTriangles; i++) {
+				usedMaterial.triangles[i] = reader.readShort();
+				logger.debug("Triangle "+usedMaterial.triangles[i]);
 			}
-			// for (int i = 0; i < noOfAssignedTriangles; i++) {
-			//
-			// }
+			textureBlock.add(usedMaterial);
 			reader.seekMarkOffset(chunk.length);
 		}
 	}

@@ -76,9 +76,10 @@ public class DynamicWorld extends Node {
 		if (visibilityRadius<0)
 			setVisibilityRadius(2000);
 		preloadAndAddSections(cam.getLocation());
-		AsyncTaskQueue.getInstance().waitForEmptyQueue();
 		createSky();
-		//createFog();
+		createFog();
+		AsyncTaskQueue.getInstance().waitForEmptyQueue();
+		logger.debug("DynamicWorld finished initialization.");
 	}
 
 	private void createSky() {

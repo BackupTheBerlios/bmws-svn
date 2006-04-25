@@ -55,6 +55,7 @@ public class AsyncTaskQueue extends AbstractTaskQueue {
 				logger.info("Task queue finished");
 			}
 		});
+		//tr.setPriority(Thread.MIN_PRIORITY);
 		tr.start();
 	}
 
