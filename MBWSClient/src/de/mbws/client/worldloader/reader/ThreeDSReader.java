@@ -528,7 +528,7 @@ public class ThreeDSReader {
 			logger.debug("Using texture: " + textureName);
 			try {
 				material.image = TextureManager.loadImage(new URL("file:" + path + File.separator
-						+ textureName), false);
+						+ textureName), true);
 			}
 			catch (MalformedURLException e) {
 				logger.error(e);
