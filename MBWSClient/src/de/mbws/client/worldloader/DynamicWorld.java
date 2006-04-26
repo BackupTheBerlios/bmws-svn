@@ -48,7 +48,6 @@ public class DynamicWorld extends Node {
 	ObjectRepository modelRepository;
 	ObjectLoader loader;
 	SectionController sectionController;
-	DetailTextureManager dtm;
 	DisplaySystem display;
 	Node root;
 	Dome skydome;
