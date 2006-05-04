@@ -31,7 +31,6 @@ public class LoginEvent extends AbstractGameEvent {
 
     public LoginEvent(AbstractEventData eventData) {
         super(eventData);
-        // TODO Auto-generated constructor stub
     }
 
     public LoginData getLoginData() {

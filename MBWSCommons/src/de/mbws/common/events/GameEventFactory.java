@@ -7,6 +7,11 @@ import org.apache.log4j.Logger;
 import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.events.data.generated.*;
 
+/**
+ * Description: 
+ * @author Azarai
+ * @deprecated
+ */
 public class GameEventFactory {
     private static Logger logger = Logger.getLogger("GameEventFactory");
 

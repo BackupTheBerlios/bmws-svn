@@ -30,7 +30,6 @@ public class ServerRedirectEvent extends AbstractGameEvent {
     
     public ServerRedirectEvent(AbstractEventData eventData) {
         super(eventData);
-        // TODO Auto-generated constructor stub
     }
 
     public LoginData getLoginData() {

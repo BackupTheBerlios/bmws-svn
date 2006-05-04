@@ -27,26 +27,10 @@
     	</xsd:complexType>
 	</xsd:element>
 
-   <xsd:element name="eventController">
-   		<xsd:complexType>	
-			<xsd:attributeGroup ref="EventControllerAttributes"/>
-    	</xsd:complexType>
-	</xsd:element> 
-
-   <xsd:element name="eventControllers">
-   		<xsd:complexType>
-	   		<xsd:sequence>	
-				<xsd:element ref="eventController" maxOccurs="unbounded" minOccurs="0"/>
-	    	</xsd:sequence>
-    	</xsd:complexType>
-	</xsd:element>  
-
    <xsd:element name="accountserver">
    		<xsd:complexType>	
 	        <xsd:sequence>
 	             <xsd:element ref="basicAttributes" />
-	             <xsd:element name="s2sport" type="xsd:integer"/>
-	             <xsd:element ref="eventControllers" />
 	         </xsd:sequence>
     	</xsd:complexType>
    	</xsd:element>
@@ -55,16 +39,10 @@
    		<xsd:complexType>	
 	        <xsd:sequence>
 	             <xsd:element ref="basicAttributes" />
-	             <xsd:element ref="eventControllers" />
-   			     <xsd:element name="myclientip" type="xsd:string"/>	             
+   			     <xsd:element name="publicip" type="xsd:string"/>	             
    			     <xsd:element name="accountserverip" type="xsd:string"/>
 			     <xsd:element name="accountserverport" type="xsd:integer"/>
 	         </xsd:sequence>
     	</xsd:complexType>
    	</xsd:element>
-
-   <xsd:attributeGroup name="EventControllerAttributes">
-        <xsd:attribute name="type" type="xsd:integer" use="required"/>
-   	    <xsd:attribute name="class" type="xsd:string" use="required"/>
-   </xsd:attributeGroup>   	
 </xsd:schema>
