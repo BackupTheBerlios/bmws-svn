@@ -24,7 +24,7 @@ public class EventDispatcher extends QueueWorker {
 
     protected void processEvent(AbstractGameEvent event) {
         try {
-            AbstractEventController ec = server.getEventController(event.getEventId());
+            AbstractEventController ec = server.getEventController(event.getEventType());
             if (ec != null) {
                 ec.handleEvent(event);
             }            

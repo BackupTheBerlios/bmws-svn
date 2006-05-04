@@ -6,7 +6,7 @@ import de.mbws.common.Globals;
 import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.EventTypes;
 import de.mbws.common.events.MessageEvent;
-import de.mbws.server.world.WorldServer;
+import de.mbws.server.AbstractTcpServer;
 
 /**
  * Description:
@@ -16,8 +16,14 @@ import de.mbws.server.world.WorldServer;
  */
 public class ChatEventController extends WorldServerBaseEventController {
 
-    public ChatEventController(WorldServer worldServer) {
-        super(worldServer);
+    private static final Integer[] supportedEventTypes = { EventTypes.CHAT_SAY,
+        EventTypes.CHAT_SHOUT};
+
+    /**
+     * @param server
+     */
+    public ChatEventController(AbstractTcpServer server) {
+        super(server);
     }
 
     /*
@@ -64,5 +70,13 @@ public class ChatEventController extends WorldServerBaseEventController {
                 sendEvent(me);
             }
         }
+    }
+
+    /* (non-Javadoc)
+     * @see de.mbws.server.controller.AbstractEventController#getSupportedEventTypes()
+     */
+    @Override
+    public Integer[] getSupportedEventTypes() {
+        return supportedEventTypes;
     }
 }

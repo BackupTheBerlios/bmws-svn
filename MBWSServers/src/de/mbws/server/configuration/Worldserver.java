@@ -32,14 +32,9 @@ public class Worldserver implements java.io.Serializable {
     private de.mbws.server.configuration.BasicAttributes _basicAttributes;
 
     /**
-     * Field _eventControllers
+     * Field _publicip
      */
-    private de.mbws.server.configuration.EventControllers _eventControllers;
-
-    /**
-     * Field _myclientip
-     */
-    private java.lang.String _myclientip;
+    private java.lang.String _publicip;
 
     /**
      * Field _accountserverip
@@ -114,26 +109,15 @@ public class Worldserver implements java.io.Serializable {
     } //-- de.mbws.server.configuration.BasicAttributes getBasicAttributes() 
 
     /**
-     * Returns the value of field 'eventControllers'.
-     * 
-     * @return EventControllers
-     * @return the value of field 'eventControllers'.
-     */
-    public de.mbws.server.configuration.EventControllers getEventControllers()
-    {
-        return this._eventControllers;
-    } //-- de.mbws.server.configuration.EventControllers getEventControllers() 
-
-    /**
-     * Returns the value of field 'myclientip'.
+     * Returns the value of field 'publicip'.
      * 
      * @return String
-     * @return the value of field 'myclientip'.
+     * @return the value of field 'publicip'.
      */
-    public java.lang.String getMyclientip()
+    public java.lang.String getPublicip()
     {
-        return this._myclientip;
-    } //-- java.lang.String getMyclientip() 
+        return this._publicip;
+    } //-- java.lang.String getPublicip() 
 
     /**
      * Method hasAccountserverport
@@ -226,24 +210,14 @@ public class Worldserver implements java.io.Serializable {
     } //-- void setBasicAttributes(de.mbws.server.configuration.BasicAttributes) 
 
     /**
-     * Sets the value of field 'eventControllers'.
+     * Sets the value of field 'publicip'.
      * 
-     * @param eventControllers the value of field 'eventControllers'
+     * @param publicip the value of field 'publicip'.
      */
-    public void setEventControllers(de.mbws.server.configuration.EventControllers eventControllers)
+    public void setPublicip(java.lang.String publicip)
     {
-        this._eventControllers = eventControllers;
-    } //-- void setEventControllers(de.mbws.server.configuration.EventControllers) 
-
-    /**
-     * Sets the value of field 'myclientip'.
-     * 
-     * @param myclientip the value of field 'myclientip'.
-     */
-    public void setMyclientip(java.lang.String myclientip)
-    {
-        this._myclientip = myclientip;
-    } //-- void setMyclientip(java.lang.String) 
+        this._publicip = publicip;
+    } //-- void setPublicip(java.lang.String) 
 
     /**
      * Method unmarshal

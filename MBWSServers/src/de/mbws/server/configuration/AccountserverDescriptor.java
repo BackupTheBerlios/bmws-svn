@@ -11,7 +11,6 @@ package de.mbws.server.configuration;
  //- Imported classes and packages -/
 //---------------------------------/
 
-import org.exolab.castor.xml.validators.IntegerValidator;
 
 /**
  * Class AccountserverDescriptor.
@@ -96,84 +95,6 @@ public class AccountserverDescriptor extends org.exolab.castor.xml.util.XMLClass
         addFieldDescriptor(desc);
         
         //-- validation code for: _basicAttributes
-        fieldValidator = new org.exolab.castor.xml.FieldValidator();
-        fieldValidator.setMinOccurs(1);
-        { //-- local scope
-        }
-        desc.setValidator(fieldValidator);
-        //-- _s2sport
-        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(java.lang.Integer.TYPE, "_s2sport", "s2sport", org.exolab.castor.xml.NodeType.Element);
-        handler = new org.exolab.castor.xml.XMLFieldHandler() {
-            public java.lang.Object getValue( java.lang.Object object ) 
-                throws IllegalStateException
-            {
-                Accountserver target = (Accountserver) object;
-                if(!target.hasS2sport())
-                    return null;
-                return new java.lang.Integer(target.getS2sport());
-            }
-            public void setValue( java.lang.Object object, java.lang.Object value) 
-                throws IllegalStateException, IllegalArgumentException
-            {
-                try {
-                    Accountserver target = (Accountserver) object;
-                    // ignore null values for non optional primitives
-                    if (value == null) return;
-                    
-                    target.setS2sport( ((java.lang.Integer)value).intValue());
-                }
-                catch (java.lang.Exception ex) {
-                    throw new IllegalStateException(ex.toString());
-                }
-            }
-            public java.lang.Object newInstance( java.lang.Object parent ) {
-                return null;
-            }
-        };
-        desc.setHandler(handler);
-        desc.setRequired(true);
-        desc.setMultivalued(false);
-        addFieldDescriptor(desc);
-        
-        //-- validation code for: _s2sport
-        fieldValidator = new org.exolab.castor.xml.FieldValidator();
-        fieldValidator.setMinOccurs(1);
-        { //-- local scope
-            IntegerValidator typeValidator = new IntegerValidator();
-            fieldValidator.setValidator(typeValidator);
-        }
-        desc.setValidator(fieldValidator);
-        //-- _eventControllers
-        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(de.mbws.server.configuration.EventControllers.class, "_eventControllers", "eventControllers", org.exolab.castor.xml.NodeType.Element);
-        handler = new org.exolab.castor.xml.XMLFieldHandler() {
-            public java.lang.Object getValue( java.lang.Object object ) 
-                throws IllegalStateException
-            {
-                Accountserver target = (Accountserver) object;
-                return target.getEventControllers();
-            }
-            public void setValue( java.lang.Object object, java.lang.Object value) 
-                throws IllegalStateException, IllegalArgumentException
-            {
-                try {
-                    Accountserver target = (Accountserver) object;
-                    target.setEventControllers( (de.mbws.server.configuration.EventControllers) value);
-                }
-                catch (java.lang.Exception ex) {
-                    throw new IllegalStateException(ex.toString());
-                }
-            }
-            public java.lang.Object newInstance( java.lang.Object parent ) {
-                return new de.mbws.server.configuration.EventControllers();
-            }
-        };
-        desc.setHandler(handler);
-        desc.setNameSpaceURI("http://mbws/Configuration");
-        desc.setRequired(true);
-        desc.setMultivalued(false);
-        addFieldDescriptor(desc);
-        
-        //-- validation code for: _eventControllers
         fieldValidator = new org.exolab.castor.xml.FieldValidator();
         fieldValidator.setMinOccurs(1);
         { //-- local scope

@@ -12,13 +12,13 @@ import de.mbws.common.events.data.generated.CharacterSelection;
 import de.mbws.common.events.data.generated.CharacterWorldServerInformation;
 import de.mbws.common.events.data.generated.NetQuaternion;
 import de.mbws.common.events.data.generated.PlayerCharacterDetails;
+import de.mbws.server.AbstractTcpServer;
 import de.mbws.server.account.persistence.CharacterPersistenceManager;
 import de.mbws.server.data.Character;
 import de.mbws.server.data.CharacterHelper;
 import de.mbws.server.data.ServerPlayerData;
 import de.mbws.server.data.db.generated.CharacterData;
 import de.mbws.server.utils.IdHelper;
-import de.mbws.server.world.WorldServer;
 
 /**
  * Description:
@@ -27,8 +27,14 @@ import de.mbws.server.world.WorldServer;
  */
 public class CharacterEventController extends WorldServerBaseEventController {
 
-    public CharacterEventController(WorldServer worldServer) {
-        super(worldServer);
+    private static final Integer[] supportedEventTypes = { EventTypes.S2S_CHARACTER_NEW_CHARACTER_ENTERS_WORLD,
+        EventTypes.C2S_CHARACTER_ENTERS_WORLD_REQUEST};
+
+    /**
+     * @param server
+     */
+    public CharacterEventController(AbstractTcpServer server) {
+        super(server);
     }
 
     /*
@@ -102,5 +108,13 @@ public class CharacterEventController extends WorldServerBaseEventController {
                 }
             }
         }
+    }
+
+    /* (non-Javadoc)
+     * @see de.mbws.server.controller.AbstractEventController#getSupportedEventTypes()
+     */
+    @Override
+    public Integer[] getSupportedEventTypes() {
+        return supportedEventTypes;
     }
 }

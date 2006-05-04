@@ -23,6 +23,8 @@ public abstract class AbstractEventController {
     public void sendEvent(AbstractGameEvent event) {
         server.handleOutgoingEvent(event);
     }
+    
+    public abstract Integer[] getSupportedEventTypes();
 }
 
 

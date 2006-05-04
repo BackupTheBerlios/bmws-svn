@@ -31,21 +31,6 @@ public class Accountserver implements java.io.Serializable {
      */
     private de.mbws.server.configuration.BasicAttributes _basicAttributes;
 
-    /**
-     * Field _s2sport
-     */
-    private int _s2sport;
-
-    /**
-     * keeps track of state for field: _s2sport
-     */
-    private boolean _has_s2sport;
-
-    /**
-     * Field _eventControllers
-     */
-    private de.mbws.server.configuration.EventControllers _eventControllers;
-
 
       //----------------/
      //- Constructors -/
@@ -62,15 +47,6 @@ public class Accountserver implements java.io.Serializable {
     //-----------/
 
     /**
-     * Method deleteS2sport
-     * 
-     */
-    public void deleteS2sport()
-    {
-        this._has_s2sport= false;
-    } //-- void deleteS2sport() 
-
-    /**
      * Returns the value of field 'basicAttributes'.
      * 
      * @return BasicAttributes
@@ -80,40 +56,6 @@ public class Accountserver implements java.io.Serializable {
     {
         return this._basicAttributes;
     } //-- de.mbws.server.configuration.BasicAttributes getBasicAttributes() 
-
-    /**
-     * Returns the value of field 'eventControllers'.
-     * 
-     * @return EventControllers
-     * @return the value of field 'eventControllers'.
-     */
-    public de.mbws.server.configuration.EventControllers getEventControllers()
-    {
-        return this._eventControllers;
-    } //-- de.mbws.server.configuration.EventControllers getEventControllers() 
-
-    /**
-     * Returns the value of field 's2sport'.
-     * 
-     * @return int
-     * @return the value of field 's2sport'.
-     */
-    public int getS2sport()
-    {
-        return this._s2sport;
-    } //-- int getS2sport() 
-
-    /**
-     * Method hasS2sport
-     * 
-     * 
-     * 
-     * @return boolean
-     */
-    public boolean hasS2sport()
-    {
-        return this._has_s2sport;
-    } //-- boolean hasS2sport() 
 
     /**
      * Method isValid
@@ -170,27 +112,6 @@ public class Accountserver implements java.io.Serializable {
     {
         this._basicAttributes = basicAttributes;
     } //-- void setBasicAttributes(de.mbws.server.configuration.BasicAttributes) 
-
-    /**
-     * Sets the value of field 'eventControllers'.
-     * 
-     * @param eventControllers the value of field 'eventControllers'
-     */
-    public void setEventControllers(de.mbws.server.configuration.EventControllers eventControllers)
-    {
-        this._eventControllers = eventControllers;
-    } //-- void setEventControllers(de.mbws.server.configuration.EventControllers) 
-
-    /**
-     * Sets the value of field 's2sport'.
-     * 
-     * @param s2sport the value of field 's2sport'.
-     */
-    public void setS2sport(int s2sport)
-    {
-        this._s2sport = s2sport;
-        this._has_s2sport = true;
-    } //-- void setS2sport(int) 
 
     /**
      * Method unmarshal

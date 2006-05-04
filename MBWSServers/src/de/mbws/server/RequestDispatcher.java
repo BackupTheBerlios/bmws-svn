@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 import de.mbws.common.Attachment;
 import de.mbws.common.data.AbstractPlayerData;
 import de.mbws.common.events.AbstractGameEvent;
-import de.mbws.common.events.GameEventFactory;
 import de.mbws.common.utils.StringUtils;
 import de.mbws.server.data.ServerPlayerData;
 
@@ -149,7 +148,7 @@ public class RequestDispatcher extends Thread {
                                         }   
                                     }
                                 }
-                                AbstractGameEvent event = GameEventFactory.getGameEvent(attachment.getPayload(), player);
+                                AbstractGameEvent event = server.getEvent(attachment.getPayload(), player);
                                 if (logger.isDebugEnabled()) {
                                     logger.debug("Got Event: " + event);
                                 }

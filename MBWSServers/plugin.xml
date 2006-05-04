@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension-point id="eventcontrollers" name="EventController" schema="schema/eventcontroller.exsd"/>
+   <extension
+         id="de.mbws.server.core.product"
+         name="MBWS Servers Core Product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="de.mbws.servers.core.starter"
+            name="de.mbws.servers.core"/>
+   </extension>
+   <extension
+         id="starter"
+         name="MBWS Server Starter"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run class="de.mbws.server.ServerStarter"/>
+      </application>
+   </extension>
+   <extension
+         point="de.mbws.servers.core.eventcontrollers">
+      <accountServer>
+         <event
+               controllerClass="de.mbws.server.account.controller.LoginEventController"
+               name="LoginEventController"
+               transformerClass="de.mbws.server.account.controller.AccountServerEventTransformer"/>
+         <event
+               controllerClass="de.mbws.server.account.controller.AccountEventController"
+               name="AccountEventController"
+               transformerClass="de.mbws.server.account.controller.AccountServerEventTransformer"/>
+         <event
+               controllerClass="de.mbws.server.account.controller.CharacterEventController"
+               name="CharacterEventController"
+               transformerClass="de.mbws.server.account.controller.AccountServerEventTransformer"/>
+      </accountServer>
+      <worldServer>
+         <event
+               controllerClass="de.mbws.server.world.controller.LoginEventController"
+               name="LoginEventController"
+               transformerClass="de.mbws.server.world.controller.WorldServerEventTransformer"/>
+         <event
+               controllerClass="de.mbws.server.world.controller.CharacterEventController"
+               name="CharacterEventController"
+               transformerClass="de.mbws.server.world.controller.WorldServerEventTransformer"/>
+         <event
+               controllerClass="de.mbws.server.world.controller.ChatEventController"
+               name="ChatEventController"
+               transformerClass="de.mbws.server.world.controller.WorldServerEventTransformer"/>
+         <event
+               controllerClass="de.mbws.server.world.controller.MovementEventController"
+               name="MovementEventController"
+               transformerClass="de.mbws.server.world.controller.WorldServerEventTransformer"/>
+      </worldServer>
+   </extension>
+
+</plugin>

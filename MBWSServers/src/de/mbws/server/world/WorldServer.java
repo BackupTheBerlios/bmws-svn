@@ -1,6 +1,5 @@
 package de.mbws.server.world;
 
-import java.lang.reflect.Constructor;
 import java.net.InetSocketAddress;
 import java.nio.channels.SocketChannel;
 import java.util.*;
@@ -18,8 +17,7 @@ import de.mbws.common.events.data.generated.ServerRedirectData;
 import de.mbws.common.exceptions.InitializationException;
 import de.mbws.server.AbstractTcpServer;
 import de.mbws.server.ServerConfig;
-import de.mbws.server.configuration.EventController;
-import de.mbws.server.controller.AbstractEventController;
+import de.mbws.server.core.MBWSServerPlugin;
 import de.mbws.server.data.ServerCommunicationData;
 import de.mbws.server.data.ServerPlayerData;
 import de.mbws.server.management.MBeanHelper;
@@ -68,7 +66,7 @@ public class WorldServer extends AbstractTcpServer {
                 sld.setName("worldserver");
                 sld.setPassword("worldserver");
                 ServerRedirectData srd = new ServerRedirectData();
-                srd.setHost(config.getMyClientIP());
+                srd.setHost(config.getMyPublicIP());
                 srd.setPort(config.getC2sport());
                 sld.setHostData(srd);
                 LoginEvent lv = new LoginEvent(sld);
@@ -79,25 +77,6 @@ public class WorldServer extends AbstractTcpServer {
         } catch (Exception e) {
             logger.error("Error during server connection", e);
             throw new InitializationException("Error during server connection. see log file for more information");
-        }
-    }
-
-    protected void registerEventController() {
-        EventController[] ecs = config.getEventControllers().getEventController();
-        Object arglist[] = new Object[1];
-        arglist[0] = this;
-        try {
-            for (int i = 0; i < ecs.length; i++) {
-                Class cls = Class.forName(ecs[i].getClazz());
-                Class partypes[] = new Class[1];
-                partypes[0] = WorldServer.class;
-                Constructor ct = cls.getConstructor(partypes);
-                Object retobj = ct.newInstance(arglist);
-                eventReader.put(new Integer(ecs[i].getType()), (AbstractEventController) retobj);
-            }
-        } catch (Exception e) {
-            logger.error("Cant init EventController", e);
-            System.exit(1);
         }
     }
 
@@ -159,9 +138,18 @@ public class WorldServer extends AbstractTcpServer {
     }
 
     @Override
-    protected void shutdown() {
+    protected void processShutdown() {
         if (logger.isDebugEnabled()) {
             logger.debug("WorldServer is shuting down....");
         }
+        //TODO additional stuff required during shutdown?
+    }
+
+    /* (non-Javadoc)
+     * @see de.mbws.server.AbstractTcpServer#getEventControllerIdentifier()
+     */
+    @Override
+    protected String getEventControllerIdentifier() {
+        return MBWSServerPlugin.WORLD_SERVER_EXTENSION_NAME;
     }
 }

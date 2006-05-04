@@ -1,8 +1,10 @@
 package de.mbws.server;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
@@ -10,6 +12,10 @@ import java.nio.channels.SocketChannel;
 import java.util.*;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.Platform;
 
 import de.mbws.common.EventQueue;
 import de.mbws.common.data.AbstractPlayerData;
@@ -18,6 +24,7 @@ import de.mbws.common.events.EventTypes;
 import de.mbws.common.events.MessageEvent;
 import de.mbws.common.events.data.generated.SystemInformationData;
 import de.mbws.server.controller.AbstractEventController;
+import de.mbws.server.controller.AbstractEventTransformer;
 
 /**
  * Description:
@@ -35,6 +42,8 @@ public abstract class AbstractTcpServer extends Thread {
 
     protected HashMap<Integer, AbstractEventController> eventReader = new HashMap<Integer, AbstractEventController>();
 
+    protected List<AbstractEventTransformer> eventTransformer = new ArrayList<AbstractEventTransformer>();
+
     private EventQueue outgoingEventQueue = new EventQueue("GameEvents-out");
 
     private HashMap<Integer, AbstractPlayerData> clients = new HashMap<Integer, AbstractPlayerData>();
@@ -51,12 +60,6 @@ public abstract class AbstractTcpServer extends Thread {
         super();
         try {
             getLogger().info("Server initializing");
-
-            Runtime.getRuntime().addShutdownHook(new Thread() {
-                public void run() {
-                    processShutdown();
-                }
-            });
 
             this.config = config;
             initServerSocket(config.getC2sport());
@@ -150,7 +153,51 @@ public abstract class AbstractTcpServer extends Thread {
         }
     }
 
+    protected void registerEventController() {
+        if (getEventControllerIdentifier() == null) {
+            getLogger().error("No Eventcontroller specified. eventControllerIdentifier is null");
+        }
+
+        IExtensionRegistry registry = Platform.getExtensionRegistry();
+        IExtensionPoint extensionPoint = registry.getExtensionPoint("de.mbws.servers.core.eventcontrollers");
+        IConfigurationElement[] controllers = extensionPoint.getConfigurationElements();
+        for (int m = 0; m < controllers.length; m++) {
+            IConfigurationElement elem = controllers[m];
+            if (getEventControllerIdentifier().equals(elem.getName())) {
+                IConfigurationElement[] currControllers = elem.getChildren();
+                for (int i = 0; i < currControllers.length; i++) {
+                    Object arglist[] = new Object[1];
+                    arglist[0] = this;
+                    try {
+                        Class cls = Class.forName(currControllers[i].getAttribute("controllerClass"));
+                        Class partypes[] = new Class[1];
+                        partypes[0] = AbstractTcpServer.class;
+                        Constructor ct = cls.getConstructor(partypes);
+                        Object retobj = ct.newInstance(arglist);
+                        Integer[] types = ((AbstractEventController) retobj).getSupportedEventTypes();
+                        for (int j = 0; j < types.length; j++) {
+                            eventReader.put(types[j], (AbstractEventController) retobj);
+                            eventTransformer.add((AbstractEventTransformer) currControllers[i].createExecutableExtension("transformerClass"));
+                            StringBuilder sb = new StringBuilder();
+                            sb.append("register for eventtype ");
+                            sb.append(types[j]);
+                            sb.append(" controller ");
+                            sb.append(retobj.getClass().getName());
+                            getLogger().info(sb.toString());
+                        }
+
+                    } catch (Exception e) {
+                        getLogger().error("Cant init EventController", e);
+                        System.exit(1);
+                    }
+                }
+            }
+        }
+    }
+
     protected abstract Logger getLogger();
+
+    protected abstract String getEventControllerIdentifier();
 
     /**
      * fetches the Player for a given sessionId
@@ -169,12 +216,10 @@ public abstract class AbstractTcpServer extends Thread {
 
     public abstract void handleClientConnectionLost(SocketChannel channel);
 
-    protected abstract void registerEventController();
+    protected abstract void processShutdown();
 
-    protected abstract void shutdown();
-
-    private void processShutdown() {
-        Map<Integer, AbstractPlayerData> players = getAllPlayers(); 
+    public void shutdown() {
+        Map<Integer, AbstractPlayerData> players = getAllPlayers();
         Set keys = players.keySet();
         SystemInformationData sid = new SystemInformationData();
         sid.setSeverity(Byte.parseByte("1"));
@@ -191,6 +236,18 @@ public abstract class AbstractTcpServer extends Thread {
         }
         me.setRecipients(allPlayer.toArray(new Integer[allPlayer.size()]));
         handleOutgoingEvent(me);
-        shutdown();
+        processShutdown();
+    }
+
+    public AbstractGameEvent getEvent(ByteBuffer payload, AbstractPlayerData p) {
+
+        for (Iterator iter = eventTransformer.iterator(); iter.hasNext();) {
+            AbstractEventTransformer transformer = (AbstractEventTransformer) iter.next();
+            AbstractGameEvent event = transformer.getGameEvent(payload, p);
+            if (event != null) {
+                return event;
+            }
+        }
+        return null;
     }
 }

@@ -5,7 +5,7 @@ import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.AccountEvent;
 import de.mbws.common.events.EventTypes;
 import de.mbws.common.events.data.generated.SystemErrorData;
-import de.mbws.server.account.AccountServer;
+import de.mbws.server.AbstractTcpServer;
 import de.mbws.server.account.persistence.AccountPersistenceManager;
 import de.mbws.server.data.ServerPlayerData;
 import de.mbws.server.data.db.generated.Account;
@@ -18,14 +18,14 @@ import de.mbws.server.exceptions.DuplicateKeyException;
  */
 public class AccountEventController extends AccountServerBaseEventController {
 
-    /**
-     * @param accountServer
-     * @param eventType
-     */
-    public AccountEventController(AccountServer accountServer) {
-        super(accountServer);
-    }
+    private static final Integer[] supportedEventTypes = { EventTypes.C2S_ACCOUNT_CREATE };
 
+    /**
+     * @param server
+     */
+    public AccountEventController(AbstractTcpServer server) {
+        super(server);
+    }
     /* (non-Javadoc)
      * @see de.mwbs.server.controller.EventController#handleEvent(de.mwbs.common.GameEvent)
      */
@@ -60,5 +60,14 @@ public class AccountEventController extends AccountServerBaseEventController {
                 //ignore for now
             }
         }
+    }
+    /*
+     * (non-Javadoc)
+     * 
+     * @see de.mbws.server.controller.AbstractEventController#getSupportedEventTypes()
+     */
+    @Override
+    public Integer[] getSupportedEventTypes() {
+        return supportedEventTypes;
     }
 }

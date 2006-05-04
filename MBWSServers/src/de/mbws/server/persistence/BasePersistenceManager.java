@@ -1,6 +1,6 @@
 package de.mbws.server.persistence;
 
-import java.io.File;
+import java.net.URL;
 
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
@@ -22,9 +22,9 @@ public class BasePersistenceManager {
 
     static SessionFactory sessions = null;
 
-    public static void init() throws InitializationException {
+    public static void init(URL configFileURL) throws InitializationException {
         try {
-            cfg = new Configuration().configure(new File("config/hibernate.cfg.xml"));
+            cfg = new Configuration().configure(configFileURL);
             sessions = cfg.buildSessionFactory();
         } catch (Throwable e) {
             e.printStackTrace();

@@ -6,22 +6,26 @@ import de.mbws.common.events.AbstractGameEvent;
 import de.mbws.common.events.EventTypes;
 import de.mbws.common.events.LoginEvent;
 import de.mbws.common.events.data.generated.ServerLoginData;
-import de.mbws.server.account.AccountServer;
+import de.mbws.server.AbstractTcpServer;
 import de.mbws.server.account.persistence.AccountPersistenceManager;
 import de.mbws.server.data.ServerCommunicationData;
 import de.mbws.server.data.ServerPlayerData;
 import de.mbws.server.data.db.generated.Account;
 
 public class LoginEventController extends AccountServerBaseEventController {
-	private static Logger logger = Logger.getLogger(LoginEventController.class);
+	
+    private static final Integer[] supportedEventTypes = {EventTypes.C2S_LOGIN, EventTypes.C2S_LOGOUT, EventTypes.S2S_LOGIN};
+    
+    /**
+     * @param server
+     */
+    public LoginEventController(AbstractTcpServer server) {
+        super(server);
+    }
 
-	/**
-	 * @param accountServer
-	 * @param eventType
-	 */
-	public LoginEventController(AccountServer accountServer) {
-		super(accountServer);
-	}
+
+    private static Logger logger = Logger.getLogger(LoginEventController.class);
+
 
 	public void handleEvent(AbstractGameEvent event) {
 
@@ -77,4 +81,13 @@ public class LoginEventController extends AccountServerBaseEventController {
             sendEvent(lr);
         }
 	}
+
+
+    /* (non-Javadoc)
+     * @see de.mbws.server.controller.AbstractEventController#getSupportedEventTypes()
+     */
+    @Override
+    public Integer[] getSupportedEventTypes() {
+        return supportedEventTypes;
+    }
 }

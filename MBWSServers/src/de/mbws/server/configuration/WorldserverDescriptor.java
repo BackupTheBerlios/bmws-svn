@@ -102,58 +102,22 @@ public class WorldserverDescriptor extends org.exolab.castor.xml.util.XMLClassDe
         { //-- local scope
         }
         desc.setValidator(fieldValidator);
-        //-- _eventControllers
-        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(de.mbws.server.configuration.EventControllers.class, "_eventControllers", "eventControllers", org.exolab.castor.xml.NodeType.Element);
-        handler = new org.exolab.castor.xml.XMLFieldHandler() {
-            public java.lang.Object getValue( java.lang.Object object ) 
-                throws IllegalStateException
-            {
-                Worldserver target = (Worldserver) object;
-                return target.getEventControllers();
-            }
-            public void setValue( java.lang.Object object, java.lang.Object value) 
-                throws IllegalStateException, IllegalArgumentException
-            {
-                try {
-                    Worldserver target = (Worldserver) object;
-                    target.setEventControllers( (de.mbws.server.configuration.EventControllers) value);
-                }
-                catch (java.lang.Exception ex) {
-                    throw new IllegalStateException(ex.toString());
-                }
-            }
-            public java.lang.Object newInstance( java.lang.Object parent ) {
-                return new de.mbws.server.configuration.EventControllers();
-            }
-        };
-        desc.setHandler(handler);
-        desc.setNameSpaceURI("http://mbws/Configuration");
-        desc.setRequired(true);
-        desc.setMultivalued(false);
-        addFieldDescriptor(desc);
-        
-        //-- validation code for: _eventControllers
-        fieldValidator = new org.exolab.castor.xml.FieldValidator();
-        fieldValidator.setMinOccurs(1);
-        { //-- local scope
-        }
-        desc.setValidator(fieldValidator);
-        //-- _myclientip
-        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(java.lang.String.class, "_myclientip", "myclientip", org.exolab.castor.xml.NodeType.Element);
+        //-- _publicip
+        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(java.lang.String.class, "_publicip", "publicip", org.exolab.castor.xml.NodeType.Element);
         desc.setImmutable(true);
         handler = new org.exolab.castor.xml.XMLFieldHandler() {
             public java.lang.Object getValue( java.lang.Object object ) 
                 throws IllegalStateException
             {
                 Worldserver target = (Worldserver) object;
-                return target.getMyclientip();
+                return target.getPublicip();
             }
             public void setValue( java.lang.Object object, java.lang.Object value) 
                 throws IllegalStateException, IllegalArgumentException
             {
                 try {
                     Worldserver target = (Worldserver) object;
-                    target.setMyclientip( (java.lang.String) value);
+                    target.setPublicip( (java.lang.String) value);
                 }
                 catch (java.lang.Exception ex) {
                     throw new IllegalStateException(ex.toString());
@@ -168,7 +132,7 @@ public class WorldserverDescriptor extends org.exolab.castor.xml.util.XMLClassDe
         desc.setMultivalued(false);
         addFieldDescriptor(desc);
         
-        //-- validation code for: _myclientip
+        //-- validation code for: _publicip
         fieldValidator = new org.exolab.castor.xml.FieldValidator();
         fieldValidator.setMinOccurs(1);
         { //-- local scope

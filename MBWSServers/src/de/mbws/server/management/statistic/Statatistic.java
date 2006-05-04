@@ -21,7 +21,6 @@ public class Statatistic implements StatatisticMBean {
      */
     public Statatistic(AbstractTcpServer server) {
         super();
-        // TODO Auto-generated constructor stub
         this.server = server;
     }
     /**
@@ -29,7 +28,6 @@ public class Statatistic implements StatatisticMBean {
      */
     public Statatistic() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 }
