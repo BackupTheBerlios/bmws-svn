@@ -15,6 +15,10 @@ import java.util.Locale;
 import java.util.Properties;
 
 import javax.swing.*;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLFrameHyperlinkEvent;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
@@ -37,6 +41,7 @@ public class Launcher extends JFrame {
 	private static int basePort = 8080;
 	private SocketChannel channel;
 	private HttpClient client;
+	private JEditorPane html;
 
 	public Launcher() throws HeadlessException {
 		super();
@@ -126,15 +131,45 @@ public class Launcher extends JFrame {
 	}
 
 	private JScrollPane getNewsPanel() throws IOException {
-		JEditorPane je = new JEditorPane(new URL(
+		html = new JEditorPane(new URL(
 				"http://www.dpunkt.de/java/Referenz/Das_Paket_javax.swing/80.html"));// http://www.codeboje.de/mbws"));
 
-		je.setEditable(false);
-		JScrollPane p = new JScrollPane(je);
+		html.setEditable(false);
+		JScrollPane p = new JScrollPane(html);
 		p.setPreferredSize(new Dimension(780, 400));
-
+	
 		return p;
 	}
+	
+	public HyperlinkListener createHyperLinkListener() {
+		return new HyperlinkListener() {
+		public void hyperlinkUpdate(HyperlinkEvent e) {
+		if (e.getEventType() ==
+		HyperlinkEvent.EventType.ACTIVATED) {
+		if (e instanceof HTMLFrameHyperlinkEvent) {
+
+		((HTMLDocument)html.getDocument()).processHTMLFrameHyperlinkEvent(
+		(HTMLFrameHyperlinkEvent)e);
+		} else {
+		try {
+		html.setPage(e.getURL());
+		} catch (IOException ioe) {
+		System.out.println("IOE: " + ioe);
+
+		}
+		}
+		}
+		}
+		};
+		}
+	
+
+	/**
+	 * 
+	 * @param rootPath
+	 * @param fileToDownload
+	 * @throws IOException
+	 */
 
 	private void getFile(String rootPath, String fileToDownload)
 			throws IOException {

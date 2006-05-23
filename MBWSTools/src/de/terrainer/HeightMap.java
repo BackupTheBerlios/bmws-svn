@@ -3,7 +3,6 @@ package de.terrainer;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 

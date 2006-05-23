@@ -3,12 +3,18 @@
 
 	<property name="base.client.dir" value="../MBWSClient" />
 	<property name="base.common.dir" value="../MBWSCommons" />
+	<property name="base.tools.dir" value="../MBWSTools" />
 	<property name="common.lib.dir" value="${base.common.dir}/lib" />
 	<property name="client.lib.dir" value="${base.client.dir}/lib" />
+	<property name="tools.lib.dir" value="${base.tools.dir}/lib" />
 	<property name="build.common-src.dir" value="${base.common.dir}/src" />
+	<property name="build.tools-src.dir" value="${base.tools.dir}/src" />
 	<property name="build.client-src.dir" value="${base.client.dir}/src" />
+    
 
 	<property name="dist" value="${base.client.dir}/dist" />
+	<property name="jar"            value="${dist}/mbws-client.jar"/>
+	    <property name="obfjar"         value="${dist}/mbws-client_obf.jar"/>
 	<!--<property name="name" value="de.mbws.common.data.generated" />
    -->
 	<path id="lib.class.path">
@@ -50,6 +56,19 @@
 		<jar destfile="${dist}/mbws-client.jar" basedir="temp/client-bin" />
 	</target>
 
+	<target name="obfuscate" depends="buildClient">
+	    <taskdef name="obfuscate" 
+	        classname="com.yworks.yguard.ObfuscatorTask" 
+	        classpath="yguard.jar"/>
+	    <obfuscate mainclass="de.mbws.client.MBWSClient" logfile="obfuscation.log"
+            replaceclassnamestrings="true">
+		 <inoutpair in="${jar}" out="${obfjar}"/>
+	    	
+	      <!-- modify obfuscate element attributes and 
+	             insert your statements here -->
+    	</obfuscate>
+	  </target>
+	
 	<target name="packClient" depends="buildClient">
 		<copy todir="${dist}/lib">
 			<fileset dir="${common.lib.dir}" />
@@ -72,4 +91,6 @@
 	</target>
 
 	<target name="dist" depends="packClient" />
+	<target name="disto" depends="obfuscate" />
+	
 </project>

@@ -11,11 +11,7 @@ import java.awt.event.WindowEvent;
 import java.awt.image.ImageObserver;
 import java.util.Random;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class TexGenPanel extends JPanel {
 	private static final int SIZE = 128;
