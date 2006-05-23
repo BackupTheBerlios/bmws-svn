@@ -48,6 +48,9 @@ public class OutdoorGameState extends BaseGameState {
 	private InputHandler playerInputHandler;
 	private DisplaySystem display;
 	private AbsoluteMouse cursor;
+
+	private Node selectedObject;
+
 	// TODO: remove that later
 	private boolean showBounds = true;
 
@@ -165,7 +168,8 @@ public class OutdoorGameState extends BaseGameState {
 	private void buildPlayer() {
 		player = ObjectManager.getPlayer();
 		((MainGameStateHandler) playerInputHandler).setPlayer(player);
-		playerInputHandler.addAction(new MousePick(cam, rootNode, cursor, display));
+		playerInputHandler.addAction(new MousePick(cam, rootNode, cursor, display,
+				this));
 	}
 
 	private void buildEnvironment() {
@@ -429,9 +433,36 @@ public class OutdoorGameState extends BaseGameState {
 
 	public void render(float tpf) {
 		Renderer r = display.getRenderer();
-		if (showBounds)
+		if (showBounds) {
 			Debugger.drawBounds(rootNode, r, true);
+		}
+
+		if (selectedObject != null) {
+			Debugger.drawBounds(selectedObject, r, true);
+		}
+
+		// for (Iterator<AbstractGameObject> object = ObjectManager.getObjects()
+		// .values().iterator(); object.hasNext();) {
+		// AbstractGameObject go = object.next();
+		// if (go.isSelected()) {
+		// Debugger.drawBounds(go, r, true);
+		// }
+		// }
 		super.render(tpf);
+	}
+
+	public void setSelectedObject(Node selectedObject) {
+		this.selectedObject = selectedObject;
+		// if (selectedObject instanceof PlayerObject) {
+		// // TODO: should we be able to select ourself ?
+		// //displayStatsWindow()
+		// } else if (selectedObject instanceof PCObject) {
+		// //displayTradeWindow()
+	//} else if (selectedObject instanceof NPCObject) {
+		// //displayTradeWindow()
+		// } else if (selectedObject instanceof ??)
+		//		
+		
 	}
 
 }

@@ -13,22 +13,28 @@ import com.jme.renderer.Camera;
 import com.jme.scene.Node;
 import com.jme.system.DisplaySystem;
 
+import de.mbws.client.data.AbstractGameObject;
+import de.mbws.client.state.OutdoorGameState;
+
 public class MousePick extends MouseInputAction {
 
 	private Camera camera;
 	private Node rootNode;
 	private DisplaySystem display;
+	private OutdoorGameState gameState;
 
 	// private float intevall = 0f;
 
 	private Mouse mouse;
 
-	public MousePick(Camera cam, Node node, Mouse aMouse, DisplaySystem aDisplay) {
+	public MousePick(Camera cam, Node node, Mouse aMouse, DisplaySystem aDisplay,
+			OutdoorGameState state) {
 		super();
 		camera = cam;
 		rootNode = node;
 		mouse = aMouse;
 		display = aDisplay;
+		gameState = state;
 	}
 
 	@Override
@@ -36,15 +42,13 @@ public class MousePick extends MouseInputAction {
 		// intevall += evt.getTime();
 		if (MouseInput.get().isButtonDown(0)) {// && intevall > 0.1f) {
 			// intevall = 0;
-
 			Vector2f screenPos = new Vector2f();
 			// Get the position that the mouse is pointing to
-			screenPos.set(mouse.getHotSpotPosition().x, mouse
-					.getHotSpotPosition().y);
+			screenPos.set(mouse.getHotSpotPosition().x, mouse.getHotSpotPosition().y);
 			// Get the world location of that X,Y value
 			Vector3f worldCoords = display.getWorldCoordinates(screenPos, 0);
-			Ray ray = new Ray(camera.getLocation(), worldCoords
-					.subtractLocal(camera.getLocation()));
+			Ray ray = new Ray(camera.getLocation(), worldCoords.subtractLocal(camera
+					.getLocation()));
 
 			PickResults results = new BoundingPickResults();
 			results.setCheckDistance(true);
@@ -56,8 +60,19 @@ public class MousePick extends MouseInputAction {
 				// .getParent().getName());
 				//
 				// }
-				System.out.println("Last one is " + findNodeName(results));
-				System.out.println("HIT: ");
+				Node nodeHit = findNode(results);
+
+				if (nodeHit != null) {
+					gameState.setSelectedObject(nodeHit);
+					// OutdoorGameState((AbstractGameObject) nodeHit).setSelected(true);
+					System.out.println("Last one is " + nodeHit.getName());
+					if (nodeHit.getName() == null) {
+						System.out.println("ups, thats bad");
+					}
+				} else {
+					System.out.println("Hit NULL");
+				}
+
 			}
 
 			results.clear();
@@ -66,17 +81,17 @@ public class MousePick extends MouseInputAction {
 
 	}
 
-	private String findNodeName(PickResults results) {
+	private Node findNode(PickResults results) {
 		// state rootNode
-		Node node = results.getPickData(results.getNumber() - 1)
-				.getTargetMesh().getParent();
-		if (node.getParent() != null) {
-			while (!node.getParent().getName().equals(rootNode.getName())) {
-
-				node = node.getParent();
+		Node node = results.getPickData(results.getNumber() - 1).getTargetMesh()
+				.getParent();
+		while (node.getParent() != null) {
+			if (node instanceof AbstractGameObject) {
+				return node;
 			}
+			node = node.getParent();
 		}
-		return node.getName();
+		return null;
 	}
 
 }

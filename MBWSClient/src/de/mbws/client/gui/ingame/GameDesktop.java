@@ -32,6 +32,7 @@ public class GameDesktop extends Node {
 	private JMEDesktop desktop;
 
 	private ChatWindow chatWindow;
+	private StatsAndInteractionPanel statsWindow;
 	private GroupLifeStatsWindow groupWindow;
 	private List allWindows = new ArrayList();
 
@@ -140,13 +141,33 @@ public class GameDesktop extends Node {
 	protected void addMenuButton() {
 		JDesktopPane desktopPane = desktop.getJDesktop();
 		MenuPanel mPanel = new MenuPanel(this);
-		mPanel.setLocation(5, desktopPane.getHeight()-35);// - 100);
-		//mPanel.setPreferredSize(new Dimension(150, 50));
-		//mPanel.setVisible(true);
+		mPanel.setLocation(5, desktopPane.getHeight() - 35);// - 100);
+		// mPanel.setPreferredSize(new Dimension(150, 50));
+		// mPanel.setVisible(true);
 		// mPanel.pack();
 		desktopPane.add(mPanel, Integer.MAX_VALUE);
 		desktopPane.repaint();
 		desktopPane.revalidate();
+	}
+
+	protected void displayStatsAndInteractionPanel(
+			CharacterLifeInfo selectedCharacter) {
+		if (statsWindow != null) {
+			statsWindow.setVisible(false);
+			statsWindow = null;
+		}
+		JDesktopPane desktopPane = desktop.getJDesktop();
+		statsWindow = new StatsAndInteractionPanel(selectedCharacter);
+		statsWindow.setLocation(0, desktopPane.getHeight() - 300);
+		statsWindow.setPreferredSize(new Dimension(450, 230));
+		statsWindow.setVisible(true);
+		desktopPane.add(statsWindow);
+		desktopPane.repaint();
+		desktopPane.revalidate();
+	}
+
+	public StatsAndInteractionPanel getStatsWindow() {
+		return statsWindow;
 	}
 
 	public ChatWindow getChatWindow() {

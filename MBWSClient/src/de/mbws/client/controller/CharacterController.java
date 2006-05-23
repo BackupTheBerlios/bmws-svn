@@ -10,7 +10,7 @@ import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 
 import de.mbws.client.data.ClientPlayerData;
-import de.mbws.client.data.Player;
+import de.mbws.client.data.PlayerObject;
 import de.mbws.client.state.CharacterCreationState;
 import de.mbws.client.state.CharacterSelectionState;
 import de.mbws.client.state.MainMenuState;
@@ -84,7 +84,7 @@ public class CharacterController {
 			logger.info("Start gameplay!");
 			String characterID = event.getCharacterDetails()
 			.getDescription().getCharacterID();
-			Player player = new Player(characterID);
+			PlayerObject player = new PlayerObject(characterID);
 			List<PlayerCharacterData> allCharacters = ClientPlayerData.getInstance()
 					.getAllCharactersOfPlayer();
 			if (allCharacters != null) {

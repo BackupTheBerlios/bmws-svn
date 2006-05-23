@@ -4,16 +4,16 @@ import com.jmex.model.animation.KeyframeController;
 
 import de.mbws.client.gui.ingame.CharacterLifeInfo;
 
-public class Player extends MovableObject {
+public class PlayerObject extends MovableObject {
 
 	protected CharacterLifeInfo characterLifeInfo;
 
 	// TODO: What with conditions ?
-	public Player(String id) {
+	public PlayerObject(String id) {
 		super(id);
 	}
 
-	public Player(String id, KeyframeController kc) {
+	public PlayerObject(String id, KeyframeController kc) {
 		super(id, kc);
 	}
 

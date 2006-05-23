@@ -16,7 +16,7 @@ public class ClientPlayerData extends AbstractPlayerData {
 	private static ClientPlayerData instance;
 
 	private PlayerCharacterData selectedCharacterData;
-	private Player player;
+	private PlayerObject player;
 	private List<PlayerCharacterData> allCharactersOfPlayer;
 
 	public List<PlayerCharacterData> getAllCharactersOfPlayer() {
@@ -38,11 +38,11 @@ public class ClientPlayerData extends AbstractPlayerData {
 		return instance;
 	}
 
-	public void setPlayer(Player aPlayer) {
+	public void setPlayer(PlayerObject aPlayer) {
 		this.player = aPlayer;
 	}
 
-	public Player getPlayer() {
+	public PlayerObject getPlayer() {
 		return player;
 	}
 

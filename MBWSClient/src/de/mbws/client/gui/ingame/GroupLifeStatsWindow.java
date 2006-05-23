@@ -102,6 +102,8 @@ public class GroupLifeStatsWindow extends JInternalFrame implements MouseListene
 		}
 
 	}
+	
+
 
 	/**
 	 * @param args
@@ -123,20 +125,11 @@ public class GroupLifeStatsWindow extends JInternalFrame implements MouseListene
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		int groupLeader = 2;
 		CharacterLifeInfo[] groupMembers = new CharacterLifeInfo[3];
-		CharacterLifeInfo m = new CharacterLifeInfo();
-		m.setCurrentHitPoints(59);
-		m.setMaxHitPoints(100);
-		m.setName("test");
+		CharacterLifeInfo m = new CharacterLifeInfo(CharacterLifeInfo.PLAYERCHARACTER,59,100,"test",true);
 		groupMembers[0] = m;
-		m = new CharacterLifeInfo();
-		m.setCurrentHitPoints(49);
-		m.setMaxHitPoints(100);
-		m.setName("test2");
+		m = new CharacterLifeInfo(CharacterLifeInfo.PLAYERCHARACTER,49,100,"test2",true);
 		groupMembers[1] = m;
-		m = new CharacterLifeInfo();
-		m.setCurrentHitPoints(19);
-		m.setMaxHitPoints(120);
-		m.setName("leader");
+		m = new CharacterLifeInfo(CharacterLifeInfo.PLAYERCHARACTER,19,120,"leader",true);
 		groupMembers[2] = m;
 		frame.add(new GroupLifeStatsWindow("huhu",groupLeader, groupMembers));
 		// frame.add(new JButton("gg"));

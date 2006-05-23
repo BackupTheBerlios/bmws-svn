@@ -3,6 +3,7 @@ package de.mbws.client.gui.ingame;
 public class CharacterLifeInfo {
 
 	private String name;
+	private boolean showName;
 	private int maxHitPoints;
 	private int currentHitPoints;
 	private int maxMana;
@@ -11,9 +12,19 @@ public class CharacterLifeInfo {
 	private int currentAggression;
 	private int maxEndurance;
 	private int currentEndurance;
+	private int type;
+	public static final int PLAYER = 0;
+	public static final int PLAYERCHARACTER = 1;
+	public static final int NPC = 2;
+	public static final int MONSTER = 3;
 	
-	public CharacterLifeInfo() {
+	public CharacterLifeInfo(int aType, int currHP, int maxHP, String aName, boolean nameShown) {
 		super();
+		type = aType;
+		currentHitPoints = currHP;
+		maxHitPoints = maxHP;
+		name = aName;
+		showName = nameShown;
 	}
 
 	public int getCurrentAggression() {
@@ -86,6 +97,22 @@ public class CharacterLifeInfo {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public boolean isShowName() {
+		return showName;
+	}
+
+	public void setShowName(boolean showName) {
+		this.showName = showName;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 
 }

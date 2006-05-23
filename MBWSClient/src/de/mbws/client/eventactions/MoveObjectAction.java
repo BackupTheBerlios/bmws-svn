@@ -36,10 +36,10 @@ public class MoveObjectAction extends AbstractEventAction {
 			MovableObject mo = (MovableObject) object;
 			mo.setMoveStatus(md.getMovementType());
 			mo.setTurnStatus(md.getTurnType());
-			mo.getModel().setLocalTranslation(
+			mo.setLocalTranslation(
 					new Vector3f(md.getLocation().getX(), md.getLocation()
 							.getY(), md.getLocation().getZ()));
-			mo.getModel().setLocalRotation(
+			mo.setLocalRotation(
 					new Quaternion(md.getHeading().getX(), md.getHeading()
 							.getY(), md.getHeading().getZ(), md.getHeading()
 							.getW()));
