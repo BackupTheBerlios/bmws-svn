@@ -12,9 +12,8 @@ import de.terrainer.gui.IntegerInputField;
 
 public class WorldMapWizard extends JDialog {
 	WorldMap world;
-	IntegerInputField widthField = new IntegerInputField(64, 1, 10000);
-	IntegerInputField heightField = new IntegerInputField(64, 1, 10000);
-	IntegerInputField resolutionField = new IntegerInputField(6, 5, 10);
+	IntegerInputField widthField = new IntegerInputField(8, 1, 10000);
+	IntegerInputField resolutionField = new IntegerInputField(6, 2, 10);
 	boolean cancelled  = true;
 
 	public WorldMapWizard(JFrame parent, WorldMap world) {
@@ -31,8 +30,6 @@ public class WorldMapWizard extends JDialog {
 		JPanel panel = new JPanel(new GridLayout(3, 2));
 		panel.add(new JLabel("Width"));
 		panel.add(widthField);
-		panel.add(new JLabel("Height"));
-		panel.add(heightField);
 		panel.add(new JLabel("Resolution (power of 2)"));
 		panel.add(resolutionField);
 		panel.setBorder(BorderFactory.createEtchedBorder());
@@ -65,7 +62,7 @@ public class WorldMapWizard extends JDialog {
 	}
 
 	protected void transferData() {
-		world.setHeight(heightField.getValue());
+		world.setHeight(widthField.getValue());
 		world.setWidth(widthField.getValue());
 		world.setSectionResolution(resolutionField.getValue());
 	}

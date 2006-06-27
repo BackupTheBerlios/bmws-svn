@@ -76,7 +76,7 @@ public abstract class AbstractGenerator implements GuiActionDescriptor {
 		return defaultIcon;
 	}
 
-	public HeightMap getHeightMap() {
+	public HeightMapCache getHeightMap() {
 		return heightMapComponent.getCurrentHeightMap();
 	}
 

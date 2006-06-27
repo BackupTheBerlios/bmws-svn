@@ -19,7 +19,7 @@ public class TerrainerGUI extends JFrame {
 
 	protected HeightMapComponent heightMapComp = new HeightMapComponent();
 	protected WorldMap world;
-	protected HeightMap currentHeightMap;
+	protected HeightMapCache currentHeightMap;
 	protected PropertyPanel propPanel;
 
 	TerrainerGUI() {
@@ -82,9 +82,10 @@ public class TerrainerGUI extends JFrame {
 			// calculate power or 2 bigger than resolution
 			int max = Math.max(world.getHeight(), world.getWidth());
 			int size = calculateNextPowerOf2(max);
+			int detailsize = (int) Math.pow(2, world.getSectionResolution());
+			currentHeightMap = new HeightMapCache(size, detailsize);
 			System.out.println("size: " + size);
-			currentHeightMap = new HeightMap(size + 1, size + 1, 65);
-			System.out.println("using heightmap of " + (size + 1));
+			System.out.println("detailsize: "+ detailsize);
 			heightMapComp.setHeightMap(currentHeightMap);
 		}
 	}
@@ -111,7 +112,7 @@ public class TerrainerGUI extends JFrame {
 	}
 
 	protected void save() {
-		currentHeightMap.save();
+		currentHeightMap.flush();
 	}
 	
 	protected void load() {

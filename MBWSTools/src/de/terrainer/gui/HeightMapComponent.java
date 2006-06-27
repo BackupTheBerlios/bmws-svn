@@ -6,12 +6,12 @@ import java.awt.Graphics;
 
 import javax.swing.JComponent;
 
-import de.terrainer.HeightMap;
+import de.terrainer.HeightMapCache;
 
 public class HeightMapComponent extends JComponent {
-	private HeightMap heightMap;
+	private HeightMapCache heightMap;
 
-	public void setHeightMap(HeightMap heightMap) {
+	public void setHeightMap(HeightMapCache heightMap) {
 		this.heightMap = heightMap;
 		repaint();
 	}
@@ -28,7 +28,7 @@ public class HeightMapComponent extends JComponent {
 			for (int y = 0; y < heightMap.getDimension().height; y++) {
 				int max = Math.max(Math.abs(heightMap.getMaximumHeight()), Math.abs(heightMap
 						.getMinimumHeight()))+1;
-				float relHeight = ((float) heightMap.getHeightAt(x, y))/max;
+				float relHeight = ((float) heightMap.getHeight(x, y))/max;
 				Color color;
 				if (relHeight > 0)
 					color = new Color(relHeight/1.3f, relHeight/2+0.3f, relHeight/1.5f);
@@ -45,7 +45,7 @@ public class HeightMapComponent extends JComponent {
 		return new Dimension(620, 620);
 	}
 
-	public HeightMap getCurrentHeightMap() {
+	public HeightMapCache getCurrentHeightMap() {
 		return heightMap;
 	}
 }

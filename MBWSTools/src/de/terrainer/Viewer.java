@@ -39,8 +39,8 @@ public class Viewer extends SimpleGame {
 			e.printStackTrace();
 		}
 
-		display.getRenderer().setBackgroundColor(
-				new ColorRGBA(0.8f, 0.8f, 0.8f, 1));
+//		display.getRenderer().setBackgroundColor(
+//				new ColorRGBA(0.8f, 0.8f, 0.8f, 1));
 		DirectionalLight dr = new DirectionalLight();
 		dr.setEnabled(true);
 		dr.setDiffuse(new ColorRGBA(0.3f, 0.3f, 0.3f, 1.0f));

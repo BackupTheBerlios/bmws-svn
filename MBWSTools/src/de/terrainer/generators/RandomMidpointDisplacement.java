@@ -3,7 +3,7 @@ package de.terrainer.generators;
 import java.awt.Point;
 
 import de.terrainer.AbstractGenerator;
-import de.terrainer.HeightMap;
+import de.terrainer.HeightMapCache;
 import de.terrainer.MetaInfo;
 import de.terrainer.TerrainerGUI;
 import de.terrainer.gui.HeightMapComponent;
@@ -19,7 +19,7 @@ public class RandomMidpointDisplacement extends AbstractGenerator {
 	}
 
 	public void generate() {
-		HeightMap heightMap = getHeightMap();
+		HeightMapCache heightMap = getHeightMap();
 		for (int x = 0; x < heightMap.getWidth(); x++) {
 			for (int y = 0; y < heightMap.getWidth(); y++) {
 				heightMap.setHeight(x, y, Integer.MIN_VALUE);
@@ -31,13 +31,14 @@ public class RandomMidpointDisplacement extends AbstractGenerator {
 
 		generate1(0, 0, heightMap.getWidth() - 1, steepness, 1);
 		average();
-		heightMap.init();
+		heightMap.flush();
 	}
 
 	public void generate1(int x, int y, int width, int asteepness, int depth) {
-		if (width <= 1)
+		if (width < 1)
 			return;
-		asteepness = width * asteepness / 100;
+		// asteepness = width * asteepness / 100;
+		asteepness = width * steepness / 100;
 		// steepness = steepfactor/(depth);
 		// if (depth>6)
 		// steepness = 1;
@@ -51,12 +52,8 @@ public class RandomMidpointDisplacement extends AbstractGenerator {
 		Point southeast = new Point(x + width, y + width);
 		Point northwest = new Point(x, y);
 		Point northeast = new Point(x + width, y);
-		if (TerrainerGUI.random.nextInt(2) > 0)
-			generateRandomizedAverageHeight(center, southeast, northwest, southeast, northwest,
-					asteepness);
-		else
-			generateRandomizedAverageHeight(center, southwest, northeast, southwest, northeast,
-					asteepness);
+		generateRandomizedAverageHeight(center, southwest, northeast, southwest, northeast,
+				asteepness);
 		generateRandomizedAverageHeight(north, northwest, northeast, northwest, northeast,
 				asteepness);
 		generateRandomizedAverageHeight(west, southwest, northwest, southwest, northwest,
@@ -74,33 +71,34 @@ public class RandomMidpointDisplacement extends AbstractGenerator {
 
 	private void generateRandomizedAverageHeight(Point pt, Point ref1, Point ref2, Point ref3,
 			Point ref4, int steepness) {
-		HeightMap heightMap = getHeightMap();
-		if (heightMap.getHeightAt(pt) != Integer.MIN_VALUE)
+		HeightMapCache heightMap = getHeightMap();
+		if (heightMap.getHeight(pt.x, pt.y) != Integer.MIN_VALUE)
 			return;
-		int average = (heightMap.getHeightAt(ref1) + heightMap.getHeightAt(ref2)
-				+ heightMap.getHeightAt(ref3) + heightMap.getHeightAt(ref4)) / 4;
+		int average = (heightMap.getHeight(ref1.x, ref1.y) + heightMap.getHeight(ref2.x, ref2.y)
+				+ heightMap.getHeight(ref3.x, ref3.y) + heightMap.getHeight(ref4.x, ref4.y)) / 4;
 		int height = average + (steepness > 0 ? TerrainerGUI.random.nextInt() % steepness : 0);
-		heightMap.setHeight(pt, height);
+		heightMap.setHeight(pt.x, pt.y, height);
 	}
 
 	private void average() {
-		HeightMap heightMap = getHeightMap();
+		HeightMapCache heightMap = getHeightMap();
 		// TODO better with FFT and gaussian shape
 		for (int x = 1; x < heightMap.getWidth() - 1; x++) {
 			for (int y = 1; y < heightMap.getWidth() - 1; y++) {
 				int radius2 = radius;
-				if (heightMap.getHeightAt(x, y) > keepAveraging)
-					radius2 = Math.min(0, radius - (heightMap.getHeightAt(x, y) - keepAveraging)
+				if (heightMap.getHeight(x, y) > keepAveraging)
+					radius2 = Math.min(0, radius - (heightMap.getHeight(x, y) - keepAveraging)
 							/ (radius * scaleAveraging));
 				int count = 0;
 				int val = 0;
 				for (int x1 = x - radius2; x1 <= x + radius2; x1++) {
 					for (int y1 = y - radius2; y1 <= y + radius2; y1++) {
 						count++;
-						val += heightMap.getHeightAt(x1, y1);
+						val += heightMap.getHeight(x1, y1);
 					}
 				}
-				heightMap.setHeight(x, y, val / count);
+				if (count > 0)
+					heightMap.setHeight(x, y, val / count);
 			}
 		}
 	}

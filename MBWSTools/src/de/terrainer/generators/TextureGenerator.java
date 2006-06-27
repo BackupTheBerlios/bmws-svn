@@ -10,7 +10,7 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 
 import de.terrainer.AbstractGenerator;
-import de.terrainer.HeightMap;
+import de.terrainer.HeightMapCache;
 import de.terrainer.MetaInfo;
 import de.terrainer.gui.HeightMapComponent;
 
@@ -23,8 +23,8 @@ public class TextureGenerator extends AbstractGenerator {
 	}
 
 	public void generate() {
-		HeightMap heightMap = getHeightMap();
-		int picWidth = (heightMap.getWidth() - 1) * resolutionPerField;
+		HeightMapCache heightMap = getHeightMap();
+		int picWidth = (heightMap.getDimension().width - 1) * resolutionPerField;
 		BufferedImage img = new BufferedImage(picWidth, picWidth, BufferedImage.TYPE_INT_RGB);
 		Graphics gr = img.getGraphics();
 		for (int x = 0; x < picWidth; x++) {

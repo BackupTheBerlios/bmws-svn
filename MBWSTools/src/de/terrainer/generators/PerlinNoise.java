@@ -10,7 +10,7 @@ import de.terrainer.gui.HeightMapComponent;
 public class PerlinNoise extends AbstractGenerator {
     private int maxDepth = 0;
     private Random random = new Random(System.currentTimeMillis());
-    private static int FREE = -10;
+    private static int FREE = -50;
     private int scale = 1000;
     
     public PerlinNoise(HeightMapComponent hmc) {
@@ -23,15 +23,15 @@ public class PerlinNoise extends AbstractGenerator {
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < width; y++) {
 				getHeightMap().setHeight(x, y, FREE);
-				if (x == 0 || y == 0 || x == getHeightMap().getWidth() - 1
-						|| y == getHeightMap().getWidth() - 1)
-					getHeightMap().setHeight(x, y, -50);
+//				if (x == 0 || y == 0 || x == getHeightMap().getWidth() - 1
+//						|| y == getHeightMap().getWidth() - 1)
+//					getHeightMap().setHeight(x, y, -50);
 			}
 		}
-        getHeightMap().setHeight(33,33, 100);
-        generate(new Point(0, 0), new Point(width+1, 0), new Point(0, width+1),
-                new Point(width+1, width+1), 0);
-        getHeightMap().init();
+//        getHeightMap().setHeight(33,33, 100);
+//        generate(new Point(0, 0), new Point(width+1, 0), new Point(0, width+1),
+//                new Point(width+1, width+1), 0);
+        getHeightMap().flush();
     }
 
     private void generate(Point lu, Point ru, Point ld, Point rd, int depth) {
@@ -64,22 +64,22 @@ public class PerlinNoise extends AbstractGenerator {
      * @param pt
      */
     private void interpolate(Point lu, Point ru, Point ld, Point rd, Point pt, int depth) {
-		if (getHeightMap().getHeightAt(pt) != FREE)
+		if (getHeightMap().getHeight(pt.x, pt.y) != FREE)
 			return;
         double height = 0;
         double norm = 0;
         double invdist = 0;
         invdist = 1 / distance(pt, lu);
-        height += invdist * getHeightMap().getHeightAt(lu);
+        height += invdist * getHeightMap().getHeight(lu.x, lu.y);
         norm += invdist;
         invdist = 1 / distance(pt, ru);
-        height += invdist * getHeightMap().getHeightAt(ru);
+        height += invdist * getHeightMap().getHeight(ru.x, ru.y);
         norm += invdist;
         invdist = 1 / distance(pt, ld);
-        height += invdist * getHeightMap().getHeightAt(ld);
+        height += invdist * getHeightMap().getHeight(ld.x, ld.y);
         norm += invdist;
         invdist = 1 / distance(pt, rd);
-        height += invdist * getHeightMap().getHeightAt(rd);
+        height += invdist * getHeightMap().getHeight(rd.x, rd.y);
         norm += invdist;
         height /= norm;
         int rand = depth<maxDepth? random.nextInt(scale/(depth+1)) : 0;
