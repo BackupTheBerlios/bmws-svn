@@ -25,10 +25,11 @@ public class TerrainPersistence {
 	private Element worldElement;
 	private int[][][] sections;
 
-	public TerrainPersistence(String worldName, int cols, int rows) {
+	public TerrainPersistence(String worldName, int cols, int rows, int resolution) {
 		this.sectionRows = rows;
 		this.sectionColumns = cols;
 		this.worldName = worldName;
+		this.sectionResolution = resolution;
 		sections = new int[cols][rows][];
 		createWorldDescription();
 	}
@@ -44,7 +45,7 @@ public class TerrainPersistence {
 		}
 	}
 
-	private void createWorldDescription() {
+	public void createWorldDescription() {
 		try {
 			DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			document = docBuilder.newDocument();
@@ -63,7 +64,7 @@ public class TerrainPersistence {
 		sections[x][y] = heightfield;
 	}
 
-	private void writeSection(int x, int y, int[] heightfield) {
+	public void writeSection(int x, int y, int[] heightfield) {
 		try {
 			ByteBuffer buffer = ByteBuffer.allocate(4 * heightfield.length);
 			for (int i = 0; i < heightfield.length; i++) {
@@ -84,16 +85,14 @@ public class TerrainPersistence {
 		}
 	}
 
-	public void writeWorld(String name, int cols, int rows, int resolution) {
-		sectionColumns = cols;
-		sectionRows = rows;
-		sectionResolution = resolution;
+	public void writeWorld() {
 		createWorldDescription();
-		for (int x = 0; x < sectionColumns; x++) {
-			for (int y = 0; y < sectionRows; y++) {
-				writeSection(x, y, sections[x][y]);
-			}
-		}
+		writeWorldDescription();
+
+	}
+	
+
+	private void writeWorldDescription() {
 		try {
 			FileWriter fw = new FileWriter(worldName + ".wld");
 			write(document, fw);
@@ -101,7 +100,6 @@ public class TerrainPersistence {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 }
