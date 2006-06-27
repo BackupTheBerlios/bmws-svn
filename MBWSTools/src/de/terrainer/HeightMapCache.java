@@ -32,7 +32,7 @@ public class HeightMapCache {
 	private int cacheSize = 20;
 	private TerrainPersistence persistence;
 	private int[][] coarseMap;
-	private int max = 1, min = 0;
+	private int max = Integer.MIN_VALUE, min = Integer.MAX_VALUE;
 
 	public HeightMapCache(int size, int detailResolution) {
 		this.coarseSize = size;
