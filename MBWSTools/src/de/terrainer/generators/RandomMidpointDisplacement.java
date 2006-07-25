@@ -86,19 +86,28 @@ public class RandomMidpointDisplacement extends AbstractGenerator {
 		for (int x = 1; x < heightMap.getWidth() - 1; x++) {
 			for (int y = 1; y < heightMap.getWidth() - 1; y++) {
 				int radius2 = radius;
+				float weight = 1;
 				if (heightMap.getHeight(x, y) > keepAveraging)
-					radius2 = Math.min(0, radius - (heightMap.getHeight(x, y) - keepAveraging)
-							/ (radius * scaleAveraging));
-				int count = 0;
-				int val = 0;
+					// radius2 = Math.min(0, radius - (heightMap.getHeight(x, y) - keepAveraging)
+					// / (radius * scaleAveraging));
+					weight = ((float) scaleAveraging) / (heightMap.getHeight(x, y) - keepAveraging+scaleAveraging);
+				float count = 0;
+				float val = 0;
 				for (int x1 = x - radius2; x1 <= x + radius2; x1++) {
 					for (int y1 = y - radius2; y1 <= y + radius2; y1++) {
-						count++;
-						val += heightMap.getHeight(x1, y1);
+						if (x1 == x && y1 == y) {
+							count += 1;
+							val += heightMap.getHeight(x1, y1);
+						}
+						else {
+							count += weight;
+							val += weight * heightMap.getHeight(x1, y1);
+							
+						}
 					}
 				}
 				if (count > 0)
-					heightMap.setHeight(x, y, val / count);
+					heightMap.setHeight(x, y, (int) Math.round(val / count));
 			}
 		}
 	}
