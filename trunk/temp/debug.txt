@@ -1,0 +1,40 @@
+10.05.2007 19:11:12 com.jme.system.lwjgl.LWJGLDisplaySystem <init>
+INFO: LWJGL Display System created.
+10.05.2007 19:11:12 com.jme.renderer.lwjgl.LWJGLRenderer <init>
+INFO: LWJGLRenderer created. W:  640H: 480
+10.05.2007 19:11:13 com.jme.renderer.AbstractCamera <init>
+INFO: Camera created.
+10.05.2007 19:11:13 com.jmex.sound.openAL.SoundSystem <clinit>
+INFO: DETECT OPERATING SYSTEM
+10.05.2007 19:11:13 com.jmex.sound.openAL.SoundSystem <clinit>
+INFO: CREATE OPENAL
+10.05.2007 19:11:13 com.jmex.sound.openAL.SoundSystem initializeOpenAL
+INFO: OpenAL initalized!
+10.05.2007 19:11:13 com.jmex.sound.openAL.SoundSystem <clinit>
+INFO: CREATE LISTENER
+10.05.2007 19:11:13 com.jmex.game.state.GameStateManager create
+INFO: Created GameStateManager
+10.05.2007 19:11:13 com.jme.util.lwjgl.LWJGLTimer <init>
+INFO: Timer resolution: 1000 ticks per second
+10.05.2007 19:11:13 com.jme.scene.Node <init>
+INFO: Node created.
+10.05.2007 19:11:13 com.jme.scene.Node attachChild
+INFO: Child (Some2DText) attached to this node (null)
+10.05.2007 19:11:13 com.jme.scene.Node attachChild
+INFO: Child (ProgressBar) attached to this node (null)
+10.05.2007 19:11:13 com.jme.scene.Node attachChild
+INFO: Child (Some2DText) attached to this node (null)
+10.05.2007 19:11:13 com.jme.scene.Node <init>
+INFO: Node created.
+10.05.2007 19:11:17 com.jme.scene.Node <init>
+INFO: Node created.
+10.05.2007 19:11:17 com.jme.scene.Node attachChild
+INFO: Child (Text) attached to this node (TextNode)
+10.05.2007 19:11:17 com.jme.scene.Node <init>
+INFO: Node created.
+10.05.2007 19:11:17 com.jmex.terrain.util.MidPointHeightMap load
+INFO: Created Heightmap using Mid Point
+10.05.2007 19:11:17 com.jme.scene.Node attachChild
+INFO: Child (Terrain) attached to this node (RootNode)
+10.05.2007 19:11:17 com.jme.scene.Node attachChild
+INFO: Child (my box) attached to this node (RootNode)
