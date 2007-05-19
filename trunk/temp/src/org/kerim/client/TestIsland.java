@@ -230,7 +230,7 @@ public class TestIsland extends SimplePassGame {
 	}
 
     private Box createObjects() {
-      object = new Box( "object", new Vector3f(0, 0, 0 ), new Vector3f( 10, 20, 10 ) );
+      object = new Box( "object", new Vector3f(-5, 0, -5 ), new Vector3f( 10, 20, 10 ) );
       TextureState ts = display.getRenderer().createTextureState();
       Texture t0 = TextureManager.loadTexture(
                 TestIsland.class.getClassLoader().getResource(
