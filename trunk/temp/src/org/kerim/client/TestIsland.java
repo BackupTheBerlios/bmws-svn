@@ -291,7 +291,7 @@ public class TestIsland extends SimplePassGame {
     private TerrainPage createIsland() {
       ImageBasedHeightMap heightMap = new ImageBasedHeightMap(new ImageIcon(
           TestIsland.class.getClassLoader().getResource(
-              "jmetest/data/IslandExport/Island.png")).getImage());
+              "data/IslandExport/Island.png")).getImage());
       Vector3f terrainScale = new Vector3f(3f, 0.4f, 3f); 
       tb = new TerrainPage("Terrain", 129, heightMap.getSize(), terrainScale,
           heightMap.getHeightMap(), false);
