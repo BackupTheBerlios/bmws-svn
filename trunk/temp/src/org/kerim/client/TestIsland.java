@@ -2,10 +2,13 @@ package org.kerim.client;
 
 import javax.swing.ImageIcon;
 
+import org.kerim.client.objects.IslandNodeHandler;
+
 import com.jme.app.SimplePassGame;
 import com.jme.bounding.BoundingBox;
 import com.jme.bounding.BoundingSphere;
 import com.jme.image.Texture;
+import com.jme.input.InputHandler;
 import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
 import com.jme.math.FastMath;
@@ -20,13 +23,13 @@ import com.jme.scene.Skybox;
 import com.jme.scene.Text;
 import com.jme.scene.shape.Box;
 import com.jme.scene.shape.Quad;
-import com.jme.scene.shape.Torus;
 import com.jme.scene.state.CullState;
 import com.jme.scene.state.FogState;
 import com.jme.scene.state.LightState;
 import com.jme.scene.state.TextureState;
 import com.jme.scene.state.ZBufferState;
 import com.jme.util.TextureManager;
+import com.jme.util.Timer;
 import com.jmex.effects.water.HeightGenerator;
 import com.jmex.effects.water.ProjectedGrid;
 import com.jmex.effects.water.WaterRenderPass;
@@ -46,6 +49,9 @@ public class TestIsland extends SimplePassGame {
 	private float farPlane = 10000.0f;
     private TerrainPage tb;
     private SkyDome dome;
+    private Box object;
+    private InputHandler handler;
+    private Timer timer;
 
 	//debug stuff
 	private Node debugQuadsNode;
@@ -54,8 +60,13 @@ public class TestIsland extends SimplePassGame {
 		TestIsland app = new TestIsland();
 		app.setDialogBehaviour( ALWAYS_SHOW_PROPS_DIALOG );
 		app.start();
+        
 	}
 
+    public TestIsland() {
+      super();
+      timer = Timer.getTimer();
+    }
 	protected void cleanup() {
 		super.cleanup();
 		waterEffectRenderPass.cleanup();
@@ -72,9 +83,14 @@ public class TestIsland extends SimplePassGame {
 			waterEffectRenderPass.setUseRefraction(!waterEffectRenderPass.isUseRefraction());
 			waterEffectRenderPass.reloadShader();
 		}
+        
+        
+        
 
 		skybox.getLocalTranslation().set( cam.getLocation() );
         dome.getLocalTranslation().set( cam.getLocation() );
+        timer.update();
+        handler.update(tpf = timer.getTimePerFrame());
         dome.update();
 		cam.update();
 	}
@@ -94,10 +110,12 @@ public class TestIsland extends SimplePassGame {
 
 		buildSkyBox();
         reflectedNode.attachChild( skybox );
-		
-		reflectedNode.attachChild( createObjects() );
+        createObjects();
+        //object.setLocalTranslation(0, 50,0);
+		reflectedNode.attachChild( object );
         reflectedNode.attachChild( createIsland());
-		
+		//tb.getHeight(new Vector2f(0,0)),0);
+        
          setupSkyDome();
          reflectedNode.attachChild(dome );
          rootNode.attachChild( reflectedNode );
@@ -107,8 +125,6 @@ public class TestIsland extends SimplePassGame {
 		//setting to default value just to show
 		waterEffectRenderPass.setWaterPlane( new Plane( new Vector3f( 0.0f, 1.0f, 0.0f ), 0.0f ) );
 
-		//projectedGrid = new ProjectedGrid( "ProjectedGrid", cam, 100, 70, 0.01f, new WaterHeightGenerator() );
-//or implement your own waves like this(or in a separate class)...
 		projectedGrid = new ProjectedGrid( "ProjectedGrid", cam, 50, 50, 0.01f, new HeightGenerator() {
 			public float getHeight( float x, float z, float time ) {
 				return FastMath.sin(x*0.0005f+time*0.005f)+FastMath.cos(z*0.1f+time*4.0f)*2;
@@ -216,78 +232,23 @@ public class TestIsland extends SimplePassGame {
 		skybox.lockMeshes();
 	}
 
-	private Node createObjects() {
-       
-		Node objects = new Node( "objects" );
+    private Box createObjects() {
+      object = new Box( "object", new Vector3f(0, 0, 0 ), new Vector3f( 10, 20, 10 ) );
+      TextureState ts = display.getRenderer().createTextureState();
+      Texture t0 = TextureManager.loadTexture(
+                TestIsland.class.getClassLoader().getResource(
+                        "jmetest/data/texture/wall.jpg" ),
+                Texture.MM_LINEAR_LINEAR,
+                Texture.FM_LINEAR );
+        t0.setWrap( Texture.WM_WRAP_S_WRAP_T );
+        ts.setTexture( t0 );
 
-		Torus torus = new Torus( "Torus", 50, 50, 10, 20 );
-		torus.setLocalTranslation( new Vector3f( 50, -5, 20 ) );
-		TextureState ts = display.getRenderer().createTextureState();
-		Texture t0 = TextureManager.loadTexture(
-				TestIsland.class.getClassLoader().getResource(
-						"jmetest/data/images/Monkey.jpg" ),
-				Texture.MM_LINEAR_LINEAR,
-				Texture.FM_LINEAR );
-		Texture t1 = TextureManager.loadTexture(
-				TestIsland.class.getClassLoader().getResource(
-						"jmetest/data/texture/north.jpg" ),
-				Texture.MM_LINEAR_LINEAR,
-				Texture.FM_LINEAR );
-		t1.setEnvironmentalMapMode( Texture.EM_SPHERE );
-		ts.setTexture( t0, 0 );
-		ts.setTexture( t1, 1 );
-		ts.setEnabled( true );
-		torus.setRenderState( ts );
-		objects.attachChild( torus );
-
-		ts = display.getRenderer().createTextureState();
-		t0 = TextureManager.loadTexture(
-				TestIsland.class.getClassLoader().getResource(
-						"jmetest/data/texture/wall.jpg" ),
-				Texture.MM_LINEAR_LINEAR,
-				Texture.FM_LINEAR );
-		t0.setWrap( Texture.WM_WRAP_S_WRAP_T );
-		ts.setTexture( t0 );
-
-		Box box = new Box( "box1", new Vector3f( -10, -10, -10 ), new Vector3f( 10, 10, 10 ) );
-		box.setLocalTranslation( new Vector3f( 0, -7, 0 ) );
-		box.setRenderState( ts );
-		objects.attachChild( box );
-
-		box = new Box( "box2", new Vector3f( -5, -5, -5 ), new Vector3f( 5, 5, 5 ) );
-		box.setLocalTranslation( new Vector3f( 15, 10, 0 ) );
-		box.setRenderState( ts );
-		objects.attachChild( box );
-
-		box = new Box( "box3", new Vector3f( -5, -5, -5 ), new Vector3f( 5, 5, 5 ) );
-		box.setLocalTranslation( new Vector3f( 0, -10, 15 ) );
-		box.setRenderState( ts );
-		objects.attachChild( box );
-
-		box = new Box( "box4", new Vector3f( -5, -5, -5 ), new Vector3f( 5, 5, 5 ) );
-		box.setLocalTranslation( new Vector3f( 20, 0, 0 ) );
-		box.setRenderState( ts );
-		objects.attachChild( box );
-
-		ts = display.getRenderer().createTextureState();
-		t0 = TextureManager.loadTexture(
-				TestIsland.class.getClassLoader().getResource(
-						"jmetest/data/images/Monkey.jpg" ),
-				Texture.MM_LINEAR_LINEAR,
-				Texture.FM_LINEAR );
-		t0.setWrap( Texture.WM_WRAP_S_WRAP_T );
-		ts.setTexture( t0 );
-
-		box = new Box( "box5", new Vector3f( -50, -2, -50 ), new Vector3f( 50, 2, 50 ) );
-		box.setLocalTranslation( new Vector3f( 0, -15, 0 ) );
-		box.setRenderState( ts );
-		box.setModelBound( new BoundingBox() );
-		box.updateModelBound();
-		objects.attachChild( box );
-
-		return objects;
-	}
-    
+        
+        object.setLocalTranslation( new Vector3f( 0, 150, 0 ) );
+        object.setRenderState( ts );
+        handler = new IslandNodeHandler(object);
+        return object;
+    }
     private TerrainPage createIsland() {
       ImageBasedHeightMap heightMap = new ImageBasedHeightMap(new ImageIcon(
           TestIsland.class.getClassLoader().getResource(
@@ -333,6 +294,13 @@ public class TestIsland extends SimplePassGame {
 		KeyBindingManager.getKeyBindingManager().set( "e", KeyInput.KEY_E );
 		KeyBindingManager.getKeyBindingManager().set( "g", KeyInput.KEY_G );
 
+        KeyBindingManager.getKeyBindingManager().set( "node_forwd", KeyInput.KEY_Z );
+        KeyBindingManager.getKeyBindingManager().set( "node_right", KeyInput.KEY_H );
+        KeyBindingManager.getKeyBindingManager().set( "node_backward", KeyInput.KEY_B );
+        KeyBindingManager.getKeyBindingManager().set( "node_left", KeyInput.KEY_G );
+        KeyBindingManager.getKeyBindingManager().set( "node_up", KeyInput.KEY_PGUP );
+        KeyBindingManager.getKeyBindingManager().set( "node_down", KeyInput.KEY_PGDN );
+        
 		Text t = new Text( "Text", "F: switch freeze/unfreeze projected grid" );
 		t.setRenderQueueMode( Renderer.QUEUE_ORTHO );
 		t.setLightCombineMode( LightState.OFF );

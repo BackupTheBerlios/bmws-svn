@@ -50,12 +50,12 @@ public class IslandNodeHandler extends InputHandler{
       private void setKeyBindings() {
           KeyBindingManager keyboard = KeyBindingManager.getKeyBindingManager();
 
-          keyboard.set("forward_node", KeyInput.KEY_I);
-          keyboard.set("backward_node", KeyInput.KEY_K);
+          keyboard.set("forward_node", KeyInput.KEY_U);
+          keyboard.set("backward_node", KeyInput.KEY_J);
           keyboard.set("strafeLeft_node", KeyInput.KEY_M);
           keyboard.set("strafeRight_node", KeyInput.KEY_N);
-          keyboard.set("turnRight_node", KeyInput.KEY_L);
-          keyboard.set("turnLeft_node", KeyInput.KEY_J);
+          keyboard.set("turnRight_node", KeyInput.KEY_K);
+          keyboard.set("turnLeft_node", KeyInput.KEY_H);
       }
 
      
