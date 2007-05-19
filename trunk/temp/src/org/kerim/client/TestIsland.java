@@ -83,10 +83,7 @@ public class TestIsland extends SimplePassGame {
 			waterEffectRenderPass.setUseRefraction(!waterEffectRenderPass.isUseRefraction());
 			waterEffectRenderPass.reloadShader();
 		}
-        
-        
-        
-
+  
 		skybox.getLocalTranslation().set( cam.getLocation() );
         dome.getLocalTranslation().set( cam.getLocation() );
         timer.update();
@@ -294,14 +291,7 @@ public class TestIsland extends SimplePassGame {
 		KeyBindingManager.getKeyBindingManager().set( "e", KeyInput.KEY_E );
 		KeyBindingManager.getKeyBindingManager().set( "g", KeyInput.KEY_G );
 
-        KeyBindingManager.getKeyBindingManager().set( "node_forwd", KeyInput.KEY_Z );
-        KeyBindingManager.getKeyBindingManager().set( "node_right", KeyInput.KEY_H );
-        KeyBindingManager.getKeyBindingManager().set( "node_backward", KeyInput.KEY_B );
-        KeyBindingManager.getKeyBindingManager().set( "node_left", KeyInput.KEY_G );
-        KeyBindingManager.getKeyBindingManager().set( "node_up", KeyInput.KEY_PGUP );
-        KeyBindingManager.getKeyBindingManager().set( "node_down", KeyInput.KEY_PGDN );
-        
-		Text t = new Text( "Text", "F: switch freeze/unfreeze projected grid" );
+        Text t = new Text( "Text", "F: switch freeze/unfreeze projected grid" );
 		t.setRenderQueueMode( Renderer.QUEUE_ORTHO );
 		t.setLightCombineMode( LightState.OFF );
 		t.setLocalTranslation( new Vector3f( 0, 20, 1 ) );

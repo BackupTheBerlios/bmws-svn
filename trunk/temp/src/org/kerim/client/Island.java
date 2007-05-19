@@ -57,6 +57,8 @@ public class Island {
       f2.get();
       GameStateManager.getInstance().attachChild(state);
       lstate.setProgress(0.3f, "loaded gamestate");
+      
+      
     } catch (Exception e1) {
       e1.printStackTrace();
       System.exit(1);

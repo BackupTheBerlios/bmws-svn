@@ -91,22 +91,7 @@ public class IslandGameState extends StatisticsGameState {
     wireState.setEnabled(false);
     rootNode.setRenderState(wireState);
 
-    // Create ZBuffer for depth
-    ZBufferState zbs = DisplaySystem.getDisplaySystem().getRenderer()
-        .createZBufferState();
-    zbs.setEnabled(true);
-    zbs.setFunction(ZBufferState.CF_LEQUAL);
-    rootNode.setRenderState(zbs);
 
-    // FogState fs =
-    // DisplaySystem.getDisplaySystem().getRenderer().createFogState();
-    // fs.setEnabled(false);
-    // rootNode.setRenderState(fs);
-    //    
-    // CullState cs =
-    // DisplaySystem.getDisplaySystem().getRenderer().createCullState();
-    // cs.setCullMode(CullState.CS_BACK);
-    // cs.setEnabled(true);
 
     // Lighting
     /** Set up a basic, default light. */
