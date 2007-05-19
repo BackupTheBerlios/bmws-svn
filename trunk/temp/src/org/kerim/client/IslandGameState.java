@@ -1,34 +1,3 @@
-/*
- * Copyright (c) 2003-2006 jMonkeyEngine
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are
- * met:
- *
- * * Redistributions of source code must retain the above copyright
- *   notice, this list of conditions and the following disclaimer.
- *
- * * Redistributions in binary form must reproduce the above copyright
- *   notice, this list of conditions and the following disclaimer in the
- *   documentation and/or other materials provided with the distribution.
- *
- * * Neither the name of 'jMonkeyEngine' nor the names of its contributors 
- *   may be used to endorse or promote products derived from this software 
- *   without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
- * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
 package org.kerim.client;
 
 import java.io.ByteArrayInputStream;
@@ -38,10 +7,12 @@ import java.net.URL;
 
 import javax.swing.ImageIcon;
 
-import jmetest.renderer.TestEnvMap;
 import jmetest.renderer.TestSkybox;
 import jmetest.renderer.loader.TestMilkJmeWrite;
 import jmetest.terrain.TestProceduralSplatTexture;
+import jmetest.terrain.TestTerrain;
+
+import org.kerim.client.objects.IslandNodeHandler;
 
 import com.jme.bounding.BoundingBox;
 import com.jme.image.Texture;
@@ -51,6 +22,9 @@ import com.jme.input.KeyBindingManager;
 import com.jme.input.KeyInput;
 import com.jme.input.MouseInput;
 import com.jme.light.PointLight;
+import com.jme.math.FastMath;
+import com.jme.math.Matrix3f;
+import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
@@ -58,7 +32,6 @@ import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Controller;
 import com.jme.scene.Node;
 import com.jme.scene.Skybox;
-import com.jme.scene.shape.Box;
 import com.jme.scene.state.LightState;
 import com.jme.scene.state.TextureState;
 import com.jme.scene.state.WireframeState;
@@ -72,9 +45,9 @@ import com.jmex.game.state.StatisticsGameState;
 import com.jmex.model.XMLparser.Converters.MilkToJme;
 import com.jmex.model.animation.JointController;
 import com.jmex.model.animation.KeyframeController;
-import com.jmex.terrain.TerrainBlock;
+import com.jmex.terrain.TerrainPage;
 import com.jmex.terrain.util.ImageBasedHeightMap;
-import com.jmex.terrain.util.ProceduralSplatTextureGenerator;
+import com.jmex.terrain.util.ProceduralTextureGenerator;
 
 /**
  * <code>TestGameState</code> provides an extremely basic gamestate with
@@ -86,21 +59,25 @@ import com.jmex.terrain.util.ProceduralSplatTextureGenerator;
  * 
  * @author Matthew D. Hicks
  */
-public class GameState extends StatisticsGameState {
-  protected InputHandler input;
+public class IslandGameState extends StatisticsGameState {
+  protected InputHandler camHandler;
+  protected InputHandler playerHandler;
   protected WireframeState wireState;
   protected LightState lightState;
   protected boolean pause;
   protected boolean showBounds = false;
   protected boolean showDepth = false;
   protected boolean showNormals = false;
-  private TerrainBlock tb;
+  protected Node player;
+  private TerrainPage tb;
 
-  public GameState() {
+  // private TerrainBlock tb;
+
+  public IslandGameState() {
     this(true);
   }
 
-  public GameState(boolean handleInput) {
+  public IslandGameState(boolean handleInput) {
     init(handleInput);
   }
 
@@ -120,6 +97,16 @@ public class GameState extends StatisticsGameState {
     zbs.setEnabled(true);
     zbs.setFunction(ZBufferState.CF_LEQUAL);
     rootNode.setRenderState(zbs);
+
+    // FogState fs =
+    // DisplaySystem.getDisplaySystem().getRenderer().createFogState();
+    // fs.setEnabled(false);
+    // rootNode.setRenderState(fs);
+    //    
+    // CullState cs =
+    // DisplaySystem.getDisplaySystem().getRenderer().createCullState();
+    // cs.setCullMode(CullState.CS_BACK);
+    // cs.setEnabled(true);
 
     // Lighting
     /** Set up a basic, default light. */
@@ -143,10 +130,11 @@ public class GameState extends StatisticsGameState {
     // Player
     initPlayer();
 
-    // Initial InputHandler
+    // Initial InputHandler HAS TO STAY AFTER THE PLAYER !
     if (handleInput) {
-      input = new FirstPersonHandler(DisplaySystem.getDisplaySystem()
+      camHandler = new FirstPersonHandler(DisplaySystem.getDisplaySystem()
           .getRenderer().getCamera(), 15.0f, 0.5f);
+      playerHandler = new IslandNodeHandler(player);
       initKeyBindings();
     }
 
@@ -164,46 +152,54 @@ public class GameState extends StatisticsGameState {
   private void initTerrain() {
     // MidPointHeightMap heightMap = new MidPointHeightMap(128, 1.9f);
     ImageBasedHeightMap heightMap = new ImageBasedHeightMap(new ImageIcon(
-        GameState.class.getClassLoader().getResource(
-            "jmetest/data/IslandExport/heightmap.png")).getImage());
+        IslandGameState.class.getClassLoader().getResource(
+            "jmetest/data/IslandExport/terrain.png")).getImage());
     // ImageBasedHeightMap heightMap = new ImageBasedHeightMap(new ImageIcon(
     // GameState.class.getClassLoader().getResource("jmetest/data/IslandExport/island.gif")).getImage());
 
-    Vector3f terrainScale = new Vector3f(0.5f, 0.001f, 0.5f);
+    Vector3f terrainScale = new Vector3f(1f, 0.01f, 1f);
     // System.out.println(heightMap.getSize());
-    tb = new TerrainBlock("Terrain", heightMap.getSize(), terrainScale,
-        heightMap.getHeightMap(), new Vector3f(0, 0, 0), false);
+    // tb = new TerrainBlock("Terrain", heightMap.getSize(), terrainScale,
+    // heightMap.getHeightMap(), new Vector3f(0, 0, 0), false);
+    tb = new TerrainPage("Terrain", 128, heightMap.getSize(), terrainScale,
+        heightMap.getHeightMap(), false);
     // tb.setTrisPerPixel( 0.5f);
-    // tb.setDistanceTolerance( 1.0f);
+    // tb.setDistanceTolerance(1.0f);
     tb.setDetailTexture(1, 16);
     tb.setModelBound(new BoundingBox());
     tb.updateModelBound();
     tb.setLocalTranslation(new Vector3f(0, -10, 0));
-    rootNode.attachChild(tb);
-    ProceduralSplatTextureGenerator pst = new ProceduralSplatTextureGenerator(
-        heightMap);
-    pst.addTexture(new
-        ImageIcon(TestProceduralSplatTexture.class.getClassLoader().getResource(
-        "jmetest/data/texture/grassb.png")), -128, 0, 128);
-//    pst
-//        .addSplatTexture(
-//            new ImageIcon(
-//                GameState.class
-//                    .getClassLoader()
-//                    .getResource(
-//                        "jmetest/data/IslandExport/alphamap_MaPZone[Dirty_ground_diffuse].PNG")),
-//            new ImageIcon(GameState.class.getClassLoader().getResource(
-//                "jmetest/data/IslandExport/MaPZone[Dirty_ground_diffuse].PNG")));
-    pst
-    .addSplatTexture(
-        new ImageIcon(
-            GameState.class
-                .getClassLoader()
-                .getResource(
-                    "jmetest/data/IslandExport/alphamap_MaPZone[stone_01_diffuse].png")),
-        new ImageIcon(GameState.class.getClassLoader().getResource(
-            "jmetest/data/IslandExport/MaPZone[stone_01_diffuse].png")));
-    
+    // rootNode.attachChild(tb);
+    // ProceduralSplatTextureGenerator pst = new
+    // ProceduralSplatTextureGenerator(
+    // heightMap);
+    // pst.addTexture(new
+    // ImageIcon(TestProceduralSplatTexture.class.getClassLoader().getResource(
+    // "jmetest/data/texture/grassb.png")), -128, 0, 128);
+    // pst
+    // .addSplatTexture(
+    // new ImageIcon(
+    // GameState.class
+    // .getClassLoader()
+    // .getResource(
+    // "jmetest/data/IslandExport/alphamap_MaPZone[Dirty_ground_diffuse].PNG")),
+    // new ImageIcon(GameState.class.getClassLoader().getResource(
+    // "jmetest/data/IslandExport/MaPZone[Dirty_ground_diffuse].PNG")));
+    // pst
+    // .addSplatTexture(
+    // new ImageIcon(
+    // TestProceduralSplatTexture.class
+    // .getClassLoader()
+    // .getResource(
+    // "jmetest/data/IslandExport/alphamapston2.png")),
+    // new
+    // ImageIcon(TestProceduralSplatTexture.class.getClassLoader().getResource(
+    // "jmetest/data/texture/water.png")));//jmetest/data/IslandExport/MaPZone[stone_01_diffuse].png")));
+    // pst.addSplatTexture(new
+    // ImageIcon(TestProceduralSplatTexture.class.getClassLoader().getResource(
+    // "jmetest/data/texture/terrainTex.png")), new
+    // ImageIcon(TestProceduralSplatTexture.class.getClassLoader().getResource(
+    // "jmetest/data/texture/water.png")));
     // pst.addTexture(new
     // ImageIcon(TestProceduralSplatTexture.class.getClassLoader().getResource(
     // "jmetest/data/texture/dirt.jpg")), 0, 128, 255);
@@ -217,17 +213,73 @@ public class GameState extends StatisticsGameState {
     // ImageIcon(TestProceduralSplatTexture.class.getClassLoader().getResource(
     // "jmetest/data/texture/water.png")));
 
-    pst.createTexture(512);
+    // pst.createTexture(512);
 
+    // TextureState ts =
+    // DisplaySystem.getDisplaySystem().getRenderer().createTextureState();
+    // ts.setEnabled(true);
+    // Texture t1 =
+    // TextureManager.loadTexture(TestProceduralSplatTexture.getImageIcon().getImage(),
+    // Texture.MM_LINEAR_LINEAR,
+    // Texture.FM_LINEAR, true);
+    // ts.setTexture(t1, 0);
+    //
+    // Texture t2 =
+    // TextureManager.loadTexture(TestProceduralSplatTexture.class.getClassLoader().getResource(
+    // "jmetest/data/texture/Detail.jpg"), Texture.MM_LINEAR_LINEAR,
+    // Texture.FM_LINEAR);
+    //
+    // ts.setTexture(t2, 1);
+    // t2.setWrap(Texture.WM_WRAP_S_WRAP_T);
+    //
+    // t1.setApply(Texture.AM_COMBINE);
+    // t1.setCombineFuncRGB(Texture.ACF_MODULATE);
+    // t1.setCombineSrc0RGB(Texture.ACS_TEXTURE);
+    // t1.setCombineOp0RGB(Texture.ACO_SRC_COLOR);
+    // t1.setCombineSrc1RGB(Texture.ACS_PRIMARY_COLOR);
+    // t1.setCombineOp1RGB(Texture.ACO_SRC_COLOR);
+    // t1.setCombineScaleRGB(1.0f);
+
+    // t2.setApply(Texture.AM_COMBINE);
+    // t2.setCombineFuncRGB(Texture.ACF_ADD_SIGNED);
+    // t2.setCombineSrc0RGB(Texture.ACS_TEXTURE);
+    // t2.setCombineOp0RGB(Texture.ACO_SRC_COLOR);
+    // t2.setCombineSrc1RGB(Texture.ACS_PREVIOUS);
+    // t2.setCombineOp1RGB(Texture.ACO_SRC_COLOR);
+    // t2.setCombineScaleRGB(1.0f);
+    // AlphaState as1 =
+    // DisplaySystem.getDisplaySystem().getRenderer().createAlphaState();
+    // as1.setBlendEnabled(true);
+    // as1.setSrcFunction(AlphaState.SB_SRC_ALPHA);
+    // as1.setDstFunction(AlphaState.DB_ONE_MINUS_SRC_ALPHA);
+    // as1.setTestEnabled(true);
+    // as1.setTestFunction(AlphaState.TF_GREATER);
+    // as1.setEnabled(true);
+    // TextureState ts= createSplatTexture();
+    // TextureState ts=
+    // createSplatTextureState("jmetest/data/texture/water.png",
+    // "jmetest/data/IslandExport/MaPZone[stone_02_diffuse].png");
+    // tb.setRenderState(ts);
+    ProceduralTextureGenerator pt = new ProceduralTextureGenerator(heightMap);
+    pt.addTexture(new ImageIcon(TestTerrain.class.getClassLoader().getResource(
+        "jmetest/data/texture/grassb.png")), -128, 0, 128);
+    pt.addTexture(new ImageIcon(TestTerrain.class.getClassLoader().getResource(
+        "jmetest/data/texture/dirt.jpg")), 0, 128, 255);
+    pt.addTexture(new ImageIcon(TestTerrain.class.getClassLoader().getResource(
+        "jmetest/data/texture/highest.jpg")), 128, 255, 384);
+
+    pt.createTexture(64);
     TextureState ts = DisplaySystem.getDisplaySystem().getRenderer()
         .createTextureState();
     ts.setEnabled(true);
-    Texture t1 = TextureManager.loadTexture(pst.getImageIcon().getImage(),
+    System.out.println(TextureState.getNumberOfTotalUnits());
+    Texture t1 = TextureManager.loadTexture(pt.getImageIcon().getImage(),
         Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR, true);
+    t1.setStoreTexture(true);
     ts.setTexture(t1, 0);
 
-    Texture t2 = TextureManager.loadTexture(TestProceduralSplatTexture.class
-        .getClassLoader().getResource("jmetest/data/texture/Detail.jpg"),
+    Texture t2 = TextureManager.loadTexture(TestTerrain.class.getClassLoader()
+        .getResource("jmetest/data/texture/Detail.jpg"),
         Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR);
 
     ts.setTexture(t2, 1);
@@ -249,6 +301,60 @@ public class GameState extends StatisticsGameState {
     t2.setCombineOp1RGB(Texture.ACO_SRC_COLOR);
     t2.setCombineScaleRGB(1.0f);
     rootNode.setRenderState(ts);
+    rootNode.attachChild(tb);// setRenderState(ts);
+  }
+
+  private TextureState createSplatTexture() {
+    TextureState ts = DisplaySystem.getDisplaySystem().getRenderer()
+        .createTextureState();
+    ts.setEnabled(true);
+    Texture t1 = TextureManager.loadTexture(TestProceduralSplatTexture.class
+        .getClassLoader().getResource("jmetest/data/texture/water.png"),
+        Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR);
+    t1.setWrap(Texture.WM_WRAP_S_WRAP_T);
+    t1.setApply(Texture.AM_MODULATE);
+    ts.setTexture(t1, 0);
+
+    Texture t2 = TextureManager.loadTexture(TestProceduralSplatTexture.class
+        .getClassLoader().getResource(
+            "jmetest/data/IslandExport/MaPZone[stone_01_diffuse].png"),
+        Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR);
+
+    ts.setTexture(t1, 0);
+    t2.setWrap(Texture.WM_WRAP_S_WRAP_T);
+    t2.setApply(Texture.AM_COMBINE);
+    t2.setCombineFuncRGB(Texture.ACF_REPLACE);
+    t2.setCombineSrc0RGB(Texture.ACS_PREVIOUS);
+    t2.setCombineOp0RGB(Texture.ACO_SRC_COLOR);
+    t2.setCombineFuncAlpha(Texture.ACF_REPLACE);
+    ts.setTexture(t2, 1);
+    return ts;
+  }
+
+  private TextureState createSplatTextureState(String texture, String alpha) {
+    TextureState ts = DisplaySystem.getDisplaySystem().getRenderer()
+        .createTextureState();
+    ts.setEnabled(true);
+
+    Texture t0 = TextureManager.loadTexture(TestBox.class.getClassLoader()
+        .getResource(texture), Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR);
+    t0.setWrap(Texture.WM_WRAP_S_WRAP_T);
+    t0.setApply(Texture.AM_MODULATE);
+    ts.setTexture(t0, 0);
+
+    if (alpha != null) {
+      Texture t1 = TextureManager.loadTexture(TestBox.class.getClassLoader()
+          .getResource(alpha), Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR);
+      t1.setWrap(Texture.WM_WRAP_S_WRAP_T);
+      t1.setApply(Texture.AM_COMBINE);
+      t1.setCombineFuncRGB(Texture.ACF_REPLACE);
+      t1.setCombineSrc0RGB(Texture.ACS_PREVIOUS);
+      t1.setCombineOp0RGB(Texture.ACO_SRC_COLOR);
+      t1.setCombineFuncAlpha(Texture.ACF_REPLACE);
+      ts.setTexture(t1, 1);
+    }
+
+    return ts;
   }
 
   private void initSkyBox() {
@@ -324,15 +430,20 @@ public class GameState extends StatisticsGameState {
         "jmetest/data/dwarf/");
     TextureKey.setOverridingLocation(TEXdir);
     // older comment jbr.setProperty("texurl",TEXdir);
-    Node i = null;
+
     try {
       // TODO: ANIMATION ALLWAYS WORKING ?
-      i = (Node) BinaryImporter.getInstance().load(
+      player = (Node) BinaryImporter.getInstance().load(
           new ByteArrayInputStream(BO.toByteArray()));
-      i.setLocalTranslation(new Vector3f(0, tb
-          .getHeight(new Vector2f(250, 250)) - 10f, 0));
-      System.out.println(i.getControllers().size());
-      Controller c = i.getController(0);// getChild(0).getController(0);
+      player.setLocalTranslation(new Vector3f(0, tb.getHeight(new Vector2f(250,
+          250)) - 10f, 0));
+      Matrix3f localRotate = new Matrix3f();
+      localRotate.fromAngleAxis(-(1f * 0.5f * FastMath.PI), new Vector3f(0.0F,
+          1.0F, 0.0F));
+      player.setLocalRotation(localRotate);
+
+      System.out.println(player.getControllers().size());
+      Controller c = player.getController(0);// getChild(0).getController(0);
       if (c instanceof KeyframeController) {
         System.out.println("key");
         c.setSpeed(0);
@@ -348,8 +459,8 @@ public class GameState extends StatisticsGameState {
     } catch (IOException e) {
       System.out.println("darn exceptions:" + e.getMessage());
     }
-    i.setLocalScale(.1f);
-    rootNode.attachChild(i);
+    player.setLocalScale(.1f);
+    rootNode.attachChild(player);
 
   }
 
@@ -360,14 +471,14 @@ public class GameState extends StatisticsGameState {
     /** Assign key T to action "toggle_wire". */
     KeyBindingManager.getKeyBindingManager().set("toggle_wire", KeyInput.KEY_T);
     /** Assign key L to action "toggle_lights". */
-    KeyBindingManager.getKeyBindingManager().set("toggle_lights",
-        KeyInput.KEY_L);
+    // KeyBindingManager.getKeyBindingManager().set("toggle_lights",
+    // KeyInput.KEY_L);
     /** Assign key B to action "toggle_bounds". */
     KeyBindingManager.getKeyBindingManager().set("toggle_bounds",
         KeyInput.KEY_B);
     /** Assign key N to action "toggle_normals". */
-    KeyBindingManager.getKeyBindingManager().set("toggle_normals",
-        KeyInput.KEY_N);
+    // KeyBindingManager.getKeyBindingManager().set("toggle_normals",
+    // KeyInput.KEY_N);
     /** Assign key C to action "camera_out". */
     KeyBindingManager.getKeyBindingManager().set("camera_out", KeyInput.KEY_C);
     KeyBindingManager.getKeyBindingManager()
@@ -378,16 +489,18 @@ public class GameState extends StatisticsGameState {
     KeyBindingManager.getKeyBindingManager().set("toggle_depth",
         KeyInput.KEY_F3);
     KeyBindingManager.getKeyBindingManager().set("mem_report", KeyInput.KEY_R);
-    KeyBindingManager.getKeyBindingManager()
-        .set("toggle_mouse", KeyInput.KEY_M);
+    // KeyBindingManager.getKeyBindingManager()
+    // .set("toggle_mouse", KeyInput.KEY_M);
   }
 
   public void update(float tpf) {
     super.update(tpf);
     // Update the InputHandler
-    if (input != null) {
-      input.update(tpf);
-
+    if (camHandler != null) {
+      camHandler.update(tpf);
+      if (playerHandler != null) {
+        playerHandler.update(tpf);
+      }
       /** If toggle_pause is a valid command (via key p), change pause. */
       if (KeyBindingManager.getKeyBindingManager().isValidCommand(
           "toggle_pause", false)) {
@@ -401,7 +514,7 @@ public class GameState extends StatisticsGameState {
     // Update the geometric state of the rootNode
     rootNode.updateGeometricState(tpf, true);
 
-    if (input != null) {
+    if (camHandler != null) {
       /** If toggle_wire is a valid command (via key T), change wirestates. */
       if (KeyBindingManager.getKeyBindingManager().isValidCommand(
           "toggle_wire", false)) {
