@@ -1,4 +1,4 @@
-package de.terrain.reader;
+package de.dynterrain.reader;
 
 import java.io.DataInputStream;
 import java.io.IOException;
