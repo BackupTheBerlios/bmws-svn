@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Administrator/My Documents/Progs/eclipse_ws/jmesource/lib/lwjgl_util_applet.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Administrator/My Documents/Progs/eclipse_ws/jmesource/lib/jinput.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Administrator/My Documents/Progs/eclipse_ws/jmesource/lib/jogg-0.0.7.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Administrator/My Documents/Progs/eclipse_ws/jmesource/lib/jorbis-0.0.15.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Administrator/My Documents/Progs/eclipse_ws/jmesource/lib/junit-4.1.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Administrator/My Documents/Progs/eclipse_ws/jmesource/lib/lwjgl.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/Administrator/My Documents/Progs/eclipse_ws/jmesource/lib/lwjgl_fmod3.jar"/>
+	<classpathentry kind="lib" path="/jmesource/target/jme.jar" sourcepath="/jmesource/src"/>
+	<classpathentry kind="lib" path="/jmesource/target/jme-awt.jar"/>
+	<classpathentry kind="lib" path="/jmesource/target/jme-collada.jar"/>
+	<classpathentry kind="lib" path="/jmesource/target/jme-editors.jar"/>
+	<classpathentry kind="lib" path="/jmesource/target/jme-effects.jar"/>
+	<classpathentry kind="lib" path="/jmesource/target/jme-font.jar"/>
+	<classpathentry kind="lib" path="/jmesource/target/jme-gamestates.jar"/>
+	<classpathentry kind="lib" path="/jmesource/target/jme-model.jar"/>
+	<classpathentry kind="lib" path="/jmesource/target/jme-scene.jar"/>
+	<classpathentry kind="lib" path="/jmesource/target/jme-sound.jar"/>
+	<classpathentry kind="lib" path="/jmesource/target/jme-terrain.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
