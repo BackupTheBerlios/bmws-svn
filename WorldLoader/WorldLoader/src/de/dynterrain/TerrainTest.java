@@ -37,7 +37,8 @@ public class TerrainTest extends SimpleGame {
 		int[] heightData = new int[SIZE * SIZE];
 		for (int i = 0; i < hm.getSize(); i++) {
 			System.out.println(i);
-			System.arraycopy(hm.getHeightMap(), i*hm.getSize(), heightData, i*SIZE, hm.getSize());
+			System.arraycopy(hm.getHeightMap(), i * hm.getSize(), heightData, i * SIZE, hm
+					.getSize());
 		}
 		terrain = new Terrain(heightData, SIZE, "test");
 		terrain.setLocalScale(new Vector3f(1.5f, 1.5f, 0.1f));
@@ -45,35 +46,36 @@ public class TerrainTest extends SimpleGame {
 		ts.setEnabled(true);
 
 		Texture t1 = TextureManager.loadTexture(getClass().getClassLoader().getResource(
+				"resource/dirt.jpg"), Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR);
+
+		Texture t2 = TextureManager.loadTexture(getClass().getClassLoader().getResource(
 				"resource/Detail.jpg"), Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR);
-		t1.setStoreTexture(true);
+
+
+		t1.setApply(Texture.AM_COMBINE);
+		t1.setCombineFuncRGB(Texture.ACF_MODULATE);
+		t1.setCombineSrc0RGB(Texture.ACS_TEXTURE);
+		t1.setCombineOp0RGB(Texture.ACO_SRC_COLOR);
+		t1.setCombineSrc1RGB(Texture.ACS_PRIMARY_COLOR);
+		t1.setCombineOp1RGB(Texture.ACO_SRC_COLOR);
+		t1.setCombineScaleRGB(1.0f);
+		t1.setScale(new Vector3f(0.2f, 0.2f, 0.2f));
+		t1.setWrap(Texture.WM_WRAP_S_WRAP_T);
+
 		ts.setTexture(t1, 0);
 
-		 Texture t2 = TextureManager.loadTexture(getClass().getClassLoader().getResource(
-		 "resource/Detail5.png"), Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR);
-				
-		 ts.setTexture(t2, 1);
+		t2.setApply(Texture.AM_COMBINE);
+		t2.setCombineFuncRGB(Texture.ACF_ADD_SIGNED);
+		t2.setCombineSrc0RGB(Texture.ACS_TEXTURE1);
+		t2.setCombineOp0RGB(Texture.ACO_SRC_COLOR);
+		t2.setCombineSrc1RGB(Texture.ACS_PREVIOUS);
+		t2.setCombineOp1RGB(Texture.ACO_SRC_COLOR);
+		t2.setCombineScaleRGB(1.0f);
+		t2.setScale(new Vector3f(4, 4, 4));
+		t2.setWrap(Texture.WM_WRAP_S_WRAP_T);
+		terrain.copyTextureCoords(0, 0, 1);
+		ts.setTexture(t2, 1);
 
-				
-		 t1.setApply(Texture.AM_COMBINE);
-		 t1.setCombineFuncRGB(Texture.ACF_MODULATE);
-		 t1.setCombineSrc0RGB(Texture.ACS_TEXTURE);
-		 t1.setCombineOp0RGB(Texture.ACO_SRC_COLOR);
-		 t1.setCombineSrc1RGB(Texture.ACS_PRIMARY_COLOR);
-		 t1.setCombineOp1RGB(Texture.ACO_SRC_COLOR);
-		 t1.setCombineScaleRGB(1.0f);
-		 t1.setScale(new Vector3f(4,4,4));
-		 t1.setWrap(Texture.WM_WRAP_S_WRAP_T);
-				
-		 t2.setApply(Texture.AM_COMBINE);
-		 t2.setCombineFuncRGB(Texture.ACF_MODULATE);
-		 t2.setCombineSrc0RGB(Texture.ACS_TEXTURE1);
-		 t2.setCombineOp0RGB(Texture.ACO_SRC_COLOR);
-		 t2.setCombineSrc1RGB(Texture.ACS_PREVIOUS);
-		 t2.setCombineOp1RGB(Texture.ACO_SRC_COLOR);
-		 t2.setCombineScaleRGB(1.0f);
-		 t2.setScale(new Vector3f(4,4,4));
-		 t2.setWrap(Texture.WM_WRAP_S_WRAP_T);
 		rootNode.attachChild(terrain);
 		rootNode.setRenderState(ts);
 

@@ -25,7 +25,7 @@ public class Terrain extends TriMesh {
 	private int width;
 	private int noOfVertices;
 	private int noOfTriangles;
-	private float lodQuality = 0.03f;
+	private float lodQuality = 0.05f;
 	private int[][] heightData;
 	private boolean[][] lodMatrix;
 	int counter;
