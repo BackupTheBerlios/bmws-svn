@@ -11,6 +11,11 @@ import com.jme.scene.VBOInfo;
 import com.jme.scene.batch.TriangleBatch;
 import com.jme.util.geom.BufferUtils;
 
+/**
+ * Representation of a terrain as a mesh. Terrain supports level of detail.
+ * 
+ * @author crypter
+ */
 public class Terrain extends TriMesh {
 	private static final Vector3f E = new Vector3f(1, 0, 0);
 	private static final Vector3f N = new Vector3f(0, 1, 0);
@@ -20,16 +25,36 @@ public class Terrain extends TriMesh {
 	private int width;
 	private int noOfVertices;
 	private int noOfTriangles;
-	private float lod = 0.03f;
+	private float lodQuality = 0.03f;
 	private int[][] heightData;
+	private boolean[][] lodMatrix;
 	int counter;
 	int maxDepth;
 
 	public Terrain(int[][] heightData, String name) {
 		super("TERRAIN_" + name);
-		this.heightData = heightData;
+		// this.heightData = heightData;
+		init(heightData);
+	}
+
+	/**
+	 * Constructor for terrain.
+	 * 
+	 * @param heightField linear array with heightvalues as integer
+	 * @param width must be a value of 2^n+1
+	 */
+	public Terrain(int[] heightField, int width, String name) {
+		super("TERRAIN_" + name);
+		int[][] heightMap = new int[width][width];
+		for (int i = 0; i < width; i++) {
+			System.arraycopy(heightField, i * width, heightMap[i], 0, width);
+		}
+		init(heightMap);
+	}
+
+	private void init(int[][] heightData) {
 		width = heightData.length;
-		int width2 = width - 1;
+		int width2 = width;
 		while (((width2 >>= 1) & 0xffff) != 0) {
 			maxDepth++;
 		}
@@ -51,8 +76,7 @@ public class Terrain extends TriMesh {
 		setTextureBuffer(0, textureBuffer);
 
 		IntBuffer trianglesBuffer = BufferUtils.createIntBuffer(noOfTriangles * 3);
-		// createTriangles(trianglesBuffer, new Vector3f());
-		createMesh(new Vector3f(), trianglesBuffer);
+		recreateMesh(new Vector3f(), trianglesBuffer);
 		trianglesBuffer.flip();
 		setIndexBuffer(0, trianglesBuffer);
 
@@ -61,15 +85,20 @@ public class Terrain extends TriMesh {
 
 		VBOInfo vbo = new VBOInfo(true);
 		batch.setVBOInfo(vbo);
-
 	}
 
+	/**
+	 * Updates the level of detail according to the current viewpoint and lodQuality. This method
+	 * should be called within the update method of the Game.
+	 * 
+	 * @param view position of the camera. Use cam.getLocation() for instance.
+	 */
 	public void update(Vector3f view) {
 		if (counter++ % 30 == 0) {
 			Vector3f viewpoint = new Vector3f();
 			viewpoint.set(view);
 			IntBuffer trianglesBuffer = BufferUtils.createIntBuffer(noOfTriangles * 3);
-			createMesh(viewpoint, trianglesBuffer);
+			recreateMesh(viewpoint, trianglesBuffer);
 			trianglesBuffer.flip();
 			getBatch(0).setIndexBuffer(trianglesBuffer);
 		}
@@ -106,7 +135,6 @@ public class Terrain extends TriMesh {
 	private void createVertices(int[][] heightData, FloatBuffer vertexBuffer) {
 		for (int y = 0; y < width; y++) {
 			for (int x = 0; x < width; x++) {
-				// Vertices
 				vertexBuffer.put(x).put(y).put(heightData[x][y]);
 			}
 		}
@@ -115,7 +143,6 @@ public class Terrain extends TriMesh {
 	private void createTextureCoordinates(int[][] heightData, FloatBuffer textureBuffer) {
 		for (int y = 0; y < width; y++) {
 			for (int x = 0; x < width; x++) {
-				// texture mapping
 				textureBuffer.put(((float) x) / width).put(((float) y) / width);
 			}
 		}
@@ -135,12 +162,29 @@ public class Terrain extends TriMesh {
 		getBatch(0).getVertexBuffer().put(index + 2, height);
 	}
 
-	private boolean[][] lodMatrix;
+	int x;
+	int y;
+	int depth;
 
-	private void createMesh(Vector3f viewpoint, IntBuffer trianglesBuffer) {
+	private void createMeshStepwise(Vector3f viewpoint, IntBuffer trianglesBuffer) {
+		for (int depth = maxDepth * 2; depth > 1; depth--) {
+			createLODMatrix(viewpoint, 0, 0, width - 1, 0, 0, width - 1, 0, depth);
+			createLODMatrix(viewpoint, width - 1, width - 1, 0, width - 1, width - 1, 0, 0, depth);
+		}
+		createTrianglesRecursive(trianglesBuffer, 0, 0, width - 1, 0, 0, width - 1);
+		createTrianglesRecursive(trianglesBuffer, width - 1, width - 1, 0, width - 1, width - 1, 0);
+
+	}
+
+	/**
+	 * Recreates the mesh.
+	 * @param viewpoint
+	 * @param trianglesBuffer
+	 */
+	public void recreateMesh(Vector3f viewpoint, IntBuffer trianglesBuffer) {
 		long time0 = System.currentTimeMillis();
 		lodMatrix = new boolean[width][width];
-		for (int depth = maxDepth*2; depth > 1; depth--) {
+		for (int depth = maxDepth * 2; depth > 1; depth--) {
 			createLODMatrix(viewpoint, 0, 0, width - 1, 0, 0, width - 1, 0, depth);
 			createLODMatrix(viewpoint, width - 1, width - 1, 0, width - 1, width - 1, 0, 0, depth);
 		}
@@ -191,7 +235,7 @@ public class Terrain extends TriMesh {
 	private boolean calcLodNecessity(Vector3f viewpoint, float height1, float height2, int splitx,
 			int splity, float splitHeight) {
 		float distance = distance(viewpoint, getVertex(splitx, splity));
-		return Math.abs((height2 - height1) / 2 + height1 - splitHeight) / distance > lod;
+		return Math.abs((height2 - height1) / 2 + height1 - splitHeight) / distance > lodQuality;
 	}
 
 	private Vector3f getVertex(int x, int y) {
@@ -232,10 +276,12 @@ public class Terrain extends TriMesh {
 		}
 	}
 
-	public void decreaseLOD() {
+	public float getLodQuality() {
+		return lodQuality;
 	}
 
-	public void increaseLOD() {
+	public void setLodQuality(float lodQuality) {
+		this.lodQuality = lodQuality;
 	}
 
 }
