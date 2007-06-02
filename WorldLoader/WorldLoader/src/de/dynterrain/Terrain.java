@@ -4,11 +4,14 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import com.jme.bounding.BoundingBox;
+import com.jme.image.Texture;
 import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
 import com.jme.scene.TriMesh;
 import com.jme.scene.VBOInfo;
 import com.jme.scene.batch.TriangleBatch;
+import com.jme.scene.state.TextureState;
+import com.jme.system.DisplaySystem;
 import com.jme.util.geom.BufferUtils;
 
 /**
@@ -26,7 +29,6 @@ public class Terrain extends TriMesh {
 	private int noOfVertices;
 	private int noOfTriangles;
 	private float lodQuality = 0.05f;
-	private int[][] heightData;
 	private boolean[][] lodMatrix;
 	int counter;
 	int maxDepth;
@@ -94,9 +96,9 @@ public class Terrain extends TriMesh {
 	 * @param view position of the camera. Use cam.getLocation() for instance.
 	 */
 	public void update(Vector3f view) {
-		if (counter++ % 30 == 0) {
+		if (counter++ % 10 == 0) {
 			Vector3f viewpoint = new Vector3f();
-			viewpoint.set(view);
+			viewpoint = view.subtract(getLocalTranslation());
 			IntBuffer trianglesBuffer = BufferUtils.createIntBuffer(noOfTriangles * 3);
 			recreateMesh(viewpoint, trianglesBuffer);
 			trianglesBuffer.flip();
@@ -162,22 +164,29 @@ public class Terrain extends TriMesh {
 		getBatch(0).getVertexBuffer().put(index + 2, height);
 	}
 
-	int x;
-	int y;
-	int depth;
 
-	private void createMeshStepwise(Vector3f viewpoint, IntBuffer trianglesBuffer) {
-		for (int depth = maxDepth * 2; depth > 1; depth--) {
-			createLODMatrix(viewpoint, 0, 0, width - 1, 0, 0, width - 1, 0, depth);
-			createLODMatrix(viewpoint, width - 1, width - 1, 0, width - 1, width - 1, 0, 0, depth);
-		}
-		createTrianglesRecursive(trianglesBuffer, 0, 0, width - 1, 0, 0, width - 1);
-		createTrianglesRecursive(trianglesBuffer, width - 1, width - 1, 0, width - 1, width - 1, 0);
+	public boolean getLodMatrix(int x, int y) {
+		return lodMatrix[x][y];
+	}
 
+	public void setLodMatrix(int x, int y, boolean value) {
+		lodMatrix[x][y] = value;
+	}
+
+	/**
+	 * Attaches the given terrain at a side. Attached terrains share their edges and will adapt the
+	 * lod without cracks.
+	 * 
+	 * @param attach
+	 * @param attachingSide
+	 */
+	public void attachTerrain(Terrain attach, int attachingSide) {
+		// TODO
 	}
 
 	/**
 	 * Recreates the mesh.
+	 * 
 	 * @param viewpoint
 	 * @param trianglesBuffer
 	 */
@@ -190,7 +199,7 @@ public class Terrain extends TriMesh {
 		}
 		createTrianglesRecursive(trianglesBuffer, 0, 0, width - 1, 0, 0, width - 1);
 		createTrianglesRecursive(trianglesBuffer, width - 1, width - 1, 0, width - 1, width - 1, 0);
-		lodMatrix = null;
+		// lodMatrix = null;
 		System.out.println("lod evaluation for " + width + "x" + width + " took "
 				+ (System.currentTimeMillis() - time0) + " ms");
 	}
@@ -207,14 +216,14 @@ public class Terrain extends TriMesh {
 		float height2 = getVertexHeight(x2, y2);
 		float heightBase = getVertexHeight(basex, basey);
 
-		boolean subdivide = lodMatrix[basex][basey]; // might be already set
+		boolean subdivide = getLodMatrix(basex, basey); // might be already set
 		subdivide |= calcLodNecessity(viewpoint, height1, height2, basex, basey, heightBase);
 		// recurse into two subtriangles
 		subdivide |= createLODMatrix(viewpoint, basex, basey, x2, y2, headx, heady, depth + 1,
 				maxDepth);
 		subdivide |= createLODMatrix(viewpoint, basex, basey, headx, heady, x1, y1, depth + 1,
 				maxDepth);
-		lodMatrix[basex][basey] = subdivide;
+		setLodMatrix(basex, basey, subdivide);
 		return subdivide;
 	}
 
@@ -222,7 +231,7 @@ public class Terrain extends TriMesh {
 			int y1, int x2, int y2) {
 		int basex = (x2 - x1) / 2 + x1;
 		int basey = (y2 - y1) / 2 + y1;
-		if (lodMatrix[basex][basey] && !(basex == x1 && basey == y1)) {
+		if (getLodMatrix(basex, basey) && !(basex == x1 && basey == y1)) {
 			createTrianglesRecursive(trianglesBuffer, basex, basey, headx, heady, x1, y1);
 			createTrianglesRecursive(trianglesBuffer, basex, basey, x2, y2, headx, heady);
 		}
@@ -248,6 +257,37 @@ public class Terrain extends TriMesh {
 		return FastMath.sqrt((v1.x - v2.x) * (v1.x - v2.x) + (v1.y - v2.y) * (v1.y - v2.y)
 				+ (v1.z - v2.z) * (v1.z - v2.z));
 	}
+	
+	public void setTextures(Texture rough, Texture detail, float detailScale, DisplaySystem display) {
+		TextureState ts = display.getRenderer().createTextureState();
+		ts.setEnabled(true);
+
+		rough.setApply(Texture.AM_COMBINE);
+		rough.setCombineFuncRGB(Texture.ACF_MODULATE);
+		rough.setCombineSrc0RGB(Texture.ACS_TEXTURE);
+		rough.setCombineOp0RGB(Texture.ACO_SRC_COLOR);
+		rough.setCombineSrc1RGB(Texture.ACS_PRIMARY_COLOR);
+		rough.setCombineOp1RGB(Texture.ACO_SRC_COLOR);
+		rough.setCombineScaleRGB(1.0f);
+		rough.setScale(new Vector3f(0.1f, 0.1f, 0.1f));
+		rough.setWrap(Texture.WM_WRAP_S_WRAP_T);
+
+		ts.setTexture(rough, 0);
+
+		detail.setApply(Texture.AM_COMBINE);
+		detail.setCombineFuncRGB(Texture.ACF_ADD_SIGNED);
+		detail.setCombineSrc0RGB(Texture.ACS_TEXTURE1);
+		detail.setCombineOp0RGB(Texture.ACO_SRC_COLOR);
+		detail.setCombineSrc1RGB(Texture.ACS_PREVIOUS);
+		detail.setCombineOp1RGB(Texture.ACO_SRC_COLOR);
+		detail.setCombineScaleRGB(1.0f);
+		detail.setScale(new Vector3f(detailScale, detailScale, detailScale));
+		detail.setWrap(Texture.WM_WRAP_S_WRAP_T);
+		copyTextureCoords(0, 0, 1);
+		ts.setTexture(detail, 1);
+		setRenderState(ts);
+	}
+
 
 	private void makeLinearEdgePoints(int x1, int y1, float height1, int x2, int y2, float height2) {
 		int noOfPoints = Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1));

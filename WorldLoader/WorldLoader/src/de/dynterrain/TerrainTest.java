@@ -8,18 +8,29 @@ import com.jme.light.DirectionalLight;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.state.CullState;
-import com.jme.scene.state.TextureState;
 import com.jme.util.TextureManager;
 import com.jmex.terrain.util.AbstractHeightMap;
 import com.jmex.terrain.util.MidPointHeightMap;
 
 public class TerrainTest extends SimpleGame {
 
-	private Terrain terrain;
-	private final int SIZE = 129;
+	private Terrain terrain[];
+	private final int SIZE = 512;
+	private final int TERRAIN_SIZE = 65;
+	int gridWidth = SIZE / (TERRAIN_SIZE - 1) - 1;
+	int gridSize = gridWidth*gridWidth;
+	private Texture t1;
+	private Texture t2;
 
 	@Override
 	protected void simpleInitGame() {
+
+		t1 = TextureManager.loadTexture(getClass().getClassLoader()
+				.getResource("resource/dirt.jpg"), Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR);
+
+		t2 = TextureManager.loadTexture(getClass().getClassLoader().getResource(
+				"resource/Detail.jpg"), Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR);
+
 		// int[][] heightData = new int[SIZE][SIZE];
 		// for (int y = 0; y < SIZE; y++) {
 		// for (int x = 0; x < SIZE; x++) {
@@ -32,52 +43,30 @@ public class TerrainTest extends SimpleGame {
 		// }
 		// }
 		// terrain = new Terrain(heightData, "Test");
-		AbstractHeightMap hm = new MidPointHeightMap(SIZE - 1, 0.95f);
+		AbstractHeightMap hm = new MidPointHeightMap(SIZE, 0.7f);
 		hm.load();
-		int[] heightData = new int[SIZE * SIZE];
-		for (int i = 0; i < hm.getSize(); i++) {
-			System.out.println(i);
-			System.arraycopy(hm.getHeightMap(), i * hm.getSize(), heightData, i * SIZE, hm
-					.getSize());
+		int gridWidth = SIZE / (TERRAIN_SIZE - 1) - 1;
+		terrain = new Terrain[gridSize];
+		for (int y = 0; y < gridWidth; y++) {
+			for (int x = 0; x < gridWidth; x++) {
+				int[] heightData = new int[TERRAIN_SIZE * TERRAIN_SIZE];
+				for (int i = 0; i < TERRAIN_SIZE; i++) {
+					//System.out.println(x + " " + y + " " + i);
+					System.arraycopy(hm.getHeightMap(), (y * (TERRAIN_SIZE - 1) + i) * hm.getSize()
+							+ x * (TERRAIN_SIZE - 1), heightData, i * TERRAIN_SIZE, TERRAIN_SIZE);
+				}
+				int index = x+y*gridWidth; 
+				terrain[index] = new Terrain(heightData, TERRAIN_SIZE, "test"+x+"_"+y);
+				heightData = null;
+				float horScale = 1.5f;
+				terrain[index].setLocalScale(new Vector3f(horScale, horScale, 0.1f));
+				terrain[index].setLocalTranslation(new Vector3f(horScale * (TERRAIN_SIZE - 1) * y,
+						horScale * (TERRAIN_SIZE - 1) * x, 0));
+				terrain[index].setTextures(t1, t2, 4, display);
+				rootNode.attachChild(terrain[index]);
+			}
 		}
-		terrain = new Terrain(heightData, SIZE, "test");
-		terrain.setLocalScale(new Vector3f(1.5f, 1.5f, 0.1f));
-		TextureState ts = display.getRenderer().createTextureState();
-		ts.setEnabled(true);
-
-		Texture t1 = TextureManager.loadTexture(getClass().getClassLoader().getResource(
-				"resource/dirt.jpg"), Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR);
-
-		Texture t2 = TextureManager.loadTexture(getClass().getClassLoader().getResource(
-				"resource/Detail.jpg"), Texture.MM_LINEAR_LINEAR, Texture.FM_LINEAR);
-
-
-		t1.setApply(Texture.AM_COMBINE);
-		t1.setCombineFuncRGB(Texture.ACF_MODULATE);
-		t1.setCombineSrc0RGB(Texture.ACS_TEXTURE);
-		t1.setCombineOp0RGB(Texture.ACO_SRC_COLOR);
-		t1.setCombineSrc1RGB(Texture.ACS_PRIMARY_COLOR);
-		t1.setCombineOp1RGB(Texture.ACO_SRC_COLOR);
-		t1.setCombineScaleRGB(1.0f);
-		t1.setScale(new Vector3f(0.2f, 0.2f, 0.2f));
-		t1.setWrap(Texture.WM_WRAP_S_WRAP_T);
-
-		ts.setTexture(t1, 0);
-
-		t2.setApply(Texture.AM_COMBINE);
-		t2.setCombineFuncRGB(Texture.ACF_ADD_SIGNED);
-		t2.setCombineSrc0RGB(Texture.ACS_TEXTURE1);
-		t2.setCombineOp0RGB(Texture.ACO_SRC_COLOR);
-		t2.setCombineSrc1RGB(Texture.ACS_PREVIOUS);
-		t2.setCombineOp1RGB(Texture.ACO_SRC_COLOR);
-		t2.setCombineScaleRGB(1.0f);
-		t2.setScale(new Vector3f(4, 4, 4));
-		t2.setWrap(Texture.WM_WRAP_S_WRAP_T);
-		terrain.copyTextureCoords(0, 0, 1);
-		ts.setTexture(t2, 1);
-
-		rootNode.attachChild(terrain);
-		rootNode.setRenderState(ts);
+		hm = null;
 
 		DirectionalLight dr = new DirectionalLight();
 		dr.setEnabled(true);
@@ -102,9 +91,11 @@ public class TerrainTest extends SimpleGame {
 
 	}
 
+	private int counter = 0;
 	@Override
 	protected void simpleUpdate() {
-		terrain.update(cam.getLocation());
+		terrain[counter].update(cam.getLocation());
+		counter = (counter+1) % gridSize;
 	}
 
 	public static void main(String[] args) {
