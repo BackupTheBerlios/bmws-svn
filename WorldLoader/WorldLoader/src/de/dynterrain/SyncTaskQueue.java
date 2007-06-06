@@ -30,9 +30,10 @@ public class SyncTaskQueue extends AbstractTaskQueue {
 	public boolean process(int millis) {
 		boolean ret = false;
 		long breaktime = System.currentTimeMillis() + millis;
+		QueueEntry entry = null;
 		while (queue.size() > 0 && breaktime > System.currentTimeMillis()) {
 			long tasktime = System.currentTimeMillis();
-			QueueEntry entry = queue.getFirst();
+			entry = queue.getFirst();
 			logger.info("Processing sync task "+entry.identifier);
 			Runnable task = entry.task;
 			task.run();
@@ -46,7 +47,7 @@ public class SyncTaskQueue extends AbstractTaskQueue {
 		}
 		if (breaktime < System.currentTimeMillis()) {
 			logger.warning("Overrun processing time limit by "
-					+ (System.currentTimeMillis() - breaktime) + " ms");
+					+ (System.currentTimeMillis() - breaktime) + " ms for "+entry.identifier);
 		}
 		return ret;
 	}

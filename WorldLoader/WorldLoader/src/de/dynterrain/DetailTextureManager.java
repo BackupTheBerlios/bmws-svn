@@ -7,7 +7,6 @@ import com.jme.renderer.Renderer;
 import com.jme.scene.state.RenderState;
 import com.jme.scene.state.TextureState;
 import com.jme.util.TextureManager;
-import com.jmex.terrain.TerrainBlock;
 
 public class DetailTextureManager {
 	Texture texture;
@@ -26,12 +25,12 @@ public class DetailTextureManager {
 
 	public void update(Camera cam, DynamicWorld wld) {
 		wld.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
-		TerrainBlock tb = wld.getTerrainAt(cam.getLocation().x, cam.getLocation().z);
+		Terrain tb = wld.getTerrainAt(cam.getLocation().x, cam.getLocation().z);
 		TextureState ts = (TextureState) tb.getRenderState(RenderState.RS_TEXTURE);
 		texture.setTranslation(new Vector3f(0, 0, 0));
 		if (ts.getTexture(1) == null) {
 			Texture t2 = ts.getTexture(0);
-			tb.setDetailTexture(1, 1);
+			//tb.setDetailTexture(1, 1);
 			ts.setTexture(texture, 1);
 			texture.setApply(Texture.AM_COMBINE);
 			texture.setCombineFuncRGB(Texture.ACF_ADD_SIGNED);

@@ -29,9 +29,8 @@ import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
 import com.jmex.model.XMLparser.JmeBinaryReader;
-import com.jmex.terrain.TerrainBlock;
 
-import de.terrain.reader.ThreeDSReader;
+import de.dynterrain.reader.ThreeDSReader;
 
 public class ObjectLoader {
 	private static Logger logger = Logger.getLogger(ObjectLoader.class.getName());
@@ -44,8 +43,8 @@ public class ObjectLoader {
 		private Image textureImage;
 		private Spatial spatial;
 
-		public ApplyTextureTask(Image texturePath, Spatial applyToObject) {
-			this.textureImage = texturePath;
+		public ApplyTextureTask(Image textureImage, Spatial applyToObject) {
+			this.textureImage = textureImage;
 			this.spatial = applyToObject;
 		}
 
@@ -61,7 +60,7 @@ public class ObjectLoader {
 			// texture.setScale(new Vector3f(5,5,5));
 			ts.setTexture(texture);
 			spatial.setRenderState(ts);
-			spatial.updateRenderState();
+			//spatial.updateRenderState();
 			logger.info("Successfully applied texture " + textureImage);
 		}
 	}
@@ -100,8 +99,12 @@ public class ObjectLoader {
 	public List<ObjectDescription> loadSectionObjectList(String path) {
 		List<ObjectDescription> objectList = new ArrayList<ObjectDescription>();
 		try {
+			File file = new File(path);
+			if (!file.exists()) {
+				return null;
+			}
 			Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(
-					new File(path));
+					file);
 			NodeList nodeList = document.getElementsByTagName("Object");
 			for (int i = 0; i < nodeList.getLength(); i++) {
 				ObjectDescription descr = new ObjectDescription();
@@ -156,18 +159,19 @@ public class ObjectLoader {
 		return objectNode;
 	}
 
-	public TerrainBlock loadTerrainBlock(int column, int row) throws IOException {
+	public Terrain loadTerrainBlock(int column, int row) throws IOException {
 		String sectionPath = worldPath + "_" + column + "_" + row;
 		final int[] heightMap = readIntArrayFromFile(column, row, sectionPath + ".ter");
 		Vector3f scale = new Vector3f(worldDescription.spatialScale, worldDescription.heightScale,
 				worldDescription.spatialScale);
+		System.out.println("Size: "+worldDescription.sectionResolution);
 		Vector3f origin = new Vector3f(column * worldDescription.getSectionWidth(), 0, row
 				* worldDescription.getSectionWidth());
-		TerrainBlock terrainBlock = new TerrainBlock("terrain(" + column + ", " + row + ")",
-				worldDescription.sectionResolution, scale, heightMap, origin, false);
+		Terrain terrainBlock = new Terrain("terrain(" + column + ", " + row + ")",
+				 heightMap, worldDescription.sectionResolution, scale, origin);
 
-		Image textureImage = TextureManager.loadImage(new URL(
-				"file:../MBWSClient/data/images/grassb.png"), false);
+		Image textureImage = TextureManager.loadImage(getClass().getClassLoader().getResource(
+				"resource/dirt.jpg"), false);
 
 		SyncTaskQueue.getInstance().enqueue("applySectionTex" + column + "_" + row,
 				new ApplyTextureTask(textureImage, terrainBlock));

@@ -20,7 +20,7 @@ import com.jme.scene.state.LightState;
 import com.jme.scene.state.TextureState;
 import com.jme.system.DisplaySystem;
 import com.jme.util.TextureManager;
-import com.jmex.terrain.TerrainBlock;
+
 
 /**
  * DynamicWorld is a super node for the terrain and static objects of a world. The world is
@@ -76,7 +76,7 @@ public class DynamicWorld extends Node {
 		if (visibilityRadius<0)
 			setVisibilityRadius(2000);
 		preloadAndAddSections(cam.getLocation());
-		createSky();
+		//createSky();
 		createFog();
 		AsyncTaskQueue.getInstance().waitForEmptyQueue();
 		logger.info("DynamicWorld finished initialization.");
@@ -217,25 +217,32 @@ public class DynamicWorld extends Node {
 	 * @param cam
 	 */
 	public void update(Camera cam) {
+		final long limit = 20;
 		long time = System.currentTimeMillis();
 		SyncTaskQueue.getInstance().process(15);
 		Vector3f location = cam.getLocation();
-		skydome.setLocalTranslation(new Vector3f(location.x, location.y - skyHeightOffset,
-				location.z));
+		//skydome.setLocalTranslation(new Vector3f(location.x, location.y - skyHeightOffset,
+		//		location.z));
 		unloadDistantSections(location);
-		removeInvisibleSections(location);
-		preloadAndAddSections(location);
-		updateGeometricState(0.0f, true);
-		updateRenderState();
-		final long limit = 20;
 		long cycletime = System.currentTimeMillis() - time;
 		if (cycletime > limit) {
-			logger.warning("Update overrun limit of " + limit + " ms: " + cycletime + " ms");
+			logger.warning("Update unload overrun limit of " + limit + " ms: " + cycletime + " ms");
 		}
-
+		removeInvisibleSections(location);
+		if (cycletime > limit) {
+			logger.warning("Update 'remove invisible' overrun limit of " + limit + " ms: " + cycletime + " ms");
+		}
+		preloadAndAddSections(location);
+//		updateGeometricState(0.0f, true);
+//		updateRenderState();
+		cycletime = System.currentTimeMillis() - time;
+		//getTerrainAt(cam.getLocation().x, cam.getLocation().z).update(cam.getLocation());
+		if (cycletime > limit) {
+			logger.warning("Update preload overrun limit of " + limit + " ms: " + cycletime + " ms");
+		}
 	}
 
-	TerrainBlock getTerrainAt(float x, float z) {
+	Terrain getTerrainAt(float x, float z) {
 		float sectionWidth = worldDescr.getSectionWidth();
 		return sectionController.getSection((int) (x / sectionWidth), (int) (z / sectionWidth))
 				.getTerrainBlock();
@@ -294,7 +301,7 @@ public class DynamicWorld extends Node {
 				* (visibilityRadius + 1.5f * worldDescr.getSectionWidth());
 		prefetchRadius2 = prefetchRadius * prefetchRadius;
 		unloadRadius2 = unloadRadius * unloadRadius;
-		createSky();
+		//createSky();
 		createFog();
 	}
 }

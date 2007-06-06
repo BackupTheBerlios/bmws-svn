@@ -7,11 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-
-
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
-import com.jmex.terrain.TerrainBlock;
 
 public class SectionController {
 
@@ -27,13 +24,13 @@ public class SectionController {
 	 */
 	class SectionNode extends Node {
 		boolean complete;
-		TerrainBlock terrain;
+		Terrain terrain;
 
 		protected SectionNode(String name) {
 			super(name);
 		}
 
-		protected void addTerrain(TerrainBlock tb) {
+		protected void addTerrain(Terrain tb) {
 			terrain = tb;
 			attachChild(tb);
 		}
@@ -42,12 +39,12 @@ public class SectionController {
 		protected void finalize() throws Throwable {
 			Iterator it = getChildren().iterator();
 			while (it.hasNext()) {
-				objectRepository.destroyObjectClone((Spatial) it.next());
+//				objectRepository.destroyObjectClone((Spatial) it.next());
 			}
 			super.finalize();
 		}
 
-		TerrainBlock getTerrainBlock() {
+		Terrain getTerrainBlock() {
 			return terrain;
 		}
 	}
@@ -119,6 +116,9 @@ public class SectionController {
 
 		public void run() {
 			List<ObjectDescription> list = loader.loadSectionObjectList(worldPath+"_"+key(col, row)+".xml");
+			if (list==null) {
+				return;
+			}
 			// enqueue LoadTasks for all objects
 			int number = 0;
 			Iterator<ObjectDescription> it = list.iterator();

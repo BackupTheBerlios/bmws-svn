@@ -7,6 +7,7 @@ import com.jme.bounding.BoundingBox;
 import com.jme.image.Texture;
 import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
+import com.jme.renderer.ColorRGBA;
 import com.jme.scene.TriMesh;
 import com.jme.scene.VBOInfo;
 import com.jme.scene.batch.TriangleBatch;
@@ -28,7 +29,7 @@ public class Terrain extends TriMesh {
 	private int width;
 	private int noOfVertices;
 	private int noOfTriangles;
-	private float lodQuality = 0.05f;
+	private float lodQuality = 0.3f;
 	private boolean[][] lodMatrix;
 	int counter;
 	int maxDepth;
@@ -37,6 +38,7 @@ public class Terrain extends TriMesh {
 		super("TERRAIN_" + name);
 		// this.heightData = heightData;
 		init(heightData);
+		setLocalScale(new Vector3f(1, 0.1f, 1));
 	}
 
 	/**
@@ -45,13 +47,15 @@ public class Terrain extends TriMesh {
 	 * @param heightField linear array with heightvalues as integer
 	 * @param width must be a value of 2^n+1
 	 */
-	public Terrain(int[] heightField, int width, String name) {
+	public Terrain(String name, int[] heightField, int width, Vector3f scale, Vector3f origin) {
 		super("TERRAIN_" + name);
 		int[][] heightMap = new int[width][width];
 		for (int i = 0; i < width; i++) {
 			System.arraycopy(heightField, i * width, heightMap[i], 0, width);
 		}
 		init(heightMap);
+		setLocalScale(scale);
+		setLocalTranslation(origin);
 	}
 
 	private void init(int[][] heightData) {
@@ -78,9 +82,13 @@ public class Terrain extends TriMesh {
 		setTextureBuffer(0, textureBuffer);
 
 		IntBuffer trianglesBuffer = BufferUtils.createIntBuffer(noOfTriangles * 3);
-		recreateMesh(new Vector3f(), trianglesBuffer);
+		recreateMesh(null, trianglesBuffer);
 		trianglesBuffer.flip();
-		setIndexBuffer(0, trianglesBuffer);
+		trianglesBuffer.compact();
+		batch.setIndexBuffer(trianglesBuffer);
+		batch.setTriangleQuantity(noOfTriangles);
+
+		buildColors();
 
 		setModelBound(new BoundingBox());
 		updateModelBound();
@@ -95,13 +103,12 @@ public class Terrain extends TriMesh {
 	 * 
 	 * @param view position of the camera. Use cam.getLocation() for instance.
 	 */
-	public void update(Vector3f view) {
-		if (counter++ % 10 == 0) {
-			Vector3f viewpoint = new Vector3f();
-			viewpoint = view.subtract(getLocalTranslation());
+	public void update(Vector3f viewpoint) {
+		if (counter++ % 1 == 0) {
 			IntBuffer trianglesBuffer = BufferUtils.createIntBuffer(noOfTriangles * 3);
 			recreateMesh(viewpoint, trianglesBuffer);
 			trianglesBuffer.flip();
+			trianglesBuffer.compact();
 			getBatch(0).setIndexBuffer(trianglesBuffer);
 		}
 	}
@@ -129,7 +136,7 @@ public class Terrain extends TriMesh {
 					normal = normal.add(E.cross(vec));
 				}
 				normal = normal.normalize();
-				normalBuffer.put(normal.x).put(normal.y).put(normal.z);
+				normalBuffer.put(normal.y).put(normal.z).put(normal.x);
 			}
 		}
 	}
@@ -137,7 +144,7 @@ public class Terrain extends TriMesh {
 	private void createVertices(int[][] heightData, FloatBuffer vertexBuffer) {
 		for (int y = 0; y < width; y++) {
 			for (int x = 0; x < width; x++) {
-				vertexBuffer.put(x).put(y).put(heightData[x][y]);
+				vertexBuffer.put(y).put(heightData[x][y]).put(x);
 			}
 		}
 	}
@@ -156,14 +163,8 @@ public class Terrain extends TriMesh {
 	}
 
 	private float getVertexHeight(int x, int y) {
-		return getBatch(0).getVertexBuffer().get(getVertexIndex(x, y) * 3 + 2);
+		return getBatch(0).getVertexBuffer().get(getVertexIndex(x, y) * 3 + 1);
 	}
-
-	private void setVertexHeight(int x, int y, float height) {
-		int index = getVertexIndex(x, y) * 3;
-		getBatch(0).getVertexBuffer().put(index + 2, height);
-	}
-
 
 	public boolean getLodMatrix(int x, int y) {
 		return lodMatrix[x][y];
@@ -199,9 +200,13 @@ public class Terrain extends TriMesh {
 		}
 		createTrianglesRecursive(trianglesBuffer, 0, 0, width - 1, 0, 0, width - 1);
 		createTrianglesRecursive(trianglesBuffer, width - 1, width - 1, 0, width - 1, width - 1, 0);
-		// lodMatrix = null;
-		System.out.println("lod evaluation for " + width + "x" + width + " took "
-				+ (System.currentTimeMillis() - time0) + " ms");
+
+		lodMatrix = null;
+		long time = (System.currentTimeMillis() - time0);
+		if (time > 20) {
+			System.out.println("lod evaluation for " + width + "x" + width + " took "
+					+ (System.currentTimeMillis() - time0) + " ms");
+		}
 	}
 
 	private boolean createLODMatrix(Vector3f viewpoint, int headx, int heady, int x1, int y1,
@@ -243,7 +248,18 @@ public class Terrain extends TriMesh {
 
 	private boolean calcLodNecessity(Vector3f viewpoint, float height1, float height2, int splitx,
 			int splity, float splitHeight) {
-		float distance = distance(viewpoint, getVertex(splitx, splity));
+		if (splitx == 0 || splitx == width - 1 || splity == 0 || splity == width - 1) {
+			return true;
+		}
+		float distance;
+		if (viewpoint == null) {
+			distance = 3;
+		}
+		else {
+			Vector3f localViewpoint = viewpoint.subtract(getLocalTranslation());
+			Vector3f meshpoint = getVertex(splitx, splity).mult(getLocalScale());
+			distance = distance(localViewpoint, meshpoint);
+		}
 		return Math.abs((height2 - height1) / 2 + height1 - splitHeight) / distance > lodQuality;
 	}
 
@@ -257,7 +273,7 @@ public class Terrain extends TriMesh {
 		return FastMath.sqrt((v1.x - v2.x) * (v1.x - v2.x) + (v1.y - v2.y) * (v1.y - v2.y)
 				+ (v1.z - v2.z) * (v1.z - v2.z));
 	}
-	
+
 	public void setTextures(Texture rough, Texture detail, float detailScale, DisplaySystem display) {
 		TextureState ts = display.getRenderer().createTextureState();
 		ts.setEnabled(true);
@@ -269,7 +285,7 @@ public class Terrain extends TriMesh {
 		rough.setCombineSrc1RGB(Texture.ACS_PRIMARY_COLOR);
 		rough.setCombineOp1RGB(Texture.ACO_SRC_COLOR);
 		rough.setCombineScaleRGB(1.0f);
-		rough.setScale(new Vector3f(0.1f, 0.1f, 0.1f));
+		rough.setScale(new Vector3f(0.25f, 0.25f, 0.25f));
 		rough.setWrap(Texture.WM_WRAP_S_WRAP_T);
 
 		ts.setTexture(rough, 0);
@@ -288,28 +304,6 @@ public class Terrain extends TriMesh {
 		setRenderState(ts);
 	}
 
-
-	private void makeLinearEdgePoints(int x1, int y1, float height1, int x2, int y2, float height2) {
-		int noOfPoints = Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1));
-		int stepx = (x2 - x1) / noOfPoints;
-		int stepy = (y2 - y1) / noOfPoints;
-		int x = x1 + stepx;
-		int y = y1 + stepy;
-		for (int i = 1; i < noOfPoints - 1; i++) {
-			setVertexHeight(x, y, i * (height2 - height1) / noOfPoints + height1);
-			x += stepx;
-			y += stepy;
-		}
-	}
-
-	private double distanceFromLine(int x1, int y1, int x2, int y2, int py) {
-		float dy2 = y2 - y1;
-		float dpy = py - y1;
-		float l = Math.abs(x2 - x1);
-		return Math.abs(0.5f * dy2 * l / Math.sqrt(l * l + dy2 * dy2) + dpy
-				/ Math.sqrt(1 + dy2 * dy2 / (l * l)));
-	}
-
 	private void putTriangle(IntBuffer trianglesBuffer, int ind1, int ind2, int ind3) {
 		if (ind1 < noOfVertices && ind2 < noOfVertices && ind3 < noOfVertices) {
 			trianglesBuffer.put(ind1).put(ind2).put(ind3);
@@ -324,4 +318,20 @@ public class Terrain extends TriMesh {
 		this.lodQuality = lodQuality;
 	}
 
+	public float getHeight(float f, float g) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void getSurfaceNormal(Vector3f location, Vector3f normal) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * Sets the colors for each vertex to the color white.
+	 */
+	private void buildColors() {
+		setDefaultColor(ColorRGBA.white);
+	}
 }

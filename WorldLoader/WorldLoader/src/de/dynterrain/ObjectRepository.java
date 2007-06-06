@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 
 
 import com.jme.math.Vector3f;
-import com.jme.renderer.CloneCreator;
 import com.jme.scene.Node;
 import com.jme.scene.SharedMesh;
 import com.jme.scene.Spatial;
@@ -32,7 +31,7 @@ public class ObjectRepository {
 	private static class Blueprint {
 		String name;
 		int referenceCount;
-		CloneCreator cloneCreator; // TODO use SharedMesh
+//		CloneCreator cloneCreator; // TODO use SharedMesh
 		Spatial bluePrint;
 		volatile boolean completed;
 
@@ -42,7 +41,7 @@ public class ObjectRepository {
 
 		void createCloneCreator(Spatial spatial) {
 			bluePrint = spatial;
-			sharedMesh = new SharedMesh(bluePrint);
+//			sharedMesh = new SharedMesh(bluePrint);
 		}
 
 		void setCompleted() {
@@ -87,8 +86,8 @@ public class ObjectRepository {
 		public void run() {
 			long time = System.currentTimeMillis();
 			Blueprint blueprint = blueprintMap.get(descr.name);
-			Spatial spatial;
-			spatial = blueprint.cloneCreator.createCopy();
+			Spatial spatial = null;
+//			spatial = blueprint.cloneCreator.createCopy();
 			spatial.setName(descr.name + "_" + uid++);
 			// TODO set rotation ...
 			spatial.setLocalTranslation(new Vector3f(descr.x
