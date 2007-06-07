@@ -113,7 +113,7 @@ public class HeightMapCache {
 		}
 		// set minimum and maximum
 		min = (height < min) ? height : min;
-		max = (height < max) ? height : max;
+		max = (height > max) ? height : max;
 	}
 
 	private void setHeightInSection(int height, int sectionx, int sectiony, int detailx, int detaily) {
@@ -164,7 +164,6 @@ public class HeightMapCache {
 		for (CacheEntry entry : cache) {
 			saveSection(entry);
 		}
-		System.out.println(toString());
 	}
 
 	private void saveSection(CacheEntry entry) {
@@ -193,7 +192,7 @@ public class HeightMapCache {
 	}
 
 	public Dimension getDimension() {
-		int size = coarseSize;
+		int size = coarseSize*detailResolution;
 		return new Dimension(size, size);
 	}
 
@@ -219,12 +218,6 @@ public class HeightMapCache {
 		sb.append("\n");
 		for (int x = 0; x < getWidth(); x++) {
 			sb.append(getHeight(10, x) + " ");
-		}
-		int[] section = getSection(0, 0).sectionMap;
-		for (int x = 0; x < section.length; x++) {
-			System.out.print(section[x] + " ");
-			if ((x + 1) % realResolution == 0)
-				System.out.println();
 		}
 		return sb.toString();
 	}
